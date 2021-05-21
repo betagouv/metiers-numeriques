@@ -1,8 +1,4 @@
-# Un site de démo du Design System de l'Etat
-Vous pouvez voir ce site en ligne là : https://template.incubateur.net
-
-Ce site a pour but d'être un point de départ pour utiliser le Design System de l'Etat. N'hésitez pas à le copier!
-
+# Le site de metiers-numeriques
 
 ## Lancer en prod
 
@@ -24,8 +20,8 @@ Si on veut checker pour une PR donnée, utiliser l'url de la review app de la PR
 Vous devez avoir npm installé sur votre machine.
 
 ```
-git clone https://github.com/betagouv/template-design-system-de-l-etat
-cd template-design-system-de-l-etat
+git clone https://github.com/betagouv/metiers-numeriques
+cd metiers-numeriques
 npm install
 npm run dev
 ```

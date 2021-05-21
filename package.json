@@ -1,7 +1,7 @@
 {
-  "name": "template-design-system-de-l-etat",
+  "name": "metiers-numeriques",
   "version": "1.0.0",
-  "description": "Ce site a pour but d'être un point de départ pour utiliser le Design System de l'Etat. N'hésitez pas à le copier!",
+  "description": "Tout savoir sur les métiers du numérique au sein de l’Etat",
   "main": "index.js",
   "scripts": {
     "checkHTML": "site-validator --verbose --url",
@@ -11,14 +11,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/betagouv/template-design-system-de-l-etat.git"
+    "url": "git+https://github.com/betagouv/metiers-numeriques.git"
   },
-  "author": "estelle.comment@beta.gouv.fr",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/betagouv/template-design-system-de-l-etat/issues"
+    "url": "https://github.com/betagouv/metiers-numeriques/issues"
   },
-  "homepage": "https://github.com/betagouv/template-design-system-de-l-etat#readme",
+  "homepage": "https://github.com/betagouv/metiers-numeriques#readme",
   "dependencies": {
     "@gouvfr/dsfr": "^1.0.0-rc1.0",
     "ejs": "^3.1.5",
