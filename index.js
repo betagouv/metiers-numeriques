@@ -28,45 +28,9 @@ app.get('/', (req, res) => {
   res.render('landing')
 })
 
-app.get('/ressources', (req, res) => {
-  res.render('ressources', {
-    pageTitle: 'Ressources'
-  })
-})
-
-app.get('/formulaire', (req, res) => {
-  res.render('form', {
-    pageTitle: 'Formulaire'
-  })
-})
-
 app.get('/contact', (req, res) => {
   res.render('contact', {
     pageTitle: 'Contact'
-  })
-})
-
-app.get('/accessibilite', (req, res) => {
-  res.render('accessibilite', {
-    pageTitle: 'Accessibilité'
-  })
-})
-
-app.get('/components', (req, res) => {
-  res.render('components', {
-    pageTitle: 'Composants'
-  })
-})
-
-app.get('/colors', (req, res) => {
-  res.render('colors', {
-    pageTitle: 'Couleurs'
-  })
-})
-
-app.get('/typography', (req, res) => {
-  res.render('typography', {
-    pageTitle: 'Typographie'
   })
 })
 
