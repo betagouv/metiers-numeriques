@@ -20,77 +20,26 @@
       </div>
     </div>
   </div>
-  <div class="fr-container fr-py-6w fr-px-2w">
-  <h1>metiers.numerique.gouv.fr</h1>
-  <p>
-    Tout savoir sur les métiers du numérique au sein de l’Etat
-  </p>
-
-<div class="fr-container-fluid fr-my-6w">
-  <div class="fr-grid-row fr-grid-row--gutters">
-    <%- include('partials/card',
-    {
-      title: 'Composants',
-      description: "Cartes, boutons...",
-      url: '/components',
-      size: '3',
-      img: '',
-    })
-    -%>
-
-
-    <%- include('partials/card',
-    {
-      title: 'Formulaire',
-      description: "Input, textarea...",
-      url: '/formulaire',
-      size: '3',
-      img: '',
-    })
-    -%>
-
-    <%- include('partials/card',
-    {
-      title: 'Typographie',
-      description: "Titres, paragraphes...",
-      url: '/typography',
-      size: '3',
-      img: '',
-    })
-    -%>
-
-    <%- include('partials/card',
-    {
-      title: 'Couleurs',
-      description: "Palettes, combinaisons accessibles...",
-      url: '/colors',
-      size: '3',
-      img: '',
-    })
-    -%>
-
-    <%- include('partials/card',
-    {
-      title: 'Ressources',
-      description: "Documentation et lien vers des sites exemples en production",
-      url: '/ressources',
-      size: '3',
-      img: '',
-    })
-    -%>
-  </div>
-</div>
-
-  <div class="fr-container-fluid">
-    <h2>Vous voulez participer ? </h2>
-    <ul>
-      <li><a class="fr-link fr-fi-external-link-line fr-link--icon-right" target="blank" href="https://github.com/betagouv/template-design-system-de-l-etat/issues">Voir les problèmes signalés</a></li>
-      <li><a class="fr-link fr-fi-external-link-line fr-link--icon-right" target="blank" href="https://github.com/betagouv/template-design-system-de-l-etat/issues/new">Signaler un problème</a></li>
-      <li><a class="fr-link fr-fi-external-link-line fr-link--icon-right" target="blank" href="https://github.com/betagouv/template-design-system-de-l-etat/">Contribuer au code source</a></li>
+  <section class="fr-py-6w newsletter">
+    <div class="fr-container">
+      <form method="post" action="https://app.mailjet.com/widget/iframe/1O2v/9ud" id="newsletter">
+        <h4>Gardons le contact</h4>
+        <p>Recevez les actualités de beta.gouv, tous les mois</p>
+  
+        <input type="hidden" id="csrf_token" name="csrf_token" value="MmE2NTZkNWQ0MGQ0Y2IzOWQyZTllOWUxZGI2OWJhMTM2OTJhMDRjNzJjYjM5NWQ4MTRkM2UwNmRlYzBjM2RiYg==">
+        <div class="fr-input-group">
+          <input required=""
+            class="fr-input"
+            type="email"
+            autocomplete="on"
+            id="subscribe-email"
+            name="w-field-field-36469-172104-430683-email"
+            placeholder="votre adresse e-mail" />
+          <button class="fr-btn" type="submit" name="subscribe" id="form-submit">S’inscrire</button>
+  
+        </div>
+      </form>
     </div>
-  </div>
-</div>
-
-</div>
+  </section>
 </main>
 <%- include('partials/footer') -%>
