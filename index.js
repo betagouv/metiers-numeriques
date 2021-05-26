@@ -4,7 +4,7 @@ const path = require('path')
 const designSystemVersion = require('./package-lock.json').dependencies['@gouvfr/dsfr'].version
 const appName = `metiers.numerique.gouv.fr`
 const appDescription = "Tout savoir sur les métiers du numérique au sein de l’Etat"
-const appRepo = 'https://github.com/betagouv/template-design-system-de-l-etat'
+const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const port = process.env.PORT || 8080
 
 const app = express()
