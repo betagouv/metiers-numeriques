@@ -19,4 +19,12 @@ span.tofill::after {
 }
 span.tofill::before {
   content: "[";
-}  
+}
+
+.home-card {
+  background-color: var(--bf500);
+}
+
+.home-card h2, span{
+  color: var(--g100);
+}

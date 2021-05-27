@@ -20,6 +20,44 @@
       </div>
     </div>
   </div>
+
+<%- include('partials/cards',
+   {
+     cards:
+        {
+          title: 'Qu‘est-ce que l‘État Numérique ?',
+          subtitle: 'En quelques mots...',
+          parts: [
+            {
+              title: 'Plus de 200',
+              text: 'nouvelles offres d‘emplois à pourvoir chaque mois !',
+            },
+            {
+              title: 'Des projets ambitieux et challengeant',
+              text: '',
+            },
+            {
+              title: 'Des projets qui ont de l‘impact',
+              text: '& touchent des milliers d‘utilisateurs',
+            },
+            {
+              title: 'Un univers pérenne & plein d‘avenir',
+              text: '',
+            },
+            {
+              title: 'Des métiers divers & très variés',
+              text: 'pour tous les profils',
+            },
+            {
+              title: 'Des secteurs très différents',
+              text: 'santé, éducation, économie, finance...',
+            }
+          ],
+          cssClass: 'home-card',
+        },
+    })
+ -%>
+
   <section class="fr-py-6w newsletter" style="text-align: center;">
     <div class="fr-container">
       <form method="post" action="https://app.mailjet.com/widget/iframe/6OXS/JiG" id="newsletter">
