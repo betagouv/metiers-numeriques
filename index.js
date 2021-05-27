@@ -25,19 +25,15 @@ app.use(function(req, res, next){
 })
 
 app.get('/', (req, res) => {
-  res.render('landing')
-})
-
-app.get('/contact', (req, res) => {
-  res.render('contact', {
-    pageTitle: 'Contact'
+  res.render('landing', {
+    contactEmail: 'contact@metiers.numerique.gouv.fr',
   })
 })
 
 app.get('/mentions-legales', (req, res) => {
   res.render('legalNotice', {
     pageTitle: "Mentions légales",
-    contactEmail: 'mon-produit@beta.gouv.fr',
+    contactEmail: 'contact@metiers.numerique.gouv.fr',
   })
 })
 
