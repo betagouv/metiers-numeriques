@@ -22,9 +22,14 @@ span.tofill::before {
 }
 
 .home-card {
-  background-color: var(--bf500);
+  background-color: var(--g200);
 }
 
-.home-card h2, span{
+/* .home-card h2, span{
   color: var(--g100);
+} */
+
+.rf-bg--alt2 {
+  background-color: #FDCF41;
+  font-weight: bold;
 }
