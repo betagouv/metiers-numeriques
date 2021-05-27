@@ -29,7 +29,7 @@
           <li class="fr-footer__content-item">
             <a class="fr-footer__content-link"
                title="Contactez-nous"
-               href="#">
+               href="mailto:<%= contactEmail %>">
               Contactez-nous
             </a>
           </li>
@@ -48,13 +48,17 @@
     <div class="fr-footer__bottom">
       <ul class="fr-footer__bottom-list">
         <li class="fr-footer__bottom-item">
-          <a class="fr-footer__bottom-link" href="/accessibilite">Accessibilité : non conforme</a>
+          <a class="fr-footer__bottom-link">Accessibilité : non conforme</a>
         </li>
         <li class="fr-footer__bottom-item">
           <a class="fr-footer__bottom-link" href="/mentions-legales">Mentions légales</a>
         </li>
         <li class="fr-footer__bottom-item">
-          <a class="fr-footer__bottom-link" href="/contact">Contactez-nous</a>
+          <a class="fr-footer__bottom-link"
+          href="mailto:<%= contactEmail %>"
+           target="_blank"
+           rel="noopener noreferrer"
+          >Contactez-nous</a>
         </li>
         <li class="fr-footer__bottom-item">
             <button class="fr-footer__bottom-link fr-fi-sun-fill-line fr-link--icon-left" aria-controls="fr-theme-modal" data-fr-opened="false">Paramètres d'affichage</button>
