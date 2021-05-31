@@ -54,13 +54,31 @@
               text: 'santé, éducation, économie, finance...',
             }
           ],
-          cssClass: 'home-card',
+          cssClass: 'home-bg--alt',
         },
     })
  -%>
 
-  <section class="fr-py-6w newsletter" style="text-align: center;">
-    <div class="fr-container">
+ <%- include('partials/stories',
+    {
+      stories:
+        {
+          title: 'Rencontres',
+          subtitle: 'Ils travaillent dans le Numérique pour l‘Etat: ils vous racontent leur histoire et leur metier !',
+          parts: [
+            {
+              title: '',
+              alt: '',
+              src: ''
+            }
+          ]
+        }
+    })
+ -%>
+
+
+  <section class="newsletter home-bg--alt">
+    <div class="fr-container fr-py-6w">
       <form method="post" action="https://37514839.sibforms.com/serve/MUIEAOgcYYVkwK99rKzuk18o6wa3w6nhnGuj90p7o3BcsF_T99rnIirowA1TMeGdmqUoydZRSanzi2jiaWyf8xcRwgXHs4QwrxQV4c0N_D7tNnzG_9Zwg-ZSrDboWs-DGUaIr3FG1WkdjLAR7zjS06dNXHIwLXqRqVRh06n04HoebXTqZgLn1jG-XkVeTKhx1iKF9r9qkVglSxfx" id="newsletter">
         <h4>Restons en contact</h4>
         <p>Laissez-nous votre email, nous vous tiendrons au courant du lancement du site metiers.numerique.gouv.fr</p>
@@ -70,7 +88,7 @@
             class="fr-input"
             type="email"
             style="display: inline-block; width: auto;"
-            placeholder="E-mail"
+            placeholder="e-mail"
             type="text" id="EMAIL" name="EMAIL" autocomplete="off"  data-required="true" required 
             required="required"
             id="subscribe-email"

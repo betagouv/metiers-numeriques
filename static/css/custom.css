@@ -22,20 +22,19 @@ span.tofill::before {
   content: "[";
 }
 
-.home-card {
+.home-bg--alt {
   background-color: var(--g200);
 }
 
-/* .home-card h2, span{
-  color: var(--g100);
-} */
-
 .rf-bg--alt2 {
-  background-color: #FDCF41;
+  background-color: #F9EEC4;
   font-weight: bold;
 }
 
 .sub-email-btn fr-btn {
-  background-color: #FDCF41;
   color: var(--g700);
+}
+
+.newsletter {
+  text-align: center;
 }
