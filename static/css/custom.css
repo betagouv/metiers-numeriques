@@ -14,6 +14,7 @@ p.rf-hint-text {
   font-weight: lighter;
   padding: .1em .2em;
 }
+
 span.tofill::after {
   content: "]";
 }
@@ -32,4 +33,9 @@ span.tofill::before {
 .rf-bg--alt2 {
   background-color: #FDCF41;
   font-weight: bold;
+}
+
+.sub-email-btn fr-btn {
+  background-color: #FDCF41;
+  color: var(--g700);
 }
