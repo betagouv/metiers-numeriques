@@ -22,6 +22,16 @@ span.tofill::before {
   content: "[";
 }
 
+.main-container {
+  margin-top: 4rem;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}
+
 .home-bg--alt {
   background-color: var(--g200);
 }
@@ -33,6 +43,15 @@ span.tofill::before {
 
 .newsletter {
   text-align: left;
+}
+
+.rf-btn-home {
+  background-color: #FDCF41;
+  color: var(--g800);
+}
+
+.rf-btn-home:hover {
+  background-color: #FDB541;
 }
 
 .contained-img {
