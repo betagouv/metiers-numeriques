@@ -1,3 +1,5 @@
+/* Global*/
+
 .rf-centered {
   text-align: center;
 }
@@ -6,6 +8,12 @@
   background-color: var(--bf500);
   color: var(--g100);
 }
+
+.rf-bg--alt2 {
+  background-color: #F9EEC4;
+  font-weight: bold;
+}
+
 p.rf-hint-text {
   margin-bottom: 0;
 }
@@ -22,27 +30,20 @@ span.tofill::before {
   content: "[";
 }
 
+.text-grey {
+  color: var(--g600);
+  font-size: large;
+  letter-spacing: 1px;
+}
+
+/* Landing page */
+
 .main-container {
   margin-top: 4rem;
 }
 
-.sticky {
-  position: fixed;
-  top: 0;
-  z-index: 999;
-}
-
 .home-bg--alt {
-  background-color: var(--g200);
-}
-
-.rf-bg--alt2 {
-  background-color: #F9EEC4;
-  font-weight: bold;
-}
-
-.newsletter {
-  text-align: left;
+  background-color: var(--g100);
 }
 
 .rf-btn-home {
@@ -54,8 +55,20 @@ span.tofill::before {
   background-color: #FDB541;
 }
 
+/* Contact*/
+
+.newsletter {
+  text-align: left;
+}
+
+/* Medias */
 .contained-img {
-  width:100%;
+  width: 100%;
   height: 100%;
-  object-fit: cover;
+}
+
+.card-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1rem;
 }
