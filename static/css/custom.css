@@ -72,7 +72,7 @@ span.tofill::before {
 
 .stories {
   display: flex;
-
+  flex-flow: wrap;
 }
 
 .stories-name, .stories-link {
