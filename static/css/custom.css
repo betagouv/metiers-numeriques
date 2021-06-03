@@ -38,10 +38,6 @@ span.tofill::before {
 
 /* Landing page */
 
-.main-container {
-  margin-top: 4rem;
-}
-
 .home-bg--alt {
   background-color: var(--g100);
 }
@@ -96,7 +92,7 @@ span.tofill::before {
 
 
 .card-icon {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   margin-bottom: 1rem;
 }
