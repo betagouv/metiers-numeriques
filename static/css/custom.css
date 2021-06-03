@@ -62,10 +62,34 @@ span.tofill::before {
 }
 
 /* Medias */
-.contained-img {
-  width: 100%;
-  height: 100%;
+
+.stories-picture {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: auto;
 }
+
+.stories {
+  display: flex;
+
+}
+
+.stories-name, .stories-link {
+  color: #FDB541;
+}
+
+.stories-title {
+  color: var(--g600);
+  font-size: large;
+  font-style: bold;
+}
+
+.stories-text {
+  color: var(--g600);
+  font-style: italic;
+}
+
 
 .card-icon {
   width: 100px;
