@@ -1,3 +1,5 @@
+/* Global*/
+
 .rf-centered {
   text-align: center;
 }
@@ -6,6 +8,12 @@
   background-color: var(--bf500);
   color: var(--g100);
 }
+
+.rf-bg--alt2 {
+  background-color: #F9EEC4;
+  font-weight: bold;
+}
+
 p.rf-hint-text {
   margin-bottom: 0;
 }
@@ -14,9 +22,77 @@ p.rf-hint-text {
   font-weight: lighter;
   padding: .1em .2em;
 }
+
 span.tofill::after {
   content: "]";
 }
 span.tofill::before {
   content: "[";
-}  
+}
+
+.text-grey {
+  color: var(--g600);
+  font-size: large;
+  letter-spacing: 1px;
+}
+
+/* Landing page */
+
+.main-container {
+  margin-top: 4rem;
+}
+
+.home-bg--alt {
+  background-color: var(--g100);
+}
+
+.rf-btn-home {
+  background-color: #FDCF41;
+  color: var(--g800);
+}
+
+.rf-btn-home:hover {
+  background-color: #FDB541;
+}
+
+/* Contact*/
+
+.newsletter {
+  text-align: left;
+}
+
+/* Medias */
+
+.stories-picture {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: auto;
+}
+
+.stories {
+  display: flex;
+  flex-flow: wrap;
+}
+
+.stories-name, .stories-link {
+  color: #FDB541;
+}
+
+.stories-title {
+  color: var(--g600);
+  font-size: large;
+  font-style: bold;
+}
+
+.stories-text {
+  color: var(--g600);
+  font-style: italic;
+}
+
+
+.card-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1rem;
+}

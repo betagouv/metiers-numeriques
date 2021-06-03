@@ -1,13 +1,17 @@
 <%- include('partials/header') -%>
-<main role="main" id="contenu">	
+<main role="main" id="contenu" class="main-container">
   <div class="fr-container">
     <div class="fr-grid-row fr-grid-row--center fr-grid-row--middle fr-mt-1v fr-pb-1v">
       <div id="hero-col-1" class="fr-col-md-5 fr-col-xs-6w fr-px-6w fr-my-5w">
         <h1>L’Etat Numérique :
           Des projets à découvrir,
           des missions à pourvoir !</h1>
-        <p class="fr-text--lg fr-mb-1v">
+        <p class="text-grey fr-mb-2v">
+            Découvrez les projets numériques au sein des ministères, rencontrez des acteurs et co-construisons ensemble l‘Etat Numérique de demain !
         </p>
+        <div class="fr-mt-4w">
+          <a href="#decouvrir" class="fr-btn rf-btn-home">Découvrir</a>
+        </div>
       </div>
       <div id="hero-col-2" class="fr-col-md-7 fr-col-xs-6">
         <div>
@@ -20,27 +24,133 @@
       </div>
     </div>
   </div>
-  <section class="fr-py-6w newsletter" style="text-align: center;">
+
+<%- include('partials/cards',
+   {
+     cards:
+        {
+          title: 'Qu‘est-ce que l‘État Numérique ?',
+          subtitle: 'Le numérique est devenu le premier canal d‘accès aux services publics. \
+          Dans le cadre du plan de relance, l‘Etat va investir un milliard d‘euros afin \
+          d‘intensifier ses efforts de transformation numérique. \
+          Cette évolution numérique repose sur trois enjeux majeurs: la qualité du numérique public, \
+          l‘ouverture et la transparence, la souveraineté et la sécurité.',
+          subtitle2:'En quelques mots, l‘Etat Numérique c‘est:',
+          parts: [
+            {
+              src:'/static/images/picto-metiersnumeriques-1.png',
+              alt: 'Icone d‘information',
+              title: 'Plus de 200',
+              text: 'nouvelles offres d‘emplois à pourvoir chaque mois !',
+            },
+            {
+              src:'/static/images/picto-metiersnumeriques-2.png',
+              alt: 'Icone de montagne',
+              title: 'Des missions ambitieuses & challengeantes',
+              text: '',
+            },
+            {
+              src:'/static/images/picto-metiersnumeriques-3.png',
+              alt: 'Icone de main avec un coeur',
+              title: 'Des projets qui ont de l‘impact',
+              text: '& touchent des milliers d‘utilisateurs',
+            },
+            {
+              src:'/static/images/picto-metiersnumeriques-4.png',
+              alt: 'Icone d‘avion qui décole',
+              title: 'Un univers pérenne & plein d‘avenir',
+              text: '',
+            },
+            {
+              src:'/static/images/picto-metiersnumeriques-5.png',
+              alt: 'Icone de quatres flèches',
+              title: 'Des secteurs très différents',
+              text: 'santé, éducation, économie, finance...',
+            },
+            {
+              src:'/static/images/picto-metiersnumeriques-6.png',
+              alt: 'Icone d‘ampoule',
+              title: 'Des métiers divers & très variés',
+              text: 'pour tous les profils',
+            }
+          ],
+          cssClass: 'home-bg--alt',
+        },
+    })
+ -%>
+
+ <%- include('partials/stories',
+    {
+      stories:
+        {
+          title: 'Rencontres',
+          subtitle: 'Marine, Kim, Alain et tant d‘autres travaillent dans le Numérique pour l‘Etat: \
+          ils vous racontent leur histoire et leur métier! Découvrez une variété et une richesse de profils,\
+          de métiers et de projets au sein des ministères.',
+          parts: [
+            {
+              nom: 'Marine',
+              titre: 'Responsable du pôle design - DINUM',
+              text:'“On peut faire tout ce qui est possible et imaginable pour atteindre cet objectif (de rendre mailleurs les services)\
+              et on nous donne [..] l‘espace pour le faire. Un peu comme si on était une mini start-up au sein de l‘Etat.“',
+              alt: 'Photo de Marine',
+              src: '/static/images/marine-boudeau.png',
+              link: 'https://www.dailymotion.com/video/x81o96d?playlist=x74h65'
+            },
+            {
+              nom: 'Kim',
+              titre: 'Data Scientist - DINUM',
+              text:'“En tant que data scientist au lab IA, on s‘occupe avec mon équipe d‘aider les administrations à mettre en place des projetsd‘IA. \
+              On interagitbeaucoup avec à la fois le monde de la recherche, des start-up innovantes dans le domaine de la tech, des juristes, \
+              des ingénieurs, des gendarmes... On est pas du tout dans un univers clos.“',
+              alt: 'Photo de Kim',
+              src: '/static/images/kim-montalibet.png',
+              link: 'https://www.dailymotion.com/video/x81o96c?playlist=x74h65'
+            },
+            {
+              nom: 'Alain',
+              titre: 'UX Designer - Comissariat des armées',
+              text: '“Ma mission est de concevoir le produit le plus simple et le plus agréable à utiliser. Les missions sont très variées, \
+              on peut aborder à la fois de l‘analyse, de la conception, du test avec les utilisateurs sur une variété de projets assez grande. \
+              C‘est ça qui est enrichissant“',
+              alt: 'Photo d‘Alain',
+              src: '/static/images/alain-nicolle.png',
+              link: 'https://www.dailymotion.com/video/x81o8ou?playlist=x74h65'
+            }
+          ]
+        }
+    })
+ -%>
+
+
+  <section class="newsletter home-bg--alt">
     <div class="fr-container">
-      <form method="post" action="https://37514839.sibforms.com/serve/MUIEAOgcYYVkwK99rKzuk18o6wa3w6nhnGuj90p7o3BcsF_T99rnIirowA1TMeGdmqUoydZRSanzi2jiaWyf8xcRwgXHs4QwrxQV4c0N_D7tNnzG_9Zwg-ZSrDboWs-DGUaIr3FG1WkdjLAR7zjS06dNXHIwLXqRqVRh06n04HoebXTqZgLn1jG-XkVeTKhx1iKF9r9qkVglSxfx" id="newsletter">
-        <h4>Gardons le contact</h4>
-        <p>Laissez votre email pour connaître l'actualité de metiers.numerique.gouv</p>
-  
-        <input type="hidden" name="locale" value="fr">
-        <input type="hidden" name="html_type" value="simple">
-        <input
-            class="fr-input"
-            type="email"
-            style="display: inline-block; width: auto;"
-            placeholder="votre adresse e-mail"
-            type="text" id="EMAIL" name="EMAIL" autocomplete="off"  data-required="true" required 
-            required="required"
-            id="subscribe-email"
-          >
-          <button class="fr-btn" type="submit" name="subscribe" id="form-submit">S’inscrire</button>
-  
+      <div class="fr-grid-row fr-grid-row--center fr-grid-row--middle">
+        <div class="fr-col-md-5 fr-col-xs-6w fr-px-4w fr-my-5w">
+          <h2>Restons en contact</h2>
+          <p class="fr-text--md fr-mb-2v">
+            Laissez-nous votre email, nous vous tiendrons au courant du lancement du site metiers.numerique.gouv.fr
+          </p>
         </div>
-      </form>
+        <div class="fr-col-md-5 fr-col-xs-6w fr-px-6w fr-my-5w">
+            <form method="post" action="https://37514839.sibforms.com/serve/MUIEAOgcYYVkwK99rKzuk18o6wa3w6nhnGuj90p7o3BcsF_T99rnIirowA1TMeGdmqUoydZRSanzi2jiaWyf8xcRwgXHs4QwrxQV4c0N_D7tNnzG_9Zwg-ZSrDboWs-DGUaIr3FG1WkdjLAR7zjS06dNXHIwLXqRqVRh06n04HoebXTqZgLn1jG-XkVeTKhx1iKF9r9qkVglSxfx" id="newsletter">
+              <input type="hidden" id="csrf_token" name="csrf_token" value="f78e2e104a5f4ef5e8408644c40f2d0a996d6b6e183eebb7c3ab437775be5295">
+              <div class="fr-input-group">
+                <input
+                  class="fr-input"
+                  type="email"
+                  style="display: inline-block; width: auto;"
+                  placeholder="e-mail"
+                  type="text" id="EMAIL" name="EMAIL" autocomplete="off"  data-required="true" required
+                  required="required"
+                  id="subscribe-email"
+                >
+                <button class="fr-btn rf-btn-home" type="submit" name="subscribe" id="form-submit">S’inscrire</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
     </div>
   </section>
 </main>
