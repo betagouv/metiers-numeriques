@@ -49,6 +49,7 @@ span.tofill::before {
 
 .rf-btn-home:hover {
   background-color: #FDB541;
+  background-image: linear-gradient(!important 0deg , var(--g800), #FDB541) !important
 }
 
 /* Contact*/
