@@ -2,12 +2,8 @@
     "name": "metiers-numeriques",
     "formation": {
       "web": {
-        "quantity": 1
+        "amount": 1,
+        "size": "S"
       }
-    },
-    "buildpacks": [
-      {
-        "url": "heroku/nodejs"
-      }
-    ]
+    }
 }
