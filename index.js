@@ -6,6 +6,7 @@ const appName = `metiers.numerique.gouv.fr`
 const appDescription = "Tout savoir sur les métiers du numérique au sein de l’Etat"
 const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const port = process.env.PORT || 8080
+const appRoot = path.resolve(__dirname);
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use(function(req, res, next){
   res.locals.appDescription = appDescription
   res.locals.appRepo = appRepo
   res.locals.page = req.url
+  res.locals.appRoot = appRoot
   next()
 })
 
