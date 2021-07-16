@@ -39,6 +39,13 @@ app.get('/mentions-legales', (req, res) => {
   })
 })
 
+app.get('/suivi', (req, res) => {
+  res.render('suivi', {
+    contactEmail: 'contact@metiers.numerique.gouv.fr',
+  })
+})
+
+
 module.exports = app.listen(port, () => {
   console.log(`${appName} listening at http://localhost:${port}`)
 })
