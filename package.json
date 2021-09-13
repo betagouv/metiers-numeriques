@@ -20,8 +20,11 @@
   "homepage": "https://github.com/betagouv/metiers-numeriques#readme",
   "dependencies": {
     "@gouvfr/dsfr": "^1.0.0-rc1.0",
+    "axios": "^0.21.4",
     "ejs": "^3.1.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "fetch": "^1.1.0",
+    "node-fetch": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

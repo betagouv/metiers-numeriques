@@ -7,7 +7,7 @@ const appDescription = "Tout savoir sur les métiers du numérique au sein de l�
 const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const port = process.env.PORT || 8080
 const appRoot = path.resolve(__dirname);
-
+const notionController = require('./controllers/notionController')
 const app = express()
 
 app.set('view engine', 'ejs')
@@ -44,6 +44,8 @@ app.get('/suivi', (req, res) => {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
   })
 })
+
+app.get('/*', notionController.fetch)
 
 
 module.exports = app.listen(port, () => {
