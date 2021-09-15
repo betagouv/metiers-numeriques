@@ -1,46 +1,46 @@
 <%- include('partials/header') -%>
-<div id="offres-de-mission" class="fr-container fr-mt-4w">
-    <div class="fr-px-2w fr-px-md-6w">
-        <div class="fr-container">
-            <div class="fr-grid-row">
-                <% for (let i=0; i < jobs.length; i++) { %>
-                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4 fr-px-2w fr-py-2w">
-                    <div class="fr-card fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
+  <div id="offres-de-mission" class="fr-container fr-mt-4w">
+      <div class="fr-px-2w fr-px-md-6w">
+            <div class="fr-container">
+              <div class="fr-grid-row">
+                  <% for (let i=0; i < jobs.length; i++) { %>
+                    <div class="fr-col-12 fr-col-md-6 fr-col-lg-4 fr-px-2w fr-py-2w">
+                      <div class="fr-card fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
                         <div class="fr-card__body missions">
-<!--                            <p class="fr-card__detail">-->
-<!--                                <%=jobs[i].duree%>-->
-<!--                            </p>-->
-                            <p class="fr-card__detail">
-                                <%=jobs[i].locations%>
-                            </p>
-                            <h4 class="fr-card__lead">
-                                <a href="/annonces/<%=jobs[i].id%>" class="fr-card__link">
-                                    <%=jobs[i].title%>
-                                </a>
-                            </h4>
-                            <p class="fr-card__desc">
-                                <%=jobs[i].mission.slice(0,200)%> ...
-                            </p>
-                            <div class="text-blue-france"
-                                 style="display: flex; justify-content: end; align-items: center;">En
-                                savoir plus
-                                <svg style="display: inline-block; width: 25px; margin-left: 10px"
-                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </div>
+                          <p class="fr-card__detail">
+                            <%=jobs[i].duree%>
+                          </p>
+                          <p class="fr-card__detail">
+                            <%=jobs[i].localisation%>
+                          </p>
+                          <h4 class="fr-card__lead">
+                            <a href="/missions/<%=jobs[i].id%>" class="fr-card__link">
+                              <%=jobs[i].name%>
+                            </a>
+                          </h4>
+                          <p class="fr-card__desc">
+                            <%=jobs[i].contexte.slice(0,200)%> ...
+                          </p>
+                          <div class="text-blue-france"
+                            style="display: flex; justify-content: end; align-items: center;">En
+                            savoir plus
+                            <svg style="display: inline-block; width: 25px; margin-left: 10px"
+                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                          </div>
                         </div>
-<!--                        <div class="fr-card__img missions ">-->
-<!--                            <img src="<%=jobs[i].thumbnail%>" title="Logo CNAV">-->
-<!--                        </div>-->
+                        <div class="fr-card__img missions ">
+                          <img src="<%=jobs[i].thumbnail%>" title="Logo CNAV">
+                        </div>
+                      </div>
                     </div>
-                </div>
-                <% } %>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-<br>
-<%- include('partials/footer') -%>
+                    <% } %>
+              </div>
+          </div>
+      </div>
+  </div>
+  <br>
+  <br>
+  <%- include('partials/footer') -%>
