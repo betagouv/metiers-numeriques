@@ -1,20 +1,16 @@
 <%- include('partials/header') -%>
   <div class="fr-container">
-      <div class="fr-grid-row fr-grid-row--center">
-        <img src="/static/images/organisations/<%=job.grandLogo%>" title="Logo Assurance Maladie"
-          style="max-height: 250px" />
-      </div>
       <div id="mission-title">
         <h1>
-          <%= job.titre %>
+          <%= job.title %>
         </h1>
       </div>
       <div class="fr-callout mission-summary">
         <div class="fr-callout__text">
           <div class="fr-grid-row fr-grid-row--gutters">
-            <% var blocks = [ { title: `Type de contrat`, text: job.conditions.contrat}, {title: `Durée`,
-                text: job.conditions.duree}, {title: `Horaires`, text: job.conditions.horaires}, {title: `Localisation`, text:
-                job.conditions.localisation}] ; %>
+            <% var blocks = [ { title: `Type de contrat`, text: job.contrat}, {title: `Ministère`,
+                text: job.ministry}, {title: `Remuneration`, text: job.salary}, {title: `Localisation`, text:
+                job.location}] ; %>
             <% for(let i=0; i < blocks.length; i++) { %>
               <div class="mission-summary__block fr-col-xs-12 fr-col-md-3">
                 <div class="mission-summary__block__title">
@@ -28,106 +24,122 @@
           </div>
         </div>
       </div>
-      
-      <p>
-        Vous devrez avoir l'accord de votre hiérarchie pour valider votre candidature.
-      </p>
-        <div id="mission-description">
-          <div id="mission-description-context">
-            <h2>Contexte</h2>
-            <p style="white-space: pre-wrap;">
-              <%=job.contexte%>
-            </p>
-          </div>
-          <div id="mission-description-activities">
-            <h2>Mission/Activités</h2>
-            <p>
-            <ul>
-              <% job.missions.forEach(function(mission) { %>
-                <li>
-                  <%=mission%>
-                </li>
-                <% }); %>
-            </ul>
-            </p>
-          </div>
-          <div id="mission-description-aptitudes">
-            <h2>Aptitudes</h2>
-            <% job.aptitudes.forEach(function(aptitude) { %>
-              <p>
-              <h3>
-                <%=aptitude.titre%>
-              </h3>
-              <ul>
-                <% aptitude.liste.forEach(function(option) { %>
-                  <li>
-                    <%=option%>
-                  </li>
-                  <% }); %>
-              </ul>
-              </p>
+      <div id="mission-description-prerequis">
+        <h2>Date limite</h2>
+        <p>
+          <%=job.limitDate%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Pour candidater</h2>
+        <p>
+          <%=job.toCandidate%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Poste ouvert aux</h2>
+        <p>
+          <%=job.openTo%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Les plus du poste</h2>
+        <p>
+          <%=job.advantage%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Profil</h2>
+        <p>
+          <%=job.profil%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Conditions particulières du poste</h2>
+        <p>
+          <%=job.conditions%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Pour en savoir plus</h2>
+        <p>
+          <%=job.more%>
+        </p>
+      </div>
+      <div id="mission-description-prerequis">
+        <h2>Si vous avez des questions</h2>
+        <p>
+          <%=job.teamInfo%>
+        </p>
+      </div>
+      <div id="mission-description">
+        <div id="mission-description-context">
+          <h2>Mission</h2>
+          <p style="white-space: pre-wrap;">
+            <%=job.mission%>
+          </p>
+        </div>
+        <div id="mission-description-activities">
+          <h2>Ce que vous ferez</h2>
+          <p>
+          <ul>
+            <% job.tasks.forEach(function(task) { %>
+              <li>
+                <%=task%>
+              </li>
               <% }); %>
-          </div>
-          <div id="mission-description-formation">
-            <h2>Formation</h2>
-            <p>
-              <%=job.formation%>
-            </p>
-          </div>
+          </ul>
+          </p>
+        </div>
+        <div id="mission-description-activities">
+          <h2>Experiences</h2>
+          <p>
+          <ul>
+            <% job.experiences.forEach(function(experience) { %>
+              <li>
+                <%=experience%>
+              </li>
+              <% }); %>
+          </ul>
+          </p>
+        </div>
+        <div id="mission-description-formation">
+          <h2>L'equipe</h2>
+          <p>
+            <%=job.team%>
+          </p>
+        </div>
 
-          <div id="mission-description-prerequis">
-            <h2>Pré-requis</h2>
-            <% job.prerequis.forEach(function(prerequi) { %>
-              <p>
-              <h3>
-                <%=prerequi.titre%>
-              </h3>
-              <ul>
-                <% prerequi.liste.forEach(function(option) { %>
-                  <li>
-                    <%=option%>
-                  </li>
-                  <% }); %>
-              </ul>
-              </p>
-              <% }); %>
-          </div>
-          <div id="mission-description-conditions">
-            <h2>Conditions</h2>
-          </div>
-          <div>
-            Je préviens mon supérieur hiérarchique qui doit me donner son accord, sans quoi la mission ne peut être
-            réalisée. (Vous pouvez aller voir dans la Foire Aux Questions : <a
-              href="/faq#accord-de-ma-hiérarchie">Comment obtenir l'accord de mon
-              supérieur hiérarchique ?</a>)
-          </div>
-          <div id="postuler" class="fr-mb-5w">
-          </div>
-          <div class="fr-callout">
-            <div class="fr-callout__text">
-              <div class="fr-container">
-                <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center fr-grid-row--middle ">
-                  <div class="fr-col" style="text-align: left">
-                    <div class="fr-mb-4w fr-mb-md-0">
-                      Vous avez des questions sur cette mission? Contactez la cellule de crise
-                      <span class="fr-mx-1v">
-                        <b>
-                          <%= job.emailContact %>
-                        </b>
-                      </span>
-                    </div>
-                    <a title="Contactez-nous" target="_blank"
-                      rel="noopener noreferrer" class="fr-btn fr-btn--secondary fr-text--lg">
-                      Contactez-nous
-                    </a>
+        <div id="mission-description-prerequis">
+          <h2>Profil</h2>
+          <p>
+            <%=job.profil%>
+          </p>
+        </div>
+        <div id="postuler" class="fr-mb-5w">
+        </div>
+        <div class="fr-callout">
+          <div class="fr-callout__text">
+            <div class="fr-container">
+              <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center fr-grid-row--middle ">
+                <div class="fr-col" style="text-align: left">
+                  <div class="fr-mb-4w fr-mb-md-0">
+                    Postuler
+                    <span class="fr-mx-1v">
+                      <b>
+                        <%= job.contact %>
+                      </b>
+                    </span>
                   </div>
+                  <a title="Postuler" target="_blank"
+                    rel="noopener noreferrer" class="fr-btn fr-btn--secondary fr-text--lg">
+                    Postuler
+                  </a>
                 </div>
-
               </div>
             </div>
           </div>
-
         </div>
-
+      </div>
   </div>
   <%- include('partials/footer') -%>

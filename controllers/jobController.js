@@ -1,79 +1,56 @@
-const jobs = require('./sample.json')
 const axios = require('axios')
+const formatDetail = (item) => {
+    const title = getItem(item.properties['Name'])
+    const id = item.id
+    return {
+        id: id,
+        limitDate: getItem(item.properties['Date limite']),
+        toCandidate: getItem(item.properties['Pour candidater']),
+        location: getItem(item.properties['Localisation']),
+        openTo: getItem(item.properties['Poste ouvert aux']),
+        advantage: getItem(item.properties['Les plus du poste']),
+        team: getItem(item.properties['Équipe']),
+        title: title,
+        contact: getItem(item.properties['Contact']),
+        profil: getItem(item.properties['Votre profil']),
+        conditions: getItem(item.properties['Conditions particulières du poste']),
+        more: getItem(item.properties['Pour en savoir plus']),
+        teamInfo: getItem(item.properties['Si vous avez des questions']),
+        tasks: getItem(item.properties['Ce que vous ferez']).split('- '),
+        experiences: getItem(item.properties['Expérience']),
+        salary: getItem(item.properties['rémunération']),
+        ministry: getItem(item.properties['Ministère']),
+        mission: getItem(item.properties['Mission']),
+        slug: buildSlug(title, id)
+    }
+}
 
-const formatResult = () => {
-    return [{
-       "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-        "rémunération": "A définir en fonction de l'expérience",
-        "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-        "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-        "Localisation": "61-65 rue Dutot 75015 Paris",
-        "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-        "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-        "duree": "6 mois",
-        "contexte": 'Test',
-        "thumbnail": 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4b013cfd-51cc-4e97-8342-ab637886cc35/Logo-MENJ-TRICOLORE.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210915%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210915T112850Z&X-Amz-Expires=3600&X-Amz-Signature=9b6cd4872b251eda054793204fc425d99a8293d1ecc3a9d1e25481ef9819ecf2&X-Amz-SignedHeaders=host',
-        "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-       }, {
-       "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-        "rémunération": "A définir en fonction de l'expérience",
-        "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-        "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-        "Localisation": "61-65 rue Dutot 75015 Paris",
-        "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-        "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-        "duree": "6 mois",
-        "contexte": 'Test',
-        "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-       },{
-       "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-        "rémunération": "A définir en fonction de l'expérience",
-        "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-        "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-        "Localisation": "61-65 rue Dutot 75015 Paris",
-        "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-        "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-        "duree": "6 mois",
-        "contexte": 'Test',
-        "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-       },
-       {
-       "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-        "rémunération": "A définir en fonction de l'expérience",
-        "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-        "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-        "Localisation": "61-65 rue Dutot 75015 Paris",
-        "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-        "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-        "duree": "6 mois",
-        "contexte": 'Test',
-        "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-       },
-       {
-       "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-        "rémunération": "A définir en fonction de l'expérience",
-        "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-        "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-        "Localisation": "61-65 rue Dutot 75015 Paris",
-        "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-        "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-        "duree": "6 mois",
-        "contexte": 'Test',
-        "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-       },
-       {
-       "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-        "rémunération": "A définir en fonction de l'expérience",
-        "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-        "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-        "Localisation": "61-65 rue Dutot 75015 Paris",
-        "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-        "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-        "duree": "6 mois",
-        "contexte": 'Test',
-        "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-       },
-    ]
+const buildSlug = (title, id) => {
+    const slug = `${title}-${id}`.toLowerCase().replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '');
+    return slug
+}
+
+const getItem = (item) => {
+    try {
+        if ('rich_text' in item) {
+            return (item.rich_text[0] || {}).plain_text || '';
+        } else if ('multi_select' in item) {
+            return item.multi_select.map(item => item.name);
+        } else if ('title' in item) {
+            return item.title[0].plain_text;
+        } else if ('email' in item) {
+            return item.email[0].plain_text ;
+        } else if ('date' in item) {
+            return item.date.start;
+        }
+        else {
+            return ''
+        }
+    } catch (e) {
+        console.log(item, e)
+        return ''
+    }
 }
 
 module.exports.fetch = async (req, res) => {
@@ -89,49 +66,29 @@ module.exports.fetch = async (req, res) => {
         console.log(e)
     }
     res.render('jobs', {
-        jobs: formatResult(result),
+        jobs: result.data.results.map(r => formatDetail(r)),
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 }
 
 module.exports.fetchDetail = async (req, res) => {
+
+    let result
+    const id = req.url.split('-').slice(-5).join('-');
+    try {
+        result = await axios.get(`https://api.notion.com/v1/pages/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${process.env.TOKEN}`,
+                'Notion-Version': '2021-08-16'
+            }
+        })
+        
+    } catch(e) {
+        console.log(e)
+    }
+
     res.render('jobDetail', {
-        job: {
-            "Ministère": "Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation",
-            "rémunération": "A définir en fonction de l'expérience",
-            "Expérience": "3 ans minimum dans le développement d’applications de pilotage",
-            "Poste à pourvoir": "Date limite de dépôt de candidature : 30 octobre 2021",
-            "Localisation": "61-65 rue Dutot 75015 Paris",
-            "Poste ouvert aux": ["Fonctionnaire", "Contractuel.le"],
-            "Name":"Expert(e) en conception et développement d’applications de Business Intelligence",
-            "duree": "6 mois",
-            "contexte": 'Test',
-            missions: [
-                'Envoyer des mails',
-                'Tester les outils',
-            ],
-            aptitudes: [{
-                title: 'Savoir envoyer des emails',
-                liste: ['Sendgrid', 'mailjet']
-            }, {
-                title: 'Savoir tester les outils',
-                liste: ['Clé', 'Molette']
-            }],
-            prerequis: [{
-                title: 'Savoir envoyer des emails',
-                liste: ['Sendgrid', 'mailjet']
-            }, {
-                title: 'Savoir tester les outils',
-                liste: ['Clé', 'Molette']
-            }],
-            conditions: {
-                contrat: 'Mise à disposition',
-                duree: '3 à 6 mois',
-                localisation: 'Sur site à 14, avenue Duquesne, Paris 7ème',
-            },
-            "thumbnail": 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4b013cfd-51cc-4e97-8342-ab637886cc35/Logo-MENJ-TRICOLORE.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210915%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210915T112850Z&X-Amz-Expires=3600&X-Amz-Signature=9b6cd4872b251eda054793204fc425d99a8293d1ecc3a9d1e25481ef9819ecf2&X-Amz-SignedHeaders=host',
-            "url":"https://www.notion.so/Expert-e-en-conception-et-d-veloppement-d-applications-de-Business-Intelligence-b0de6dbc3a0d4d13a8c32cc978012b35"
-        },
+        job: formatDetail(result.data),
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 }

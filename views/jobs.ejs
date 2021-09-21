@@ -4,8 +4,8 @@
             <div class="fr-container">
               <div class="fr-grid-row">
                   <% for (let i=0; i < jobs.length; i++) { %>
-                    <div class="fr-col-12 fr-col-md-6 fr-col-lg-4 fr-px-2w fr-py-2w">
-                      <div class="fr-card fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
+                    <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
+                      <div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
                         <div class="fr-card__body missions">
                           <p class="fr-card__detail">
                             <%=jobs[i].duree%>
@@ -14,12 +14,12 @@
                             <%=jobs[i].localisation%>
                           </p>
                           <h4 class="fr-card__lead">
-                            <a href="/missions/<%=jobs[i].id%>" class="fr-card__link">
-                              <%=jobs[i].name%>
+                            <a href="/annonces/<%=jobs[i].slug%>" class="fr-card__link">
+                              <%=jobs[i].title%>
                             </a>
                           </h4>
                           <p class="fr-card__desc">
-                            <%=jobs[i].contexte.slice(0,200)%> ...
+                            <%=jobs[i].mission.slice(0,200)%> ...
                           </p>
                           <div class="text-blue-france"
                             style="display: flex; justify-content: end; align-items: center;">En
@@ -31,9 +31,9 @@
                             </svg>
                           </div>
                         </div>
-                        <div class="fr-card__img missions ">
+                        <!-- <div class="fr-card__img missions ">
                           <img src="<%=jobs[i].thumbnail%>" title="Logo CNAV">
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <% } %>
