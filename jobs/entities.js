@@ -7,7 +7,7 @@ module.exports = class Job {
      * @param profile string
      * @param experience string[]
      * @param location string
-     * @param department string
+     * @param department string[]
      * @param openedToContractTypes string[]
      * @param salary string
      * @param team string

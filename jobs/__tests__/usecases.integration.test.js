@@ -2,46 +2,34 @@ const usecases = require('../usecases');
 const {NotionJobsService} = require('../infrastructure/NotionJobsRepository');
 const jobsStub = require('./jobs.stub.json');
 const axios = require('axios');
+const Job = require('../entities');
 
-jest.mock("axios");
+jest.mock('axios');
 
 describe('Jobs fetch api', () => {
     it('should fetch and return a list of job', async () => {
-        axios.post.mockImplementation(() => Promise.resolve({ data: jobsStub }));
+        axios.post.mockImplementation(() => Promise.resolve({data: jobsStub}));
 
-        const result = await NotionJobsService.all()
+        const result = await NotionJobsService.all();
 
-        expect(result).toEqual([
-            {
-                name: 'job1',
-                shortDescription: 'mon job 1',
-                experience: '2 ans',
-                localisation: 'Paris',
-                department: 'Ministère des armées',
-                contractTypes: ['CDD', 'CDI'],
-                salary: '30k',
-                team: 'DINUM'
-            },
-            {
-                name: 'job2',
-                shortDescription: 'mon job 2',
-                experience: '5 ans',
-                localisation: 'Paris',
-                department: 'Ministère des armées',
-                contractTypes: ['CDD', 'CDI'],
-                salary: '50k',
-                team: 'MTES'
-            }
-        ]);
+        expect(result.length).toEqual(jobsStub.results.length);
+        expect(result[0]).toEqual(new Job({
+            title: 'Data scientist F/H',
+            mission: 'Vous serez chargé(e) de mettre en œuvre des projets de Data Science qui permettront d’appuyer la mise en œuvre des politiques publiques éducatives.',
+            experience: ['3 ans minimum dans la mise en œuvre de projets de Data Science'],
+            location: ['61-65 rue Dutot 75015 Paris'],
+            department: ['Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation'],
+            openedToContractTypes: ['Fonctionnaire', 'Contractuel.le'],
+            salary: 'La rémunération est à définir en fonction de l’expérience et du profil',
+            team: 'Au sein de la sous-direction des services numériques, vous intégrerez une équipe de 23 personnes (chefs de projets nationaux et concepteurs-développeurs) dédiée aux systèmes d\'information de gestion et du décisionnel.',
+        }));
     });
 
-    it.skip('should fetch and return one job', async () => {
+    it.skip('should fetch and return one job details', async () => {
         const jobsRepository = {
             get: () => fakeJob
-        }
+        };
 
-        const result = await usecases.GetJob(fakeJob.name, {jobsRepository})
-
-        expect(result).toEqual(fakeJob);
+        // expect(result).toEqual(fakeJob);
     });
 });

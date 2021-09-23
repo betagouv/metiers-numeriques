@@ -4,7 +4,7 @@ const Job = require('../entities');
 
 const mapToJobs = (rawJobs) => {
     // + Name
-    // + Ce que vous ferez
+    // Ce que vous ferez
     // Conditions particulières du poste
     // Contact
     // Date limite
@@ -12,7 +12,7 @@ const mapToJobs = (rawJobs) => {
     // Les plus du poste
     // + Localisation
     // + Ministère
-    // Mission
+    // + Mission
     // + Poste ouvert aux
     // Poste à pourvoir
     // Pour candidater
@@ -24,7 +24,7 @@ const mapToJobs = (rawJobs) => {
 
     return rawJobs.map(data => new Job({
         title: data.properties.Name.title[0].text.content,
-        mission: data.properties["Ce que vous ferez"].rich_text[0]?.text.content ?? "",
+        mission: data.properties["Mission"].rich_text[0]?.text.content ?? "",
         experience: data.properties["Expérience"].multi_select.map(_ => _.name),
         location: data.properties["Localisation"].multi_select.map(_ => _.name),
         department: data.properties["Ministère"].multi_select.map(_ => _.name),
