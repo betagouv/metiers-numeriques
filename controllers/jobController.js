@@ -1,3 +1,4 @@
+const pepdata = require('./pep.json')
 const axios = require('axios')
 const formatDetail = (item) => {
     const title = getItem(item.properties['Name'])
@@ -11,6 +12,7 @@ const formatDetail = (item) => {
         advantage: getItem(item.properties['Les plus du poste']),
         team: getItem(item.properties['Équipe']),
         title: title,
+        publicationDate: '13/09/2021',
         contact: getItem(item.properties['Contact']),
         profil: getItem(item.properties['Votre profil']),
         conditions: getItem(item.properties['Conditions particulières du poste']),
@@ -19,15 +21,45 @@ const formatDetail = (item) => {
         tasks: getItem(item.properties['Ce que vous ferez']).split('- '),
         experiences: getItem(item.properties['Expérience']),
         salary: getItem(item.properties['rémunération']),
-        ministry: getItem(item.properties['Ministère']),
+        ministry: getItem(item.properties['Ministère'])[0] || '',
         mission: getItem(item.properties['Mission']),
-        slug: buildSlug(title, id)
+        slug: buildSlug(title, id),
+    }
+}
+
+const formatDetailFromCSV = (item) => {
+    const title = item.JobDescriptionTranslation_JobTitle_
+    const id = item.Offer_Reference_
+    return {
+        id: item.Offer_Reference_,
+        limitDate: '',
+        toCandidate: item.Origin_CustomFieldsTranslation_ShortText1_,
+        location: item.Location_JobLocation_,
+        openTo: item.JobDescription_Contract ? [item.JobDescription_Contract_] : undefined,
+        advantage: '',
+        team: '',
+        title,
+        contact: item.Origin_CustomFieldsTranslation_ShortText2_,
+        profil: item.JobDescriptionTranslation_Description2_,
+        conditions: '',
+        more: `https://place-emploi-public.gouv.fr/offre-emploi/${id}/`,
+        teamInfo: '',
+        publicationDate: item.FirstPublicationDate,
+        tasks: undefined,
+        experiences: item.ApplicantCriteria_EducationLevel_,
+        salary: undefined,
+        ministry: item.Origin_Entity_,
+        mission: item.JobDescriptionTranslation_Description1_,
+        slug: 'pep-' + buildSlug(title, id),
     }
 }
 
 const buildSlug = (title, id) => {
-    const slug = `${title}-${id}`.toLowerCase().replace(/ /g, '-')
-    .replace(/[^\w-]+/g, '');
+    const slug = `${title}-${id}`.toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
     return slug
 }
 
@@ -66,7 +98,10 @@ module.exports.fetch = async (req, res) => {
         console.log(e)
     }
     res.render('jobs', {
-        jobs: result.data.results.map(r => formatDetail(r)),
+        jobs: [
+            ...result.data.results.map(r => formatDetail(r)),
+            ...pepdata.map(item => formatDetailFromCSV(item))
+        ],
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 }
@@ -74,6 +109,16 @@ module.exports.fetch = async (req, res) => {
 module.exports.fetchDetail = async (req, res) => {
 
     let result
+
+    if (req.url.includes('pep-')) {
+        const id = req.url.split('-').slice(-1)[0]
+        return res.render('jobDetail', {
+            job: formatDetailFromCSV(pepdata.find(item => {
+                return item.OfferID.toString() === id;
+            })),
+            contactEmail: 'contact@metiers.numerique.gouv.fr',
+        });
+    }
     const id = req.url.split('-').slice(-5).join('-');
     try {
         result = await axios.get(`https://api.notion.com/v1/pages/${id}`, {

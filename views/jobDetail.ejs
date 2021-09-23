@@ -24,98 +24,113 @@
           </div>
         </div>
       </div>
-      <div id="mission-description-prerequis">
-        <h2>Date limite</h2>
-        <p>
-          <%=job.limitDate%>
-        </p>
-      </div>
-      <div id="mission-description-prerequis">
-        <h2>Pour candidater</h2>
-        <p>
-          <%=job.toCandidate%>
-        </p>
-      </div>
+      <% if(job.openTo){ %>
       <div id="mission-description-prerequis">
         <h2>Poste ouvert aux</h2>
-        <p>
-          <%=job.openTo%>
-        </p>
+        <ul>
+          <% job.openTo.forEach(function(item) { %>
+            <li>
+              <%=item%>
+            </li>
+            <% }); %>
+        </ul>
       </div>
-      <div id="mission-description-prerequis">
-        <h2>Les plus du poste</h2>
-        <p>
-          <%=job.advantage%>
-        </p>
-      </div>
-      <div id="mission-description-prerequis">
-        <h2>Profil</h2>
-        <p>
-          <%=job.profil%>
-        </p>
-      </div>
-      <div id="mission-description-prerequis">
-        <h2>Conditions particulières du poste</h2>
-        <p>
-          <%=job.conditions%>
-        </p>
-      </div>
-      <div id="mission-description-prerequis">
-        <h2>Pour en savoir plus</h2>
-        <p>
-          <%=job.more%>
-        </p>
-      </div>
-      <div id="mission-description-prerequis">
-        <h2>Si vous avez des questions</h2>
-        <p>
-          <%=job.teamInfo%>
-        </p>
-      </div>
+      <% } %>
+      <% if(job.mission){ %>
       <div id="mission-description">
         <div id="mission-description-context">
           <h2>Mission</h2>
-          <p style="white-space: pre-wrap;">
-            <%=job.mission%>
-          </p>
-        </div>
-        <div id="mission-description-activities">
-          <h2>Ce que vous ferez</h2>
           <p>
-          <ul>
-            <% job.tasks.forEach(function(task) { %>
-              <li>
-                <%=task%>
-              </li>
-              <% }); %>
-          </ul>
+            <%- job.mission.replace(/\n/g, '<br>') %>
           </p>
         </div>
+      <% } %>
+      <% if(job.tasks){ %>
+      <div id="mission-description-activities">
+        <h2>Ce que vous ferez</h2>
+        <p>
+        <ul>
+          <% job.tasks.forEach(function(task) { %>
+            <li>
+              <%=task%>
+            </li>
+            <% }); %>
+        </ul>
+        </p>
+      </div>
+      <% } %>
+      <% if(job.experiences){ %>
         <div id="mission-description-activities">
           <h2>Experiences</h2>
           <p>
-          <ul>
-            <% job.experiences.forEach(function(experience) { %>
-              <li>
-                <%=experience%>
-              </li>
-              <% }); %>
-          </ul>
+            <%=job.experiences%>
           </p>
         </div>
+      <% } %>
+      <% if(job.team){ %>
         <div id="mission-description-formation">
           <h2>L'equipe</h2>
           <p>
             <%=job.team%>
           </p>
         </div>
-
+      <% } %>
+      <% if(job.teamInfo){ %>
+        <div id="mission-description-prerequis">
+          <h2>Si vous avez des questions</h2>
+          <p>
+            <%=job.teamInfo%>
+          </p>
+        </div>
+        <% } %>
+      <% if(job.profil){ %>
         <div id="mission-description-prerequis">
           <h2>Profil</h2>
           <p>
-            <%=job.profil%>
+            <%- job.profil.replace(/\n/g, '<br>') %>
           </p>
         </div>
+      <% } %>
+      <% if(job.limitDate){ %>
+        <div id="mission-description-prerequis">
+          <h2>Date limite</h2>
+          <p>
+            <%=job.limitDate%>
+          </p>
+        </div>
+      <% } %>
+      <% if(job.toCandidate){ %>
+      <div id="mission-description-prerequis">
+        <h2>Pour candidater</h2>
+        <p>
+          <%=job.toCandidate%>
+        </p>
+      </div>
+      <% } %>
+      <% if(job.advantage){ %>
+      <div id="mission-description-prerequis">
+        <h2>Les plus du poste</h2>
+        <p>
+          <%=job.advantage%>
+        </p>
+      </div>
+      <% } %>
+      <% if(job.conditions){ %>
+      <div id="mission-description-prerequis">
+        <h2>Conditions particulières du poste</h2>
+        <p>
+          <%=job.conditions%>
+        </p>
+      </div>
+      <% } %>
+      <% if(job.more){ %>
+      <div id="mission-description-prerequis">
+        <h2>Pour en savoir plus</h2>
+        <p>
+          <%=job.more%>
+        </p>
+      </div>
+      <% } %>
         <div id="postuler" class="fr-mb-5w">
         </div>
         <div class="fr-callout">

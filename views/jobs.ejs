@@ -7,20 +7,31 @@
                     <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
                       <div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
                         <div class="fr-card__body missions">
-                          <p class="fr-card__detail">
-                            <%=jobs[i].duree%>
-                          </p>
-                          <p class="fr-card__detail">
-                            <%=jobs[i].localisation%>
-                          </p>
+                          <div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                              <div class="fr-col">
+                                <p class="fr-card__detail">Offre de <%=jobs[i].ministry.slice(0,70)%> ...</p>
+                              </div>
+                              <div class="fr-col-4">
+                                <p class="fr-card__detail" style="text-align: right;">le <%= jobs[i].publicationDate %></p></div>
+                            </div>
+                          </div>
                           <h4 class="fr-card__lead">
                             <a href="/annonces/<%=jobs[i].slug%>" class="fr-card__link">
                               <%=jobs[i].title%>
                             </a>
                           </h4>
                           <p class="fr-card__desc">
-                            <%=jobs[i].mission.slice(0,200)%> ...
+                            <%- jobs[i].mission.slice(0,200).replace(/\n/g, '<br>')%> ...
                           </p>
+                          <% if (jobs[i].location) { %>
+                          <p style="font-size: 0.75rem;">
+                            <span>
+                              <i class="ri-map-pin-fill"></i>
+                            </span>
+                            <%= jobs[i].location %>
+                          </p>
+                          <% } %>
                           <div class="text-blue-france"
                             style="display: flex; justify-content: end; align-items: center;">En
                             savoir plus
