@@ -7,7 +7,10 @@
     "checkHTML": "site-validator --verbose --url",
     "checkHTMLLocal": "site-validator --verbose --local --url http://localhost:8080",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test:unit": "jest --config=jest.config.js",
+    "test:unit:watch": "jest --watchAll --config=jest.config.js",
+    "test:integration": "jest --config=jest.integration.config.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "jest": "^27.2.0",
     "nodemon": "^2.0.6"
   }
 }

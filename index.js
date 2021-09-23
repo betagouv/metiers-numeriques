@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express')
 const path = require('path')
-require('dotenv').config();
 
 const appName = `metiers.numerique.gouv.fr`
 const appDescription = "Tout savoir sur les métiers du numérique au sein de l’Etat"
@@ -45,6 +45,8 @@ app.get('/suivi', (req, res) => {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
   })
 })
+
+app.use('/annonces', jobRoutes)
 
 
 module.exports = app.listen(port, () => {
