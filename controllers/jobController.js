@@ -1,5 +1,14 @@
 const pepdata = require('./pep.json')
 const axios = require('axios')
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+      return '<a href="' + url + '">' + url + '</a>';
+    })
+    // or alternatively
+    // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}  
+
 const formatDetail = (item) => {
     const title = getItem(item.properties['Name'])
     const id = item.id
@@ -16,13 +25,13 @@ const formatDetail = (item) => {
         contact: getItem(item.properties['Contact']),
         profil: getItem(item.properties['Votre profil']),
         conditions: getItem(item.properties['Conditions particulières du poste']),
-        more: getItem(item.properties['Pour en savoir plus']),
+        more: urlify(getItem(item.properties['Pour en savoir plus'])),
         teamInfo: getItem(item.properties['Si vous avez des questions']),
         tasks: getItem(item.properties['Ce que vous ferez']).split('- ').filter(item => item),
         experiences: getItem(item.properties['Expérience']),
         salary: getItem(item.properties['rémunération']),
         ministry: getItem(item.properties['Ministère'])[0] || '',
-        mission: getItem(item.properties['Mission']),
+        mission: urlify(getItem(item.properties['Mission'])),
         slug: buildSlug(title, id),
     }
 }
@@ -42,14 +51,14 @@ const formatDetailFromCSV = (item) => {
         contact: item.Origin_CustomFieldsTranslation_ShortText2_,
         profil: item.JobDescriptionTranslation_Description2_,
         conditions: '',
-        more: `https://place-emploi-public.gouv.fr/offre-emploi/${id}/`,
+        more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${id}/`),
         teamInfo: '',
         publicationDate: item.FirstPublicationDate,
         tasks: undefined,
         experiences: item.ApplicantCriteria_EducationLevel_,
         salary: undefined,
         ministry: item.Origin_Entity_,
-        mission: item.JobDescriptionTranslation_Description1_,
+        mission: urlify(item.JobDescriptionTranslation_Description1_),
         slug: 'pep-' + buildSlug(title, id),
     }
 }
