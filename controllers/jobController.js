@@ -18,7 +18,7 @@ const formatDetail = (item) => {
         conditions: getItem(item.properties['Conditions particulières du poste']),
         more: getItem(item.properties['Pour en savoir plus']),
         teamInfo: getItem(item.properties['Si vous avez des questions']),
-        tasks: getItem(item.properties['Ce que vous ferez']).split('- '),
+        tasks: getItem(item.properties['Ce que vous ferez']).split('- ').filter(item => item),
         experiences: getItem(item.properties['Expérience']),
         salary: getItem(item.properties['rémunération']),
         ministry: getItem(item.properties['Ministère'])[0] || '',
