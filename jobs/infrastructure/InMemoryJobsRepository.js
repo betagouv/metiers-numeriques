@@ -1,5 +1,5 @@
-const establishments = require('establishments.stub.json');
-const jobDetail = require('jobDetail.stub.json');
+const establishments = require('../__tests__establishments.stub.json');
+const jobDetail = require('../__tests__jobDetail.stub.json');
 
 module.exports.InMemoryJobsService = {
     async all() {

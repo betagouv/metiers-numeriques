@@ -1,6 +1,6 @@
 module.exports = class Job {
     /**
-     *
+     * @param id string
      * @param title string
      * @param mission string
      * @param objectives string[]
@@ -12,7 +12,8 @@ module.exports = class Job {
      * @param salary string
      * @param team string
      */
-    constructor({title, mission, experience, location, department, openedToContractTypes, salary, team}) {
+    constructor({id, title, mission, experience, location, department, openedToContractTypes, salary, team}) {
+        this.id = id;
         this.title = title;
         this.mission = mission;
         this.experience = experience;

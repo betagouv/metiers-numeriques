@@ -1,6 +1,6 @@
 const usecases = require('../usecases');
 const {NotionJobsService} = require('../infrastructure/NotionJobsRepository');
-const jobsStub = require('./jobs.stub.json');
+const jobsStub = require('./stubs/jobs.stub.json');
 const axios = require('axios');
 const Job = require('../entities');
 
@@ -14,6 +14,7 @@ describe('Jobs fetch api', () => {
 
         expect(result.length).toEqual(jobsStub.results.length);
         expect(result[0]).toEqual(new Job({
+            id: 'acd471f0-2db5-4685-bdb7-eeaba1f03875',
             title: 'Data scientist F/H',
             mission: 'Vous serez chargé(e) de mettre en œuvre des projets de Data Science qui permettront d’appuyer la mise en œuvre des politiques publiques éducatives.',
             experience: ['3 ans minimum dans la mise en œuvre de projets de Data Science'],

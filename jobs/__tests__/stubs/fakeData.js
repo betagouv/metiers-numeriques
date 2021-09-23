@@ -1,5 +1,6 @@
 const fakeJobs = [
     {
+        id: 'id1',
         name: 'job1',
         shortDescription: 'mon job 1',
         experience: '2 ans',
@@ -10,6 +11,7 @@ const fakeJobs = [
         team: 'DINUM'
     },
     {
+        id: 'id2',
         name: 'job2',
         shortDescription: 'mon job 2',
         experience: '5 ans',

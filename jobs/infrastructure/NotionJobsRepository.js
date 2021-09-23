@@ -23,6 +23,7 @@ const mapToJobs = (rawJobs) => {
     // + Équipe
 
     return rawJobs.map(data => new Job({
+        id: data.id,
         title: data.properties.Name.title[0].text.content,
         mission: data.properties["Mission"].rich_text[0]?.text.content ?? "",
         experience: data.properties["Expérience"].multi_select.map(_ => _.name),

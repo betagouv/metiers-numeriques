@@ -1,5 +1,5 @@
 const usecases = require('../usecases');
-const {fakeJob, fakeJobs} = require('./fakeData');
+const {fakeJob, fakeJobs} = require('./stubs/fakeData');
 
 describe('Jobs managmenent', () => {
     it('should get the job list', async () => {
@@ -11,6 +11,7 @@ describe('Jobs managmenent', () => {
 
         expect(result).toEqual([
             {
+                id: 'id1',
                 name: 'job1',
                 shortDescription: 'mon job 1',
                 experience: '2 ans',
@@ -21,6 +22,7 @@ describe('Jobs managmenent', () => {
                 team: 'DINUM'
             },
             {
+                id: 'id2',
                 name: 'job2',
                 shortDescription: 'mon job 2',
                 experience: '5 ans',
