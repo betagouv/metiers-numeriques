@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config();
 const axios = require('axios');
 const Job = require('../entities');
@@ -26,15 +28,15 @@ const mapToJob = (rawJob) => {
         id: rawJob.id,
         title: rawJob.properties.Name.title[0].text.content,
         mission: parseProperty(rawJob.properties['Mission']),
-        experience: parseProperty(rawJob.properties['Expérience']),
+        experiences: parseProperty(rawJob.properties['Expérience']),
         location: parseProperty(rawJob.properties['Localisation']),
         department: parseProperty(rawJob.properties['Ministère']),
         openedToContractTypes: parseProperty(rawJob.properties['Poste ouvert aux']),
         salary: parseProperty(rawJob.properties['Rémunération']),
         team: parseProperty(rawJob.properties['Équipe']),
         limitDate: parseProperty(rawJob.properties['Date limite']),
-        toCandidate: parseProperty(rawJob.properties['Pour candidater']),
-        advantage: parseProperty(rawJob.properties['Les plus du poste']),
+        toApply: parseProperty(rawJob.properties['Pour candidater']),
+        advantages: parseProperty(rawJob.properties['Les plus du poste']),
         contact: parseProperty(rawJob.properties['Contact']),
         profil: parseProperty(rawJob.properties['Votre profil']),
         conditions: parseProperty(rawJob.properties['Conditions particulières du poste']),

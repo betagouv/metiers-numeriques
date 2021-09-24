@@ -1,3 +1,5 @@
+'use strict';
+
 const usecases = require('./usecases');
 const {jobsRepository} = require('./dependencies');
 

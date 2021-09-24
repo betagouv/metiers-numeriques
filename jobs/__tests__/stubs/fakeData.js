@@ -1,3 +1,5 @@
+'use strict';
+
 const Job = require('../../entities');
 
 const fakeJobs = [
@@ -6,24 +8,28 @@ const fakeJobs = [
             id: 'id2',
             title: 'job2',
             mission: 'mon job 2',
-            experience: '5 ans',
+            experiences: ['5 ans'],
             location: 'Paris',
-            department: 'Ministère des armées',
+            department: ['Ministère des armées'],
             openedToContractTypes: ['CDD', 'CDI'],
             salary: '50k',
-            team: 'MTES'
+            team: 'MTES',
+            profile: '',
+            objectives: [],
         }),
     new Job(
         {
             id: 'id2',
             title: 'job2',
             mission: 'mon job 2',
-            experience: '5 ans',
+            experiences: ['5 ans'],
             location: 'Paris',
-            department: 'Ministère des armées',
+            department: ['Ministère des armées'],
             openedToContractTypes: ['CDD', 'CDI'],
             salary: '50k',
-            team: 'MTES'
+            team: 'MTES',
+            profile: '',
+            objectives: [],
         })
 ];
 
