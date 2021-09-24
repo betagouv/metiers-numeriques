@@ -2,7 +2,7 @@ require('dotenv').config();
 const axios = require('axios');
 const Job = require('../entities');
 
-const mapToJobs = (rawJobs) => {
+const mapToJob = (rawJob) => {
     // + Name
     // Ce que vous ferez
     // Conditions particulières du poste
@@ -22,17 +22,17 @@ const mapToJobs = (rawJobs) => {
     // Votre profil
     // + Équipe
 
-    return rawJobs.map(data => new Job({
-        id: data.id,
-        title: data.properties.Name.title[0].text.content,
-        mission: data.properties["Mission"].rich_text[0]?.text.content ?? "",
-        experience: data.properties["Expérience"].multi_select.map(_ => _.name),
-        location: data.properties["Localisation"].multi_select.map(_ => _.name),
-        department: data.properties["Ministère"].multi_select.map(_ => _.name),
-        openedToContractTypes: data.properties["Poste ouvert aux"].multi_select.map(_ => _.name),
-        salary: data.properties["Rémunération"].rich_text[0]?.text.content,
-        team: data.properties["Équipe"].rich_text[0]?.text.content
-    }))
+    return new Job({
+        id: rawJob.id,
+        title: rawJob.properties.Name.title[0].text.content,
+        mission: rawJob.properties['Mission'].rich_text[0]?.text.content || '',
+        experience: rawJob.properties['Expérience'].multi_select.map(_ => _.name),
+        location: rawJob.properties['Localisation'].multi_select.map(_ => _.name),
+        department: rawJob.properties['Ministère'].multi_select.map(_ => _.name),
+        openedToContractTypes: rawJob.properties['Poste ouvert aux'].multi_select.map(_ => _.name),
+        salary: rawJob.properties['Rémunération'].rich_text[0]?.text.content || '',
+        team: rawJob.properties['Équipe'].rich_text[0]?.text.content || ''
+    });
 };
 
 module.exports.NotionJobsService = {
@@ -49,17 +49,23 @@ module.exports.NotionJobsService = {
                 console.log(error);
             });
 
-        return mapToJobs(res.data.results);
+        return res.data.results.map(mapToJob);
     },
 
     async get(id) {
-        return await axios.post(`https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
+        const res = await axios.post(`https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
             null,
             {
                 headers: {
-                    'Authorization': `Bearer ${process.env.TOKEN}`,
+                    'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                     'Notion-Version': '2021-08-16'
                 }
+            })
+            .catch(function (error) {
+                console.log(error);
             });
+
+        const job = res.data.results.find(j => j.id === id);
+        return mapToJob(job);
     }
 };

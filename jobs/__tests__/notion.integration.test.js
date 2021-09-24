@@ -26,11 +26,21 @@ describe('Jobs fetch api', () => {
         }));
     });
 
-    it.skip('should fetch and return one job details', async () => {
-        const jobsRepository = {
-            get: () => fakeJob
-        };
+    it('should fetch and return one job details', async () => {
+        axios.post.mockImplementation(() => Promise.resolve({data: jobsStub}));
 
-        // expect(result).toEqual(fakeJob);
+        const result = await NotionJobsService.get(jobsStub.results[0].id);
+
+        expect(result).toEqual(new Job({
+            id: 'acd471f0-2db5-4685-bdb7-eeaba1f03875',
+            title: 'Data scientist F/H',
+            mission: 'Vous serez chargé(e) de mettre en œuvre des projets de Data Science qui permettront d’appuyer la mise en œuvre des politiques publiques éducatives.',
+            experience: ['3 ans minimum dans la mise en œuvre de projets de Data Science'],
+            location: ['61-65 rue Dutot 75015 Paris'],
+            department: ['Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation'],
+            openedToContractTypes: ['Fonctionnaire', 'Contractuel.le'],
+            salary: 'La rémunération est à définir en fonction de l’expérience et du profil',
+            team: 'Au sein de la sous-direction des services numériques, vous intégrerez une équipe de 23 personnes (chefs de projets nationaux et concepteurs-développeurs) dédiée aux systèmes d\'information de gestion et du décisionnel.',
+        }));
     });
 });
