@@ -14,7 +14,7 @@ module.exports.list = async (req, res) => {
 };
 
 module.exports.get = async (req, res) => {
-    const result = await usecases.GetJob(req.query.id, {jobsRepository});
+    const result = await usecases.GetJob(req.params.id, {jobsRepository});
     res.render('jobDetail', {
         job: result,
         contactEmail: 'contact@metiers.numerique.gouv.fr',

@@ -46,7 +46,7 @@ module.exports.NotionJobsService = {
                 }
             })
             .catch(function (error) {
-                console.log(error);
+                console.log('Request Error: ' + error);
             });
 
         return res.data.results.map(mapToJob);
