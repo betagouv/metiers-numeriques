@@ -47,7 +47,7 @@ describe('Jobs managmenent', () => {
             get: () => fakeJob
         };
 
-        const result = await usecases.GetJob(fakeJob.name, {jobsRepository});
+        const result = await usecases.GetJob(fakeJob.title, {jobsRepository});
 
         expect(result).toEqual(new Job(
             {

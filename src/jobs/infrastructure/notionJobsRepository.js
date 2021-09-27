@@ -5,25 +5,6 @@ const axios = require('axios');
 const Job = require('../entities');
 
 const mapToJob = (rawJob) => {
-    // + Name
-    // Ce que vous ferez
-    // Conditions particulières du poste
-    // Contact
-    // Date limite
-    // + Expérience
-    // Les plus du poste
-    // + Localisation
-    // + Ministère
-    // + Mission
-    // + Poste ouvert aux
-    // Poste à pourvoir
-    // Pour candidater
-    // Pour en savoir plus
-    // + Rémunération
-    // Si vous avez des questions
-    // Votre profil
-    // + Équipe
-
     return new Job({
         id: rawJob.id,
         title: rawJob.properties.Name.title[0].text.content,
@@ -38,10 +19,11 @@ const mapToJob = (rawJob) => {
         toApply: parseProperty(rawJob.properties['Pour candidater']),
         advantages: parseProperty(rawJob.properties['Les plus du poste']),
         contact: parseProperty(rawJob.properties['Contact']),
-        profil: parseProperty(rawJob.properties['Votre profil']),
+        profile: parseProperty(rawJob.properties['Votre profil']),
         conditions: parseProperty(rawJob.properties['Conditions particulières du poste']),
         teamInfo: parseProperty(rawJob.properties['Si vous avez des questions']),
         tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
+        objectives: parseProperty(rawJob.properties['Objectifs']).split('- ').filter(item => item),
     });
 };
 
