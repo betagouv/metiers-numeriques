@@ -10,7 +10,8 @@
     "start": "node index.js",
     "test:unit": "jest --config=jest.config.js",
     "test:unit:watch": "jest --watchAll --config=jest.config.js",
-    "test:integration": "jest --config=jest.integration.config.js"
+    "test:integration": "jest --config=jest.integration.config.js",
+    "test:e2e": "jest --config=jest.e2e.config.js"
   },
   "repository": {
     "type": "git",
