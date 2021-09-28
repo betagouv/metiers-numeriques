@@ -1,5 +1,7 @@
 const pepdata = require('./pep.json')
 const axios = require('axios')
+const moment = require('moment');
+moment.locale('fr');
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function(url) {
@@ -22,6 +24,7 @@ const formatDetail = (item) => {
         team: getItem(item.properties['Équipe']),
         title: title,
         publicationDate: '13/09/2021',
+        readablePublicationDate: moment('13/09/2021', "DD/MM/YYYY").fromNow(),
         contact: getItem(item.properties['Contact']),
         profil: getItem(item.properties['Votre profil']),
         conditions: getItem(item.properties['Conditions particulières du poste']),
@@ -33,34 +36,38 @@ const formatDetail = (item) => {
         ministry: getItem(item.properties['Ministère'])[0] || '',
         mission: urlify(getItem(item.properties['Mission'])),
         slug: buildSlug(title, id),
+        hiringProcess: getItem(item.properties['Processus de recrutement'])
     }
 }
 
 const formatDetailFromPep = (job) => {
     const item = job.properties
-    const title = getItem(item.JobDescriptionTranslation_JobTitle_)
-    const id = getItem(item.Offer_Reference_)
+    const title = getItem(item.Name)
+    const id = job.id
+    console.log(item.Offer_Reference_)
+    console.log(item.OfferID)
     return {
-        id: getItem(item.Offer_Reference_),
+        id,
         limitDate: '',
         toCandidate: getItem(item.Origin_CustomFieldsTranslation_ShortText1_),
         location: getItem(item.Location_JobLocation_),
-        openTo: [getItem(item.JobDescription_Contract_)],
+        openTo: getItem(item.JobDescription_Contract_) ? [getItem(item.JobDescription_Contract_)] : [],
         advantage: '',
         team: '',
         title,
         contact: getItem(item.Origin_CustomFieldsTranslation_ShortText2_),
         profil: getItem(item.JobDescriptionTranslation_Description2_),
         conditions: '',
-        more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${id}/`),
+        more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${getItem(item.Offer_Reference_)}/`),
         teamInfo: '',
-        publicationDate: getItem(item.FirstPublicationDate),
+        readablePublicationDate: moment(getItem(item.FirstPublicationDate), "DD/MM/YYYY").fromNow(),
+        publicationDate: getItem(item.FirstPublicationDate).split(' ')[0],
         tasks: undefined,
-        experiences: getItem(item.ApplicantCriteria_EducationLevel_),
+        experiences: getItem(item.ApplicantCriteria_EducationLevel_) ? [getItem(item.ApplicantCriteria_EducationLevel_)] : [],
         salary: undefined,
         ministry: getItem(item.Origin_Entity_),
         mission: urlify(getItem(item.JobDescriptionTranslation_Description1_)),
-        slug: 'pep-' + buildSlug(title, id),
+        slug: buildSlug(title, id) + '?tag=pep',
     }
 }
 
@@ -104,7 +111,7 @@ const buildSlug = (title, id) => {
 const getItem = (item) => {
     try {
         if ('rich_text' in item) {
-            return (item.rich_text[0] || {}).plain_text || '';
+            return item.rich_text.map(rich_text => rich_text.plain_text).join('')
         } else if ('multi_select' in item) {
             return item.multi_select.map(item => item.name);
         } else if ('title' in item) {
@@ -127,13 +134,27 @@ module.exports.fetch = async (req, res) => {
     let result
     let resultPep
     try {
-        result = await axios.post(`https://api.notion.com/v1/databases/${process.env.DATABASE}/query`,null, {
+        result = await axios.post(`https://api.notion.com/v1/databases/${process.env.DATABASE}/query`, {
+            filter: {
+                property: "redaction_status",
+                select: {
+                    equals: "published"
+                }
+            }
+        }, {
             headers: {
                 'Authorization': `Bearer ${process.env.TOKEN}`,
                 'Notion-Version': '2021-08-16'
             }
         })
-        resultPep = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE}/query`,null, {
+        resultPep = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE}/query`, {
+            filter: {
+                property: "hide",
+                checkbox: {
+                    equals: false
+                }
+            }
+        }, {
             headers: {
                 'Authorization': `Bearer ${process.env.TOKEN}`,
                 'Notion-Version': '2021-08-16'
@@ -145,7 +166,7 @@ module.exports.fetch = async (req, res) => {
     res.render('jobs', {
         jobs: [
             ...result.data.results.map(r => formatDetail(r)),
-            //...resultPep.data.results.map(item => formatDetailFromPep(item))
+            ...resultPep.data.results.map(item => formatDetailFromPep(item))
         ],
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
@@ -154,17 +175,7 @@ module.exports.fetch = async (req, res) => {
 module.exports.fetchDetail = async (req, res) => {
 
     let result
-
-    if (req.url.includes('pep-')) {
-        const id = req.url.split('-').slice(-1)[0]
-        return res.render('jobDetail', {
-            job: formatDetailFromCSV(pepdata.find(item => {
-                return item.OfferID.toString() === id;
-            })),
-            contactEmail: 'contact@metiers.numerique.gouv.fr',
-        });
-    }
-    const id = req.url.split('-').slice(-5).join('-');
+    const id = req.url.split('-').slice(-5).join('-').split('?')[0];
     try {
         result = await axios.get(`https://api.notion.com/v1/pages/${id}`, {
             headers: {
@@ -178,7 +189,7 @@ module.exports.fetchDetail = async (req, res) => {
     }
 
     res.render('jobDetail', {
-        job: formatDetail(result.data),
+        job: req.query.tag === 'pep' ? formatDetailFromPep(result.data) : formatDetail(result.data),
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 }

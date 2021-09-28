@@ -10,25 +10,25 @@
                           <div class="fr-grid-row fr-grid-row--gutters">
                             <div class="fr-col-3">
                               <% if (jobs[i].ministry.slice(0,70)) { %>
-                                <p>
+                                <div class="fr-my-2w">
                                   <%= jobs[i].ministry.slice(0,70) %>
-                                </p>
+                                </div>
+                              <% } %>
+                              <% if (jobs[i].readablePublicationDate) { %>
+                                <div class="fr-my-2w">
+                                  <span>
+                                    <i class="fr-fi-calendar-line"></i>
+                                  </span>
+                                  <%= jobs[i].readablePublicationDate %>
+                                </div>
                               <% } %>
                               <% if (jobs[i].location) { %>
-                                <p>
+                                <div class="fr-my-2w">
                                   <span>
                                     <i class="ri-map-pin-line"></i>
                                   </span>
                                   <%= jobs[i].location %>
-                                </p>
-                                <% } %>
-                              <% if (jobs[i].publicationDate) { %>
-                                <p>
-                                  <span>
-                                    <i class="fr-fi-calendar-line"></i>
-                                  </span>
-                                  <%= jobs[i].publicationDate %>
-                                </p>
+                                </div>
                                 <% } %>
                             </div>
                             <div class="fr-col-9">
@@ -37,16 +37,23 @@
                                     <%=jobs[i].title%>
                                   </a>
                                 </h4>
-                                <p class="fr-card__desc">
-                                  <%- jobs[i].mission.slice(0,200).replace(/\n/g, '<br>')%> ...
+                                <p class="fr-card__desc" style="
+                                  overflow: hidden;
+                                  text-overflow: ellipsis;
+                                  display: -webkit-box;
+                                  -webkit-line-clamp: 3; /* number of lines to show */
+                                  -webkit-box-orient: vertical;">
+                                  <%- (jobs[i].mission || jobs[i].tasks[0] || '').replace(/\n/g, '<br>')%>
                                 </p>
                                 <ul class="fr-tags-group">
                                   <% jobs[i].experiences.forEach(function(experience) { %>
-                                    <p class="fr-tag"><%= experience %></p>
+                                    <a href="#" class="fr-tag fr-tag--sm"><%= experience %></a>
                                   <% }); %>
-                                  <p class="fr-tag">
+                                  <% if (jobs[i].openTo.length) { %>
+                                  <a href="#" class="fr-tag fr-tag--sm">
                                     <%= jobs[i].openTo.join(', ') %>
-                                  </p>
+                                  </a>
+                                  <% } %>
                                 </ul>
                               </div>
                             </div>
@@ -54,6 +61,7 @@
                           style="display: flex; justify-content: end; align-items: center;">
                           <a href="/annonces/<%= jobs[i].slug %>"
                             class="fr-btn fr-btn--sm">Lire l'offre d'emploi
+                             <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
                           </a>
                         </div>
                         </div>

@@ -37,7 +37,7 @@
                 </div>
             </div>
           <% } %>
-          <% if (job.openTo) { %>
+          <% if (job.openTo.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-2" style="text-align: right;">
                   Ouvert aux
@@ -57,7 +57,7 @@
                 </div>
             </div>
           <% } %>
-          <% if (job.experiences) { %>
+          <% if (job.experiences.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-2" style="text-align: right;">
                   Expérience
@@ -107,6 +107,19 @@
           </div>
         </div>
       <% } %>
+      <% if(job.conditions){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-2">
+           <h3>Conditions particulières du poste</h3>
+          </div>
+          <div class="fr-col-10">
+              <p class="fr-text--lg">
+                <%- job.conditions.replace(/\n/g, '<br>') %>
+              </p>
+            </p>
+          </div>
+        </div>
+      <% } %>
       <% if(job.profil){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-2">
@@ -126,7 +139,7 @@
         <% if(job.teamInfo){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-2">
-              <p class="fr-text--lg">Si vous avez des questions :</p>
+              <p class="fr-text--lg">Si vous avez des questions</p>
             </div>
             <div class="fr-col-10">
                 <p class="fr-text--lg">
@@ -149,6 +162,19 @@
               </div>
           </div>
         <% } %>
+        <% if(job.more){ %>
+          <div class="fr-grid-row fr-grid-row--gutters"">
+            <div class="fr-col-2">
+              <p class="fr-text--lg">Pour en savoir plus</p>
+              </div>
+              <div class="fr-col-10">
+                  <p class="fr-text--lg">
+                    <%- job.more %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
         <% if(job.limitDate){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-2">
@@ -157,6 +183,19 @@
               <div class="fr-col-10">
                   <p class="fr-text--lg">
                     <%=job.limitDate %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(job.hiringProcess){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-2">
+                <p class="fr-text--lg">Processus de recrutement</p>
+              </div>
+              <div class="fr-col-10">
+                  <p class="fr-text--lg">
+                    <%= job.hiringProcess %>
                   </p>
                 </p>
               </div>
