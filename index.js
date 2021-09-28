@@ -1,12 +1,13 @@
 const express = require('express')
 const path = require('path')
+require('dotenv').config();
 
-const designSystemVersion = require('./package-lock.json').dependencies['@gouvfr/dsfr'].version
 const appName = `metiers.numerique.gouv.fr`
 const appDescription = "Tout savoir sur les métiers du numérique au sein de l’Etat"
 const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const port = process.env.PORT || 8080
 const appRoot = path.resolve(__dirname);
+const { fetchPep } = require('./schedulers/pepJobsScheduler')
 
 const app = express()
 
@@ -26,7 +27,7 @@ app.use(function(req, res, next){
   next()
 })
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.render('landing', {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
   })
