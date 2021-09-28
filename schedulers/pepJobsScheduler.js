@@ -106,7 +106,6 @@ module.exports.fetchPepJob = async () => {
                 if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && 
                     JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && count < 10) {
                     const page = await notion.getPage(process.env.PEP_DATABASE, pepJob.OfferID)
-                    console.log(pepJob)
                     if (!page) {
                         await notion.createPage(process.env.PEP_DATABASE, createPepProperties(pepJob))
                     }
@@ -117,6 +116,6 @@ module.exports.fetchPepJob = async () => {
             })
         },() => {},() => {});
     } catch(e) {
-        console.log('LCS ERREOR', e)
+        throw new Error(`Erreur lors de la récupération des offres de la pep`, e)
     }
 }
