@@ -104,7 +104,7 @@ module.exports.fetchPepJobs = async () => {
         .subscribe((pepJob)=>{
             return new Promise(async (resolve, reject)=>{
                 if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && 
-                    JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && count < 10) {
+                    JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && count < process.env.JOB_LIMIT) {
                     const page = await notion.getPage(process.env.PEP_DATABASE, pepJob.OfferID)
                     if (!page) {
                         await notion.createPage(process.env.PEP_DATABASE, createPepProperties(pepJob))
