@@ -92,7 +92,7 @@ const createPepProperties = (pepJob) => {
 }
 
 
-module.exports.fetchPepJob = async () => {
+module.exports.fetchPepJobs = async () => {
     try {
         const request=require('request')
         const csv=require('csvtojson')
