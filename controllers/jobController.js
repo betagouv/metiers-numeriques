@@ -36,6 +36,35 @@ const formatDetail = (item) => {
     }
 }
 
+const formatDetailFromPep = (job) => {
+    const item = job.properties
+    const title = getItem(item.JobDescriptionTranslation_JobTitle_)
+    const id = getItem(item.Offer_Reference_)
+    return {
+        id: getItem(item.Offer_Reference_),
+        limitDate: '',
+        toCandidate: getItem(item.Origin_CustomFieldsTranslation_ShortText1_),
+        location: getItem(item.Location_JobLocation_),
+        openTo: [getItem(item.JobDescription_Contract_)],
+        advantage: '',
+        team: '',
+        title,
+        contact: getItem(item.Origin_CustomFieldsTranslation_ShortText2_),
+        profil: getItem(item.JobDescriptionTranslation_Description2_),
+        conditions: '',
+        more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${id}/`),
+        teamInfo: '',
+        publicationDate: getItem(item.FirstPublicationDate),
+        tasks: undefined,
+        experiences: getItem(item.ApplicantCriteria_EducationLevel_),
+        salary: undefined,
+        ministry: getItem(item.Origin_Entity_),
+        mission: urlify(getItem(item.JobDescriptionTranslation_Description1_)),
+        slug: 'pep-' + buildSlug(title, id),
+    }
+}
+
+
 const formatDetailFromCSV = (item) => {
     const title = item.JobDescriptionTranslation_JobTitle_
     const id = item.Offer_Reference_
@@ -44,7 +73,7 @@ const formatDetailFromCSV = (item) => {
         limitDate: '',
         toCandidate: item.Origin_CustomFieldsTranslation_ShortText1_,
         location: item.Location_JobLocation_,
-        openTo: item.JobDescription_Contract ? [item.JobDescription_Contract_] : undefined,
+        openTo: item.JobDescription_Contract_ ? [item.JobDescription_Contract_] : undefined,
         advantage: '',
         team: '',
         title,
@@ -96,8 +125,15 @@ const getItem = (item) => {
 
 module.exports.fetch = async (req, res) => {
     let result
+    let resultPep
     try {
         result = await axios.post(`https://api.notion.com/v1/databases/${process.env.DATABASE}/query`,null, {
+            headers: {
+                'Authorization': `Bearer ${process.env.TOKEN}`,
+                'Notion-Version': '2021-08-16'
+            }
+        })
+        resultPep = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE}/query`,null, {
             headers: {
                 'Authorization': `Bearer ${process.env.TOKEN}`,
                 'Notion-Version': '2021-08-16'
@@ -109,7 +145,7 @@ module.exports.fetch = async (req, res) => {
     res.render('jobs', {
         jobs: [
             ...result.data.results.map(r => formatDetail(r)),
-            ...pepdata.map(item => formatDetailFromCSV(item))
+            //...resultPep.data.results.map(item => formatDetailFromPep(item))
         ],
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
