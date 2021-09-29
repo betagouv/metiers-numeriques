@@ -26,8 +26,8 @@ const formatDetail = (item) => {
         publicationDate: '13/09/2021',
         readablePublicationDate: moment('13/09/2021', "DD/MM/YYYY").fromNow(),
         contact: getItem(item.properties['Contact']),
-        profil: getItem(item.properties['Votre profil']),
-        conditions: getItem(item.properties['Conditions particulières du poste']),
+        profil: getItem(item.properties['Votre profil']).split('- ').filter(item => item),
+        conditions: getItem(item.properties['Conditions particulières du poste']).split('- ').filter(item => item),
         more: urlify(getItem(item.properties['Pour en savoir plus'])),
         teamInfo: getItem(item.properties['Si vous avez des questions']),
         tasks: getItem(item.properties['Ce que vous ferez']).split('- ').filter(item => item),
@@ -44,20 +44,18 @@ const formatDetailFromPep = (job) => {
     const item = job.properties
     const title = getItem(item.Name)
     const id = job.id
-    console.log(item.Offer_Reference_)
-    console.log(item.OfferID)
     return {
         id,
         limitDate: '',
         toCandidate: getItem(item.Origin_CustomFieldsTranslation_ShortText1_),
-        location: getItem(item.Location_JobLocation_),
+        location: getItem(item.Location_JobLocation_).replace('- -', ''),
         openTo: getItem(item.JobDescription_Contract_) ? [getItem(item.JobDescription_Contract_)] : [],
         advantage: '',
         team: '',
         title,
         contact: getItem(item.Origin_CustomFieldsTranslation_ShortText2_),
-        profil: getItem(item.JobDescriptionTranslation_Description2_),
-        conditions: '',
+        profil: [getItem(item.JobDescriptionTranslation_Description2_)],
+        conditions: [],
         more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${getItem(item.Offer_Reference_)}/`),
         teamInfo: '',
         readablePublicationDate: moment(getItem(item.FirstPublicationDate), "DD/MM/YYYY").fromNow(),
@@ -71,34 +69,6 @@ const formatDetailFromPep = (job) => {
     }
 }
 
-
-const formatDetailFromCSV = (item) => {
-    const title = item.JobDescriptionTranslation_JobTitle_
-    const id = item.Offer_Reference_
-    return {
-        id: item.Offer_Reference_,
-        limitDate: '',
-        toCandidate: item.Origin_CustomFieldsTranslation_ShortText1_,
-        location: item.Location_JobLocation_,
-        openTo: item.JobDescription_Contract_ ? [item.JobDescription_Contract_] : undefined,
-        advantage: '',
-        team: '',
-        title,
-        contact: item.Origin_CustomFieldsTranslation_ShortText2_,
-        profil: item.JobDescriptionTranslation_Description2_,
-        conditions: '',
-        more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${id}/`),
-        teamInfo: '',
-        publicationDate: item.FirstPublicationDate,
-        tasks: undefined,
-        experiences: item.ApplicantCriteria_EducationLevel_,
-        salary: undefined,
-        ministry: item.Origin_Entity_,
-        mission: urlify(item.JobDescriptionTranslation_Description1_),
-        slug: 'pep-' + buildSlug(title, id),
-    }
-}
-
 const buildSlug = (title, id) => {
     const slug = `${title}-${id}`.toLowerCase()
         .normalize("NFD")
@@ -109,6 +79,9 @@ const buildSlug = (title, id) => {
 }
 
 const getItem = (item) => {
+    if (!item) {
+        return
+    }
     try {
         if ('rich_text' in item) {
             return item.rich_text.map(rich_text => rich_text.plain_text).join('')
@@ -122,11 +95,11 @@ const getItem = (item) => {
             return item.date.start;
         }
         else {
-            return ''
+            return
         }
     } catch (e) {
         console.log(item, e)
-        return ''
+        return
     }
 }
 
