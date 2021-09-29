@@ -15,18 +15,36 @@
                               <% } %>
                               <% if (jobs[i].readablePublicationDate) { %>
                                 <div class="fr-my-2w">
-                                  <span>
-                                    <i class="fr-fi-calendar-line"></i>
-                                  </span>
-                                  <%= jobs[i].readablePublicationDate %>
+                                  <div class="fr-grid-row">
+                                    <div class="fr-col-2">
+                                      <span aria-hidden="true" class="fr-fi ri-calendar-line"
+                                      style="font-size: 1.2em;">
+                                      </span>
+                                    </div>
+                                    <div class="fr-col-10">
+                                      <%= jobs[i].readablePublicationDate %>
+                                    </div>
+                                  </div>
                                 </div>
                               <% } %>
                               <% if (jobs[i].location) { %>
-                                <div class="fr-my-2w">
-                                  <span>
-                                    <i class="ri-map-pin-line"></i>
+                                <!-- <div class="fr-my-2w">
+                                  <span><span aria-hidden="true" class="fr-fi ri-map-pin-line"
+                                  style="font-size: 1.2em; margin-right: 0.25em;top: 0.2em;position: relative;">
                                   </span>
-                                  <%= jobs[i].location %>
+                                  <%= jobs[i].location %></span>
+                                </div> -->
+                                <div class="fr-my-2w">
+                                  <div class="fr-grid-row">
+                                    <div class="fr-col-md-2">
+                                      <span aria-hidden="true" class="fr-fi ri-map-pin-line"
+                                      style="font-size: 1.2em;">
+                                      </span>
+                                    </div>
+                                    <div class="fr-col-md-10">
+                                      <%= jobs[i].location %>
+                                    </div>
+                                  </div>
                                 </div>
                                 <% } %>
                             </div>
