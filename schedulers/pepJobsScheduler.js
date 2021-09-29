@@ -1,3 +1,4 @@
+var moment = require('moment')
 var notion = require('../lib/notion')
 const JOB_FILTERS = [
     "Technicienne / Technicien support utilisateurs",
@@ -56,6 +57,21 @@ const JOB_FILTERS = [
 
 const createPepProperties = (pepJob) => {
     const properties = Object.keys(pepJob).reduce((acc, property) => {
+        if ([
+            'SchedulingData_DefaultPublicationBeginDate_',
+            'SchedulingData_DefaultPublicationEndDate_',
+            'FirstPublicationDate',
+            'OF_CustomFields_Date1_',
+            'Offer_ModificationDate_',
+            'Origin_BeginningDate_',
+        ].includes(property) && pepJob[property]) {
+            // console.log(property, pepJob[property], moment(pepJob[property], 'DD/MM/YYYY hh:mm:ss'))
+            acc[`${property}Formated`] = {
+                date: {
+                    "start": moment(pepJob[property], 'DD/MM/YYYY hh:mm:ss')
+                }
+            }
+        }
         if (property === 'JobDescriptionTranslation_JobTitle_') {
             acc['Name'] = {
                 title: [
@@ -116,6 +132,7 @@ module.exports.fetchPepJobs = async () => {
             })
         },() => {},() => {});
     } catch(e) {
+        console.log(e)
         throw new Error(`Erreur lors de la récupération des offres de la pep`, e)
     }
 }
