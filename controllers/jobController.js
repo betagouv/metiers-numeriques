@@ -16,7 +16,7 @@ const formatDetail = (item) => {
     const id = item.id
     return {
         id: id,
-        limitDate: getItem(item.properties['Date limite']),
+        limitDate: getItem(item.properties['Date limite']) ? moment(getItem(item.properties['Date limite'])).format('Do MMMM YYYY') : undefined,
         toCandidate: urlify(getItem(item.properties['Pour candidater'])),
         location: getItem(item.properties['Localisation']),
         openTo: getItem(item.properties['Poste ouvert aux']),
