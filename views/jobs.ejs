@@ -1,93 +1,88 @@
 <%- include('partials/header') -%>
   <div id="offres-de-mission" class="fr-container fr-mt-4w">
       <div class="fr-px-2w fr-px-md-6w">
-              <div class="fr-grid-row">
-                  <% for (let i=0; i < jobs.length; i++) { %>
-                    <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
-                      <div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
-                        <div class="fr-card__body">
-                          <div class="fr-grid-row fr-grid-row--gutters">
-                            <div class="fr-col-md-3 fr-col-sm-12">
-                              <% if (jobs[i].ministry.slice(0,70)) { %>
-                                <div class="fr-mb-2w fr-mt-1w">
-                                  <%= jobs[i].ministry.slice(0,70) %>
-                                </div>
-                              <% } %>
-                              <% if (jobs[i].readablePublicationDate) { %>
-                                <div class="fr-my-2w">
-                                  <div class="fr-grid-row">
-                                    <div class="fr-col-2">
-                                      <span aria-hidden="true" class="fr-fi ri-calendar-line"
-                                      style="font-size: 1.2em;">
-                                      </span>
-                                    </div>
-                                    <div class="fr-col-10">
-                                      <%= jobs[i].readablePublicationDate %>
-                                    </div>
-                                  </div>
-                                </div>
-                              <% } %>
-                              <% if (jobs[i].location) { %>
-                                <!-- <div class="fr-my-2w">
-                                  <span><span aria-hidden="true" class="fr-fi ri-map-pin-line"
-                                  style="font-size: 1.2em; margin-right: 0.25em;top: 0.2em;position: relative;">
-                                  </span>
-                                  <%= jobs[i].location %></span>
-                                </div> -->
-                                <div class="fr-my-2w">
-                                  <div class="fr-grid-row">
-                                    <div class="fr-col-2">
-                                      <span aria-hidden="true" class="fr-fi ri-map-pin-line"
-                                      style="font-size: 1.2em;">
-                                      </span>
-                                    </div>
-                                    <div class="fr-col-10">
-                                      <%= jobs[i].location %>
-                                    </div>
-                                  </div>
-                                </div>
-                                <% } %>
-                            </div>
-                            <div class="fr-col-md-9 fr-col-sm-12">
-                                <h4 class="fr-card__lead">
-                                  <a href="/annonces/<%=jobs[i].slug%>" class="fr-card__link">
-                                    <%=jobs[i].title%>
-                                  </a>
-                                </h4>
-                                <p class="fr-card__desc" style="
-                                  overflow: hidden;
-                                  text-overflow: ellipsis;
-                                  display: -webkit-box;
-                                  -webkit-line-clamp: 3; /* number of lines to show */
-                                  -webkit-box-orient: vertical;">
-                                  <%- (jobs[i].mission || jobs[i].tasks[0] || '').replace(/\n/g, '<br>')%>
-                                </p>
-                                <ul class="fr-tags-group">
-                                  <% jobs[i].experiences.forEach(function(experience) { %>
-                                    <a href="#" class="fr-tag fr-tag--sm"><%= experience %></a>
-                                  <% }); %>
-                                  <% if (jobs[i].openTo.length) { %>
-                                  <a href="#" class="fr-tag fr-tag--sm">
-                                    <%= jobs[i].openTo.join(', ') %>
-                                  </a>
-                                  <% } %>
-                                </ul>
-                              </div>
-                            </div>
-                          <div
-                          style="display: flex; justify-content: end; align-items: center;">
-                          <a href="/annonces/<%= jobs[i].slug %>"
-                            class="fr-btn fr-btn--sm">Lire l'offre d'emploi
-                             <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
-                          </a>
-                        </div>
-                        </div>
-                      </div>
-                    </div>
-                    <% } %>
+              <div class="fr-grid-row" id="infinite-list">
+                <!-- <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
+                </div> -->  
+                <%- include('partials/jobList', {jobs: jobs, nextPepCursor: nextPepCursor, nextCursor: nextCursor, hasMore: hasMore }) %>
               </div>
       </div>
-  </div>
+    </div>
   <br>
   <br>
   <%- include('partials/footer') -%>
+  <script type="text/javascript">
+        var setInnerHTML = function(elm, html) {
+          elm.innerHTML = html;
+          Array.from(elm.querySelectorAll("script")).forEach( oldScript => {
+            const newScript = document.createElement("script");
+            Array.from(oldScript.attributes)
+              .forEach( attr => newScript.setAttribute(attr.name, attr.value) );
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+          });
+      }
+      function appendHtml(el, str) {
+        var tpl = document.createElement('template');
+        // tpl.innerHTML = str;
+        // setInnerHTML(tpl, str)
+        // el.appendChild(tpl.content);
+        setInnerHTML(el, el.innerHTML + str)
+      }
+
+      function appendLoader(parent) {
+        var el = document.createElement('div')
+        el.id="loader"
+        el.className="fr-my-4w"
+        el.style="text-align: center; width: 100%;"
+        el.innerHTML = '<i class="ri-loader-4-fill rotating" style="font-size: 2em; display: inline-block;"></i>'
+        parent.appendChild(el)
+      }
+
+      function removeLoader(parent) {
+        parent.removeChild(parent.querySelector('#loader'))
+      }
+
+      function httpGet(url, callback) {
+        var xhr = new XMLHttpRequest();
+        // we defined the xhr
+        xhr.onreadystatechange = function () {
+            if (this.readyState != 4) return;
+            if (this.status == 200) {
+                callback(this.responseText)
+                // var data = JSON.parse(this.responseText);
+                // we get the returned data
+            }
+            // end of state change: it can be after some time (async)
+        };
+        xhr.open('GET', url, true);
+        xhr.send();
+      }
+
+      var listElm = document.querySelector('#infinite-list');
+
+      // Add 20 items.
+      var nextItem = 1;
+      var loadMore = function() {
+        appendLoader(listElm)
+        window.lastCursor = window.nextCursor || window.nextPepCursor
+          httpGet(
+            window.location.protocol + "//" + window.location.host + `/annonces?start_cursor=${window.nextCursor}&start_pep_cursor=${window.nextPepCursor}`,
+            (htmlContent) => {
+              removeLoader(listElm)
+              appendHtml(listElm, htmlContent); // "body" has two more children -
+            }
+          )
+      }
+
+      // Detect when scrolled to bottom.
+      window.addEventListener('scroll', function() {
+        var nextCursor = window.nextCursor || window.nextPepCursor
+        if (window.hasMore && listElm.clientHeight <= window.scrollY + window.innerHeight && window.lastCursor != nextCursor) {
+          loadMore();
+        }
+      });
+
+      // Initially load some items.
+      loadMore();
+  </script>

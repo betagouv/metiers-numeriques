@@ -1,4 +1,3 @@
-const pepdata = require('./pep.json')
 const axios = require('axios')
 const moment = require('moment');
 moment.locale('fr');
@@ -104,43 +103,62 @@ const getItem = (item) => {
 }
 
 module.exports.fetch = async (req, res) => {
-    let result
-    let resultPep
+    let jobs = []
+    let jobsPep = []
+    let nextCursor;
+    let nextPepCursor;
+    let hasMore = true;
     try {
-        result = await axios.post(`https://api.notion.com/v1/databases/${process.env.DATABASE}/query`, {
-            filter: {
-                property: "redaction_status",
-                select: {
-                    equals: "published"
+        if (!req.query.start_pep_cursor) {
+            const res = await axios.post(`https://api.notion.com/v1/databases/${process.env.DATABASE}/query`, {
+                filter: {
+                    property: "redaction_status",
+                    select: {
+                        equals: "published"
+                    }
+                },
+                start_cursor: req.query.start_cursor,
+                page_size: 20
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.TOKEN}`,
+                    'Notion-Version': '2021-08-16'
                 }
-            }
-        }, {
-            headers: {
-                'Authorization': `Bearer ${process.env.TOKEN}`,
-                'Notion-Version': '2021-08-16'
-            }
-        })
-        resultPep = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE}/query`, {
-            filter: {
-                property: "hide",
-                checkbox: {
-                    equals: false
+            })
+            jobs = res.data.results.map(r => formatDetail(r))
+            nextCursor = res.data.next_cursor
+        }
+        if (jobs.length < 20) {
+            const resultPep = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE}/query`, {
+                filter: {
+                    property: "hide",
+                    checkbox: {
+                        equals: false
+                    }
+                },
+                start_cursor: req.query.start_pep_cursor,
+                page_size: 20
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.TOKEN}`,
+                    'Notion-Version': '2021-08-16'
                 }
-            }
-        }, {
-            headers: {
-                'Authorization': `Bearer ${process.env.TOKEN}`,
-                'Notion-Version': '2021-08-16'
-            }
-        })
+            })
+            jobsPep = resultPep.data.results.map(item => formatDetailFromPep(item))
+            nextPepCursor = resultPep.data.next_cursor
+            hasMore = resultPep.data.has_more
+        }
     } catch(e) {
         console.log(e)
     }
-    res.render('jobs', {
+    res.render(req.query.start_pep_cursor ? 'partials/jobList' : 'jobs', {
         jobs: [
-            ...result.data.results.map(r => formatDetail(r)),
-            ...resultPep.data.results.map(item => formatDetailFromPep(item))
+            ...jobs,
+            ...jobsPep
         ],
+        hasMore,
+        nextPepCursor,
+        nextCursor,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 }
