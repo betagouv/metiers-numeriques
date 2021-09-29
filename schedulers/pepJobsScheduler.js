@@ -124,6 +124,7 @@ module.exports.fetchPepJobs = async () => {
                     const page = await notion.getPage(process.env.PEP_DATABASE, pepJob.OfferID)
                     if (!page) {
                         await notion.createPage(process.env.PEP_DATABASE, createPepProperties(pepJob))
+                        console.log('Page créée')
                     }
                     count = count + 1
                 }
