@@ -10,7 +10,7 @@ const mapToJob = (rawJob) => {
         title: rawJob.properties.Name.title[0].text.content,
         mission: parseProperty(rawJob.properties['Mission']),
         experiences: parseProperty(rawJob.properties['Expérience']),
-        location: parseProperty(rawJob.properties['Localisation']),
+        locations: parseProperty(rawJob.properties['Localisation']),
         department: parseProperty(rawJob.properties['Ministère']),
         openedToContractTypes: parseProperty(rawJob.properties['Poste ouvert aux']),
         salary: parseProperty(rawJob.properties['Rémunération']),

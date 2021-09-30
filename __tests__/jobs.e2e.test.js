@@ -8,7 +8,7 @@ describe('Displaying jobs on website', () => {
     const port = 8888;
     let server = null;
 
-    beforeEach( () => {
+    beforeEach(() => {
         const port = 8888;
 
         server = app.listen(port, () => {
@@ -16,13 +16,13 @@ describe('Displaying jobs on website', () => {
         });
     });
 
-    afterEach(function () {
+    afterEach(function() {
         server.close();
     });
 
     it('should display the list of jobs', async () => {
         const response = await axios.get(`http://localhost:${port}/annonces`);
-        expect(response.status).toEqual(200)
-        expect(response.data).toContain('<html')
-    })
-})
+        expect(response.status).toEqual(200);
+        expect(response.data).toContain('<html');
+    });
+});

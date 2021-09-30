@@ -9,7 +9,7 @@
  * @property {string[]} tasks
  * @property {string} profile
  * @property {string[]} experiences
- * @property {string} location
+ * @property {string[]} locations
  * @property {string[]} department
  * @property {string[]} openedToContractTypes
  * @property {string} salary
@@ -31,7 +31,7 @@ module.exports = class Job {
                     tasks,
                     profile,
                     experiences,
-                    location,
+                    locations,
                     department,
                     openedToContractTypes,
                     salary,
@@ -41,7 +41,7 @@ module.exports = class Job {
         this.title = title;
         this.mission = mission;
         this.experiences = experiences;
-        this.location = location;
+        this.locations = locations;
         this.department = department;
         this.openedToContractTypes = openedToContractTypes;
         this.salary = salary;
