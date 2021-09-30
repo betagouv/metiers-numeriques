@@ -1,5 +1,5 @@
-var moment = require('moment')
-var notion = require('../lib/notion')
+const moment = require('moment')
+const notion = require('../lib/notion')
 const JOB_FILTERS = [
     "Technicienne / Technicien support utilisateurs",
     "Cheffe / Chef de projet maitrise d’œuvre SI",
@@ -95,10 +95,10 @@ const createPepProperties = (pepJob) => {
                         }
                     })
                 )
-                
+
             }
         }
-        
+
         return acc
     }, {})
     properties['Link'] = {
@@ -125,7 +125,7 @@ module.exports.fetchPepJobs = async () => {
                 if (process.env.CRON_IMPORT_ALL) {
                     isNew = true
                 }
-                if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && 
+                if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' &&
                     JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && isNew
                     ) {
                     const page = await notion.getPage(process.env.PEP_DATABASE, pepJob.OfferID)
