@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const { fetchPep } = require('./schedulers/pepJobsScheduler')
+const { fetchPep } = require('./src/schedulers/pepJobsScheduler')
 
 const app = require('./src/server');
 

@@ -8,7 +8,7 @@ describe('Jobs managmenent', () => {
             all: () => fakeJobs
         };
 
-        const result = await usecases.ListJobs({jobsRepository});
+        const result = await usecases.listJobs({jobsRepository});
 
         expect(result).toEqual([
             new Job(
@@ -47,7 +47,7 @@ describe('Jobs managmenent', () => {
             get: () => fakeJob
         };
 
-        const result = await usecases.GetJob(fakeJob.title, {jobsRepository});
+        const result = await usecases.getJob(fakeJob.title, {jobsRepository});
 
         expect(result).toEqual(new Job(
             {

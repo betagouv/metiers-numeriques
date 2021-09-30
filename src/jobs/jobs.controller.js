@@ -5,7 +5,7 @@ const {jobsRepository} = require('./dependencies');
 
 module.exports.list = async (req, res) => {
     try {
-        const result = await usecases.ListJobs({jobsRepository});
+        const result = await usecases.listJobs({jobsRepository});
         res.render('jobs', {
             jobs: result,
             contactEmail: 'contact@metiers.numerique.gouv.fr',
@@ -16,7 +16,7 @@ module.exports.list = async (req, res) => {
 };
 
 module.exports.get = async (req, res) => {
-    const result = await usecases.GetJob(req.params.id, {jobsRepository});
+    const result = await usecases.getJob(req.params.id, {jobsRepository});
     res.render('jobDetail', {
         job: result,
         contactEmail: 'contact@metiers.numerique.gouv.fr',

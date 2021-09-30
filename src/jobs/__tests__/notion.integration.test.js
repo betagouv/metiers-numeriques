@@ -1,5 +1,5 @@
 const usecases = require('../usecases');
-const {NotionJobsService} = require('../infrastructure/notionJobsRepository');
+const {NotionService} = require('../infrastructure/notionJobsRepository');
 const jobsStub = require('./stubs/jobs.stub.json');
 const axios = require('axios');
 const Job = require('../entities');
@@ -10,7 +10,7 @@ describe('Jobs fetch api', () => {
     it('should fetch and return a list of job', async () => {
         axios.post.mockImplementation(() => Promise.resolve({data: jobsStub}));
 
-        const result = await NotionJobsService.all();
+        const result = await NotionService.all();
 
         expect(result.length).toEqual(jobsStub.results.length);
         expect(result[0]).toEqual(new Job({
@@ -31,7 +31,7 @@ describe('Jobs fetch api', () => {
     it('should fetch and return one job details', async () => {
         axios.post.mockImplementation(() => Promise.resolve({data: jobsStub}));
 
-        const result = await NotionJobsService.get(jobsStub.results[0].id);
+        const result = await NotionService.get(jobsStub.results[0].id);
 
         expect(result).toEqual(new Job({
             id: 'acd471f0-2db5-4685-bdb7-eeaba1f03875',

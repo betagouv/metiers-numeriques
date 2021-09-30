@@ -1,5 +1,5 @@
 const CronJob = require('cron');
-const fetchPepJobs = require('./schedulers/fetchPepJobs')
+const fetchPepJobs = require('./src/schedulers/fetchPepJobs')
 require('dotenv').config();
 
 const jobs = [
