@@ -112,21 +112,27 @@ module.exports.fetchPepJobs = async () => {
     try {
         const request=require('request')
         const csv=require('csvtojson')
-        let count = 0
         csv({
             delimiter: ';',
         })
         .fromStream(request.get(process.env.PEP_ENDPOINT))
         .subscribe((pepJob)=>{
             return new Promise(async (resolve, reject)=>{
+                const date = new Date();
+                date.setDate(date.getDate() - 1);
+                // import only offers published since yesterday
+                let isNew = moment(pepJob.FirstPublicationDate, 'DD/MM/YYYY hh:mm:ss') > date
+                if (process.env.CRON_IMPORT_ALL) {
+                    isNew = true
+                }
                 if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && 
-                    JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && count < process.env.JOB_LIMIT) {
+                    JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && isNew
+                    ) {
                     const page = await notion.getPage(process.env.PEP_DATABASE, pepJob.OfferID)
                     if (!page) {
                         await notion.createPage(process.env.PEP_DATABASE, createPepProperties(pepJob))
                         console.log('Page créée')
                     }
-                    count = count + 1
                 }
                 // long operation for each json e.g. transform / write into database.
                 resolve()
