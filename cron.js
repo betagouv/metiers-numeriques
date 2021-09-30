@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const jobs = [
   {
-    cronTime: '0 8 * * 1', // every week a 8:00 on monday
+    cronTime: '0 8 * * *', // every day at 8:00
     onTick: () => fetchPepJobs,
     isActive: process.env.FEATURE_FLAG_FETCH_PEP_JOBS,
     name: 'fetchPepJobs',
