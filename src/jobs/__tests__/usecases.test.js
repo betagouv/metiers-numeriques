@@ -23,7 +23,7 @@ describe('Jobs managmenent', () => {
                     salary: '50k',
                     team: 'MTES',
                     profile: '',
-                    objectives: [],
+                    tasks: [],
                 }),
             new Job(
                 {
@@ -37,7 +37,7 @@ describe('Jobs managmenent', () => {
                     salary: '50k',
                     team: 'MTES',
                     profile: '',
-                    objectives: []
+                    tasks: []
                 })
         ]);
     });
@@ -61,7 +61,7 @@ describe('Jobs managmenent', () => {
                 salary: '50k',
                 team: 'MTES',
                 profile: '',
-                objectives: []
+                tasks: []
             }));
     });
 });

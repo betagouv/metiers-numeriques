@@ -23,7 +23,6 @@ const mapToJob = (rawJob) => {
         conditions: parseProperty(rawJob.properties['Conditions particulières du poste']),
         teamInfo: parseProperty(rawJob.properties['Si vous avez des questions']),
         tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
-        objectives: parseProperty(rawJob.properties['Objectifs']).split('- ').filter(item => item),
     });
 };
 

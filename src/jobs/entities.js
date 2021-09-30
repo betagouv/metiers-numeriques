@@ -6,7 +6,7 @@
  * @property {string} id
  * @property {string} title
  * @property {string} mission
- * @property {string[]} objectives
+ * @property {string[]} tasks
  * @property {string} profile
  * @property {string[]} experiences
  * @property {string} location
@@ -28,7 +28,7 @@ module.exports = class Job {
                     id,
                     title,
                     mission,
-                    objectives,
+                    tasks,
                     profile,
                     experiences,
                     location,
@@ -46,7 +46,7 @@ module.exports = class Job {
         this.openedToContractTypes = openedToContractTypes;
         this.salary = salary;
         this.team = team;
-        this.objectives = objectives;
+        this.tasks = tasks;
         this.profile = profile;
     }
 };

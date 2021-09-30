@@ -15,7 +15,7 @@ const fakeJobs = [
             salary: '50k',
             team: 'MTES',
             profile: '',
-            objectives: [],
+            tasks: [],
         }),
     new Job(
         {
@@ -29,7 +29,7 @@ const fakeJobs = [
             salary: '50k',
             team: 'MTES',
             profile: '',
-            objectives: [],
+            tasks: [],
         })
 ];
 
