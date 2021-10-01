@@ -17,33 +17,33 @@
                 </div>
             </div>
           <% } %>
-          <% if (job.ministry) { %>
+          <% if (job.department) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
                   Ministère
                 </div>
                 <div class="fr-col-md-10 fr-col-sm-12">
-                  <b><%= job.ministry %></b>
+                  <b><%= job.department.join(', ') %></b>
                 </div>
             </div>
           <% } %>
-          <% if (job.location) { %>
+          <% if (job.locations) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
                   Localisation
                 </div>
                 <div class="fr-col-md-10 fr-col-sm-12">
-                  <b><%= job.location %></b>
+                  <b><%= job.locations %></b>
                 </div>
             </div>
           <% } %>
-          <% if (job.openTo.length) { %>
+          <% if (job.openedToContractTypes.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
                   Ouvert aux
                 </div>
                 <div class="fr-col-md-10 fr-col-sm-12">
-                  <b><%= job.openTo.join(', ') %></b>
+                  <b><%= job.openedToContractTypes.join(', ') %></b>
                 </div>
             </div>
           <% } %>
@@ -130,22 +130,22 @@
           </div>
         </div>
       <% } %>
-      <% if(job.profil.length){ %>
+      <% if(job.profile.length){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Votre profil</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
-              <% if(job.profil.length == 1){ %>
+              <% if(job.profile.length == 1){ %>
                 <p class="fr-text--lg">
-                  <%- job.profil[0].replace(/\n/g, '<br>') %>
+                  <%- job.profile[0].replace(/\n/g, '<br>') %>
                 </p>
               <% }; %>
-              <% if(job.profil.length > 1){ %>
+              <% if(job.profile.length > 1){ %>
                 <ul class="fr-text--lg">
-                  <% job.profil.forEach(function(profil) { %>
+                  <% job.profile.forEach(function(profile) { %>
                     <li>
-                      <%=profil%>
+                      <%=profile%>
                     </li>
                   <% }); %>
                 </ul>
@@ -170,14 +170,14 @@
             </div>
           </div>
         <% } %>
-        <% if(job.toCandidate){ %>
+        <% if(job.toApply){ %>
           <div class="fr-grid-row fr-grid-row--gutters"">
             <div class="fr-col-md-2 fr-col-sm-12">
               <p class="fr-text--lg">Pour candidater</p>
               </div>
               <div class="fr-col-md-10 fr-col-sm-12">
                   <p class="fr-text--lg">
-                    <b><%- job.toCandidate %></b>
+                    <b><%- job.toApply %></b>
                   </p>
                 </p>
               </div>

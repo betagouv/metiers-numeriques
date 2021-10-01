@@ -14,6 +14,15 @@
  * @property {string[]} openedToContractTypes
  * @property {string} salary
  * @property {string} team
+ * @property {string} slug
+ * @property {string} hiringProcess
+ * @property {string} publicationDate
+ * @property {string} readablePublicationDate
+ * @property {string[]} conditions
+ * @property {string} teamInfo
+ * @property {string} toApply
+ * @property {string} more
+ * @property {string} limitDate
  */
 
 /**
@@ -35,7 +44,16 @@ module.exports = class Job {
                     department,
                     openedToContractTypes,
                     salary,
-                    team
+                    team,
+                    slug,
+                    hiringProcess,
+                    publicationDate,
+                    readablePublicationDate,
+                    conditions,
+                    teamInfo,
+                    toApply,
+                    more,
+                    limitDate
                 }) {
         this.id = id;
         this.title = title;
@@ -48,5 +66,14 @@ module.exports = class Job {
         this.team = team;
         this.tasks = tasks;
         this.profile = profile;
+        this.slug = slug;
+        this.hiringProcess = hiringProcess;
+        this.publicationDate = publicationDate;
+        this.readablePublicationDate = readablePublicationDate;
+        this.conditions = conditions
+        this.teamInfo = teamInfo
+        this.toApply = toApply
+        this.more = more
+        this.limitDate = limitDate
     }
 };

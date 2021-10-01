@@ -4,9 +4,9 @@
         <div class="fr-card__body">
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
-              <% if (jobs[i].ministry.slice(0,70)) { %>
+              <% if (jobs[i].department.length) { %>
                 <div class="fr-mb-2w fr-mt-1w">
-                  <%= jobs[i].ministry.slice(0,70) %>
+                  <%= jobs[i].department[0].slice(0,100) %>
                 </div>
               <% } %>
               <% if (jobs[i].readablePublicationDate) { %>
@@ -23,7 +23,7 @@
                   </div>
                 </div>
               <% } %>
-              <% if (jobs[i].location) { %>
+              <% if (jobs[i].locations) { %>
                 <!-- <div class="fr-my-2w">
                   <span><span aria-hidden="true" class="fr-fi ri-map-pin-line"
                   style="font-size: 1.2em; margin-right: 0.25em;top: 0.2em;position: relative;">
@@ -38,7 +38,7 @@
                       </span>
                     </div>
                     <div class="fr-col-10">
-                      <%= jobs[i].location %>
+                      <%= jobs[i].locations %>
                     </div>
                   </div>
                 </div>
@@ -62,9 +62,9 @@
                   <% jobs[i].experiences.forEach(function(experience) { %>
                     <a href="#" class="fr-tag fr-tag--sm"><%= experience %></a>
                   <% }); %>
-                  <% if (jobs[i].openTo.length) { %>
+                  <% if (jobs[i].openedToContractTypes.length) { %>
                   <a href="#" class="fr-tag fr-tag--sm">
-                    <%= jobs[i].openTo.join(', ') %>
+                    <%= jobs[i].openedToContractTypes.join(', ') %>
                   </a>
                   <% } %>
                 </ul>
@@ -82,7 +82,6 @@
     </div>
     <% } %>
     <script type="text/javascript">
-      window.nextPepCursor = "<%= nextPepCursor %>";
       window.nextCursor = "<%= nextCursor %>";
       window.hasMore = <%- hasMore %>;
     </script>    

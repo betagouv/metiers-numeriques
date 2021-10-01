@@ -3,12 +3,12 @@
 const moment = require('moment');
 const { JOB_FILTERS } = require('./utils');
 
-const listJobs = async ({ jobsRepository }) => {
-    return await jobsRepository.all();
+const listJobs = async ({ jobsRepository }, params) => {
+    return await jobsRepository.all(params);
 };
 
-const getJob = async (id, { jobsRepository }) => {
-    return await jobsRepository.get(id);
+const getJob = async (id, { jobsRepository }, tag) => {
+    return await jobsRepository.get(id, tag);
 };
 
 const updateLatestActivePepJobs = async (pepJob, { jobsRepository, dateProvider }) => {

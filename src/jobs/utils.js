@@ -67,7 +67,6 @@ const createPepProperties = (pepJob) => {
             'Offer_ModificationDate_',
             'Origin_BeginningDate_',
         ].includes(property) && pepJob[property]) {
-            // console.log(property, pepJob[property], moment(pepJob[property], 'DD/MM/YYYY hh:mm:ss'))
             acc[`${property}Formated`] = {
                 date: {
                     'start': moment(pepJob[property], 'DD/MM/YYYY hh:mm:ss'),
