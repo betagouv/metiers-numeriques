@@ -47,35 +47,6 @@ const mapToJob = (rawJob) => {
     });
 };
 
-// const formatDetail = (item) => {
-//     const title = parseProperty(item.properties['Name'])
-//     const id = item.id
-//     return {
-//         id: id,
-//         limitDate: parseProperty(item.properties['Date limite']) ? moment(parseProperty(item.properties['Date limite'])).format('Do MMMM YYYY') : undefined,
-//         toCandidate: urlify(parseProperty(item.properties['Pour candidater'])),
-//         location: parseProperty(item.properties['Localisation']),
-//         openTo: parseProperty(item.properties['Poste ouvert aux']),
-//         advantage: parseProperty(item.properties['Les plus du poste']),
-//         team: parseProperty(item.properties['Équipe']),
-//         title: title,
-//         publicationDate: '13/09/2021',
-//         readablePublicationDate: moment('13/09/2021', "DD/MM/YYYY").fromNow(),
-//         contact: parseProperty(item.properties['Contact']),
-//         profil: parseProperty(item.properties['Votre profil']).split('- ').filter(item => item),
-//         conditions: parseProperty(item.properties['Conditions particulières du poste']).split('- ').filter(item => item),
-//         more: urlify(parseProperty(item.properties['Pour en savoir plus'])),
-//         teamInfo: parseProperty(item.properties['Si vous avez des questions']),
-//         tasks: parseProperty(item.properties['Ce que vous ferez']).split('- ').filter(item => item),
-//         experiences: parseProperty(item.properties['Expérience']),
-//         salary: parseProperty(item.properties['rémunération']),
-//         ministry: parseProperty(item.properties['Ministère'])[0] || '',
-//         mission: urlify(parseProperty(item.properties['Mission'])),
-//         slug: buildSlug(title, id),
-//         hiringProcess: parseProperty(item.properties['Processus de recrutement'])
-//     }
-// }
-
 const formatDetailFromPep = (job) => {
     const item = job.properties
     const title = parseProperty(item.Name)
