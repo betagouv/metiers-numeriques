@@ -1,3 +1,7 @@
+'use strict';
+
+const moment = require('moment');
+
 const JOB_FILTERS = [
     'Technicienne / Technicien support utilisateurs',
     'Cheffe / Chef de projet maitrise d’œuvre SI',
@@ -103,7 +107,7 @@ const createPepProperties = (pepJob) => {
     return properties;
 };
 
-exports = {
+module.exports = {
     JOB_FILTERS,
     createPepProperties,
 };

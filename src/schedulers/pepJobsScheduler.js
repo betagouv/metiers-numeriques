@@ -10,12 +10,15 @@ module.exports.fetchPepJobs = async () => {
         csv({
                 delimiter: ';',
             },
-        ).fromStream(await axios.get(process.env.PEP_ENDPOINT, {
+        ).fromStream(((await axios.get(process.env.PEP_ENDPOINT, {
                 responseType: 'stream',
-            }),
-        ).subscribe(async (pepJob) => {
-            await usecases.updateLatestActivePepJobs(pepJob, { jobsRepository, dateProvider });
-            count++;
+            })).data),
+        ).subscribe( (pepJob) => {
+            return new Promise(async (resolve, reject) => {
+                    await usecases.updateLatestActivePepJobs(pepJob, { jobsRepository, dateProvider });
+                    count++;
+                resolve();
+            })
         }, () => {
         }, () => {
         });

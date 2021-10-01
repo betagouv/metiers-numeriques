@@ -23,9 +23,12 @@ const updateLatestActivePepJobs = async (pepJob, { jobsRepository, dateProvider 
     if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && isNew) {
         const page = await jobsRepository.getPage(process.env.PEP_DATABASE_URL, pepJob.OfferID);
         if (!page) {
-            await jobsRepository.createPage(process.env.PEP_DATABASE_URL, pepJob);
+            await jobsRepository.createPage(process.env.PEP_DATABASE_ID, pepJob);
         }
+        return true
     }
+
+    return false;
 };
 
 module.exports = {

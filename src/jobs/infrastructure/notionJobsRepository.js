@@ -50,7 +50,7 @@ module.exports.NotionService = {
                 },
             }, {
                 headers: {
-                    'Authorization': `Bearer ${process.env.TOKEN}`,
+                    'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                     'Notion-Version': '2021-08-16',
                 },
             });
@@ -72,7 +72,7 @@ module.exports.NotionService = {
                 'properties': pepProperties,
             }, {
                 headers: {
-                    'Authorization': `Bearer ${process.env.TOKEN}`,
+                    'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                     'Notion-Version': '2021-08-16',
                 },
             });
