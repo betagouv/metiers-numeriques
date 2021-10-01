@@ -19,7 +19,6 @@ const updateLatestActivePepJobs = async (pepJob, { jobsRepository, dateProvider 
     if (process.env.CRON_IMPORT_ALL) {
         isNew = true;
     }
-    // TODO: éventuellement placer le stream ici via un repo
     if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && isNew) {
         const page = await jobsRepository.getPage(process.env.PEP_DATABASE_ID, pepJob.OfferID);
         if (!page) {
