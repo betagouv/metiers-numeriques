@@ -13,6 +13,10 @@
     "test:integration": "jest --config=jest.integration.config.js",
     "test:e2e": "jest --config=jest.e2e.config.js"
   },
+  "engines": {
+    "node": "14",
+    "npm": "7"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/betagouv/metiers-numeriques.git"
