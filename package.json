@@ -8,6 +8,7 @@
     "checkHTMLLocal": "site-validator --verbose --local --url http://localhost:8080",
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --config=jest.config.js",
     "test:unit:watch": "jest --watchAll --config=jest.config.js",
     "test:integration": "jest --config=jest.integration.config.js",
