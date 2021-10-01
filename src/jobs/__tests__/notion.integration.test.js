@@ -45,7 +45,6 @@ describe('Jobs fetch api', () => {
         })}));
 
         const result = await NotionService.get(jobsStub.results[0].id);
-        console.log(result)
         expect(result).toEqual(new Job({
             id: 'acd471f0-2db5-4685-bdb7-eeaba1f03875',
             title: 'Data scientist F/H',

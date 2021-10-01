@@ -79,7 +79,6 @@ module.exports.NotionService = {
                     'Notion-Version': '2021-08-16'
                 }
             })
-            console.log(result)
             
         } catch(e) {
             console.log(e)
