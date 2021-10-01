@@ -21,7 +21,7 @@ const updateLatestActivePepJobs = async (pepJob, { jobsRepository, dateProvider 
     }
     // TODO: éventuellement placer le stream ici via un repo
     if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && isNew) {
-        const page = await jobsRepository.getPage(process.env.PEP_DATABASE_URL, pepJob.OfferID);
+        const page = await jobsRepository.getPage(process.env.PEP_DATABASE_ID, pepJob.OfferID);
         if (!page) {
             await jobsRepository.createPage(process.env.PEP_DATABASE_ID, pepJob);
         }
