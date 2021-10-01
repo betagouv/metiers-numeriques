@@ -1,3 +1,3 @@
 require('dotenv').config();
-const { fetchPepJobs } = require('../schedulers/pepJobsScheduler');
-fetchPepJobs();
+const { fetchPepJobs } = require('../src/schedulers/pepJobsScheduler');
+fetchPepJobs().then();

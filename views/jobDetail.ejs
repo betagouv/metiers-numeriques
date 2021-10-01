@@ -1,0 +1,160 @@
+<%- include('partials/header') -%>
+<div class="fr-container">
+    <div id="mission-title">
+        <h1>
+            <%= job.title %>
+        </h1>
+    </div>
+    <div class="fr-callout mission-summary">
+        <div class="fr-callout__text">
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <% var blocks = [ { title: `Type de contrat`, text: job.contrat}, {title: `Ministère`,
+                    text: job.department}, {title: `Remuneration`, text: job.salary}, {title: `Localisation`, text:
+                    job.locations}] ; %>
+                <% for(let i=0; i < blocks.length; i++) { %>
+                    <div class="mission-summary__block fr-col-xs-12 fr-col-md-3">
+                        <div class="mission-summary__block__title">
+                            <%= blocks[i].title %>
+                        </div>
+                        <div class="mission-summary__block__content">
+                            <%= blocks[i].text %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <% if(job.openedToContractTypes){ %>
+        <div id="mission-description-prerequis">
+            <h2>Poste ouvert aux</h2>
+            <ul>
+                <% job.openedToContractTypes.forEach(function(item) { %>
+                <li>
+                    <%=item%>
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    <% if(job.mission){ %>
+    <div id="mission-description">
+        <div id="mission-description-context">
+            <h2>Mission</h2>
+            <p>
+                <%- job.mission.replace(/\n/g, '<br>') %>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.tasks){ %>
+            <div id="mission-description-activities">
+                <h2>Ce que vous ferez</h2>
+                <p>
+                <ul>
+                    <% job.tasks.forEach(function(task) { %>
+                    <li>
+                        <%=task%>
+                    </li>
+                    <% }); %>
+                </ul>
+                </p>
+            </div>
+        <% } %>
+        <% if(job.experiences){ %>
+        <div id="mission-description-activities">
+            <h2>Experiences</h2>
+            <p>
+                <%=job.experiences%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.team){ %>
+        <div id="mission-description-formation">
+            <h2>L'equipe</h2>
+            <p>
+                <%=job.team%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.teamInfo){ %>
+        <div id="mission-description-prerequis">
+            <h2>Si vous avez des questions</h2>
+            <p>
+                <%=job.teamInfo%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.profil){ %>
+            <div id="mission-description-prerequis">
+                <h2>Profil</h2>
+                <p>
+                    <%- job.profil.replace(/\n/g, '<br>') %>
+                </p>
+            </div>
+        <% } %>
+        <% if(job.limitDate){ %>
+        <div id="mission-description-prerequis">
+            <h2>Date limite</h2>
+            <p>
+                <%=job.limitDate%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.toApply){ %>
+        <div id="mission-description-prerequis">
+            <h2>Pour candidater</h2>
+            <p>
+                <%=job.toApply%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.advantage){ %>
+        <div id="mission-description-prerequis">
+            <h2>Les plus du poste</h2>
+            <p>
+                <%=job.advantage%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.conditions){ %>
+        <div id="mission-description-prerequis">
+            <h2>Conditions particulières du poste</h2>
+            <p>
+                <%=job.conditions%>
+            </p>
+        </div>
+        <% } %>
+        <% if(job.more){ %>
+            <div id="mission-description-prerequis">
+                <h2>Pour en savoir plus</h2>
+                <p>
+                    <%- job.more %>
+                </p>
+            </div>
+        <% } %>
+        <div id="postuler" class="fr-mb-5w">
+        </div>
+        <div class="fr-callout">
+            <div class="fr-callout__text">
+                <div class="fr-container">
+                    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center fr-grid-row--middle ">
+                        <div class="fr-col" style="text-align: left">
+                            <div class="fr-mb-4w fr-mb-md-0">
+                                Postuler
+                                <span class="fr-mx-1v">
+                      <b>
+                        <%= job.contact %>
+                      </b>
+                    </span>
+                            </div>
+                            <a title="Postuler" target="_blank"
+                               rel="noopener noreferrer" class="fr-btn fr-btn--secondary fr-text--lg">
+                                Postuler
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/footer') -%>
