@@ -54,9 +54,9 @@ const formatDetailFromPep = (job) => {
     return new Job({
         id,
         title,
-        mission: urlify(parseProperty(item.JobDescriptionTranslation_Description1_)),
+        mission: urlify(parseProperty(item.JobDescriptionTranslation_Description1_) || ''),
         experiences: parseProperty(item.ApplicantCriteria_EducationLevel_) ? [parseProperty(item.ApplicantCriteria_EducationLevel_)] : [],
-        locations: [parseProperty(item.Location_JobLocation_).replace('- -', '')],
+        locations: [(parseProperty(item.Location_JobLocation_) || '').replace('- -', '')],
         department: [parseProperty(item.Origin_Entity_)],
         openedToContractTypes: parseProperty(item.JobDescription_Contract_) ? [parseProperty(item.JobDescription_Contract_)] : [],
         salary: undefined,
@@ -71,7 +71,7 @@ const formatDetailFromPep = (job) => {
         tasks: undefined,
         more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${parseProperty(item.Offer_Reference_)}/`),
         readablePublicationDate: moment(parseProperty(item.FirstPublicationDate), "DD/MM/YYYY").fromNow(),
-        publicationDate: parseProperty(item.FirstPublicationDate).split(' ')[0],
+        publicationDate: (parseProperty(item.FirstPublicationDate) ||'').split(' ')[0],
         slug: buildSlug(title, id) + '?tag=pep',
     })
 }

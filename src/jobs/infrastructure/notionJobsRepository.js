@@ -6,7 +6,7 @@ const { mapToJob, formatDetailFromPep } = require('./mappers');
 const { createPepProperties } = require('../utils');
 
 module.exports.NotionService = {
-    async all({ startCursor }) {
+    async all({ startCursor }={}) {
         let jobs = []
         let jobsPep = []
         let nextCursor;
@@ -79,6 +79,7 @@ module.exports.NotionService = {
                     'Notion-Version': '2021-08-16'
                 }
             })
+            console.log(result)
             
         } catch(e) {
             console.log(e)
