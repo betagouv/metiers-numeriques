@@ -10,7 +10,7 @@
           <% if (job.publicationDate) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
-                  Publié le  
+                  Publié le
                 </div>
                 <div class="fr-col-md-10 fr-col-sm-12">
                   <b><%= job.publicationDate %></b>
@@ -73,7 +73,7 @@
       <% if(job.team){ %>
       <div class="fr-grid-row fr-grid-row--gutters">
         <div class="fr-col-md-2 fr-col-sm-12">
-          <h3>Equipe</h3>
+          <h3>Équipe</h3>
         </div>
         <div class="fr-col-md-10 fr-col-sm-12">
           <p class="fr-text--lg"><%= job.team %></p>
@@ -82,7 +82,8 @@
       <% } %>
       <% if(job.mission){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
+          <div class="fr-col                </p>
+-md-2 fr-col-sm-12">
            <h3>Mission</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
@@ -166,12 +167,11 @@
                 <p class="fr-text--lg">
                   <%- job.teamInfo %>
                 </p>
-              </p>
             </div>
           </div>
         <% } %>
         <% if(job.toApply){ %>
-          <div class="fr-grid-row fr-grid-row--gutters"">
+          <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
               <p class="fr-text--lg">Pour candidater</p>
               </div>
@@ -179,12 +179,11 @@
                   <p class="fr-text--lg">
                     <b><%- job.toApply %></b>
                   </p>
-                </p>
               </div>
           </div>
         <% } %>
         <% if(job.more){ %>
-          <div class="fr-grid-row fr-grid-row--gutters"">
+          <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
               <p class="fr-text--lg">Pour en savoir plus</p>
               </div>
@@ -224,6 +223,5 @@
         <% } %>
       </div>
     </div>
- 
+
   <%- include('partials/footer') -%>
-  

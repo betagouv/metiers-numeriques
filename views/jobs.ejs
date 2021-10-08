@@ -1,9 +1,10 @@
 <%- include('partials/header') -%>
   <div id="offres-de-mission" class="fr-container fr-mt-4w">
+      <h1 style='display: flex; justify-content: center; align-items: center;'>Découvrez les offres d'emploi</h1>
       <div class="fr-px-2w fr-px-md-6w">
               <div class="fr-grid-row" id="infinite-list">
                 <!-- <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
-                </div> -->  
+                </div> -->
                 <%- include('partials/jobList', {jobs: jobs, nextCursor: nextCursor, hasMore: hasMore }) %>
               </div>
       </div>
