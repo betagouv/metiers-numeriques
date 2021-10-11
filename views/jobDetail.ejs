@@ -1,160 +1,226 @@
 <%- include('partials/header') -%>
-<div class="fr-container">
-    <div id="mission-title">
+  <div class="fr-container">
+      <div class="fr-mb-4w fr-mt-6w">
         <h1>
-            <%= job.title %>
+          <%= job.title %>
         </h1>
-    </div>
-    <div class="fr-callout mission-summary">
+      </div>
+      <div class="fr-callout fr-my-2w">
         <div class="fr-callout__text">
+          <% if (job.publicationDate) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
-                <% var blocks = [ { title: `Type de contrat`, text: job.contrat}, {title: `Ministère`,
-                    text: job.department}, {title: `Remuneration`, text: job.salary}, {title: `Localisation`, text:
-                    job.locations}] ; %>
-                <% for(let i=0; i < blocks.length; i++) { %>
-                    <div class="mission-summary__block fr-col-xs-12 fr-col-md-3">
-                        <div class="mission-summary__block__title">
-                            <%= blocks[i].title %>
-                        </div>
-                        <div class="mission-summary__block__content">
-                            <%= blocks[i].text %>
-                        </div>
-                    </div>
-                <% } %>
-            </div>
-        </div>
-    </div>
-    <% if(job.openedToContractTypes){ %>
-        <div id="mission-description-prerequis">
-            <h2>Poste ouvert aux</h2>
-            <ul>
-                <% job.openedToContractTypes.forEach(function(item) { %>
-                <li>
-                    <%=item%>
-                </li>
-                <% }); %>
-            </ul>
-        </div>
-    <% } %>
-    <% if(job.mission){ %>
-    <div id="mission-description">
-        <div id="mission-description-context">
-            <h2>Mission</h2>
-            <p>
-                <%- job.mission.replace(/\n/g, '<br>') %>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.tasks){ %>
-            <div id="mission-description-activities">
-                <h2>Ce que vous ferez</h2>
-                <p>
-                <ul>
-                    <% job.tasks.forEach(function(task) { %>
-                    <li>
-                        <%=task%>
-                    </li>
-                    <% }); %>
-                </ul>
-                </p>
-            </div>
-        <% } %>
-        <% if(job.experiences){ %>
-        <div id="mission-description-activities">
-            <h2>Experiences</h2>
-            <p>
-                <%=job.experiences%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.team){ %>
-        <div id="mission-description-formation">
-            <h2>L'equipe</h2>
-            <p>
-                <%=job.team%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.teamInfo){ %>
-        <div id="mission-description-prerequis">
-            <h2>Si vous avez des questions</h2>
-            <p>
-                <%=job.teamInfo%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.profil){ %>
-            <div id="mission-description-prerequis">
-                <h2>Profil</h2>
-                <p>
-                    <%- job.profil.replace(/\n/g, '<br>') %>
-                </p>
-            </div>
-        <% } %>
-        <% if(job.limitDate){ %>
-        <div id="mission-description-prerequis">
-            <h2>Date limite</h2>
-            <p>
-                <%=job.limitDate%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.toApply){ %>
-        <div id="mission-description-prerequis">
-            <h2>Pour candidater</h2>
-            <p>
-                <%=job.toApply%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.advantage){ %>
-        <div id="mission-description-prerequis">
-            <h2>Les plus du poste</h2>
-            <p>
-                <%=job.advantage%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.conditions){ %>
-        <div id="mission-description-prerequis">
-            <h2>Conditions particulières du poste</h2>
-            <p>
-                <%=job.conditions%>
-            </p>
-        </div>
-        <% } %>
-        <% if(job.more){ %>
-            <div id="mission-description-prerequis">
-                <h2>Pour en savoir plus</h2>
-                <p>
-                    <%- job.more %>
-                </p>
-            </div>
-        <% } %>
-        <div id="postuler" class="fr-mb-5w">
-        </div>
-        <div class="fr-callout">
-            <div class="fr-callout__text">
-                <div class="fr-container">
-                    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center fr-grid-row--middle ">
-                        <div class="fr-col" style="text-align: left">
-                            <div class="fr-mb-4w fr-mb-md-0">
-                                Postuler
-                                <span class="fr-mx-1v">
-                      <b>
-                        <%= job.contact %>
-                      </b>
-                    </span>
-                            </div>
-                            <a title="Postuler" target="_blank"
-                               rel="noopener noreferrer" class="fr-btn fr-btn--secondary fr-text--lg">
-                                Postuler
-                            </a>
-                        </div>
-                    </div>
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  Publié le
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                  <b><%= job.publicationDate %></b>
                 </div>
             </div>
+          <% } %>
+          <% if (job.department) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  Ministère
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                  <b><%= job.department.join(', ') %></b>
+                </div>
+            </div>
+          <% } %>
+          <% if (job.locations) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  Localisation
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                  <b><%= job.locations %></b>
+                </div>
+            </div>
+          <% } %>
+          <% if (job.openedToContractTypes.length) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  Ouvert aux
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                  <b><%= job.openedToContractTypes.join(', ') %></b>
+                </div>
+            </div>
+          <% } %>
+          <% if (job.salary) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  Rémunération
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                  <b><%= job.salary %></b>
+                </div>
+            </div>
+          <% } %>
+          <% if (job.experiences.length) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  Expérience
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                  <b><%= job.experiences.join(' | ') %></b>
+                </div>
+            </div>
+          <% } %>
         </div>
+      </div>
+      <div class="fr-my-4w">
+      <% if(job.team){ %>
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+          <h3>Équipe</h3>
+        </div>
+        <div class="fr-col-md-10 fr-col-sm-12">
+          <p class="fr-text--lg"><%= job.team %></p>
+        </div>
+      </div>
+      <% } %>
+      <% if(job.mission){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Mission</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+            <p class="fr-text--lg"><%- job.mission.replace(/\n/g, '<br>') %></p>
+          </div>
+        </div>
+      <% } %>
+      <% if(job.tasks){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Ce que vous ferez</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+              <ul class="fr-text--lg">
+                <% job.tasks.forEach(function(task) { %>
+                  <li>
+                    <%=task%>
+                  </li>
+                  <% }); %>
+              </ul>
+            </p>
+          </div>
+        </div>
+      <% } %>
+      <% if(job.conditions.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Conditions particulières du poste</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+            <% if(job.conditions.length == 1){ %>
+              <p class="fr-text--lg">
+                <%- job.conditions[0].replace(/\n/g, '<br>') %>
+              </p>
+            <% }; %>
+            <% if(job.conditions.length > 1){ %>
+              <ul class="fr-text--lg">
+                <% job.conditions.forEach(function(condition) { %>
+                  <li>
+                    <%=condition%>
+                  </li>
+                <% }); %>
+              </ul>
+            <% }; %>
+          </div>
+        </div>
+      <% } %>
+      <% if(job.profile.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Votre profil</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+              <% if(job.profile.length == 1){ %>
+                <p class="fr-text--lg">
+                  <%- job.profile[0].replace(/\n/g, '<br>') %>
+                </p>
+              <% }; %>
+              <% if(job.profile.length > 1){ %>
+                <ul class="fr-text--lg">
+                  <% job.profile.forEach(function(profile) { %>
+                    <li>
+                      <%=profile%>
+                    </li>
+                  <% }); %>
+                </ul>
+              <% }; %>
+            </p>
+          </div>
+        </div>
+      <% } %>
     </div>
-</div>
-<%- include('partials/footer') -%>
+  </div>
+  <div class="fr-container fr-container--fluid fr-py-4w fr-mb-4w" style="background-color: #F0F0F0">
+        <% if(job.teamInfo){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+              <p class="fr-text--lg">Si vous avez des questions</p>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12">
+                <p class="fr-text--lg">
+                  <%- job.teamInfo %>
+                </p>
+            </div>
+          </div>
+        <% } %>
+        <% if(job.toApply){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+              <p class="fr-text--lg">Pour candidater</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p class="fr-text--lg">
+                    <b><%- job.toApply %></b>
+                  </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(job.more){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+              <p class="fr-text--lg">Pour en savoir plus</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p class="fr-text--lg">
+                    <%- job.more %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(job.limitDate){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+                <p class="fr-text--lg">Date Limite</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p class="fr-text--lg">
+                    le <%=job.limitDate %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(job.hiringProcess){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+                <p class="fr-text--lg">Processus de recrutement</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p class="fr-text--lg">
+                    <%= job.hiringProcess %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+  <%- include('partials/footer') -%>

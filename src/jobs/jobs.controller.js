@@ -5,9 +5,16 @@ const {jobsRepository} = require('./dependencies');
 
 module.exports.list = async (req, res) => {
     try {
-        const result = await usecases.listJobs({jobsRepository});
-        res.render('jobs', {
-            jobs: result,
+        const { jobs, nextCursor, hasMore } = await usecases.listJobs({
+            jobsRepository
+        }, {
+            startCursor: req.query.start_cursor,
+        });
+        const view = req.query.start_cursor ? 'partials/jobList' : 'jobs'
+        res.render(view, {
+            jobs: jobs,
+            hasMore,
+            nextCursor,
             contactEmail: 'contact@metiers.numerique.gouv.fr',
         });
     } catch (e) {
@@ -16,7 +23,9 @@ module.exports.list = async (req, res) => {
 };
 
 module.exports.get = async (req, res) => {
-    const result = await usecases.getJob(req.params.id, {jobsRepository});
+    const id = req.url.split('-').slice(-5).join('-').split('?')[0];
+    const tag = req.query.tag
+    const result = await usecases.getJob(id, {jobsRepository}, tag);
     res.render('jobDetail', {
         job: result,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
