@@ -9,7 +9,7 @@
                   <%= jobs[i].department[0].slice(0,100) %>
                 </div>
               <% } %>
-              <% if (jobs[i].readablePublicationDate) { %>
+              <% if (jobs[i].publicationDate) { %>
                 <div class="fr-my-2w">
                   <div class="fr-grid-row">
                     <div class="fr-col-2">
@@ -18,7 +18,7 @@
                       </span>
                     </div>
                     <div class="fr-col-10">
-                      <%= jobs[i].readablePublicationDate %>
+                      <%= dateReadableFormat(jobs[i].publicationDate) %>
                     </div>
                   </div>
                 </div>
@@ -84,4 +84,4 @@
     <script type="text/javascript">
       window.nextCursor = "<%= nextCursor %>";
       window.hasMore = <%- hasMore %>;
-    </script>    
+    </script>

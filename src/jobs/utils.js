@@ -1,6 +1,7 @@
 'use strict';
 
-const moment = require('moment');
+const { formatDistance, parse } = require('date-fns');
+const { fr } = require('date-fns/locale');
 
 const JOB_FILTERS = [
     'Technicienne / Technicien support utilisateurs',
@@ -69,7 +70,7 @@ const createPepProperties = (pepJob) => {
         ].includes(property) && pepJob[property]) {
             acc[`${property}Formated`] = {
                 date: {
-                    'start': moment(pepJob[property], 'DD/MM/YYYY hh:mm:ss'),
+                    'start': parse(pepJob[property], 'DD/MM/yyyy hh:mm:ss', new Date()),
                 },
             };
         }
@@ -106,7 +107,12 @@ const createPepProperties = (pepJob) => {
     return properties;
 };
 
+const dateReadableFormat = (date, now = new Date()) => {
+    return formatDistance(date, now, { addSuffix: true, locale: fr })
+}
+
 module.exports = {
     JOB_FILTERS,
     createPepProperties,
+    dateReadableFormat
 };

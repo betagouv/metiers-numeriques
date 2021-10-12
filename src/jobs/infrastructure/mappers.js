@@ -1,6 +1,6 @@
 const Job = require('../entities');
-const moment = require('moment')
-moment.locale('fr');
+const { toDate } = require('date-fns-tz');
+
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function(url) {
@@ -8,7 +8,7 @@ function urlify(text) {
     })
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
-}  
+}
 
 const buildSlug = (title, id) => {
     const slug = `${title}-${id}`.toLowerCase()
@@ -19,7 +19,7 @@ const buildSlug = (title, id) => {
     return slug
 }
 
-const mapToJob = (rawJob) => {
+const mapToJob = (rawJob, now = Date.now()) => {
     const title = parseProperty(rawJob.properties['Name'])
     const id = rawJob.id
     return new Job({
@@ -32,7 +32,7 @@ const mapToJob = (rawJob) => {
         openedToContractTypes: parseProperty(rawJob.properties['Poste ouvert aux']),
         salary: parseProperty(rawJob.properties['Rémunération']),
         team: parseProperty(rawJob.properties['Équipe']),
-        limitDate: parseProperty(rawJob.properties['Date limite']) ? moment(parseProperty(rawJob.properties['Date limite'])).format('Do MMMM YYYY') : undefined,
+        limitDate: parseProperty(rawJob.properties['Date limite']) ? parseProperty(rawJob.properties['Date limite']) : undefined,
         toApply: parseProperty(rawJob.properties['Pour candidater']),
         advantages: parseProperty(rawJob.properties['Les plus du poste']),
         contact: parseProperty(rawJob.properties['Contact']),
@@ -42,8 +42,6 @@ const mapToJob = (rawJob) => {
         tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
         slug: buildSlug(title, id),
         hiringProcess: parseProperty(rawJob.properties['Processus de recrutement']),
-        publicationDate: '13/09/2021',
-        readablePublicationDate: moment('13/09/2021', "DD/MM/YYYY").fromNow(),
     });
 };
 
@@ -70,7 +68,6 @@ const formatDetailFromPep = (job) => {
         teamInfo: '',
         tasks: undefined,
         more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${parseProperty(item.Offer_Reference_)}/`),
-        readablePublicationDate: moment(parseProperty(item.FirstPublicationDate), "DD/MM/YYYY").fromNow(),
         publicationDate: (parseProperty(item.FirstPublicationDate) ||'').split(' ')[0],
         slug: buildSlug(title, id) + '?tag=pep',
     })
@@ -90,13 +87,13 @@ const parseProperty = (item) => {
         } else if ('email' in item) {
             return item.email[0].plain_text ;
         } else if ('date' in item) {
-            return item.date.start;
+            return toDate(item.date.start + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
         }
         else {
-            return
+            return undefined
         }
     } catch (e) {
-        return
+        return undefined
     }
 };
 
