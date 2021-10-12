@@ -15,14 +15,13 @@
  * @property {string} salary
  * @property {string} team
  * @property {string} slug
- * @property {string} hiringProcess
- * @property {string} publicationDate
- * @property {string} readablePublicationDate
+ * @property {string|null} [hiringProcess]
+ * @property {Date|null} [publicationDate]
  * @property {string[]} conditions
  * @property {string} teamInfo
  * @property {string} toApply
- * @property {string} more
- * @property {string} limitDate
+ * @property {string|null} [more]
+ * @property {Date} limitDate
  */
 
 /**
@@ -46,13 +45,12 @@ module.exports = class Job {
                     salary,
                     team,
                     slug,
-                    hiringProcess,
-                    publicationDate,
-                    readablePublicationDate,
+                    hiringProcess = null,
+                    publicationDate= null,
                     conditions,
                     teamInfo,
                     toApply,
-                    more,
+                    more = null,
                     limitDate
                 }) {
         this.id = id;
@@ -69,7 +67,6 @@ module.exports = class Job {
         this.slug = slug;
         this.hiringProcess = hiringProcess;
         this.publicationDate = publicationDate;
-        this.readablePublicationDate = readablePublicationDate;
         this.conditions = conditions
         this.teamInfo = teamInfo
         this.toApply = toApply

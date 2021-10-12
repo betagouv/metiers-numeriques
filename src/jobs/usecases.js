@@ -1,6 +1,7 @@
 'use strict';
 
-const moment = require('moment');
+const { isBefore, parse, sub } = require('date-fns');
+
 const { JOB_FILTERS } = require('./utils');
 
 const listJobs = async ({ jobsRepository }, params) => {
@@ -12,10 +13,12 @@ const getJob = async (id, { jobsRepository }, tag) => {
 };
 
 const updateLatestActivePepJobs = async (pepJob, { jobsRepository, dateProvider }) => {
-    const date = dateProvider.date();
-    date.setDate(date.getDate() - 1);
     // import only offers published since yesterday
-    let isNew = moment(pepJob.FirstPublicationDate, 'DD/MM/YYYY hh:mm:ss') > date;
+    // let isNew = moment(pepJob.FirstPublicationDate, 'DD/MM/YYYY hh:mm:ss') > date;
+    let isNew = isBefore(
+        parse(pepJob.FirstPublicationDate, 'dd/MM/yyyy hh:mm:ss', dateProvider.date()),
+        sub(dateProvider.date(), { days: 1 })
+    )
     if (process.env.CRON_IMPORT_ALL) {
         isNew = true;
     }
