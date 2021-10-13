@@ -42,6 +42,7 @@ const mapToJob = (rawJob, now = Date.now()) => {
         tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
         slug: buildSlug(title, id),
         hiringProcess: parseProperty(rawJob.properties['Processus de recrutement']),
+        publicationDate: toDate("2021-09-13" + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
     });
 };
 

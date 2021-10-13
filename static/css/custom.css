@@ -42,25 +42,6 @@ span.tofill::before {
   background-color: var(--g100);
 }
 
-.btn-home {
-  background-color: #FDCF41;
-  color: var(--g800);
-}
-
-.btn-home:hover {
-  background-color: #FDB541;
-  background-image: linear-gradient(!important 0deg , var(--g800), #FDB541) !important
-}
-
-.btn-home--secondary {
-  --color-hover: #FDB541;
-}
-
-.btn-home--secondary {
-  color:#FDCF41;
-  box-shadow: inset 0 0 0 1px #FDCF41;
-}
-
 /* Contact*/
 
 .newsletter {
