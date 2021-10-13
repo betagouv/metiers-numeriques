@@ -1,6 +1,7 @@
 'use strict';
 
 const usecases = require('./usecases');
+const { dateReadableFormat } = require('./utils');
 const {jobsRepository} = require('./dependencies');
 
 module.exports.list = async (req, res) => {
@@ -10,9 +11,10 @@ module.exports.list = async (req, res) => {
         }, {
             startCursor: req.query.start_cursor,
         });
-        const view = req.query.start_cursor ? 'partials/jobList' : 'jobs'
+        const view = req.query.start_cursor ? 'partials/jobList' : 'jobs';
         res.render(view, {
             jobs: jobs,
+            dateReadableFormat,
             hasMore,
             nextCursor,
             contactEmail: 'contact@metiers.numerique.gouv.fr',

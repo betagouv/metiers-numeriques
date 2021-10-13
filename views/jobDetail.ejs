@@ -6,7 +6,7 @@
         </h1>
       </div>
       <div class="fr-callout fr-my-2w">
-        <div class="fr-callout__text">
+        <div class="fr-callout__text fr-text--lg">
           <% if (job.publicationDate) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
@@ -76,7 +76,7 @@
           <h3>Équipe</h3>
         </div>
         <div class="fr-col-md-10 fr-col-sm-12">
-          <p class="fr-text--lg"><%= job.team %></p>
+          <p><%= job.team %></p>
         </div>
       </div>
       <% } %>
@@ -86,7 +86,7 @@
            <h3>Mission</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
-            <p class="fr-text--lg"><%- job.mission.replace(/\n/g, '<br>') %></p>
+            <p><%- job.mission.replace(/\n/g, '<br>') %></p>
           </div>
         </div>
       <% } %>
@@ -96,7 +96,7 @@
            <h3>Ce que vous ferez</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
-              <ul class="fr-text--lg">
+              <ul>
                 <% job.tasks.forEach(function(task) { %>
                   <li>
                     <%=task%>
@@ -114,12 +114,12 @@
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
             <% if(job.conditions.length == 1){ %>
-              <p class="fr-text--lg">
+              <p>
                 <%- job.conditions[0].replace(/\n/g, '<br>') %>
               </p>
             <% }; %>
             <% if(job.conditions.length > 1){ %>
-              <ul class="fr-text--lg">
+              <ul>
                 <% job.conditions.forEach(function(condition) { %>
                   <li>
                     <%=condition%>
@@ -137,12 +137,12 @@
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
               <% if(job.profile.length == 1){ %>
-                <p class="fr-text--lg">
+                <p>
                   <%- job.profile[0].replace(/\n/g, '<br>') %>
                 </p>
               <% }; %>
               <% if(job.profile.length > 1){ %>
-                <ul class="fr-text--lg">
+                <ul>
                   <% job.profile.forEach(function(profile) { %>
                     <li>
                       <%=profile%>
@@ -160,10 +160,10 @@
         <% if(job.teamInfo){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
-              <p class="fr-text--lg">Si vous avez des questions</p>
+              <p>Si vous avez des questions</p>
             </div>
             <div class="fr-col-md-10 fr-col-sm-12">
-                <p class="fr-text--lg">
+                <p>
                   <%- job.teamInfo %>
                 </p>
             </div>
@@ -172,10 +172,10 @@
         <% if(job.toApply){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
-              <p class="fr-text--lg">Pour candidater</p>
+              <p>Pour candidater</p>
               </div>
               <div class="fr-col-md-10 fr-col-sm-12">
-                  <p class="fr-text--lg">
+                  <p>
                     <b><%- job.toApply %></b>
                   </p>
               </div>
@@ -184,10 +184,10 @@
         <% if(job.more){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
-              <p class="fr-text--lg">Pour en savoir plus</p>
+              <p>Pour en savoir plus</p>
               </div>
               <div class="fr-col-md-10 fr-col-sm-12">
-                  <p class="fr-text--lg">
+                  <p>
                     <%- job.more %>
                   </p>
                 </p>
@@ -197,10 +197,10 @@
         <% if(job.limitDate){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
-                <p class="fr-text--lg">Date Limite</p>
+                <p>Date Limite</p>
               </div>
               <div class="fr-col-md-10 fr-col-sm-12">
-                  <p class="fr-text--lg">
+                  <p>
                     le <%=job.limitDate %>
                   </p>
                 </p>
@@ -210,10 +210,10 @@
         <% if(job.hiringProcess){ %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-2 fr-col-sm-12">
-                <p class="fr-text--lg">Processus de recrutement</p>
+                <p>Processus de recrutement</p>
               </div>
               <div class="fr-col-md-10 fr-col-sm-12">
-                  <p class="fr-text--lg">
+                  <p>
                     <%= job.hiringProcess %>
                   </p>
                 </p>

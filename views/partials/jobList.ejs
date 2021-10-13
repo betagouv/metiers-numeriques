@@ -1,6 +1,6 @@
 <% for (let i=0; i < jobs.length; i++) { %>
     <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
-      <div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable fr-enlarge-link">
+      <div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable">
         <div class="fr-card__body">
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
@@ -9,7 +9,7 @@
                   <%= jobs[i].department[0].slice(0,100) %>
                 </div>
               <% } %>
-              <% if (jobs[i].readablePublicationDate) { %>
+              <% if (jobs[i].publicationDate) { %>
                 <div class="fr-my-2w">
                   <div class="fr-grid-row">
                     <div class="fr-col-2">
@@ -18,7 +18,7 @@
                       </span>
                     </div>
                     <div class="fr-col-10">
-                      <%= jobs[i].readablePublicationDate %>
+                      <%= dateReadableFormat(jobs[i].publicationDate) %>
                     </div>
                   </div>
                 </div>
@@ -55,6 +55,7 @@
                   text-overflow: ellipsis;
                   display: -webkit-box;
                   -webkit-line-clamp: 3; /* number of lines to show */
+                  font-size: 1rem;
                   -webkit-box-orient: vertical;">
                   <%- (jobs[i].mission || jobs[i].tasks[0] || '').replace(/\n/g, '<br>')%>
                 </p>
@@ -84,4 +85,4 @@
     <script type="text/javascript">
       window.nextCursor = "<%= nextCursor %>";
       window.hasMore = <%- hasMore %>;
-    </script>    
+    </script>

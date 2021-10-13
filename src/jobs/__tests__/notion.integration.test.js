@@ -1,5 +1,5 @@
 const usecases = require('../usecases');
-const {NotionService} = require('../infrastructure/notionJobsRepository');
+const {NotionService} = require('../infrastructure/notionJobsService');
 const jobsStub = require('./stubs/jobs.stub.json');
 const axios = require('axios');
 const Job = require('../entities');
@@ -25,10 +25,9 @@ describe('Jobs fetch api', () => {
                 "Vous avez des compétences dans les domaines liés à la production, aux échanges, à la modélisation, à la structuration et au stockage de données."],
             experiences: ['3 ans minimum dans la mise en œuvre de projets de Data Science'],
             locations: ['61-65 rue Dutot 75015 Paris'],
-            limitDate: "30 octobre 2021",
+            limitDate: new Date("2021-10-30T00:00:00.000+02:00"),
+            publicationDate: new Date("2021-09-13T00:00:00.000+02:00"),
             conditions: [],
-            publicationDate: "13/09/2021",
-            readablePublicationDate: "il y a 25 jours",
             teamInfo: "Catherine BRAX, cheffe du bureau des systèmes d’information de gestion et du décisionnel",
             toApply: "Catherine BRAX, cheffe du bureau des systèmes d’information de gestion et du décisionnel\ncatherine.brax@education.gouv.fr\net\nRobert ROUZAUD, chef de projet national sur le décisionnel\nrobert.rouzaud@education.gouv.fr\net\nL’unité de gestion administrative et des ressources humaines (UGARH)\nrecrutement-dne@education.gouv.fr",
             slug: "data-scientist-fh-acd471f0-2db5-4685-bdb7-eeaba1f03875",
@@ -57,10 +56,9 @@ describe('Jobs fetch api', () => {
                 "Vous avez des compétences dans les domaines liés à la production, aux échanges, à la modélisation, à la structuration et au stockage de données."],
             experiences: ['3 ans minimum dans la mise en œuvre de projets de Data Science'],
             locations: ['61-65 rue Dutot 75015 Paris'],
-            limitDate: "30 octobre 2021",
+            limitDate: new Date("2021-10-30T00:00:00.000+02:00"),
+            publicationDate: new Date("2021-09-13T00:00:00.000+02:00"),
             conditions: [],
-            publicationDate: "13/09/2021",
-            readablePublicationDate: "il y a 25 jours",
             teamInfo: "Catherine BRAX, cheffe du bureau des systèmes d’information de gestion et du décisionnel",
             toApply: "Catherine BRAX, cheffe du bureau des systèmes d’information de gestion et du décisionnel\ncatherine.brax@education.gouv.fr\net\nRobert ROUZAUD, chef de projet national sur le décisionnel\nrobert.rouzaud@education.gouv.fr\net\nL’unité de gestion administrative et des ressources humaines (UGARH)\nrecrutement-dne@education.gouv.fr",
             slug: "data-scientist-fh-acd471f0-2db5-4685-bdb7-eeaba1f03875",
