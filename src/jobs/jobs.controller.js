@@ -2,12 +2,12 @@
 
 const usecases = require('./usecases');
 const { dateReadableFormat } = require('./utils');
-const {jobsRepository} = require('./dependencies');
+const { jobsRepository, ministriesRepository } = require('./dependencies');
 
 module.exports.list = async (req, res) => {
     try {
         const { jobs, nextCursor, hasMore } = await usecases.listJobs({
-            jobsRepository
+            jobsRepository,
         }, {
             startCursor: req.query.start_cursor,
         });
@@ -26,10 +26,33 @@ module.exports.list = async (req, res) => {
 
 module.exports.get = async (req, res) => {
     const id = req.url.split('-').slice(-5).join('-').split('?')[0];
-    const tag = req.query.tag
-    const result = await usecases.getJob(id, {jobsRepository}, tag);
+    const tag = req.query.tag;
+    const result = await usecases.getJob(id, { jobsRepository }, tag);
     res.render('jobDetail', {
         job: result,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 };
+
+module.exports.listMinistries = async (req, res) => {
+    try {
+        const ministries = await usecases.listMinistries({
+            ministriesRepository,
+        });
+
+        res.render('ministries', {
+            ministries: ministries,
+            contactEmail: 'contact@metiers.numerique.gouv.fr',
+        });
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+// module.exports.getMinistry = async (req, res) => {
+//     const result = await usecases.getMi(id, { jobsRepository }, tag);
+//     res.render('jobDetail', {
+//         job: result,
+//         contactEmail: 'contact@metiers.numerique.gouv.fr',
+//     });
+// };

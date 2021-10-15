@@ -4,7 +4,7 @@
         <div class="fr-card__body">
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
-              <% if (jobs[i].department.length) { %>
+              <% if (jobs[i].department?.length) { %>
                 <div class="fr-mb-2w fr-mt-1w">
                   <%= jobs[i].department[0].slice(0,100) %>
                 </div>
@@ -84,5 +84,5 @@
     <% } %>
     <script type="text/javascript">
       window.nextCursor = "<%= nextCursor %>";
-      window.hasMore = <%- hasMore %>;
+      window.hasMore = <%- !!hasMore %>;
     </script>

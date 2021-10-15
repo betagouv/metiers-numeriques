@@ -1,6 +1,6 @@
 const usecases = require('../usecases');
 const Job = require('../entities');
-const {fakeJob, fakeJobs} = require('./stubs/fakeData');
+const {fakeJob, fakeJobs} = require('./stubs/fakeJobs');
 
 describe('Jobs managmenent', () => {
     it('should get the job list', async () => {

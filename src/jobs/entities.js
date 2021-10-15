@@ -28,7 +28,7 @@
  * @extends JobParams
  * @class
  */
-module.exports = class Job {
+module.exports.Job = class Job {
     /**
      * @param {JobParams} job
      */
@@ -74,3 +74,29 @@ module.exports = class Job {
         this.limitDate = limitDate
     }
 };
+
+
+/**
+ * MinistryParams
+ * @typedef {Object} MinistryParams
+ * @property {string} id
+ * @property {string} description
+ */
+
+/**
+ * @extends MinistryParams
+ * @class
+ */
+module.exports.Ministry = class Ministry {
+    /**
+     * @param {MinistryParams} ministry
+     */
+    constructor({
+                    id,
+                    description
+                }) {
+        this.id = id;
+        this.description = description;
+    }
+};
+

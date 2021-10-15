@@ -1,0 +1,43 @@
+<%- include('partials/header') -%>
+  <div id="ministeres" class="fr-container fr-mt-4w">
+      <div class="fr-container">
+          <div class="fr-grid-row fr-grid-row--center fr-grid-row--middle fr-pb-1v">
+              <div id="hero-col-1" class="fr-col-md-5 fr-col-xs-6w">
+                  <h1>Découvrez toutes les entités numériques de l'Etat</h1>
+                  <p class="text-grey fr-mb-2v">
+                      L'équipe conceptrice de ce service met tout en œuvre pour rassembler un maximun d'entités numériques très rapidement !
+                  </p>
+              </div>
+              <div id="hero-col-2" class="fr-col-md-5 fr-col-xs-6">
+                  <div>
+                      <img
+                              style="max-width: 100%;"
+                              src="/static/images/undraw_quiet_town.png"
+                              alt="L’Etat Numérique"
+                      />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div>
+
+      </div>
+      <div id='ministeres--list'>
+          <% for (const [key, value] of Object.entries(ministries)) { %>
+              <div class="fr-card fr-enlarge-link">
+                  <div class="fr-card__body">
+                      <h4 class="fr-card__title">
+                          <a href="/miniteres/<%= key %>" class="fr-card__link"><%= value[0] %></a>
+                      </h4>
+                      <p class="fr-card__desc">Description ...</p>
+                  </div>
+                  <div class="fr-card__img">
+                      <img src="static/images/dinum_placeholder.jpg" class="fr-responsive-img" alt="">
+                  </div>
+              </div>
+          <% } %>
+      </div>
+  </div>
+  <br>
+  <br>
+  <%- include('partials/footer') -%>
