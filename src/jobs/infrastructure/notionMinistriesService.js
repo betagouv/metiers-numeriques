@@ -25,10 +25,6 @@ module.exports.NotionMinistriesService = {
                 'SNUMC': ['SNUM Culture', 'https://www.notion.so/SNUM-Culture-d944df379030434284ac4faf6a30b37d'],
             };
 
-        for (const [key, value] of Object.entries(ministries)) {
-            console.log(`${key}: ${value}`);
-        }
-
         return ministries;
     },
 
