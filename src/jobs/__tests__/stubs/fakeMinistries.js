@@ -1,6 +1,6 @@
 'use strict';
 
-const Ministry = require('../../entities');
+const { Ministry } = require('../../entities');
 
 const fakeMinistries = [
     new Ministry(

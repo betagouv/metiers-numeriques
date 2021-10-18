@@ -49,10 +49,10 @@ module.exports.listMinistries = async (req, res) => {
     }
 };
 
-// module.exports.getMinistry = async (req, res) => {
-//     const result = await usecases.getMi(id, { jobsRepository }, tag);
-//     res.render('jobDetail', {
-//         job: result,
-//         contactEmail: 'contact@metiers.numerique.gouv.fr',
-//     });
-// };
+module.exports.getMinistry = async (req, res) => {
+    const ministry = await usecases.getMinistry(req.query.id, { ministriesRepository });
+    res.render('ministryDetail', {
+        job: ministry,
+        contactEmail: 'contact@metiers.numerique.gouv.fr',
+    });
+};
