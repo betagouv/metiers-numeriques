@@ -1,4 +1,4 @@
-const CronJob = require('cron');
+const { CronJob } = require('cron');
 const { fetchPepJobs } = require('./src/schedulers/pepJobsScheduler');
 require('dotenv').config();
 
