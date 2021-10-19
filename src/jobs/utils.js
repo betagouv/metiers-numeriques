@@ -70,7 +70,7 @@ const createPepProperties = (pepJob) => {
         ].includes(property) && pepJob[property]) {
             acc[`${property}Formated`] = {
                 date: {
-                    'start': parse(pepJob[property], 'dd/MM/yyyy hh:mm:ss', new Date()),
+                    'start': parse(pepJob[property], 'dd/MM/yyyy h:mm:ss', new Date()),
                 },
             };
         }
