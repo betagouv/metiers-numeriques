@@ -6,7 +6,7 @@ const Job = require('../entities');
 const { NotionMinistriesService } = require('../infrastructure/notionMinistriesService');
 
 // jest.mock('axios');
-
+//
 // describe('Jobs fetch api', () => {
 //     it('should fetch and return a list of job', async () => {
 //         axios.post.mockImplementation(() => Promise.resolve({data: jobsStub}));
@@ -74,7 +74,15 @@ const { NotionMinistriesService } = require('../infrastructure/notionMinistriesS
 
 describe('Ministries fetch api', () => {
     it('should fetch and return a list of ministries', async () => {
+        // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
+
         const ministries = await NotionMinistriesService.listMinistries();
+    });
+
+    it('should fetch and return one ministry details', async () => {
+        // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
+
+        const ministries = await NotionMinistriesService.getMinistry('1');
         console.log(ministries);
     });
 });

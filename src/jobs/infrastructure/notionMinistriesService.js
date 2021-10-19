@@ -1,7 +1,7 @@
 'use strict';
 
+const axios = require('axios');
 require('dotenv').config();
-const NotionPageToHtml = require('notion-page-to-html');
 
 // Fixme: Hardcoded for now, would need 3 Notions calls to get this list
 const MINISTRIES = {
@@ -21,55 +21,36 @@ const MINISTRIES = {
 
 module.exports.NotionMinistriesService = {
     async listMinistries() {
+        // // Récupère la liste des ministères en premier
+        // const { data } = await axios.get(`https://api.notion.com/v1/blocks/f2d24c7329454cf9b3bcbc3c8a49a294/children`, {
+        //     headers: {
+        //         'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
+        //         'Notion-Version': '2021-08-16',
+        //     },
+        // });
+        // const dataWithoutUselessBlocks = data.results.filter(m => m.has_children);
         return MINISTRIES;
     },
 
     async getMinistry(id) {
-
         try {
-            const { title, icon, cover, html } = await NotionPageToHtml.convert(MINISTRIES[id][1]);
-            console.log(title, icon, cover, html);
+            const { data } = await axios.get(`https://api.notion.com/v1/databases/a0d1dd8464904259b5798a9d72e32f88`, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
+                    'Notion-Version': '2021-08-16',
+                },
+            });
+            console.log(data.url)
+            // for (const block of data.results) {
+            //     console.log(block.type, block[block.type])
+            // }
+            // ministries.push(new Ministry({id: data.id, description: data.text}))
 
-            return { title, html };
         } catch (e) {
             console.log(e);
         }
 
         return null;
-        // try {
-        //     // Récupère la liste des ministères en premier
-        //     const { data } = await axios.get(`https://api.notion.com/v1/blocks/f2d24c7329454cf9b3bcbc3c8a49a294/children`, {
-        //         headers: {
-        //             'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
-        //             'Notion-Version': '2021-08-16',
-        //         },
-        //     });
-        //     const dataWithoutUselessBlocks = data.results.filter(m => m.has_children);
-        //
-        //     for (const ministryBlock of dataWithoutUselessBlocks) {
-        //         // const link = "https://etatnumerique.notion.site/" + ministryBlock.id;
-        //         // console.log(link)
-        //         // const { title, icon, cover, html } = await NotionPageToHtml.convert(link);
-        //         // console.log(title, icon, cover, html);
-        //         const { data } = await axios.get(`https://api.notion.com/v1/pages/${ministryBlock.id}`, {
-        //             headers: {
-        //                 'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
-        //                 'Notion-Version': '2021-08-16',
-        //             },
-        //         });
-        //         console.log(data.url)
-        //         // for (const block of data.results) {
-        //         //     console.log(block.type, block[block.type])
-        //         // }
-        //         // ministries.push(new Ministry({id: data.id, description: data.text}))
-        //     }
-        //
-        //     return ministries;
-        // } catch (e) {
-        //     console.log(e);
-        // }
-        //
-        // return null;
 
 
     },

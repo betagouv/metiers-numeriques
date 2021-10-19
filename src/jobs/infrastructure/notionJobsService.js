@@ -2,8 +2,6 @@
 
 require('dotenv').config();
 const axios = require('axios');
-const NotionPageToHtml = require('notion-page-to-html');
-const { Ministry } = require('../entities');
 const { mapToJob, formatDetailFromPep } = require('./mappers');
 const { createPepProperties } = require('../utils');
 
