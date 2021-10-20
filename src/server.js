@@ -2,7 +2,7 @@
 
 const express = require('express');
 const path = require('path');
-const {jobRoutes} = require('./jobs');
+const { jobRoutes } = require('./jobs');
 
 const appName = `metiers.numerique.gouv.fr`;
 const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’Etat';
@@ -47,6 +47,6 @@ app.get('/suivi', (req, res) => {
     });
 });
 
-app.use('/annonces', jobRoutes);
+app.use('/', jobRoutes);
 
 module.exports = app

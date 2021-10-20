@@ -33,8 +33,19 @@ const updateLatestActivePepJobs = async (pepJob, { jobsRepository, dateProvider 
     return false;
 };
 
+const listMinistries = async ({ ministriesRepository }) => {
+    return await ministriesRepository.listMinistries();
+};
+
+const getMinistry = async (id, { ministriesRepository }) => {
+    return await ministriesRepository.getMinistry(id);
+};
+
 module.exports = {
     listJobs,
     getJob,
     updateLatestActivePepJobs,
+
+    listMinistries,
+    getMinistry
 };

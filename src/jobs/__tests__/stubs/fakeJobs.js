@@ -1,6 +1,6 @@
 'use strict';
 
-const Job = require('../../entities');
+const { Job } = require('../../entities');
 
 const fakeJobs = [
     new Job(

@@ -171,6 +171,5 @@ module.exports.NotionService = {
             console.error(e);
             throw new Error('Impossible de crééer une page');
         }
-    },
-
+    }
 };

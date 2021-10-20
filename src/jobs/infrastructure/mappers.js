@@ -1,4 +1,4 @@
-const Job = require('../entities');
+const { Job } = require('../entities');
 const { toDate } = require('date-fns-tz');
 
 function urlify(text) {

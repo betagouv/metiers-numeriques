@@ -1,0 +1,71 @@
+<%- include('partials/header') -%>
+<div id="ministere" class="fr-container fr-mt-4w">
+    <div class="fr-tabs">
+        <ul class="fr-tabs__list" role="tablist" aria-label="Sections">
+            <li role="presentation">
+                <button id="tabpanel-404" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="0"
+                        role="tab" aria-selected="true" aria-controls="tabpanel-404-panel">Découvrir
+                </button>
+            </li>
+            <li role="presentation">
+                <button id="tabpanel-405" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="-1"
+                        role="tab" aria-selected="false" aria-controls="tabpanel-405-panel">Les projets
+                </button>
+            </li>
+            <li role="presentation">
+                <button id="tabpanel-406" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="-1"
+                        role="tab" aria-selected="false" aria-controls="tabpanel-406-panel">Nous rejoindre
+                </button>
+            </li>
+        </ul>
+        <div id="tabpanel-404-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel"
+             aria-labelledby="tabpanel-404" tabindex="0">
+            <h4>→ Découvrir</h4>
+
+            <h5>Les missions</h5>
+
+
+            <div class="fr-container">
+                <div class="fr-grid-row" style='justify-content: space-between'>
+                    <div class="fr-card" style='flex-basis: 30%'>
+                        <div class="fr-card__body">
+                            <h4 class="fr-card__title">
+                                <a href="#" class="fr-card__link">L'équipe</a>
+                            </h4>
+                            <p class="fr-card__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                        </div>
+                    </div>
+                    <div class="fr-card" style='flex-basis: 30%'>
+                        <div class="fr-card__body">
+                            <h4 class="fr-card__title">
+                                <a href="#" class="fr-card__link">Adresse</a>
+                            </h4>
+                            <p class="fr-card__desc">Lorem ipsum</p>
+                        </div>
+                    </div>
+                    <div class="fr-card" style='flex-basis: 30%'>
+                        <div class="fr-card__body">
+                            <h4 class="fr-card__title">
+                                <a href="#" class="fr-card__link">Suivez-nous !</a>
+                            </h4>
+                            <p class="fr-card__desc">Lorem ipsum</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tabpanel-405-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-405" tabindex="0">
+            <h4>→ Les projets</h4>
+        </div>
+        <div id="tabpanel-406-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-406" tabindex="0">
+            <h4>→ Nous rejoindre</h4>
+            <h5>Pourquoi ?</h5>
+            <h5>Ton profil</h5>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<%- include('partials/footer') -%>
