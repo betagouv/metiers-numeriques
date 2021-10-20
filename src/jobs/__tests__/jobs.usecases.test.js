@@ -1,5 +1,5 @@
 const usecases = require('../usecases');
-const Job = require('../entities');
+const { Job } = require('../entities');
 const {fakeJob, fakeJobs} = require('./stubs/fakeJobs');
 
 describe('Jobs managmenent', () => {

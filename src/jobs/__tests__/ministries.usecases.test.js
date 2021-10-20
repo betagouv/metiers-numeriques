@@ -1,11 +1,11 @@
 const usecases = require('../usecases');
-const Ministry = require('../entities');
+const { Ministry } = require('../entities');
 const { fakeMinistries } = require('./stubs/fakeMinistries');
 
 describe('Ministries managmenent', () => {
     it('should get the ministries list', async () => {
         const ministriesRepository = {
-            all: () => fakeMinistries
+            listMinistries: () => fakeMinistries
         };
 
         const result = await usecases.listMinistries({ministriesRepository});
