@@ -66,12 +66,3 @@ var loadMore = function() {
 loadMoreButton.addEventListener('click', function () {
     loadMore()
 });
-
-// Detect when scrolled to bottom.
-// window.addEventListener('scroll', function() {
-//   var nextCursor = window.nextCursor
-//     console.log(listElm.clientHeight <= window.scrollY + window.innerHeight);
-//   if (window.hasMore && listElm.clientHeight <= window.scrollY + window.innerHeight && window.lastCursor != nextCursor) {
-//     loadMore();
-//   }
-// });
