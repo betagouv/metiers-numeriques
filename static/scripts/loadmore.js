@@ -33,8 +33,8 @@ function httpGet(url, callback) {
   var xhr = new XMLHttpRequest();
   // we defined the xhr
   xhr.onreadystatechange = function () {
-      if (this.readyState != 4) return;
-      if (this.status == 200) {
+      if (this.readyState !== 4) return;
+      if (this.status === 200) {
           callback(this.responseText)
           // var data = JSON.parse(this.responseText);
           // we get the returned data
@@ -46,6 +46,8 @@ function httpGet(url, callback) {
 }
 
 var listElm = document.querySelector('#infinite-list');
+var loadMoreButton = document.querySelector('#loadmore');
+
 
 // Add 20 items.
 var nextItem = 1;
@@ -61,10 +63,15 @@ var loadMore = function() {
     )
 }
 
-// Detect when scrolled to bottom.
-window.addEventListener('scroll', function() {
-  var nextCursor = window.nextCursor
-  if (window.hasMore && listElm.clientHeight <= window.scrollY + window.innerHeight && window.lastCursor != nextCursor) {
-    loadMore();
-  }
+loadMoreButton.addEventListener('click', function () {
+    loadMore()
 });
+
+// Detect when scrolled to bottom.
+// window.addEventListener('scroll', function() {
+//   var nextCursor = window.nextCursor
+//     console.log(listElm.clientHeight <= window.scrollY + window.innerHeight);
+//   if (window.hasMore && listElm.clientHeight <= window.scrollY + window.innerHeight && window.lastCursor != nextCursor) {
+//     loadMore();
+//   }
+// });
