@@ -1,23 +1,23 @@
 'use strict';
 
-const { Ministry } = require('../../entities');
+const { MinistryDetailDTO } = require('../../entities');
 
 const fakeMinistries = [
-    new Ministry(
+    new MinistryDetailDTO(
         {
             id: 'id2',
-            description: '<html>1</html>'
+            description: '<html>1</html>',
         }),
-    new Ministry(
+    new MinistryDetailDTO(
         {
             id: 'id2',
-            description: '<html>2</html>'
-        })
+            description: '<html>2</html>',
+        }),
 ];
 
 const fakeMinistry = fakeMinistries[0];
 
 module.exports = {
     fakeMinistries,
-    fakeMinistry
+    fakeMinistry,
 };

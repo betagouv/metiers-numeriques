@@ -1,7 +1,5 @@
-'use strict';
-
-const axios = require('axios');
-require('dotenv').config();
+import axios from 'axios';
+import { MinistriesService } from '../types';
 
 // Fixme: Hardcoded for now, would need 3 Notions calls to get this list
 const MINISTRIES = {
@@ -19,7 +17,7 @@ const MINISTRIES = {
     'SNUMC': ['SNUM Culture', 'https://www.notion.so/SNUM-Culture-d944df379030434284ac4faf6a30b37d'],
 };
 
-module.exports.NotionMinistriesService = {
+export const NotionMinistriesService: MinistriesService = {
     async listMinistries() {
         // // Récupère la liste des ministères en premier
         // const { data } = await axios.get(`https://api.notion.com/v1/blocks/f2d24c7329454cf9b3bcbc3c8a49a294/children`, {
@@ -32,7 +30,7 @@ module.exports.NotionMinistriesService = {
         return MINISTRIES;
     },
 
-    async getMinistry(id) {
+    async getMinistry(id: string) {
         try {
             const { data } = await axios.get(`https://api.notion.com/v1/databases/a0d1dd8464904259b5798a9d72e32f88`, {
                 headers: {
@@ -40,7 +38,7 @@ module.exports.NotionMinistriesService = {
                     'Notion-Version': '2021-08-16',
                 },
             });
-            console.log(data.url)
+            console.log(data.url, id);
             // for (const block of data.results) {
             //     console.log(block.type, block[block.type])
             // }

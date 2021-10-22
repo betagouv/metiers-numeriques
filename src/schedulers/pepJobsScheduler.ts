@@ -1,7 +1,7 @@
 const axios = require('axios');
 const csv = require('csvtojson');
 const usecases = require('../jobs/usecases');
-const { jobsRepository } = require('../jobs/dependencies');
+const { jobsService } = require('../jobs/dependencies');
 const { dateProvider } = require('../shared/dependencies');
 
 module.exports.fetchPepJobs = async () => {
@@ -13,12 +13,12 @@ module.exports.fetchPepJobs = async () => {
         ).fromStream(((await axios.get(process.env.PEP_ENDPOINT, {
                 responseType: 'stream',
             })).data),
-        ).subscribe( (pepJob) => {
+        ).subscribe((pepJob) => {
             return new Promise(async (resolve, reject) => {
-                    await usecases.updateLatestActivePepJobs(pepJob, { jobsRepository, dateProvider });
-                    count++;
+                await usecases.updateLatestActivePepJobs(pepJob, { jobsRepository: jobsService, dateProvider });
+                count++;
                 resolve();
-            })
+            });
         }, () => {
         }, () => {
         });

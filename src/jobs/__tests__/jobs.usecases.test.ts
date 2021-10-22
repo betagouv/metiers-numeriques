@@ -1,55 +1,20 @@
-const usecases = require('../usecases');
-const { Job } = require('../entities');
-const {fakeJob, fakeJobs} = require('./stubs/fakeJobs');
+import { JobDetailDTO } from '../entities';
+import { InMemoryJobsService } from '../infrastructure/inMemoryJobsService';
+import * as usecases from '../usecases';
+import { fakeJob } from './stubs/fakeJobs';
 
 describe('Jobs managmenent', () => {
-    it('should get the job list', async () => {
-        const jobsRepository = {
-            all: () => fakeJobs
-        };
+    let jobsService: typeof InMemoryJobsService;
 
-        const result = await usecases.listJobs({jobsRepository});
-
-        expect(result).toEqual([
-            new Job(
-                {
-                    id: 'id2',
-                    title: 'job2',
-                    mission: 'mon job 2',
-                    experiences: ['5 ans'],
-                    locations: ['Paris'],
-                    department: ['Ministère des armées'],
-                    openedToContractTypes: ['CDD', 'CDI'],
-                    salary: '50k',
-                    team: 'MTES',
-                    profile: '',
-                    tasks: [],
-                }),
-            new Job(
-                {
-                    id: 'id2',
-                    title: 'job2',
-                    mission: 'mon job 2',
-                    experiences: ['5 ans'],
-                    locations: ['Paris'],
-                    department: ['Ministère des armées'],
-                    openedToContractTypes: ['CDD', 'CDI'],
-                    salary: '50k',
-                    team: 'MTES',
-                    profile: '',
-                    tasks: []
-                })
-        ]);
+    beforeEach(() => {
+        jobsService = InMemoryJobsService;
     });
 
-    it('should get one job detail', async () => {
-        const jobsRepository = {
-            get: () => fakeJob
-        };
 
-        const result = await usecases.getJob(fakeJob.title, {jobsRepository});
+    it('should get the job list', async () => {
+        const result: JobDetailDTO[] = await usecases.listJobs({ jobsService }, null);
 
-        expect(result).toEqual(new Job(
+        expect(result).toEqual([
             {
                 id: 'id2',
                 title: 'job2',
@@ -61,7 +26,40 @@ describe('Jobs managmenent', () => {
                 salary: '50k',
                 team: 'MTES',
                 profile: '',
-                tasks: []
-            }));
+                tasks: [],
+            },
+            {
+                id: 'id2',
+                title: 'job2',
+                mission: 'mon job 2',
+                experiences: ['5 ans'],
+                locations: ['Paris'],
+                department: ['Ministère des armées'],
+                openedToContractTypes: ['CDD', 'CDI'],
+                salary: '50k',
+                team: 'MTES',
+                profile: '',
+                tasks: [],
+            },
+        ]);
+    });
+
+    it('should get one job detail', async () => {
+        const result: JobDetailDTO = await usecases.getJob(fakeJob.title, { jobsService }, '');
+
+        expect(result).toEqual(
+            {
+                id: 'id2',
+                title: 'job2',
+                mission: 'mon job 2',
+                experiences: ['5 ans'],
+                locations: ['Paris'],
+                department: ['Ministère des armées'],
+                openedToContractTypes: ['CDD', 'CDI'],
+                salary: '50k',
+                team: 'MTES',
+                profile: '',
+                tasks: [],
+            });
     });
 });

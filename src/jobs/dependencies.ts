@@ -1,12 +1,12 @@
 // const {InMemoryJobsService} = require('./infrastructure/InMemoryJobsRepository');
-const { NotionMinistriesService } = require('./infrastructure/notionMinistriesService');
-const {NotionService} = require('./infrastructure/notionJobsService');
+import { NotionService } from './infrastructure/notionJobsService';
+import { NotionMinistriesService } from './infrastructure/notionMinistriesService';
 
 // const jobsRepository = process.env.NODE_ENV === 'production' ? NotionJobsService : InMemoryJobsService
-const jobsRepository = NotionService;
-const ministriesRepository = NotionMinistriesService;
+const jobsService = NotionService;
+const ministriesService = NotionMinistriesService;
 
-module.exports = {
-    jobsRepository,
-    ministriesRepository,
+export {
+    jobsService,
+    ministriesService,
 };

@@ -1,28 +1,28 @@
-const { Job } = require('../entities');
-const { toDate } = require('date-fns-tz');
+import { toDate } from 'date-fns-tz';
+import { JobDetailDTO } from '../entities';
 
-function urlify(text) {
+
+function urlify(text: string) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
-      return '<a href="' + url + '">' + url + '</a>';
-    })
+    return text.replace(urlRegex, (url) => {
+        return '<a href="' + url + '">' + url + '</a>';
+    });
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
-const buildSlug = (title, id) => {
-    const slug = `${title}-${id}`.toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
+const buildSlug = (title: string, id: string) => {
+    return `${title}-${id}`.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
         .replace(/ /g, '-')
         .replace(/[^\w-]+/g, '');
-    return slug
-}
+};
 
-const mapToJob = (rawJob, now = Date.now()) => {
-    const title = parseProperty(rawJob.properties['Name'])
-    const id = rawJob.id
-    return new Job({
+const mapToJob = (rawJob: any): JobDetailDTO => {
+    const title = parseProperty(rawJob.properties['Name']) as string;
+    const id: string = rawJob.id;
+    return {
         id: rawJob.id,
         title,
         mission: parseProperty(rawJob.properties['Mission']),
@@ -36,69 +36,70 @@ const mapToJob = (rawJob, now = Date.now()) => {
         toApply: parseProperty(rawJob.properties['Pour candidater']),
         advantages: parseProperty(rawJob.properties['Les plus du poste']),
         contact: parseProperty(rawJob.properties['Contact']),
-        profile: parseProperty(rawJob.properties['Votre profil']).split('- ').filter(item => item),
-        conditions: parseProperty(rawJob.properties['Conditions particulières du poste']).split('- ').filter(item => item),
+        profile: (parseProperty(rawJob.properties['Votre profil']) as string).split('- ').filter((item: string) => item),
+        conditions: (parseProperty(rawJob.properties['Conditions particulières du poste']) as string).split('- ').filter((item: string) => item),
         teamInfo: parseProperty(rawJob.properties['Si vous avez des questions']),
-        tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
+        tasks: (parseProperty(rawJob.properties['Ce que vous ferez']) as string).split('- ').filter((item: string) => item),
         slug: buildSlug(title, id),
         hiringProcess: parseProperty(rawJob.properties['Processus de recrutement']),
-        publicationDate: toDate("2021-09-13" + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
-    });
+        publicationDate: toDate('2021-09-13' + 'T00:00:00+02:00', { timeZone: 'Europe/Paris' }),
+        more: '',
+    } as JobDetailDTO;
 };
 
-const formatDetailFromPep = (job) => {
-    const item = job.properties
-    const title = parseProperty(item.Name)
-    const id = job.id
-    return new Job({
+const formatDetailFromPep = (job: any) => {
+    const item = job.properties;
+    const title = parseProperty(item.Name) as string;
+    const id: string = job.id;
+    return {
         id,
         title,
-        mission: urlify(parseProperty(item.JobDescriptionTranslation_Description1_) || ''),
+        mission: urlify((parseProperty(item.JobDescriptionTranslation_Description1_) as string) || ''),
         experiences: parseProperty(item.ApplicantCriteria_EducationLevel_) ? [parseProperty(item.ApplicantCriteria_EducationLevel_)] : [],
-        locations: [(parseProperty(item.Location_JobLocation_) || '').replace('- -', '')],
+        locations: [((parseProperty(item.Location_JobLocation_) as string) || '').replace('- -', '')],
         department: [parseProperty(item.Origin_Entity_)],
         openedToContractTypes: parseProperty(item.JobDescription_Contract_) ? [parseProperty(item.JobDescription_Contract_)] : [],
-        salary: undefined,
+        salary: '',
         team: '',
-        limitDate: '',
         toApply: parseProperty(item.Origin_CustomFieldsTranslation_ShortText1_),
         advantages: '',
         contact: parseProperty(item.Origin_CustomFieldsTranslation_ShortText2_),
         profile: [parseProperty(item.JobDescriptionTranslation_Description2_)],
         conditions: [],
         teamInfo: '',
-        tasks: undefined,
+        tasks: [],
         more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${parseProperty(item.Offer_Reference_)}/`),
-        publicationDate: (parseProperty(item.FirstPublicationDate) ||'').split(' ')[0],
+        // fixme
+        // publicationDate: ((parseProperty(item.FirstPublicationDate) as Date) || '').split(' ')[0],
         slug: buildSlug(title, id) + '?tag=pep',
-    })
-}
+        hiringProcess: '',
+    } as JobDetailDTO;
+};
 
-const parseProperty = (item) => {
+const parseProperty = (item: any): unknown => {
     if (!item) {
-        return
+        return;
     }
     try {
         if ('rich_text' in item) {
-            return item.rich_text.map(rich_text => rich_text.plain_text).join('')
+            return item.rich_text.map((rich_text: any) => rich_text.plain_text).join('') as string;
         } else if ('multi_select' in item) {
-            return item.multi_select.map(item => item.name);
+            return item.multi_select.map((item: any) => item.name) as string;
         } else if ('title' in item) {
-            return item.title[0].plain_text;
+            return item.title[0].plain_text as string;
         } else if ('email' in item) {
-            return item.email[0].plain_text ;
+            return item.email[0].plain_text as string;
         } else if ('date' in item) {
-            return toDate(item.date.start + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
-        }
-        else {
-            return undefined
+            return toDate(item.date.start + 'T00:00:00+02:00', { timeZone: 'Europe/Paris' });
+        } else {
+            return undefined;
         }
     } catch (e) {
-        return undefined
+        return undefined;
     }
 };
 
 module.exports = {
     mapToJob,
-    formatDetailFromPep
-}
+    formatDetailFromPep,
+};

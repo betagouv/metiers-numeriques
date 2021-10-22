@@ -1,5 +1,4 @@
-const routes = require('./jobs.routes');
+import routes from './jobs.routes';
 
-module.exports = {
-    jobRoutes: routes
-}
+export const jobRoutes = routes;
+

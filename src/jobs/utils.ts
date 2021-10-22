@@ -1,9 +1,7 @@
-'use strict';
+import { formatDistance, parse } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
-const { formatDistance, parse } = require('date-fns');
-const { fr } = require('date-fns/locale');
-
-const JOB_FILTERS = [
+export const JOB_FILTERS = [
     'Technicienne / Technicien support utilisateurs',
     'Cheffe / Chef de projet maitrise d’œuvre SI',
     'Cheffe / Chef de projet maitrise d\'ouvrage SI',
@@ -58,8 +56,8 @@ const JOB_FILTERS = [
     'Testeuse / Testeur',
 ];
 
-const createPepProperties = (pepJob) => {
-    const properties = Object.keys(pepJob).reduce((acc, property) => {
+export const createPepProperties = (pepJob: any) => {
+    const properties = Object.keys(pepJob).reduce((acc: any, property) => {
         if ([
             'SchedulingData_DefaultPublicationBeginDate_',
             'SchedulingData_DefaultPublicationEndDate_',
@@ -107,12 +105,6 @@ const createPepProperties = (pepJob) => {
     return properties;
 };
 
-const dateReadableFormat = (date, now = new Date()) => {
-    return formatDistance(date, now, { addSuffix: true, locale: fr })
-}
-
-module.exports = {
-    JOB_FILTERS,
-    createPepProperties,
-    dateReadableFormat
+export const dateReadableFormat = (date: Date, now = new Date()) => {
+    return formatDistance(date, now, { addSuffix: true, locale: fr });
 };

@@ -1,8 +1,9 @@
 'use strict';
 
-require('dotenv').config();
+import { config } from 'dotenv';
+import app from './server';
 
-const app = require('./server');
+config();
 
 const port = process.env.PORT || 8080;
 

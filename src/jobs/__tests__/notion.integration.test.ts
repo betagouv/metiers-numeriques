@@ -1,5 +1,5 @@
 const usecases = require('../usecases');
-const {NotionService} = require('../infrastructure/notionJobsService');
+const { NotionService } = require('../infrastructure/notionJobsService');
 const jobsStub = require('./stubs/jobs.stub.json');
 const axios = require('axios');
 const Job = require('../entities');

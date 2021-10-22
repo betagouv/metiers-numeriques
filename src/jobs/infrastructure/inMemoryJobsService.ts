@@ -1,12 +1,21 @@
-const establishments = require('../__tests__establishments.stub.json');
-const jobDetail = require('../__tests__jobDetail.stub.json');
+import { fakeJob, fakeJobs } from '../__tests__/stubs/fakeJobs';
+import { JobsService } from '../types';
 
-module.exports.InMemoryJobsService = {
+export const InMemoryJobsService: JobsService = {
     async all() {
-        return establishments;
+        return fakeJobs;
     },
 
-    async get(id) {
-        return jobDetail;
-    }
+    async get(_id) {
+        return fakeJob;
+    },
+    count(): Promise<number> {
+        return Promise.resolve(0);
+    },
+    createPage(_database: string, _properties: any): Promise<any> {
+        return Promise.resolve(undefined);
+    },
+    getPage(_database: string, _pageId: string): Promise<any> {
+        return Promise.resolve(undefined);
+    },
 };

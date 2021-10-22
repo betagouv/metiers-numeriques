@@ -1,12 +1,18 @@
 'use strict';
 
+import { JobDetailDTO } from '../entities';
+import { JobsService } from '../types';
+
 require('dotenv').config();
 const axios = require('axios');
 const { mapToJob, formatDetailFromPep } = require('./mappers');
 const { createPepProperties } = require('../utils');
 
-module.exports.NotionService = {
-    async all({ startCursor, pageSize = 20 } = {}) {
+export const NotionService: JobsService = {
+    async all({
+                  startCursor = '',
+                  pageSize = 20,
+              }): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }> {
         let jobs = [];
         let jobsPep = [];
         let nextCursor;
@@ -15,6 +21,7 @@ module.exports.NotionService = {
             const { data } = await axios.post(
                 `https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
                 {
+                    // const {InMemoryJobsService} = require('./infrastructure/InMemoryJobsRepository');
                     filter: {
                         property: 'redaction_status',
                         select: {
@@ -30,7 +37,7 @@ module.exports.NotionService = {
                         'Notion-Version': '2021-08-16',
                     },
                 })
-                .catch(function(error) {
+                .catch((error: any) => {
                     console.log('Request Error: ' + error);
                 });
             jobs = data.results.map(mapToJob);
@@ -53,7 +60,7 @@ module.exports.NotionService = {
                     'Notion-Version': '2021-08-16',
                 },
             });
-            jobsPep = data.results.map(item => formatDetailFromPep(item));
+            jobsPep = data.results.map((item: any) => formatDetailFromPep(item));
             nextCursor = 'pep-' + data.next_cursor;
             hasMore = data.has_more;
         }
@@ -86,7 +93,7 @@ module.exports.NotionService = {
                     'Notion-Version': '2021-08-16',
                 },
             })
-            .catch(function(error) {
+            .catch((error: any) => {
                 console.log('Request Error: ' + error);
             });
         const count = data.results.length;
@@ -109,7 +116,7 @@ module.exports.NotionService = {
         return count + countPep;
     },
 
-    async get(pageId, tag) {
+    async get(pageId: string, tag: string) {
         let mapper = tag === 'pep' ? formatDetailFromPep : mapToJob;
         let result;
         try {
@@ -130,7 +137,7 @@ module.exports.NotionService = {
         return null;
     },
 
-    async getPage(database, pageId) {
+    async getPage(database: string, pageId: string) {
         try {
             const { data } = await axios.post(`https://api.notion.com/v1/databases/${database}/query`, {
                 filter: {
@@ -155,10 +162,10 @@ module.exports.NotionService = {
         }
     },
 
-    async createPage(database, properties) {
+    async createPage(database: string, properties: any) {
         const pepProperties = createPepProperties(properties);
         try {
-            const result = await axios.post(`https://api.notion.com/v1/pages`, {
+            await axios.post(`https://api.notion.com/v1/pages`, {
                 'parent': { 'database_id': database },
                 'properties': pepProperties,
             }, {
@@ -171,5 +178,5 @@ module.exports.NotionService = {
             console.error(e);
             throw new Error('Impossible de crééer une page');
         }
-    }
+    },
 };

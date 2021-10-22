@@ -1,13 +1,12 @@
-'use strict';
+import { Request, Response } from 'express';
+import { jobsService, ministriesService } from './dependencies';
+import * as usecases from './usecases';
+import { dateReadableFormat } from './utils';
 
-const usecases = require('./usecases');
-const { dateReadableFormat } = require('./utils');
-const { jobsRepository, ministriesRepository } = require('./dependencies');
-
-module.exports.list = async (req, res) => {
+export async function list(req: Request, res: Response) {
     try {
         const { jobs, nextCursor, hasMore } = await usecases.listJobs({
-            jobsRepository,
+            jobsService,
         }, {
             startCursor: req.query.start_cursor,
         });
@@ -22,22 +21,22 @@ module.exports.list = async (req, res) => {
     } catch (e) {
         console.log(e);
     }
-};
+}
 
-module.exports.get = async (req, res) => {
+export async function get(req: Request, res: Response) {
     const id = req.url.split('-').slice(-5).join('-').split('?')[0];
-    const tag = req.query.tag;
-    const result = await usecases.getJob(id, { jobsRepository }, tag);
+    const tag = req.query.tag as string;
+    const result = await usecases.getJob(id, { jobsService }, tag);
     res.render('jobDetail', {
         job: result,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
-};
+}
 
-module.exports.listMinistries = async (req, res) => {
+export async function listMinistries(_req: Request, res: Response) {
     try {
         const ministries = await usecases.listMinistries({
-            ministriesRepository,
+            ministriesService,
         });
 
         res.render('ministries', {
@@ -47,12 +46,12 @@ module.exports.listMinistries = async (req, res) => {
     } catch (e) {
         console.log(e);
     }
-};
+}
 
-module.exports.getMinistry = async (req, res) => {
-    const ministry = await usecases.getMinistry(req.query.id, { ministriesRepository });
+export async function getMinistry(req: Request, res: Response) {
+    const ministry = await usecases.getMinistry(req.query.id as string, { ministriesService });
     res.render('ministryDetail', {
         job: ministry,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
-};
+}

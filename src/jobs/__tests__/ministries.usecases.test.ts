@@ -1,26 +1,26 @@
 const usecases = require('../usecases');
-const { Ministry } = require('../entities');
+const { MinistryDetailDTO } = require('../entities');
 const { fakeMinistries } = require('./stubs/fakeMinistries');
 
 describe('Ministries managmenent', () => {
     it('should get the ministries list', async () => {
         const ministriesRepository = {
-            listMinistries: () => fakeMinistries
+            listMinistries: () => fakeMinistries,
         };
 
-        const result = await usecases.listMinistries({ministriesRepository});
+        const result = await usecases.listMinistries({ ministriesRepository });
 
         expect(result).toEqual([
-            new Ministry(
+            new MinistryDetailDTO(
                 {
                     id: 'id2',
-                    description: '<html>1</html>'
+                    description: '<html>1</html>',
                 }),
-            new Ministry(
+            new MinistryDetailDTO(
                 {
                     id: 'id2',
-                    description: '<html>2</html>'
-                })
+                    description: '<html>2</html>',
+                }),
         ]);
     });
 
