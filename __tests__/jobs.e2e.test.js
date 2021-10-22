@@ -1,5 +1,3 @@
-'use strict';
-
 const axios = require('axios');
 const app = require('../src/server');
 require('dotenv').config();

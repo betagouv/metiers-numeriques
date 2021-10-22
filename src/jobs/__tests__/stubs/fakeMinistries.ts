@@ -1,23 +1,19 @@
-'use strict';
+import { MinistryDetailDTO } from '../../entities';
 
-const { MinistryDetailDTO } = require('../../entities');
-
-const fakeMinistries = [
-    new MinistryDetailDTO(
+const fakeMinistries: MinistryDetailDTO[] = [
         {
             id: 'id2',
             description: '<html>1</html>',
-        }),
-    new MinistryDetailDTO(
+        },
         {
             id: 'id2',
             description: '<html>2</html>',
-        }),
+        },
 ];
 
 const fakeMinistry = fakeMinistries[0];
 
-module.exports = {
+export {
     fakeMinistries,
     fakeMinistry,
 };

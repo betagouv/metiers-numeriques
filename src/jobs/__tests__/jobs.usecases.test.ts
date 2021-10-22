@@ -12,9 +12,9 @@ describe('Jobs managmenent', () => {
 
 
     it('should get the job list', async () => {
-        const result: JobDetailDTO[] = await usecases.listJobs({ jobsService }, null);
+        const result = await usecases.listJobs({ jobsService }, null);
 
-        expect(result).toEqual([
+        expect(result.jobs).toEqual([
             {
                 id: 'id2',
                 title: 'job2',

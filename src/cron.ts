@@ -1,6 +1,7 @@
-const { CronJob } = require('cron');
-const { fetchPepJobs } = require('./src/schedulers/pepJobsScheduler');
-require('dotenv').config();
+import { CronJob } from 'cron';
+import { config } from 'dotenv';
+config();
+import { fetchPepJobs } from './schedulers/pepJobsScheduler';
 
 const jobs = [
   {

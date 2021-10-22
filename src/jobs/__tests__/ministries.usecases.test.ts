@@ -1,26 +1,26 @@
-const usecases = require('../usecases');
-const { MinistryDetailDTO } = require('../entities');
-const { fakeMinistries } = require('./stubs/fakeMinistries');
+import { InMemoryMinistriesService } from '../infrastructure/inMemoryMinistriesService';
+import { MinistriesService } from '../types';
+import * as usecases from '../usecases';
 
 describe('Ministries managmenent', () => {
-    it('should get the ministries list', async () => {
-        const ministriesRepository = {
-            listMinistries: () => fakeMinistries,
-        };
+    let ministriesService: MinistriesService;
 
-        const result = await usecases.listMinistries({ ministriesRepository });
+    beforeEach(() => {
+        ministriesService = InMemoryMinistriesService;
+    })
+
+    it('should get the ministries list', async () => {
+        const result = await usecases.listMinistries({ ministriesService });
 
         expect(result).toEqual([
-            new MinistryDetailDTO(
                 {
                     id: 'id2',
                     description: '<html>1</html>',
-                }),
-            new MinistryDetailDTO(
+                },
                 {
                     id: 'id2',
                     description: '<html>2</html>',
-                }),
+                },
         ]);
     });
 

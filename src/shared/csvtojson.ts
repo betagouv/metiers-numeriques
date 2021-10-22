@@ -1,5 +1,5 @@
 //var csv is the CSV file with headers
-module.exports = function csvJSON(csv) {
+export default function csvJSON(csv: string) {
 
     const lines = csv.split('\n');
 
@@ -13,7 +13,7 @@ module.exports = function csvJSON(csv) {
 
     for (let i = 1; i < lines.length; i++) {
 
-        const obj = {};
+        const obj = {} as any;
         const currentline = lines[i].split(',');
 
         for (let j = 0; j < headers.length; j++) {
@@ -25,4 +25,4 @@ module.exports = function csvJSON(csv) {
     }
 
     return result; //JavaScript object
-};
+}

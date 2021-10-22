@@ -1,5 +1,3 @@
-'use strict';
-
 import { JobDetailDTO } from '../../entities';
 
 

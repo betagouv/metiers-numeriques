@@ -2,8 +2,12 @@ import { fakeJob, fakeJobs } from '../__tests__/stubs/fakeJobs';
 import { JobsService } from '../types';
 
 export const InMemoryJobsService: JobsService = {
-    async all() {
-        return fakeJobs;
+    async all(_params = {}) {
+        return {
+            jobs: fakeJobs,
+            hasMore: '',
+            nextCursor: ''
+        };
     },
 
     async get(_id) {

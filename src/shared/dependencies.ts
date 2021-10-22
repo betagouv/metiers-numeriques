@@ -1,7 +1,8 @@
-const { systemDateProvider } = require('./dateProvider');
+import { systemDateProvider } from './dateProvider';
+
 
 const dateProvider = systemDateProvider;
 
-module.exports = {
+export {
     dateProvider,
 };
