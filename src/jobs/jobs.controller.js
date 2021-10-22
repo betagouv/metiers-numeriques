@@ -36,12 +36,15 @@ module.exports.get = async (req, res) => {
 
 module.exports.listMinistries = async (req, res) => {
     try {
-        const ministries = await usecases.listMinistries({
+        const { ministries, nextCursor } = await usecases.listMinistries({
             ministriesRepository,
+        }, {
+            startCursor: req.query.start_cursor,
         });
 
         res.render('ministries', {
             ministries: ministries,
+            nextCursor,
             contactEmail: 'contact@metiers.numerique.gouv.fr',
         });
     } catch (e) {

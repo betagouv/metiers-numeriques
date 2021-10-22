@@ -1,6 +1,8 @@
 'use strict';
 
 const axios = require('axios');
+const { mapToMinistry } = require('./mappers');
+// const { listMinistries } = require('../jobs.controller');
 require('dotenv').config();
 
 // Fixme: Hardcoded for now, would need 3 Notions calls to get this list
@@ -20,6 +22,35 @@ const MINISTRIES = {
 };
 
 module.exports.NotionMinistriesService = {
+    async all({ startCursor, pageSize = 20 } = {}) {
+        let ministries;
+        let nextCursor;
+        if (!startCursor || !startCursor.startsWith('pep-')) {
+            const { data } = await axios.post(
+                `https://api.notion.com/v1/databases/${process.env.NOTION_MINISTRIES_DATABASE_ID}/query`,
+                {
+                    start_cursor: startCursor,
+                    page_size: pageSize,
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
+                        'Notion-Version': '2021-08-16',
+                    },
+                })
+                .catch(function(error) {
+                    console.log('Request Error: ' + error);
+                });
+            ministries = data.results.map(mapToMinistry);
+            nextCursor = data.next_cursor;
+        }
+        console.log("TEST MIN", ministries[0]);
+        return {
+            ministries,
+            nextCursor
+        }
+    },
+
     async listMinistries() {
         // // Récupère la liste des ministères en premier
         // const { data } = await axios.get(`https://api.notion.com/v1/blocks/f2d24c7329454cf9b3bcbc3c8a49a294/children`, {
