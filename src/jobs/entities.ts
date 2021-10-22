@@ -18,6 +18,7 @@ export interface JobDetailDTO {
     toApply?: string
     more?: string | null
     limitDate?: Date
+    advantages?: string
 }
 
 export interface MinistryDetailDTO {

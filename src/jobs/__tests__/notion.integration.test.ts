@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { JobDetailDTO } from '../entities';
 import { NotionService } from '../infrastructure/notionJobsService';
 import jobsStub from './stubs/jobs.stub.json';
 
@@ -36,7 +37,7 @@ describe('Jobs fetch api', () => {
             openedToContractTypes: ['Fonctionnaire', 'Contractuel.le'],
             salary: 'La rémunération est à définir en fonction de l’expérience et du profil',
             team: 'Au sein de la sous-direction des services numériques, vous intégrerez une équipe de 23 personnes (chefs de projets nationaux et concepteurs-développeurs) dédiée aux systèmes d\'information de gestion et du décisionnel.',
-        });
+        } as JobDetailDTO);
     });
 
     it('should fetch and return one job details', async () => {

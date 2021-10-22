@@ -1,10 +1,11 @@
+import axios from 'axios';
+import { config } from 'dotenv';
+config();
+
 import { JobDetailDTO } from '../entities';
 import { JobsService } from '../types';
-
-require('dotenv').config();
-const axios = require('axios');
-const { mapToJob, formatDetailFromPep } = require('./mappers');
-const { createPepProperties } = require('../utils');
+import { formatDetailFromPep, mapToJob } from './mappers';
+import { createPepProperties } from '../utils';
 
 export const NotionService: JobsService = {
     async all({
@@ -34,9 +35,6 @@ export const NotionService: JobsService = {
                         'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                         'Notion-Version': '2021-08-16',
                     },
-                })
-                .catch((error: any) => {
-                    console.log('Request Error: ' + error);
                 });
             jobs = data.results.map(mapToJob);
             nextCursor = data.next_cursor;
@@ -91,9 +89,6 @@ export const NotionService: JobsService = {
                     'Notion-Version': '2021-08-16',
                 },
             })
-            .catch((error: any) => {
-                console.log('Request Error: ' + error);
-            });
         const count = data.results.length;
 
         const { data: pepData } = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE_ID}/query`, {

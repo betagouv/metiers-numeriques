@@ -25,8 +25,8 @@ describe('Jobs managmenent', () => {
                 openedToContractTypes: ['CDD', 'CDI'],
                 salary: '50k',
                 team: 'MTES',
-                profile: '',
                 tasks: [],
+                profile: undefined
             },
             {
                 id: 'id2',
@@ -38,8 +38,8 @@ describe('Jobs managmenent', () => {
                 openedToContractTypes: ['CDD', 'CDI'],
                 salary: '50k',
                 team: 'MTES',
-                profile: '',
                 tasks: [],
+                profile: undefined
             },
         ]);
     });
@@ -58,8 +58,8 @@ describe('Jobs managmenent', () => {
                 openedToContractTypes: ['CDD', 'CDI'],
                 salary: '50k',
                 team: 'MTES',
-                profile: '',
                 tasks: [],
+                profile: undefined
             });
     });
 });

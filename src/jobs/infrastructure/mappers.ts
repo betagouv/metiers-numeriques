@@ -3,7 +3,7 @@ import { JobDetailDTO } from '../entities';
 
 
 function urlify(text: string) {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, (url) => {
         return '<a href="' + url + '">' + url + '</a>';
     });
@@ -99,7 +99,7 @@ const parseProperty = (item: any): unknown => {
     }
 };
 
-module.exports = {
+export {
     mapToJob,
     formatDetailFromPep,
 };

@@ -5,7 +5,7 @@ export interface JobsService {
 
     count(): Promise<number>;
 
-    get(pageId: string, tag: string): Promise<JobDetailDTO>;
+    get(pageId: string, tag: string): Promise<JobDetailDTO | null>;
 
     getPage(database: string, pageId: string): Promise<any>;
 

@@ -1,9 +1,8 @@
 import { InMemoryMinistriesService } from '../infrastructure/inMemoryMinistriesService';
-import { MinistriesService } from '../types';
 import * as usecases from '../usecases';
 
 describe('Ministries managmenent', () => {
-    let ministriesService: MinistriesService;
+    let ministriesService: typeof InMemoryMinistriesService;
 
     beforeEach(() => {
         ministriesService = InMemoryMinistriesService;
