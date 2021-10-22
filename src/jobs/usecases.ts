@@ -1,5 +1,5 @@
 import { DateProvider } from '../shared/dateProvider';
-import { JobsService, MinistriesService } from './types';
+import { JobsService, MinistriesService } from './interfaces';
 
 const { isBefore, parse, sub } = require('date-fns');
 

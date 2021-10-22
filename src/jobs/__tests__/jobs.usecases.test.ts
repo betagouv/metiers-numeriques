@@ -45,7 +45,7 @@ describe('Jobs managmenent', () => {
     });
 
     it('should get one job detail', async () => {
-        const result: JobDetailDTO = await usecases.getJob(fakeJob.title, { jobsService }, '');
+        const result: JobDetailDTO = await usecases.getJob(fakeJob.title, { jobsService }, '') as JobDetailDTO;
 
         expect(result).toEqual(
             {

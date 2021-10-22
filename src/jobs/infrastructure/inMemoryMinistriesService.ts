@@ -1,5 +1,5 @@
 import { fakeMinistries, fakeMinistry } from '../__tests__/stubs/fakeMinistries';
-import { MinistriesService } from '../types';
+import { MinistriesService } from '../interfaces';
 
 export const InMemoryMinistriesService: MinistriesService = {
     listMinistries(): Promise<any> {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MinistriesService } from '../types';
+import { MinistriesService } from '../interfaces';
 
 // Fixme: Hardcoded for now, would need 3 Notions calls to get this list
 const MINISTRIES = {

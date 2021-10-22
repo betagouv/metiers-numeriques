@@ -1,5 +1,5 @@
 import { fakeJob, fakeJobs } from '../__tests__/stubs/fakeJobs';
-import { JobsService } from '../types';
+import { JobsService } from '../interfaces';
 
 export const InMemoryJobsService: JobsService = {
     async all(_params = {}) {

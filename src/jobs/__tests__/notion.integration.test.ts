@@ -36,6 +36,10 @@ describe('Jobs fetch api', () => {
             department: ['Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation'],
             openedToContractTypes: ['Fonctionnaire', 'Contractuel.le'],
             salary: 'La rémunération est à définir en fonction de l’expérience et du profil',
+            contact: undefined,
+            hiringProcess: undefined,
+            more: "",
+            advantages: "Le télétravail est possible après 4 mois d’ancienneté sur le poste, sous réserve de l’avis favorable de la hiérarchie.",
             team: 'Au sein de la sous-direction des services numériques, vous intégrerez une équipe de 23 personnes (chefs de projets nationaux et concepteurs-développeurs) dédiée aux systèmes d\'information de gestion et du décisionnel.',
         } as JobDetailDTO);
     });
@@ -69,6 +73,10 @@ describe('Jobs fetch api', () => {
             department: ['Ministère de l’éducation nationale de la jeunesse et des sports – Ministère de l’enseignement supérieur de la recherche et de l’innovation'],
             openedToContractTypes: ['Fonctionnaire', 'Contractuel.le'],
             salary: 'La rémunération est à définir en fonction de l’expérience et du profil',
+            contact: undefined,
+            hiringProcess: undefined,
+            more: "",
+            advantages: "Le télétravail est possible après 4 mois d’ancienneté sur le poste, sous réserve de l’avis favorable de la hiérarchie.",
             team: 'Au sein de la sous-direction des services numériques, vous intégrerez une équipe de 23 personnes (chefs de projets nationaux et concepteurs-développeurs) dédiée aux systèmes d\'information de gestion et du décisionnel.',
         });
     });
