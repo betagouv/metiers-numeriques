@@ -9,7 +9,7 @@ import { createPepProperties } from '../utils';
 
 export const NotionService: JobsService = {
     async all({
-                  startCursor = '',
+                  startCursor = undefined,
                   pageSize = 20,
               }): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }> {
         let jobs = [];

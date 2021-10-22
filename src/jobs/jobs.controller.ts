@@ -8,7 +8,7 @@ export async function list(req: Request, res: Response) {
         const { jobs, nextCursor, hasMore } = await usecases.listJobs({
             jobsService,
         }, {
-            startCursor: req.query.start_cursor,
+            startCursor: req.query.start_cursor || undefined,
         });
         const view = req.query.start_cursor ? 'partials/jobList' : 'jobs';
         res.render(view, {

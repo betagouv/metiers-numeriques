@@ -1,10 +1,13 @@
-const axios = require('axios');
-const app = require('../src/server');
-require('dotenv').config();
+import axios from 'axios';
+import http from 'http';
+import { config } from 'dotenv';
+config();
+
+import app from '../server';
 
 describe('Displaying jobs on website', () => {
     const port = 8888;
-    let server = null;
+    let server: http.Server;
 
     beforeEach(() => {
         const port = 8888;
