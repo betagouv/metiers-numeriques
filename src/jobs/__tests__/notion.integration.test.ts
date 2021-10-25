@@ -87,14 +87,16 @@ describe('Ministries fetch api', () => {
     it('should fetch and return a list of ministries', async () => {
         // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
 
+        // @ts-ignore
         const ministries = await NotionMinistriesService.listMinistries();
-        console.log(ministries);
+        // console.log(ministries);
     });
 
     it('should fetch and return one ministry details', async () => {
         // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
 
+        // @ts-ignore
         const ministries = await NotionMinistriesService.getMinistry('1');
-        console.log(ministries);
+        // console.log(ministries);
     });
 });

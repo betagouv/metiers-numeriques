@@ -30,15 +30,16 @@ export const NotionMinistriesService: MinistriesService = {
         return MINISTRIES;
     },
 
-    async getMinistry(id: string) {
+    async getMinistry(_id: string) {
         try {
+            // @ts-ignore
             const { data } = await axios.get(`https://api.notion.com/v1/databases/a0d1dd8464904259b5798a9d72e32f88`, {
                 headers: {
                     'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                     'Notion-Version': '2021-08-16',
                 },
             });
-            console.log(data.url, id);
+            // console.log(data.url, id);
             // for (const block of data.results) {
             //     console.log(block.type, block[block.type])
             // }
