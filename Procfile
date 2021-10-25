@@ -1,2 +1,2 @@
 web: npm start
-worker: node dist/cron.ts
+worker: node dist/cron.js

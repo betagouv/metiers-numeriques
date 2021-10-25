@@ -1,73 +1,74 @@
 {
-  "name": "metiers-numeriques",
-  "version": "1.0.0",
-  "description": "Tout savoir sur les métiers du numérique au sein de l’Etat",
-  "main": "src/index.js",
-  "scripts": {
-    "checkHTML": "site-validator --verbose --url",
-    "checkHTMLLocal": "site-validator --verbose --local --url http://localhost:8080",
-    "dev": "ts-node-dev src/index.ts",
-    "start": "node dist/index.js",
-    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
-    "test:unit": "jest --config=jest.config.js",
-    "test:unit:watch": "jest --watchAll --config=jest.config.js",
-    "test:integration": "jest --config=jest.integration.config.js",
-    "test:e2e": "jest --config=jest.e2e.config.js",
-    "build": "tsc -p tsconfig.json",
-    "fix:prettier": "prettier \"src/**/*.ts\" --write",
-    "fix:lint": "eslint src --ext .ts --fix",
-    "reset-hard": "git clean -dfx && git reset --hard && npm i"
-  },
-  "engines": {
-    "node": ">14",
-    "npm": ">7"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/betagouv/metiers-numeriques.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/betagouv/metiers-numeriques/issues"
-  },
-  "homepage": "https://github.com/betagouv/metiers-numeriques#readme",
-  "dependencies": {
-    "@gouvfr/dsfr": "^1.0.0-rc1.0",
-    "axios": "^0.21.4",
-    "cron": "^1.8.2",
-    "csvtojson": "^2.0.10",
-    "date-fns": "^2.25.0",
-    "date-fns-tz": "^1.1.6",
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
-    "moment": "^2.29.1",
-    "remixicon": "^2.5.0"
-  },
-  "devDependencies": {
-    "@types/cron": "^1.7.3",
-    "@types/csvtojson": "^2.0.0",
-    "@types/ejs": "^3.1.0",
-    "@types/express": "^4.17.13",
-    "@types/jest": "^27.0.2",
-    "@types/nodemon": "^1.19.1",
-    "@typescript-eslint/eslint-plugin": "^4.0.1",
-    "@typescript-eslint/parser": "^4.0.1",
-    "eslint": "^7.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-functional": "^3.0.2",
-    "eslint-plugin-import": "^2.22.0",
-    "jest": "^27.2.0",
-    "nodemon": "^2.0.6",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.1",
-    "ts-jest": "^27.0.7",
-    "ts-node": "^9.0.0",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "^4.0.2"
-  },
-  "prettier": {
-    "singleQuote": true
-  }
+    "name": "metiers-numeriques",
+    "version": "1.0.0",
+    "description": "Tout savoir sur les métiers du numérique au sein de l’Etat",
+    "main": "src/index.js",
+    "scripts": {
+        "checkHTML": "site-validator --verbose --url",
+        "checkHTMLLocal": "site-validator --verbose --local --url http://localhost:8080",
+        "dev": "ts-node-dev src/index.ts",
+        "start": "node dist/index.js",
+        "test": "npm run test:unit",
+        "test:unit": "jest --config=jest.config.js",
+        "test:unit:watch": "jest --watchAll --config=jest.config.js",
+        "test:integration": "jest --config=jest.integration.config.js",
+        "test:e2e": "jest --config=jest.e2e.config.js",
+        "test:ci": "npm run test:unit && npm run test:integration && npm run test:e2e",
+        "build": "tsc -p tsconfig.json",
+        "fix:prettier": "prettier \"src/**/*.ts\" --write",
+        "fix:lint": "eslint src --ext .ts --fix",
+        "reset-hard": "git clean -dfx && git reset --hard && npm i"
+    },
+    "engines": {
+        "node": ">14",
+        "npm": ">7"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/betagouv/metiers-numeriques.git"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/betagouv/metiers-numeriques/issues"
+    },
+    "homepage": "https://github.com/betagouv/metiers-numeriques#readme",
+    "dependencies": {
+        "@gouvfr/dsfr": "^1.0.0-rc1.0",
+        "axios": "^0.21.4",
+        "cron": "^1.8.2",
+        "csvtojson": "^2.0.10",
+        "date-fns": "^2.25.0",
+        "date-fns-tz": "^1.1.6",
+        "dotenv": "^10.0.0",
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "moment": "^2.29.1",
+        "remixicon": "^2.5.0"
+    },
+    "devDependencies": {
+        "@types/cron": "^1.7.3",
+        "@types/csvtojson": "^2.0.0",
+        "@types/ejs": "^3.1.0",
+        "@types/express": "^4.17.13",
+        "@types/jest": "^27.0.2",
+        "@types/nodemon": "^1.19.1",
+        "@typescript-eslint/eslint-plugin": "^4.0.1",
+        "@typescript-eslint/parser": "^4.0.1",
+        "eslint": "^7.8.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-eslint-comments": "^3.2.0",
+        "eslint-plugin-functional": "^3.0.2",
+        "eslint-plugin-import": "^2.22.0",
+        "jest": "^27.2.0",
+        "nodemon": "^2.0.6",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.1.1",
+        "ts-jest": "^27.0.7",
+        "ts-node": "^9.0.0",
+        "ts-node-dev": "^1.1.8",
+        "typescript": "^4.0.2"
+    },
+    "prettier": {
+        "singleQuote": true
+    }
 }
