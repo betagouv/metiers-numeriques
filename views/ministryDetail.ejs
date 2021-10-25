@@ -1,7 +1,7 @@
 <%- include('partials/header') -%>
   <div class="fr-container">
     <div class="fr-grid-row fr-grid-row--gutters">
-        <% if (ministry.brandBlock[0]) { %>
+        <% if (ministry.brandBlock.length) { %>
             <div class="fr-col-2 fr-mb-4w fr-mt-6w">
                 <img src="<%= ministry.brandBlock[0].file.url %>" class="fr-responsive-img" alt="<%= ministry.brandBlock[0].name %>" >
             </div>
@@ -37,7 +37,7 @@
                           </ul></p>
                     <% if (ministry.motivationMedia.length) { %>
                         <% ministry.motivationMedia.forEach(function(media) { %>
-                            <% if (media.url) { %>
+                            <% if (media.file) { %>
                                 <a href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
                             <% } else { %>
                                 <a href="<%= media.name %>" target="_blank">Présentation vidéo</a>
