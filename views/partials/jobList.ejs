@@ -82,8 +82,4 @@
         </div>
     </div>
 <% } %>
-<script type="text/javascript">
-    window.nextCursor = "<%= nextCursor ;%>";
-    window.hasMore = <%- !!hasMore; %>;
-</script>
-
+<div id='loadmore-data' data-next-cursor='<%= nextCursor ;%>'></div>

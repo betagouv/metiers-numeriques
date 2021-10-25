@@ -9,7 +9,9 @@
         <div class="fr-grid-row" id="infinite-list">
                 <%- include('partials/jobList', {jobs: jobs, nextCursor, hasMore }) %>
         </div>
-        <div style='text-align: center'><button class='fr-btn' id='loadmore'>Afficher plus de résultats</button></div>
+        <div style='text-align: center'>
+            <button class='fr-btn' id='loadmore' data-next-cursor=''>Afficher plus de résultats</button>
+        </div>
     </div>
 </div>
 <br>
