@@ -85,7 +85,7 @@ module.exports.Job = class Job {
  * @property {string} fullName
  * @property {string} adress
  * @property {string} adressBis
- * @property {string[]} brandBlock,
+ * @property {string} brandBlock
  * @property {string[]} keyNumbers
  * @property {string[]} keyNumbersMedia
  * @property {string[]} missions

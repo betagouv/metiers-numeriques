@@ -69,7 +69,7 @@ const mapToMinistry = (rawMinistry, now = Date.now()) => {
         profile: parseProperty(rawMinistry.properties['Ton profil']).split('- ').filter(item => item),
         website: parseProperty(rawMinistry.properties['Site(s) institutionel(s)']),
         jobsLink: parseProperty(rawMinistry.properties['Toutes les offres disponibles']),
-        values: parseProperty(rawMinistry.properties['Valeurs']).split('- ').filter(item => item),
+        values: parseProperty(rawMinistry.properties['Valeurs']),
         schedule: parseProperty(rawMinistry.properties['Agenda']),
         socialNetworks: parseProperty(rawMinistry.properties['Réseaux sociaux']),
         visualBanner: parseProperty(rawMinistry.properties['Bandeau visuel']),
@@ -123,9 +123,11 @@ const parseProperty = (item) => {
         } else if ('title' in item) {
             return item.title[0].plain_text;
         } else if ('email' in item) {
-            return item.email[0].plain_text ;
+            return item.email[0].plain_text;
         } else if ('date' in item) {
             return toDate(item.date.start + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
+        } else if ('files' in item) {
+            return item.files;
         }
         else {
             return undefined

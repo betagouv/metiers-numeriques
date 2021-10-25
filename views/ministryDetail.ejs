@@ -1,71 +1,187 @@
 <%- include('partials/header') -%>
-<div id="ministere" class="fr-container fr-mt-4w">
-    <div class="fr-tabs">
-        <ul class="fr-tabs__list" role="tablist" aria-label="Sections">
-            <li role="presentation">
-                <button id="tabpanel-404" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="0"
-                        role="tab" aria-selected="true" aria-controls="tabpanel-404-panel">Découvrir
-                </button>
-            </li>
-            <li role="presentation">
-                <button id="tabpanel-405" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="-1"
-                        role="tab" aria-selected="false" aria-controls="tabpanel-405-panel">Les projets
-                </button>
-            </li>
-            <li role="presentation">
-                <button id="tabpanel-406" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="-1"
-                        role="tab" aria-selected="false" aria-controls="tabpanel-406-panel">Nous rejoindre
-                </button>
-            </li>
-        </ul>
-        <div id="tabpanel-404-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel"
-             aria-labelledby="tabpanel-404" tabindex="0">
-            <h4>→ Découvrir</h4>
-
-            <h5>Les missions</h5>
-
-
-            <div class="fr-container">
-                <div class="fr-grid-row" style='justify-content: space-between'>
-                    <div class="fr-card" style='flex-basis: 30%'>
-                        <div class="fr-card__body">
-                            <h4 class="fr-card__title">
-                                <a href="#" class="fr-card__link">L'équipe</a>
-                            </h4>
-                            <p class="fr-card__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                        </div>
-                    </div>
-                    <div class="fr-card" style='flex-basis: 30%'>
-                        <div class="fr-card__body">
-                            <h4 class="fr-card__title">
-                                <a href="#" class="fr-card__link">Adresse</a>
-                            </h4>
-                            <p class="fr-card__desc">Lorem ipsum</p>
-                        </div>
-                    </div>
-                    <div class="fr-card" style='flex-basis: 30%'>
-                        <div class="fr-card__body">
-                            <h4 class="fr-card__title">
-                                <a href="#" class="fr-card__link">Suivez-nous !</a>
-                            </h4>
-                            <p class="fr-card__desc">Lorem ipsum</p>
-                        </div>
-                    </div>
+  <div class="fr-container">
+    <div class="fr-grid-row fr-grid-row--gutters">
+        <% if (ministry.brandBlock[0]) { %>
+            <div class="fr-col-2 fr-mb-4w fr-mt-6w">
+                <img src="<%= ministry.brandBlock[0].file.url %>" class="fr-responsive-img" alt="<%= ministry.brandBlock[0].name %>" >
+            </div>
+        <% } else {%>
+            <div class="fr-col-2 fr-mb-4w fr-mt-6w">
+            </div>
+        <% } %>
+        <div class="fr-col-8 fr-mb-4w fr-mt-8w fr-ml-2w">
+            <h1>
+                <%= ministry.title %>
+            </h1>
+            <p>
+                <%= ministry.fullName %>
+            </p>
+      </div>
+    </div>
+      <div class="fr-callout fr-my-2w">
+        <div class="">
+          <% if (ministry.motivation) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  <h5>Raison d‘être</h5>
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                    <b><%= ministry.motivation.split('- ')[0] %></b>
+                    <p class="fr-mt-4w" >
+                        <ul>
+                            <% ministry.motivation.split('- ').slice(1).forEach(function(motivation) { %>
+                              <li>
+                                <%= motivation %>
+                              </li>
+                              <% }); %>
+                          </ul></p>
+                    <% if (ministry.motivationMedia.length) { %>
+                        <% ministry.motivationMedia.forEach(function(media) { %>
+                            <% if (media.url) { %>
+                                <a href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                            <% } else { %>
+                                <a href="<%= media.name %>" target="_blank">Présentation vidéo</a>
+                            <% } %>
+                        <% }); %>
+                    <% } %>
                 </div>
             </div>
+          <% } %>
+
         </div>
-        <div id="tabpanel-405-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-405" tabindex="0">
-            <h4>→ Les projets</h4>
+      </div>
+      <div class="fr-my-4w">
+      <% if(ministry.values){ %>
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+          <h3>Valeurs</h3>
         </div>
-        <div id="tabpanel-406-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-406" tabindex="0">
-            <h4>→ Nous rejoindre</h4>
-            <h5>Pourquoi ?</h5>
-            <h5>Ton profil</h5>
+        <div class="fr-col-md-10 fr-col-sm-12">
+          <p><%= ministry.values %></p>
         </div>
+      </div>
+      <% } %>
+      <% if(ministry.missions){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Missions</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+            <p><%- ministry.missions.replace(/\n/g, '<br>') %></p>
+          </div>
+        </div>
+      <% } %>
+      <% if(ministry.projects){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Projets</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+            <p><%- ministry.projects.replace(/\n/g, '<br>') %></p>
+          </div>
+        </div>
+      <% } %>
+      <% if(ministry.testimonials){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Nos agents en parlent</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+            <p><%- ministry.testimonials.replace(/\n/g, '<br>') %></p>
+          </div>
+        </div>
+      <% } %>
+      <!-- <% if(ministry.profile.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Votre profil</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12">
+              <% if(ministry.profile.length == 1){ %>
+                <p>
+                  <%- ministry.profile[0].replace(/\n/g, '<br>') %>
+                </p>
+              <% }; %>
+              <% if(ministry.profile.length > 1){ %>
+                <ul>
+                  <% ministry.profile.forEach(function(profile) { %>
+                    <li>
+                      <%=profile%>
+                    </li>
+                  <% }); %>
+                </ul>
+              <% }; %>
+            </p>
+          </div>
+        </div>
+      <% } %> -->
     </div>
-</div>
-<br>
-<br>
-<%- include('partials/footer') -%>
+  </div>
+  <div class="fr-container fr-container--fluid fr-py-4w fr-mb-4w" style="background-color: #F0F0F0">
+        <!-- <% if(ministry.teamInfo){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+              <p>Si vous avez des questions</p>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12">
+                <p>
+                  <%- ministry.teamInfo %>
+                </p>
+            </div>
+          </div>
+        <% } %>
+        <% if(ministry.toApply){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+              <p>Pour candidater</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p>
+                    <b><%- ministry.toApply %></b>
+                  </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(ministry.more){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+              <p>Pour en savoir plus</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p>
+                    <%- ministry.more %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(ministry.limitDate){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+                <p>Date Limite</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p>
+                    le <%=ministry.limitDate %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+        <% if(ministry.hiringProcess){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+                <p>Processus de recrutement</p>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12">
+                  <p>
+                    <%= ministry.hiringProcess %>
+                  </p>
+                </p>
+              </div>
+          </div>
+        <% } %>
+      </div> -->
+    </div>
+
+  <%- include('partials/footer') -%>

@@ -25,7 +25,7 @@ module.exports.NotionMinistriesService = {
     async all({ startCursor, pageSize = 20 } = {}) {
         let ministries;
         let nextCursor;
-        if (!startCursor || !startCursor.startsWith('pep-')) {
+        if (!startCursor) {
             const { data } = await axios.post(
                 `https://api.notion.com/v1/databases/${process.env.NOTION_MINISTRIES_DATABASE_ID}/query`,
                 {
@@ -44,7 +44,6 @@ module.exports.NotionMinistriesService = {
             ministries = data.results.map(mapToMinistry);
             nextCursor = data.next_cursor;
         }
-        console.log("TEST MIN", ministries[0]);
         return {
             ministries,
             nextCursor
@@ -65,24 +64,18 @@ module.exports.NotionMinistriesService = {
 
     async getMinistry(id) {
         try {
-            const { data } = await axios.get(`https://api.notion.com/v1/databases/a0d1dd8464904259b5798a9d72e32f88`, {
+            const { data }  = await axios.get(`https://api.notion.com/v1/pages/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                     'Notion-Version': '2021-08-16',
                 },
+            }).catch(function(error) {
+                console.log('Request Error: ' + error);
             });
-            console.log(data.url)
-            // for (const block of data.results) {
-            //     console.log(block.type, block[block.type])
-            // }
-            // ministries.push(new Ministry({id: data.id, description: data.text}))
-
-        } catch (e) {
-            console.log(e);
+            return  mapToMinistry(data);
+        } catch (err) {
+            console.log(err);
         }
-
         return null;
-
-
     },
 };
