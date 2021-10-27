@@ -57,7 +57,13 @@
           <h3>Valeurs</h3>
         </div>
         <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <p><%- ministry.values.replace(/\n/g, '<br>') %></p>
+            <ul>
+                <% ministry.values.split('\n').forEach(function(value) { %>
+                    <li>
+                        <%= value.replace('- ', '') %>
+                    </li>
+                <% }); %>
+            </ul>
             <% ministry.valuesMedia.forEach(function(media) { %>
                 <% if (media.file) { %>
                     <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
@@ -73,12 +79,14 @@
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Missions</h3>
           </div>
-          <div class="fr-col-md-10 fr-col-sm-12">
-            <% ministry.missions.split('\n').forEach(function(mission) { %>
-                <li>
-                    <%= mission.replace('- ', '') %>
-                </li>
-            <% }); %>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% ministry.missions.split('\n').forEach(function(mission) { %>
+                    <li>
+                        <%= mission.replace('- ', '') %>
+                    </li>
+                <% }); %>
+            </ul>
           </div>
         </div>
       <% } %>
@@ -88,7 +96,13 @@
            <h3>Projets</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <p><%- ministry.projects.replace(/\n/g, '<br>') %></p>
+            <ul>
+                <% ministry.projects.split('- ').slice(1).forEach(function(project) { %>
+                    <li>
+                        <%- project.replaceAll('* ', '- ').replace(/\n/g, '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
             <ul>
             <% ministry.projectsMedia.forEach(function(media) { %>
                 <% if (media.file) { %>
@@ -129,13 +143,20 @@
           </div>
         </div>
       <% } %>
-      <% if(ministry.joinTeam){ %>
+      <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Nous rejoindre</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <p><%- ministry.joinTeam.replace(/\n/g, '<br>') %></p>
+            <% if(ministry.joinTeam){ %>
+            <ul>
+                <% ministry.joinTeam.split('\n').forEach(function(arg) { %>
+                    <li>
+                        <%= arg.replace('- ', '') %>
+                    </li>
+                <% }); %>
+                </ul>
             <ul>
             <% ministry.joinTeamMedia.forEach(function(media) { %>
                 <% if (media.file) { %>
@@ -145,7 +166,8 @@
                 <% } %>
             <% }); %>
             </ul>
-            <% if(ministry.jobsLink){ %>
+            <% } %>
+            <% if(ministry.jobsLink.length){ %>
                 <a href="<%= ministry.jobsLink[0].name %>"
                     class="fr-btn fr-btn--sm">Découvrez nos offres d'emploi
                      <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
@@ -210,8 +232,10 @@
                         </a>
                     <% } else if(network.name.search('github.com') != -1){ %>
                         <a href="<%= network.name %>">Github</a>
-                    <% } else { %>
+                    <% } else if(network.name.search('dailymotion.com') != -1){ %>
                         <a href="<%= network.name %>">Dailymotion</a>
+                    <% } else { %>
+                        <a href="<%= network.name %>">Soundcloud</a>
                     <% } %>
                 <% }); %>
                 </p>
