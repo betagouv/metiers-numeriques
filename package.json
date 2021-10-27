@@ -43,5 +43,10 @@
   "devDependencies": {
     "jest": "^27.2.0",
     "nodemon": "^2.0.6"
+  },
+  "extra": {
+    "paas": {
+      "nginx-includes": ["config/nginx-basic-auth.conf"]
+    }
   }
 }
