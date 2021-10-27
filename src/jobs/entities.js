@@ -86,7 +86,7 @@ module.exports.Job = class Job {
  * @property {string} adress
  * @property {string} adressBis
  * @property {string} brandBlock
- * @property {string[]} keyNumbers
+ * @property {string} keyNumbers
  * @property {string[]} keyNumbersMedia
  * @property {string[]} missions
  * @property {string} projects
@@ -98,8 +98,8 @@ module.exports.Job = class Job {
  * @property {string} motivation
  * @property {string} motivationMedia
  * @property {string[]} profile
- * @property {string} website
- * @property {string[]} jobsLinks
+ * @property {string[]} websites
+ * @property {string[]} jobsLink
  * @property {string[]} values
  * @property {string[]} valuesMedia
  * @property {string} schedule
@@ -138,12 +138,12 @@ module.exports.Ministry = class Ministry {
         testimonials,
         testimonialsMedia,
         joinTeam,
-        joinTeamInfos,
+        joinTeamMedia,
         motivation,
         motivationMedia,
         profile,
-        website,
-        jobsLinks,
+        websites,
+        jobsLink,
         values,
         valuesMedia,
         schedule,
@@ -172,12 +172,12 @@ module.exports.Ministry = class Ministry {
         this.testimonials = testimonials,
         this.testimonialsMedia = testimonialsMedia,
         this.joinTeam = joinTeam,
-        this.joinTeamInfos = joinTeamInfos,
+        this.joinTeamMedia = joinTeamMedia,
         this.motivation = motivation,
         this.motivationMedia = motivationMedia,
         this.profile = profile,
-        this.website = website,
-        this.jobsLinks = jobsLinks,
+        this.websites = websites,
+        this.jobsLink = jobsLink,
         this.values = values,
         this.valuesMedia = valuesMedia,
         this.schedule = schedule,

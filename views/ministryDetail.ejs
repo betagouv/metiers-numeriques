@@ -74,7 +74,11 @@
            <h3>Missions</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
-            <p><%- ministry.missions.replace(/\n/g, '<br>') %></p>
+            <% ministry.missions.split('\n').forEach(function(mission) { %>
+                <li>
+                    <%= mission.replace('- ', '') %>
+                </li>
+            <% }); %>
           </div>
         </div>
       <% } %>
@@ -102,7 +106,7 @@
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Nos agents en parlent</h3>
           </div>
-          <div class="fr-col-md-10 fr-col-sm-12">
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
             Découvrez le témoignage de nos agents:
             <% if(ministry.testimonials.search('http') != -1 ){ %>
                 <ul>
@@ -125,97 +129,118 @@
           </div>
         </div>
       <% } %>
-      <!-- <% if(ministry.profile.length){ %>
+      <% if(ministry.joinTeam){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
-           <h3>Votre profil</h3>
+           <h3>Nous rejoindre</h3>
           </div>
-          <div class="fr-col-md-10 fr-col-sm-12">
-              <% if(ministry.profile.length == 1){ %>
-                <p>
-                  <%- ministry.profile[0].replace(/\n/g, '<br>') %>
-                </p>
-              <% }; %>
-              <% if(ministry.profile.length > 1){ %>
-                <ul>
-                  <% ministry.profile.forEach(function(profile) { %>
-                    <li>
-                      <%=profile%>
-                    </li>
-                  <% }); %>
-                </ul>
-              <% }; %>
-            </p>
-          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <p><%- ministry.joinTeam.replace(/\n/g, '<br>') %></p>
+            <ul>
+            <% ministry.joinTeamMedia.forEach(function(media) { %>
+                <% if (media.file) { %>
+                    <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                <% } else { %>
+                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                <% } %>
+            <% }); %>
+            </ul>
+            <% if(ministry.jobsLink){ %>
+                <a href="<%= ministry.jobsLink[0].name %>"
+                    class="fr-btn fr-btn--sm">Découvrez nos offres d'emploi
+                     <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
+                  </a>
+            <% } %>
+            </div>
         </div>
-      <% } %> -->
+      <% } %>
     </div>
   </div>
   <div class="fr-container fr-container--fluid fr-py-4w fr-mb-4w" style="background-color: #F0F0F0">
-        <!-- <% if(ministry.teamInfo){ %>
-          <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-md-2 fr-col-sm-12">
-              <p>Si vous avez des questions</p>
+    <% if(ministry.keyNumbers){ %>
+    <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+            <h5>Chiffres clés</h5>
+        </div>
+        <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+            <% ministry.keyNumbers.split('\n').forEach(function(number) { %>
+                <li>
+                    <%= number.replace('- ', '') %>
+                </li>
+            <% }); %>
+            </ul>
+        </div>
+    </div>
+    <% } %>
+    <% if(ministry.websites){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+            <h5>Sites & réseaux</h5>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12">
+                <ul>
+                    <% ministry.websites.forEach(function(website) { %>
+                        <li>
+                            <a href="<%= website.name %>" target="_blank"><%= website.name %></a>
+                        </li>
+                    <% }); %>
+                </ul>
+                <p>
+                <% ministry.socialNetworks.forEach(function(network) { %>
+                    <% if(network.name.search('linkedin.com') != -1 ){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-linkedin-box-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('twitter.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-twitter-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('facebook.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-facebook-circle-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('instagram.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-instagram-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('youtube.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-youtube-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('github.com') != -1){ %>
+                        <a href="<%= network.name %>">Github</a>
+                    <% } else { %>
+                        <a href="<%= network.name %>">Dailymotion</a>
+                    <% } %>
+                <% }); %>
+                </p>
+            </div>
+        </div>
+    <% } %>
+      <% if(ministry.adress){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+            <h5>Adresses</h5>
             </div>
             <div class="fr-col-md-10 fr-col-sm-12">
                 <p>
-                  <%- ministry.teamInfo %>
+                <%- ministry.adress %>
                 </p>
+                <% ministry.adressBis.forEach(function(adress) { %>
+                    <p>
+                    <% if(adress.name.search('google.com') != -1){ %>
+                        <a href="<%= adress.name %>" target="_blank">Voir sur Google maps</a>
+                    <% } else { %>
+                        <img class="fr-col-2 fr-mb-4w fr-mt-6w" src="<%= adress.file.url %>" alt="<%= adress.name %>">
+                    <% } %>
+                    </p>
+                <% }); %>
+            </p>
             </div>
-          </div>
+        </div>
         <% } %>
-        <% if(ministry.toApply){ %>
-          <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-md-2 fr-col-sm-12">
-              <p>Pour candidater</p>
-              </div>
-              <div class="fr-col-md-10 fr-col-sm-12">
-                  <p>
-                    <b><%- ministry.toApply %></b>
-                  </p>
-              </div>
-          </div>
-        <% } %>
-        <% if(ministry.more){ %>
-          <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-md-2 fr-col-sm-12">
-              <p>Pour en savoir plus</p>
-              </div>
-              <div class="fr-col-md-10 fr-col-sm-12">
-                  <p>
-                    <%- ministry.more %>
-                  </p>
-                </p>
-              </div>
-          </div>
-        <% } %>
-        <% if(ministry.limitDate){ %>
-          <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-md-2 fr-col-sm-12">
-                <p>Date Limite</p>
-              </div>
-              <div class="fr-col-md-10 fr-col-sm-12">
-                  <p>
-                    le <%=ministry.limitDate %>
-                  </p>
-                </p>
-              </div>
-          </div>
-        <% } %>
-        <% if(ministry.hiringProcess){ %>
-          <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-md-2 fr-col-sm-12">
-                <p>Processus de recrutement</p>
-              </div>
-              <div class="fr-col-md-10 fr-col-sm-12">
-                  <p>
-                    <%= ministry.hiringProcess %>
-                  </p>
-                </p>
-              </div>
-          </div>
-        <% } %>
-      </div> -->
+        </div>
     </div>
 
   <%- include('partials/footer') -%>
