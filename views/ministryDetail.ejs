@@ -40,7 +40,7 @@
                             <% if (media.file) { %>
                                 <a href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
                             <% } else { %>
-                                <a href="<%= media.name %>" target="_blank">Présentation vidéo</a>
+                                <a href="<%= media.name %>" target="_blank">Présentation</a>
                             <% } %>
                         <% }); %>
                     <% } %>
@@ -56,8 +56,15 @@
         <div class="fr-col-md-2 fr-col-sm-12">
           <h3>Valeurs</h3>
         </div>
-        <div class="fr-col-md-10 fr-col-sm-12">
-          <p><%= ministry.values %></p>
+        <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <p><%- ministry.values.replace(/\n/g, '<br>') %></p>
+            <% ministry.valuesMedia.forEach(function(media) { %>
+                <% if (media.file) { %>
+                    <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                <% } else { %>
+                    <a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a>
+                <% } %>
+            <% }); %>
         </div>
       </div>
       <% } %>
@@ -76,18 +83,45 @@
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Projets</h3>
           </div>
-          <div class="fr-col-md-10 fr-col-sm-12">
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
             <p><%- ministry.projects.replace(/\n/g, '<br>') %></p>
+            <ul>
+            <% ministry.projectsMedia.forEach(function(media) { %>
+                <% if (media.file) { %>
+                    <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                <% } else { %>
+                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                <% } %>
+            <% }); %>
+            </ul>
           </div>
         </div>
       <% } %>
-      <% if(ministry.testimonials){ %>
+      <% if(ministry.testimonials || ministry.testimonialsMedia.length){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Nos agents en parlent</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12">
-            <p><%- ministry.testimonials.replace(/\n/g, '<br>') %></p>
+            Découvrez le témoignage de nos agents:
+            <% if(ministry.testimonials.search('http') != -1 ){ %>
+                <ul>
+                    <% ministry.testimonials.split('\n').forEach(function(testimonial) { %>
+                    <li><a href="<%= testimonial.split(' : ')[1] %>" target="_blank"> <%= testimonial.split(' : ')[0] %> </a></li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p><%- ministry.testimonials.replace(/\n/g, '<br>') %></p>
+            <% } %>
+            <% if(ministry.testimonialsMedia){ %>
+                <% ministry.testimonialsMedia.forEach(function(media) { %>
+                    <% if (media.file) { %>
+                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                    <% } else { %>
+                        <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                    <% } %>
+                <% }); %>
+            <% } %>
           </div>
         </div>
       <% } %>

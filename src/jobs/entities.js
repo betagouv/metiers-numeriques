@@ -90,6 +90,7 @@ module.exports.Job = class Job {
  * @property {string[]} keyNumbersMedia
  * @property {string[]} missions
  * @property {string} projects
+ * @property {string} projectsMedia
  * @property {string} testimonials
  * @property {string[]} testimonialsMedia
  * @property {string} joinTeam
@@ -100,6 +101,7 @@ module.exports.Job = class Job {
  * @property {string} website
  * @property {string[]} jobsLinks
  * @property {string[]} values
+ * @property {string[]} valuesMedia
  * @property {string} schedule
  * @property {string[]} socialNetworks
  * @property {string} visualBanner
@@ -132,6 +134,7 @@ module.exports.Ministry = class Ministry {
         keyNumbersMedia,
         missions,
         projects,
+        projectsMedia,
         testimonials,
         testimonialsMedia,
         joinTeam,
@@ -142,6 +145,7 @@ module.exports.Ministry = class Ministry {
         website,
         jobsLinks,
         values,
+        valuesMedia,
         schedule,
         socialNetworks,
         visualBanner,
@@ -164,6 +168,7 @@ module.exports.Ministry = class Ministry {
         this.keyNumbersMedia = keyNumbersMedia,
         this.missions = missions,
         this.projects = projects,
+        this.projectsMedia = projectsMedia,
         this.testimonials = testimonials,
         this.testimonialsMedia = testimonialsMedia,
         this.joinTeam = joinTeam,
@@ -174,6 +179,7 @@ module.exports.Ministry = class Ministry {
         this.website = website,
         this.jobsLinks = jobsLinks,
         this.values = values,
+        this.valuesMedia = valuesMedia,
         this.schedule = schedule,
         this.socialNetworks = socialNetworks,
         this.visualBanner = visualBanner,

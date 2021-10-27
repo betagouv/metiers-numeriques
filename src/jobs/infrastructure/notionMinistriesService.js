@@ -72,10 +72,11 @@ module.exports.NotionMinistriesService = {
             }).catch(function(error) {
                 console.log('Request Error: ' + error);
             });
+            console.log("Test min", mapToMinistry(data));
             return  mapToMinistry(data);
         } catch (err) {
             console.log(err);
-        }
+        } 
         return null;
     },
 };
