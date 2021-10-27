@@ -1,5 +1,5 @@
 import { JobDetailDTO } from '../types';
-import { InMemoryJobsService } from '../infrastructure/inMemoryJobsService';
+import { InMemoryJobsService } from '../repository/inMemoryJobsService';
 import * as usecases from '../usecases';
 import { fakeJob } from './stubs/fakeJobs';
 
@@ -62,4 +62,18 @@ describe('Jobs managmenent', () => {
                 profile: undefined
             });
     });
+
+    it('should create a job with minimal data', async () => {
+        const job = new Job({
+            title: 'job 1',
+            mission: 'short description',
+            departments: ['Ministère des armées'],
+            openedToContractTypes: ['CDD', 'CDI'],
+            team: 'MTES',
+        });
+
+        usecases.addJob(job, {jobsService});
+
+        expect(jobsService.jobs[0]).toEqual(job);
+    })
 });

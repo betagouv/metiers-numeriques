@@ -1,9 +1,8 @@
 import { DateProvider } from '../shared/dateProvider';
 import { JobsService, MinistriesService } from './interfaces';
+import { isBefore, parse, sub } from 'date-fns';
+import { JOB_FILTERS } from './utils';
 
-const { isBefore, parse, sub } = require('date-fns');
-
-const { JOB_FILTERS } = require('./utils');
 
 export const listJobs = async (deps: { jobsService: JobsService }, params: any) => {
     return await deps.jobsService.all(params);
@@ -12,6 +11,11 @@ export const listJobs = async (deps: { jobsService: JobsService }, params: any) 
 export const getJob = async (id: string, deps: { jobsService: JobsService }, tag: string) => {
     return await deps.jobsService.get(id, tag);
 };
+
+export const addJob = async (job: Job, deps: { jobsService: JobsService }): Promise<void> => {
+    await deps.jobsService.addJob(job);
+    return;
+}
 
 export const updateLatestActivePepJobs = async (pepJob: any, deps: { jobsService: JobsService, dateProvider: DateProvider }) => {
     // import only offers published since yesterday

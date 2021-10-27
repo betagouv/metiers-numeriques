@@ -2,18 +2,14 @@ import { JobDetailDTO } from './types';
 
 export interface JobsService {
     all(params: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }>;
-
     count(): Promise<number>;
-
     get(pageId: string, tag: string): Promise<JobDetailDTO | null>;
-
     getPage(database: string, pageId: string): Promise<any>;
-
     createPage(database: string, properties: any): Promise<any>;
+    addJob(job: Job): Promise<void>;
 }
 
 export interface MinistriesService {
     listMinistries(): Promise<any>;
-
     getMinistry(id: string): Promise<any>;
 }

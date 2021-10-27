@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { JobDetailDTO } from '../types';
-import { NotionService } from '../infrastructure/notionJobsService';
+import { NotionService } from '../repository/notionJobsService';
 import jobsStub from './stubs/jobs.stub.json';
 
-const { NotionMinistriesService } = require('../infrastructure/notionMinistriesService');
+const { NotionMinistriesService } = require('../repository/notionMinistriesService');
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

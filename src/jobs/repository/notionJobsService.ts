@@ -1,15 +1,19 @@
 import axios from 'axios';
 import { config } from 'dotenv';
+import { JobsService } from '../interfaces';
+import { JobDetailDTO } from '../types';
+import { createPepProperties } from '../utils';
+import { formatDetailFromPep, mapToJob } from './mappers';
+
 config();
 
-import { JobDetailDTO } from '../types';
-import { JobsService } from '../interfaces';
-import { formatDetailFromPep, mapToJob } from './mappers';
-import { createPepProperties } from '../utils';
+export class NotionService implements JobsService {
+    addJob(_job: Job): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
 
-export const NotionService: JobsService = {
     async all({
-                  startCursor = undefined,
+                  startCursor = '',
                   pageSize = 20,
               }): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }> {
         let jobs = [];
@@ -70,7 +74,7 @@ export const NotionService: JobsService = {
             nextCursor,
         };
         // return data.results.map(mapToJob);
-    },
+    }
 
     async count() {
         let { data } = await axios.post(
@@ -88,7 +92,7 @@ export const NotionService: JobsService = {
                     'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
                     'Notion-Version': '2021-08-16',
                 },
-            })
+            });
         const count = data.results.length;
 
         const { data: pepData } = await axios.post(`https://api.notion.com/v1/databases/${process.env.PEP_DATABASE_ID}/query`, {
@@ -107,7 +111,7 @@ export const NotionService: JobsService = {
         const countPep = pepData.results.length;
 
         return count + countPep;
-    },
+    }
 
     async get(pageId: string, tag: string) {
         let mapper = tag === 'pep' ? formatDetailFromPep : mapToJob;
@@ -128,7 +132,7 @@ export const NotionService: JobsService = {
             return mapper(result.data);
         }
         return null;
-    },
+    }
 
     async getPage(database: string, pageId: string) {
         try {
@@ -153,7 +157,7 @@ export const NotionService: JobsService = {
             console.error(e);
             throw new Error('Impossible de récupérer la page');
         }
-    },
+    }
 
     async createPage(database: string, properties: any) {
         const pepProperties = createPepProperties(properties);
@@ -171,5 +175,5 @@ export const NotionService: JobsService = {
             console.error(e);
             throw new Error('Impossible de crééer une page');
         }
-    },
-};
+    }
+}

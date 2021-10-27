@@ -1,4 +1,4 @@
-import { InMemoryMinistriesService } from '../infrastructure/inMemoryMinistriesService';
+import { InMemoryMinistriesService } from '../repository/inMemoryMinistriesService';
 import * as usecases from '../usecases';
 
 describe('Ministries managmenent', () => {
