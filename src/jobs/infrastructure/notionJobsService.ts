@@ -2,7 +2,7 @@ import axios from 'axios';
 import { config } from 'dotenv';
 config();
 
-import { JobDetailDTO } from '../entities';
+import { JobDetailDTO } from '../types';
 import { JobsService } from '../interfaces';
 import { formatDetailFromPep, mapToJob } from './mappers';
 import { createPepProperties } from '../utils';

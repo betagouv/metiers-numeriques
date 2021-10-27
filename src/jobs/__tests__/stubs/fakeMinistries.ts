@@ -1,4 +1,4 @@
-import { MinistryDetailDTO } from '../../entities';
+import { MinistryDetailDTO } from '../../types';
 
 const fakeMinistries: MinistryDetailDTO[] = [
         {

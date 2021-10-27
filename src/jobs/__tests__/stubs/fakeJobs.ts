@@ -1,4 +1,4 @@
-import { JobDetailDTO } from '../../entities';
+import { JobDetailDTO } from '../../types';
 
 
 const fakeJobs: JobDetailDTO[] = [

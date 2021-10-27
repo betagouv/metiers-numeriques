@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JobDetailDTO } from '../entities';
+import { JobDetailDTO } from '../types';
 import { NotionService } from '../infrastructure/notionJobsService';
 import jobsStub from './stubs/jobs.stub.json';
 

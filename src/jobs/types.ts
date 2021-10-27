@@ -11,12 +11,12 @@ export interface JobDetailDTO {
     salary?: string
     team?: string
     slug?: string
-    hiringProcess?: string | null
-    publicationDate?: Date | null
+    hiringProcess?: string
+    publicationDate?: Date
     conditions?: string[]
     teamInfo?: string
     toApply?: string
-    more?: string | null
+    more?: string
     limitDate?: Date
     advantages?: string
 }

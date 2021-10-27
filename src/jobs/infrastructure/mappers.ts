@@ -1,5 +1,5 @@
 import { toDate } from 'date-fns-tz';
-import { JobDetailDTO } from '../entities';
+import { JobDetailDTO } from '../types';
 
 
 function urlify(text: string) {

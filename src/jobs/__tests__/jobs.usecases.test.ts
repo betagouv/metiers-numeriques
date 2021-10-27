@@ -1,4 +1,4 @@
-import { JobDetailDTO } from '../entities';
+import { JobDetailDTO } from '../types';
 import { InMemoryJobsService } from '../infrastructure/inMemoryJobsService';
 import * as usecases from '../usecases';
 import { fakeJob } from './stubs/fakeJobs';

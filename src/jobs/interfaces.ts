@@ -1,4 +1,4 @@
-import { JobDetailDTO } from './entities';
+import { JobDetailDTO } from './types';
 
 export interface JobsService {
     all(params: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }>;
