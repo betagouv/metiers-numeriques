@@ -1,2 +1,2 @@
-web: npm start
+web: bin/run
 worker: node cron.js
