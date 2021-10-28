@@ -1,4 +1,7 @@
 server {
+  server_name _;
+  listen <%= ENV['PORT'] %>;
+
   location / {
     auth_basic           "Protected Site";
     auth_basic_user_file /app/config/htpasswd;
