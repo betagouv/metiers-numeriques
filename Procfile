@@ -1,2 +1,2 @@
-web: node index.js & bin/run
+web: node index.js
 worker: node cron.js
