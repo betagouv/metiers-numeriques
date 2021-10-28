@@ -47,7 +47,6 @@
                 </div>
             </div>
           <% } %>
-
         </div>
       </div>
       <div class="fr-my-4w">
@@ -74,6 +73,27 @@
         </div>
       </div>
       <% } %>
+      <% if(ministry.challenges){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+            <h3>Nos enjeux</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% if(ministry.challenges.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.challenges.split('- ')[0].replace(/\n/g, '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.challenges.split('- ').slice(1).forEach(function(challenge) { %>
+                    <li>
+                        <%- challenge.replace(/\n/g, '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
+          </div>
+        </div>
+        <% } %>
       <% if(ministry.missions){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
@@ -125,12 +145,12 @@
             <ul>
                 <% if(ministry.organization.split('- ')[0].length){ %>
                     <li>
-                        <%- ministry.organization.split('- ')[0].replace('\n', '<br>') %>
+                        <%- ministry.organization.split('- ')[0].replace(/\n/g, '<br>') %>
                     </li>
                 <% } %>
                 <% ministry.organization.split('- ').slice(1).forEach(function(orga) { %>
                     <li>
-                        <%- orga.replace('\n', '<br>') %>
+                        <%- orga.replace(/\n/g, '<br>') %>
                     </li>
                 <% }); %>
             </ul>
