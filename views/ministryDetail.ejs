@@ -115,6 +115,44 @@
           </div>
         </div>
       <% } %>
+      <% if(ministry.organization || ministry.organizationMedia.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Notre organisation</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-6w">
+            <% if (ministry.organization) { %>
+            <ul>
+                <% if(ministry.organization.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.organization.split('- ')[0].replace('\n', '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.organization.split('- ').slice(1).forEach(function(orga) { %>
+                    <li>
+                        <%- orga.replace('\n', '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
+            <% } %>
+            <% ministry.organizationMedia.forEach(function(media) { %>
+                <span>
+                <% if (media.file) { %>
+                    <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
+                        <a href="<%= media.file.url %>" target="_blank">
+                            <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                        </a>
+                    <% } else { %>
+                        <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                    <% } %>
+                <% } else { %>
+                <a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a>
+                <% } %>
+                </span>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
       <% if(ministry.testimonials || ministry.testimonialsMedia.length){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
@@ -157,10 +195,16 @@
                     </li>
                 <% }); %>
                 </ul>
-            <ul>
+            <ul class="fr-mb-4w">
             <% ministry.joinTeamMedia.forEach(function(media) { %>
                 <% if (media.file) { %>
-                    <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                    <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
+                        <a href="<%= media.file.url %>" target="_blank">
+                            <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                        </a>
+                    <% } else { %>
+                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                    <% } %>
                 <% } else { %>
                     <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
                 <% } %>
@@ -252,13 +296,17 @@
                 <%- ministry.adress %>
                 </p>
                 <% ministry.adressBis.forEach(function(adress) { %>
-                    <p>
+                    <span>
                     <% if(adress.name.search('google.com') != -1){ %>
                         <a href="<%= adress.name %>" target="_blank">Voir sur Google maps</a>
                     <% } else { %>
-                        <img class="fr-col-2 fr-mb-4w fr-mt-6w" src="<%= adress.file.url %>" alt="<%= adress.name %>">
+                        <% if (adress.name.search('.jpg') != -1 ) { %>
+                            <a href="<%= adress.file.url %>" target="_blank">
+                                <img class="fr-col-2 fr-mt-6w" src="<%= adress.file.url %>" alt="<%= adress.name %>">
+                            </a>
+                        <% } %>
                     <% } %>
-                    </p>
+                    </span>
                 <% }); %>
             </p>
             </div>
