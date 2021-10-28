@@ -96,13 +96,14 @@
            <h3>Projets</h3>
           </div>
           <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <ul>
+            <p><%- ministry.projects.replace(/\n/g, '<br>') %></p>
+            <!-- <ul>
                 <% ministry.projects.split('- ').slice(1).forEach(function(project) { %>
                     <li>
                         <%- project.replaceAll('* ', '- ').replace(/\n/g, '<br>') %>
                     </li>
                 <% }); %>
-            </ul>
+            </ul> -->
             <ul>
             <% ministry.projectsMedia.forEach(function(media) { %>
                 <% if (media.file) { %>
