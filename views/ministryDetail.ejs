@@ -136,19 +136,21 @@
             </ul>
             <% } %>
             <% ministry.organizationMedia.forEach(function(media) { %>
-                <span>
+                <ul>
                 <% if (media.file) { %>
+                    <span>
                     <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
                         <a href="<%= media.file.url %>" target="_blank">
                             <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
                         </a>
                     <% } else { %>
-                        <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
                     <% } %>
-                <% } else { %>
-                <a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a>
-                <% } %>
                 </span>
+                <% } else { %>
+                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                <% } %>
+                </ul>
             <% }); %>
           </div>
         </div>
