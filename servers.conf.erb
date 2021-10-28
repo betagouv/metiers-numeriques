@@ -1,6 +1,7 @@
 server {
-  server_name _;
+  server_name localhost;
   listen <%= ENV['PORT'] %>;
+  charset utf-8;
 
   location / {
     auth_basic           "Protected Site";
