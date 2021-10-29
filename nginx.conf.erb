@@ -1,5 +1,0 @@
-location / {
-    auth_basic           "Protected Site";
-    auth_basic_user_file "/app/config/htpasswd";
-    proxy_pass <%= ENV["URL_REDIRECTION"] %>;
-}
