@@ -1,5 +1,5 @@
 location / {
     auth_basic           "Protected Site";
     auth_basic_user_file "/app/config/htpasswd";
-    proxy_pass https://dinum-metiers-num-staging-pr54.osc-fr1.scalingo.io;
+    proxy_pass <%= ENV["URL_REDIRECTION"] %>;
 }
