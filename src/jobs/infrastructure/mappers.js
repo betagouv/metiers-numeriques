@@ -78,7 +78,6 @@ const mapToMinistry = (rawMinistry, now = Date.now()) => {
         challenges: parseProperty(rawMinistry.properties['Nos enjeux']),
         organization: parseProperty(rawMinistry.properties['Notre organisation']),
         organizationMedia: parseProperty(rawMinistry.properties['Notre organisation compléments']),
-        recruitmentProcess: parseProperty(rawMinistry.properties['Processus de recrutement']),
         hiringProcess: parseProperty(rawMinistry.properties['Processus de recrutement']),
         slug: buildSlug(title, id),
         publicationDate: toDate("2021-09-13" + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})

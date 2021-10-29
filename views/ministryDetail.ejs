@@ -231,7 +231,28 @@
           </div>
         </div>
         <% } %>
-      <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
+        <% if(ministry.hiringProcess){ %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-2 fr-col-sm-12">
+                <h3>Processus de recrutement</h3>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+                <ul>
+                    <% if(ministry.hiringProcess.split('- ')[0].length){ %>
+                        <li>
+                            <%- ministry.hiringProcess.split('- ')[0].replace(/\n/g, '<br>') %>
+                        </li>
+                    <% } %>
+                    <% ministry.hiringProcess.split('- ').slice(1).forEach(function(process) { %>
+                        <li>
+                            <%- process.replace(/\n/g, '<br>') %>
+                        </li>
+                    <% }); %>
+                </ul>
+              </div>
+            </div>
+            <% } %>
+        <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">
            <h3>Nous rejoindre</h3>
@@ -289,6 +310,22 @@
         </div>
     </div>
     <% } %>
+    <% if(ministry.schedule){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+                <h5>Agenda</h5>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+                <ul>
+                <% ministry.schedule.split('\n').forEach(function(event) { %>
+                    <li>
+                        <%= event.replace('- ', '') %>
+                    </li>
+                <% }); %>
+                </ul>
+            </div>
+        </div>
+        <% } %>
     <% if(ministry.websites){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
         <div class="fr-col-md-2 fr-col-sm-12">

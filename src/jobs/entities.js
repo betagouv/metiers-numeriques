@@ -108,7 +108,6 @@ module.exports.Job = class Job {
  * @property {string} challenges
  * @property {string} organization
  * @property {string} organizationMedia
- * @property {string} recruitmentProcess
  * @property {string} hiringProcess
  * @property {string} slug
  * @property {Date|null} [publicationDate]
@@ -152,7 +151,6 @@ module.exports.Ministry = class Ministry {
         challenges,
         organization,
         organizationMedia,
-        recruitmentProcess,
         hiringProcess,
         slug,
         publicationDate = null,
@@ -186,7 +184,6 @@ module.exports.Ministry = class Ministry {
         this.challenges = challenges,
         this.organization = organization,
         this.organizationMedia = organizationMedia,
-        this.recruitmentProcess = recruitmentProcess,
         this.hiringProcess = hiringProcess,
         this.slug = slug,
         this.publicationDate = publicationDate
