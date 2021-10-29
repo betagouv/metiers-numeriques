@@ -1,2 +1,2 @@
-web: node index.js
+web: (bin/run &) && npm start
 worker: node cron.js
