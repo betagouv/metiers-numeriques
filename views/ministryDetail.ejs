@@ -125,7 +125,7 @@
                 <% ministry.projects.split('- ').slice(1).forEach(function(project) { %>
                     <% if(project.length){ %>
                         <li>
-                            <%- project.replace(/\n/g, '<br>') %>
+                            <%- project.replace(/>/g, '- ').replace(/\n/g, '<br>') %>
                         </li>
                     <% } %>
                 <% }); %>
