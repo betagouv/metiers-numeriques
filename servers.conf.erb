@@ -1,0 +1,16 @@
+upstream app_server {
+	server localhost:<%= ENV["APP_PORT"] %> fail_timeout=0;
+}
+
+server {
+    server_name _;
+    listen <%= ENV['PORT'] %>;
+
+    location / {
+
+        auth_basic           on;
+        auth_basic_user_file /app/config/htpasswd;
+
+        proxy_pass http://app_server;
+    }
+}
