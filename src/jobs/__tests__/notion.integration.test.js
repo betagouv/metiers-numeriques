@@ -72,17 +72,17 @@ const { NotionMinistriesService } = require('../infrastructure/notionMinistriesS
 // });
 
 
-describe('Ministries fetch api', () => {
-    it('should fetch and return a list of ministries', async () => {
-        // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
+// describe('Ministries fetch api', () => {
+//     it('should fetch and return a list of ministries', async () => {
+//         // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
 
-        const ministries = await NotionMinistriesService.all();
-    });
+//         const ministries = await NotionMinistriesService.all();
+//     });
 
-    it('should fetch and return one ministry details', async () => {
-        // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
+//     it('should fetch and return one ministry details', async () => {
+//         // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
 
-        const ministries = await NotionMinistriesService.getMinistry('1');
-        console.log(ministries);
-    });
-});
+//         const ministries = await NotionMinistriesService.getMinistry('1');
+//         console.log(ministries);
+//     });
+// });
