@@ -67,7 +67,7 @@ const mapToMinistry = (rawMinistry, now = Date.now()) => {
         joinTeamMedia: parseProperty(rawMinistry.properties['Nous rejoindre - Infos']),
         motivation: parseProperty(rawMinistry.properties["Raison d'être"]),
         motivationMedia: parseProperty(rawMinistry.properties["Raison d'être complément"]),
-        profile: parseProperty(rawMinistry.properties['Ton profil']).split('- ').filter(item => item),
+        profile: parseProperty(rawMinistry.properties['Ton profil']),
         websites: parseProperty(rawMinistry.properties['Site(s) institutionel(s)']),
         jobsLink: parseProperty(rawMinistry.properties['Toutes les offres disponibles']),
         values: parseProperty(rawMinistry.properties['Valeurs']),

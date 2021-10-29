@@ -117,10 +117,17 @@
           </div>
           <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
             <ul>
-                <% ministry.projects.split('\n').forEach(function(project) { %>
+                <% if(ministry.projects.split('- ')[0].length){ %>
                     <li>
-                        <%= project.replace('- ', '') %>
+                        <%- ministry.projects.split('- ')[0].replace(/\n/g, '<br>') %>
                     </li>
+                <% } %>
+                <% ministry.projects.split('- ').slice(1).forEach(function(project) { %>
+                    <% if(project.length){ %>
+                        <li>
+                            <%- project.replace(/\n/g, '<br>') %>
+                        </li>
+                    <% } %>
                 <% }); %>
             </ul>
             <ul>
@@ -203,6 +210,27 @@
           </div>
         </div>
       <% } %>
+      <% if(ministry.profile){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+            <h3>Ton profil</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% if(ministry.profile.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.profile.split('- ')[0].replace(/\n/g, '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.profile.split('- ').slice(1).forEach(function(element) { %>
+                    <li>
+                        <%- element.replace(/\n/g, '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
+          </div>
+        </div>
+        <% } %>
       <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-2 fr-col-sm-12">

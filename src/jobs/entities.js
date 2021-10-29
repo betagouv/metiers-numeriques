@@ -97,7 +97,7 @@ module.exports.Job = class Job {
  * @property {string} joinTeamInfos
  * @property {string} motivation
  * @property {string} motivationMedia
- * @property {string[]} profile
+ * @property {string} profile
  * @property {string[]} websites
  * @property {string[]} jobsLink
  * @property {string[]} values
