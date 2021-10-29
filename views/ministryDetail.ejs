@@ -1,71 +1,405 @@
 <%- include('partials/header') -%>
-<div id="ministere" class="fr-container fr-mt-4w">
-    <div class="fr-tabs">
-        <ul class="fr-tabs__list" role="tablist" aria-label="Sections">
-            <li role="presentation">
-                <button id="tabpanel-404" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="0"
-                        role="tab" aria-selected="true" aria-controls="tabpanel-404-panel">Découvrir
-                </button>
-            </li>
-            <li role="presentation">
-                <button id="tabpanel-405" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="-1"
-                        role="tab" aria-selected="false" aria-controls="tabpanel-405-panel">Les projets
-                </button>
-            </li>
-            <li role="presentation">
-                <button id="tabpanel-406" class="fr-tabs__tab fr-fi-checkbox-line fr-tabs__tab--icon-left" tabindex="-1"
-                        role="tab" aria-selected="false" aria-controls="tabpanel-406-panel">Nous rejoindre
-                </button>
-            </li>
-        </ul>
-        <div id="tabpanel-404-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel"
-             aria-labelledby="tabpanel-404" tabindex="0">
-            <h4>→ Découvrir</h4>
-
-            <h5>Les missions</h5>
-
-
-            <div class="fr-container">
-                <div class="fr-grid-row" style='justify-content: space-between'>
-                    <div class="fr-card" style='flex-basis: 30%'>
-                        <div class="fr-card__body">
-                            <h4 class="fr-card__title">
-                                <a href="#" class="fr-card__link">L'équipe</a>
-                            </h4>
-                            <p class="fr-card__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                        </div>
-                    </div>
-                    <div class="fr-card" style='flex-basis: 30%'>
-                        <div class="fr-card__body">
-                            <h4 class="fr-card__title">
-                                <a href="#" class="fr-card__link">Adresse</a>
-                            </h4>
-                            <p class="fr-card__desc">Lorem ipsum</p>
-                        </div>
-                    </div>
-                    <div class="fr-card" style='flex-basis: 30%'>
-                        <div class="fr-card__body">
-                            <h4 class="fr-card__title">
-                                <a href="#" class="fr-card__link">Suivez-nous !</a>
-                            </h4>
-                            <p class="fr-card__desc">Lorem ipsum</p>
-                        </div>
-                    </div>
+  <div class="fr-container">
+    <div class="fr-grid-row fr-grid-row--gutters">
+        <% if (ministry.brandBlock.length) { %>
+            <div class="fr-col-2 fr-mb-4w fr-mt-6w">
+                <img src="<%= ministry.brandBlock[0].file.url %>" class="fr-responsive-img" alt="<%= ministry.brandBlock[0].name %>" >
+            </div>
+        <% } else {%>
+            <div class="fr-col-2 fr-mb-4w fr-mt-6w">
+            </div>
+        <% } %>
+        <div class="fr-col-8 fr-mb-4w fr-mt-8w fr-ml-2w">
+            <h1>
+                <%= ministry.title %>
+            </h1>
+            <p>
+                <%= ministry.fullName %>
+            </p>
+      </div>
+    </div>
+      <div class="fr-callout fr-my-2w">
+        <div class="">
+          <% if (ministry.motivation) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                  <h5>Raison d‘être</h5>
+                </div>
+                <div class="fr-col-md-10 fr-col-sm-12">
+                    <b><%= ministry.motivation.split('- ')[0] %></b>
+                    <p class="fr-mt-4w" >
+                        <ul>
+                            <% ministry.motivation.split('- ').slice(1).forEach(function(motivation) { %>
+                              <li>
+                                <%= motivation %>
+                              </li>
+                              <% }); %>
+                          </ul></p>
+                    <% if (ministry.motivationMedia.length) { %>
+                        <% ministry.motivationMedia.forEach(function(media) { %>
+                            <% if (media.file) { %>
+                                <a href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                            <% } else { %>
+                                <a href="<%= media.name %>" target="_blank">Présentation</a>
+                            <% } %>
+                        <% }); %>
+                    <% } %>
                 </div>
             </div>
+          <% } %>
         </div>
-        <div id="tabpanel-405-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-405" tabindex="0">
-            <h4>→ Les projets</h4>
+      </div>
+      <div class="fr-my-4w">
+      <% if(ministry.values){ %>
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+          <h3>Valeurs</h3>
         </div>
-        <div id="tabpanel-406-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-406" tabindex="0">
-            <h4>→ Nous rejoindre</h4>
-            <h5>Pourquoi ?</h5>
-            <h5>Ton profil</h5>
+        <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% ministry.values.split('\n').forEach(function(value) { %>
+                    <li>
+                        <%= value.replace('- ', '') %>
+                    </li>
+                <% }); %>
+            </ul>
+            <% ministry.valuesMedia.forEach(function(media) { %>
+                <% if (media.file) { %>
+                    <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                <% } else { %>
+                    <a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a>
+                <% } %>
+            <% }); %>
+        </div>
+      </div>
+      <% } %>
+      <% if(ministry.challenges){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+            <h3>Nos enjeux</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% if(ministry.challenges.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.challenges.split('- ')[0].replace(/\n/g, '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.challenges.split('- ').slice(1).forEach(function(challenge) { %>
+                    <li>
+                        <%- challenge.replace(/\n/g, '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
+          </div>
+        </div>
+        <% } %>
+      <% if(ministry.missions){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Missions</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% ministry.missions.split('\n').forEach(function(mission) { %>
+                    <li>
+                        <%= mission.replace('- ', '') %>
+                    </li>
+                <% }); %>
+            </ul>
+          </div>
+        </div>
+      <% } %>
+      <% if(ministry.projects){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Projets</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% if(ministry.projects.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.projects.split('- ')[0].replace(/\n/g, '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.projects.split('- ').slice(1).forEach(function(project) { %>
+                    <% if(project.length){ %>
+                        <li>
+                            <%- project.replace(/>/g, '- ').replace(/\n/g, '<br>') %>
+                        </li>
+                    <% } %>
+                <% }); %>
+            </ul>
+            <ul>
+            <% ministry.projectsMedia.forEach(function(media) { %>
+                <% if (media.file) { %>
+                    <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                <% } else { %>
+                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                <% } %>
+            <% }); %>
+            </ul>
+          </div>
+        </div>
+      <% } %>
+      <% if(ministry.organization || ministry.organizationMedia.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Notre organisation</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-6w">
+            <% if (ministry.organization) { %>
+            <ul>
+                <% if(ministry.organization.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.organization.split('- ')[0].replace(/\n/g, '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.organization.split('- ').slice(1).forEach(function(orga) { %>
+                    <li>
+                        <%- orga.replace(/\n/g, '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
+            <% } %>
+            <% ministry.organizationMedia.forEach(function(media) { %>
+                <ul>
+                <% if (media.file) { %>
+                    <span>
+                    <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
+                        <a href="<%= media.file.url %>" target="_blank">
+                            <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                        </a>
+                    <% } else { %>
+                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                    <% } %>
+                </span>
+                <% } else { %>
+                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                <% } %>
+                </ul>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+      <% if(ministry.testimonials || ministry.testimonialsMedia.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Nos agents en parlent</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            Découvrez le témoignage de nos agents:
+            <% if(ministry.testimonials.search('http') != -1 ){ %>
+                <ul>
+                    <% ministry.testimonials.split('\n').forEach(function(testimonial) { %>
+                    <li><a href="<%= testimonial.split(' : ')[1] %>" target="_blank"> <%= testimonial.split(' : ')[0] %> </a></li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p><%- ministry.testimonials.replace(/\n/g, '<br>') %></p>
+            <% } %>
+            <% if(ministry.testimonialsMedia){ %>
+                <% ministry.testimonialsMedia.forEach(function(media) { %>
+                    <% if (media.file) { %>
+                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                    <% } else { %>
+                        <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                    <% } %>
+                <% }); %>
+            <% } %>
+          </div>
+        </div>
+      <% } %>
+      <% if(ministry.profile){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+            <h3>Ton profil</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+                <% if(ministry.profile.split('- ')[0].length){ %>
+                    <li>
+                        <%- ministry.profile.split('- ')[0].replace(/\n/g, '<br>') %>
+                    </li>
+                <% } %>
+                <% ministry.profile.split('- ').slice(1).forEach(function(element) { %>
+                    <li>
+                        <%- element.replace(/\n/g, '<br>') %>
+                    </li>
+                <% }); %>
+            </ul>
+          </div>
+        </div>
+        <% } %>
+        <% if(ministry.hiringProcess){ %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-2 fr-col-sm-12">
+                <h3>Processus de recrutement</h3>
+              </div>
+              <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+                <ul>
+                    <% if(ministry.hiringProcess.split('- ')[0].length){ %>
+                        <li>
+                            <%- ministry.hiringProcess.split('- ')[0].replace(/\n/g, '<br>') %>
+                        </li>
+                    <% } %>
+                    <% ministry.hiringProcess.split('- ').slice(1).forEach(function(process) { %>
+                        <li>
+                            <%- process.replace(/\n/g, '<br>') %>
+                        </li>
+                    <% }); %>
+                </ul>
+              </div>
+            </div>
+            <% } %>
+        <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-2 fr-col-sm-12">
+           <h3>Nous rejoindre</h3>
+          </div>
+          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <% if(ministry.joinTeam){ %>
+            <ul>
+                <% ministry.joinTeam.split('\n').forEach(function(arg) { %>
+                    <li>
+                        <%= arg.replace('- ', '') %>
+                    </li>
+                <% }); %>
+                </ul>
+            <ul class="fr-mb-4w">
+            <% ministry.joinTeamMedia.forEach(function(media) { %>
+                <% if (media.file) { %>
+                    <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
+                        <a href="<%= media.file.url %>" target="_blank">
+                            <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                        </a>
+                    <% } else { %>
+                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                    <% } %>
+                <% } else { %>
+                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                <% } %>
+            <% }); %>
+            </ul>
+            <% } %>
+            <% if(ministry.jobsLink.length){ %>
+                <a href="<%= ministry.jobsLink[0].name %>"
+                    class="fr-btn fr-btn--sm">Découvrez nos offres d'emploi
+                     <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
+                  </a>
+            <% } %>
+            </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  <div class="fr-container fr-container--fluid fr-py-4w fr-mb-4w" style="background-color: #F0F0F0">
+    <% if(ministry.keyNumbers){ %>
+    <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+            <h5>Chiffres clés</h5>
+        </div>
+        <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+            <ul>
+            <% ministry.keyNumbers.split('\n').forEach(function(number) { %>
+                <li>
+                    <%= number.replace('- ', '') %>
+                </li>
+            <% }); %>
+            </ul>
         </div>
     </div>
-</div>
-<br>
-<br>
-<%- include('partials/footer') -%>
+    <% } %>
+    <% if(ministry.schedule){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-2 fr-col-sm-12">
+                <h5>Agenda</h5>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
+                <ul>
+                <% ministry.schedule.split('\n').forEach(function(event) { %>
+                    <li>
+                        <%= event.replace('- ', '') %>
+                    </li>
+                <% }); %>
+                </ul>
+            </div>
+        </div>
+        <% } %>
+    <% if(ministry.websites){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+            <h5>Sites & réseaux</h5>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12">
+                <ul>
+                    <% ministry.websites.forEach(function(website) { %>
+                        <li>
+                            <a href="<%= website.name %>" target="_blank"><%= website.name %></a>
+                        </li>
+                    <% }); %>
+                </ul>
+                <p>
+                <% ministry.socialNetworks.forEach(function(network) { %>
+                    <% if(network.name.search('linkedin.com') != -1 ){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-linkedin-box-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('twitter.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-twitter-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('facebook.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-facebook-circle-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('instagram.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-instagram-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('youtube.com') != -1){ %>
+                        <a href="<%= network.name %>">
+                            <span class="fr-fi-youtube-fill" aria-hidden="true"></span>
+                        </a>
+                    <% } else if(network.name.search('github.com') != -1){ %>
+                        <a href="<%= network.name %>">Github</a>
+                    <% } else if(network.name.search('dailymotion.com') != -1){ %>
+                        <a href="<%= network.name %>">Dailymotion</a>
+                    <% } else { %>
+                        <a href="<%= network.name %>">Soundcloud</a>
+                    <% } %>
+                <% }); %>
+                </p>
+            </div>
+        </div>
+    <% } %>
+      <% if(ministry.adress){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-2 fr-col-sm-12">
+            <h5>Adresses</h5>
+            </div>
+            <div class="fr-col-md-10 fr-col-sm-12">
+                <p>
+                <%- ministry.adress %>
+                </p>
+                <% ministry.adressBis.forEach(function(adress) { %>
+                    <span>
+                    <% if(adress.name.search('google.com') != -1){ %>
+                        <a href="<%= adress.name %>" target="_blank">Voir sur Google maps</a>
+                    <% } else { %>
+                        <% if (adress.name.search('.jpg') != -1 ) { %>
+                            <a href="<%= adress.file.url %>" target="_blank">
+                                <img class="fr-col-2 fr-mt-6w" src="<%= adress.file.url %>" alt="<%= adress.name %>">
+                            </a>
+                        <% } %>
+                    <% } %>
+                    </span>
+                <% }); %>
+            </p>
+            </div>
+        </div>
+        <% } %>
+        </div>
+    </div>
+
+  <%- include('partials/footer') -%>

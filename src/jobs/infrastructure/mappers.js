@@ -1,4 +1,4 @@
-const { Job } = require('../entities');
+const { Job, Ministry } = require('../entities');
 const { toDate } = require('date-fns-tz');
 
 function urlify(text) {
@@ -46,6 +46,44 @@ const mapToJob = (rawJob, now = Date.now()) => {
     });
 };
 
+const mapToMinistry = (rawMinistry, now = Date.now()) => {
+    const title = parseProperty(rawMinistry.properties['Titre'])
+    const id = rawMinistry.id
+    return new Ministry({
+        id,
+        title,
+        fullName: parseProperty(rawMinistry.properties['Nom complet']),
+        adress: parseProperty(rawMinistry.properties['Adresse']),
+        adressBis: parseProperty(rawMinistry.properties['Adresse bis']),
+        brandBlock: parseProperty(rawMinistry.properties['Bloc marque']),
+        keyNumbers: parseProperty(rawMinistry.properties['Les chiffres clés']),
+        keyNumbersMedia: parseProperty(rawMinistry.properties['Les chiffres clés - liens']),
+        missions: parseProperty(rawMinistry.properties['Les missions']),
+        projects: parseProperty(rawMinistry.properties['Les projets ou rélisations']),
+        projectsMedia: parseProperty(rawMinistry.properties['Projets ou réalisations compléments']),
+        testimonials: parseProperty(rawMinistry.properties['Nos agents en parlent']),
+        testimonialsMedia: parseProperty(rawMinistry.properties['Liens Nos agents en parlent']),
+        joinTeam: parseProperty(rawMinistry.properties['Nous rejoindre - Pourquoi?']),
+        joinTeamMedia: parseProperty(rawMinistry.properties['Nous rejoindre - Infos']),
+        motivation: parseProperty(rawMinistry.properties["Raison d'être"]),
+        motivationMedia: parseProperty(rawMinistry.properties["Raison d'être complément"]),
+        profile: parseProperty(rawMinistry.properties['Ton profil']),
+        websites: parseProperty(rawMinistry.properties['Site(s) institutionel(s)']),
+        jobsLink: parseProperty(rawMinistry.properties['Toutes les offres disponibles']),
+        values: parseProperty(rawMinistry.properties['Valeurs']),
+        valuesMedia: parseProperty(rawMinistry.properties['Valeurs complément']),
+        schedule: parseProperty(rawMinistry.properties['Agenda']),
+        socialNetworks: parseProperty(rawMinistry.properties['Réseaux sociaux']),
+        visualBanner: parseProperty(rawMinistry.properties['Bandeau visuel']),
+        challenges: parseProperty(rawMinistry.properties['Nos enjeux']),
+        organization: parseProperty(rawMinistry.properties['Notre organisation']),
+        organizationMedia: parseProperty(rawMinistry.properties['Notre organisation compléments']),
+        hiringProcess: parseProperty(rawMinistry.properties['Processus de recrutement']),
+        slug: buildSlug(title, id),
+        publicationDate: toDate("2021-09-13" + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
+    });
+};
+
 const formatDetailFromPep = (job) => {
     const item = job.properties
     const title = parseProperty(item.Name)
@@ -86,9 +124,11 @@ const parseProperty = (item) => {
         } else if ('title' in item) {
             return item.title[0].plain_text;
         } else if ('email' in item) {
-            return item.email[0].plain_text ;
+            return item.email[0].plain_text;
         } else if ('date' in item) {
             return toDate(item.date.start + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
+        } else if ('files' in item) {
+            return item.files;
         }
         else {
             return undefined
@@ -99,6 +139,7 @@ const parseProperty = (item) => {
 };
 
 module.exports = {
+    mapToMinistry,
     mapToJob,
     formatDetailFromPep
 }
