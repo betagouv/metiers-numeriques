@@ -76,7 +76,7 @@ describe('Ministries fetch api', () => {
     it('should fetch and return a list of ministries', async () => {
         // axios.post.mockImplementation(() => Promise.resolve({data: ministriesStub}));
 
-        const ministries = await NotionMinistriesService.listMinistries();
+        const ministries = await NotionMinistriesService.all();
     });
 
     it('should fetch and return one ministry details', async () => {
