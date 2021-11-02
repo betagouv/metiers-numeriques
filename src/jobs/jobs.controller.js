@@ -19,8 +19,8 @@ module.exports.list = async (req, res) => {
             nextCursor,
             contactEmail: 'contact@metiers.numerique.gouv.fr',
         });
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.log(err);
     }
 };
 
@@ -47,8 +47,8 @@ module.exports.listMinistries = async (req, res) => {
             nextCursor,
             contactEmail: 'contact@metiers.numerique.gouv.fr',
         });
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.log(err);
     }
 };
 

@@ -22,8 +22,8 @@ module.exports.fetchPepJobs = async () => {
         }, () => {
         }, () => {
         });
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.log(err);
         throw new Error('Erreur lors de la récupération des offres de la pep');
     }
 };
