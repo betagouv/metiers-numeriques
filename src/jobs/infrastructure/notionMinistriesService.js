@@ -47,7 +47,7 @@ module.exports.NotionMinistriesService = {
             return  mapToMinistry(data);
         } catch (err) {
             console.log(err);
-        } 
+        }
         return null;
     },
 };

@@ -1,20 +1,20 @@
 <%- include('partials/header') -%>
-  <div id="offres-de-mission" class="fr-container fr-mt-4w">
-      <h1 style='display: flex; justify-content: center; align-items: center;'>Découvrez les offres d'emploi</h1>
-      <div style='display: flex; justify-content: center; align-items: center;'>
-          <h2>Vous ne trouvez pas ?</h2>
-          <a class='fr-btn' href='https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee' style='margin-left: 2em; margin-bottom: .5rem'>Déposez une candidature spontanée&nbsp<i class="ri-file-add-line"></i></a>
-      </div>
-      <div class="fr-px-2w fr-px-md-6w">
-              <div class="fr-grid-row" id="infinite-list">
-                <!-- <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
-                </div> -->
-                <%- include('partials/jobList', {jobs: jobs, nextCursor: nextCursor, hasMore: hasMore }) %>
-              </div>
-      </div>
+<div id="offres-de-mission" class="fr-container fr-mt-4w">
+    <h1 style='display: flex; justify-content: center; align-items: center;'>Découvrez les offres d'emploi</h1>
+    <div style='display: flex; justify-content: center; align-items: center;'>
+        <h2>Vous ne trouvez pas ?</h2>
+        <a class='fr-btn' href='https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee' style='margin-left: 2em; margin-bottom: .5rem'>Déposez une candidature spontanée&nbsp<i class="ri-file-add-line"></i></a>
     </div>
-  <br>
-  <br>
-  <%- include('partials/footer') -%>
-  <script type="text/javascript" src="/static/scripts/loadmore.js">
-  </script>
+    <div class="fr-px-2w fr-px-md-6w">
+        <div class="fr-grid-row" id="infinite-list">
+                <%- include('partials/jobList', {jobs: jobs, nextCursor, hasMore }) %>
+        </div>
+        <div style='text-align: center'>
+            <button class='fr-btn' id='loadmore' data-next-cursor=''>Afficher plus de résultats</button>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<%- include('partials/footer') -%>
+<script type="text/javascript" src="/static/scripts/loadmore.js"></script>
