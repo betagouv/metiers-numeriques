@@ -1,33 +1,31 @@
-import { JobDetailDTO } from '../../types';
+import { createJob, Job } from '../../entities';
 
 
-const fakeJobs: JobDetailDTO[] = [
-    {
-        id: 'id2',
-        title: 'job2',
-        mission: 'mon job 2',
-        experiences: ['5 ans'],
-        locations: ['Paris'],
-        department: ['Ministère des armées'],
-        openedToContractTypes: ['CDD', 'CDI'],
-        salary: '50k',
-        team: 'MTES',
-        profile: undefined,
-        tasks: [],
-    },
-    {
-        id: 'id2',
-        title: 'job2',
-        mission: 'mon job 2',
-        experiences: ['5 ans'],
-        locations: ['Paris'],
-        department: ['Ministère des armées'],
-        openedToContractTypes: ['CDD', 'CDI'],
-        salary: '50k',
-        team: 'MTES',
-        profile: undefined,
-        tasks: [],
-    },
+const fakeJobs: Job[] = [
+    createJob(
+        {
+            id: '1',
+            title: 'job1',
+            experiences: ['Junior'],
+            institution: 'institution1',
+            availableContracts: ['CDD', 'CDI'],
+            team: 'MTES',
+            publicationDate: new Date().toISOString(),
+            limitDate: null,
+            details: ''
+        }) as Job,
+    createJob(
+        {
+            id: '2',
+            title: 'job2',
+            experiences: ['Senior'],
+            institution: 'institution2',
+            availableContracts: ['Freelance'],
+            team: 'MCIS',
+            publicationDate: new Date().toISOString(),
+            limitDate: null,
+            details: ''
+        }) as Job,
 ];
 
 const fakeJob = fakeJobs[0];

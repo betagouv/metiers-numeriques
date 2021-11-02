@@ -1,41 +1,31 @@
-import { DateProvider } from '../shared/dateProvider';
+import { createJob } from './entities';
 import { JobsService, MinistriesService } from './interfaces';
-import { isBefore, parse, sub } from 'date-fns';
-import { JOB_FILTERS } from './utils';
 
-
-export const listJobs = async (deps: { jobsService: JobsService }, params: any) => {
-    return await deps.jobsService.all(params);
-};
-
-export const getJob = async (id: string, deps: { jobsService: JobsService }, tag: string) => {
-    return await deps.jobsService.get(id, tag);
-};
-
-export const addJob = async (job: Job, deps: { jobsService: JobsService }): Promise<void> => {
-    await deps.jobsService.addJob(job);
+interface AddJobDTO {
+    title: string;
+    institution: string;
+    team: string;
+    availableContracts: string[]
+    experiences: string[]
+    publicationDate: string
+    limitDate: string
+    details: string
+}
+export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<void> => {
+    const job = createJob(jobDTO);
+    if (isError(job)) {
+        throw job;
+    }
+    await deps.jobsService.add(job);
     return;
 }
 
-export const updateLatestActivePepJobs = async (pepJob: any, deps: { jobsService: JobsService, dateProvider: DateProvider }) => {
-    // import only offers published since yesterday
-    // let isNew = moment(pepJob.FirstPublicationDate, 'DD/MM/YYYY hh:mm:ss') > date;
-    let isNew = isBefore(
-        parse(pepJob.FirstPublicationDate, 'dd/MM/yyyy hh:mm:ss', deps.dateProvider.date()),
-        sub(deps.dateProvider.date(), { days: 1 }),
-    );
-    if (process.env.CRON_IMPORT_ALL) {
-        isNew = true;
-    }
-    if (pepJob.JobDescription_ProfessionalCategory_ === 'Vacant' && JOB_FILTERS.includes(pepJob.JobDescription_PrimaryProfile_) && isNew) {
-        const page = await deps.jobsService.getPage(process.env.PEP_DATABASE_ID!, pepJob.OfferID);
-        if (!page) {
-            await deps.jobsService.createPage(process.env.PEP_DATABASE_ID!, pepJob);
-        }
-        return true;
-    }
+export const listJobs = async (params: any = null, deps: { jobsService: JobsService }) => {
+    return await deps.jobsService.all(params);
+};
 
-    return false;
+export const getJob = async (id: string, deps: { jobsService: JobsService }) => {
+    return await deps.jobsService.get(id);
 };
 
 export const listMinistries = async (deps: { ministriesService: MinistriesService }) => {

@@ -1,35 +1,35 @@
-import { fakeJob, fakeJobs } from '../__tests__/stubs/fakeJobs';
+import { Job } from '../entities';
 import { JobsService } from '../interfaces';
+import { JobDetailDTO } from '../types';
 
+interface InMemory {
+    state: Job[];
+    feedWith(jobs: Job[]): void;
+}
 
-export class InMemoryJobsService implements JobsService {
-    jobs: Job[] = [];
+export const InMemoryJobsService: JobsService & InMemory = {
+    state: [],
+    // Write Side
+    async add(job: Job): Promise<void> {
+        this.state.push(job);
+    },
 
-    async all(_params = {}) {
-        return {
-            jobs: fakeJobs,
-            hasMore: '',
-            nextCursor: '',
-        };
-    }
+    async feedWith(jobs: Job[]): Promise<void> {
+        for (const job of jobs) {
+            await this.add(job);
+        }
+    },
 
-    async get(_id: string) {
-        return fakeJob;
-    }
-
-    count(): Promise<number> {
+    async count(): Promise<number> {
         return Promise.resolve(0);
-    }
+    },
 
-    async addJob(job: Job): Promise<void> {
-        this.jobs.push(job);
-    }
+    // Read Side
+    async all(_query: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string }> {
+        return Promise.resolve({ hasMore: '', jobs: [], nextCursor: '' });
+    },
 
-    createPage(_database: string, _properties: any): Promise<any> {
-        return Promise.resolve(undefined);
-    }
-
-    getPage(_database: string, _pageId: string): Promise<any> {
-        return Promise.resolve(undefined);
+    async get(_jobId: string): Promise<JobDetailDTO | null> {
+        return Promise.resolve(null);
     }
 }

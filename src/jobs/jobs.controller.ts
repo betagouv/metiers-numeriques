@@ -6,9 +6,9 @@ import { dateReadableFormat } from './utils';
 export async function list(req: Request, res: Response) {
     try {
         const { jobs, nextCursor, hasMore } = await usecases.listJobs({
-            jobsService,
-        }, {
             startCursor: req.query.start_cursor || undefined,
+        }, {
+            jobsService,
         });
         const view = req.query.start_cursor ? 'partials/jobList' : 'jobs';
         res.render(view, {

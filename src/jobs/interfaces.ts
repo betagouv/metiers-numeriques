@@ -1,12 +1,11 @@
+import { Job, UUID } from './entities';
 import { JobDetailDTO } from './types';
 
 export interface JobsService {
-    all(params: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }>;
+    add(job: Job): Promise<void>;
     count(): Promise<number>;
-    get(pageId: string, tag: string): Promise<JobDetailDTO | null>;
-    getPage(database: string, pageId: string): Promise<any>;
-    createPage(database: string, properties: any): Promise<any>;
-    addJob(job: Job): Promise<void>;
+    all(params: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }>;
+    get(jobId: UUID): Promise<JobDetailDTO | null>;
 }
 
 export interface MinistriesService {

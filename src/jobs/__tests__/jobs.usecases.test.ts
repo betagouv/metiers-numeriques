@@ -1,18 +1,20 @@
+import { Job } from '../entities';
 import { JobDetailDTO } from '../types';
 import { InMemoryJobsService } from '../repository/inMemoryJobsService';
 import * as usecases from '../usecases';
-import { fakeJob } from './stubs/fakeJobs';
+import { fakeJob, fakeJobs } from './stubs/fakeJobs';
 
 describe('Jobs managmenent', () => {
-    let jobsService: InMemoryJobsService;
+    let jobsService: typeof InMemoryJobsService;
 
     beforeEach(() => {
-        jobsService = new InMemoryJobsService();
+        jobsService = InMemoryJobsService;
     });
 
 
     it('should get the job list', async () => {
-        const result = await usecases.listJobs({ jobsService }, null);
+        jobsService.feedWith(fakeJobs);
+        const result = await usecases.listJobs(null, { jobsService });
 
         expect(result.jobs).toEqual([
             {
@@ -64,7 +66,7 @@ describe('Jobs managmenent', () => {
     });
 
     it('should create a job with minimal data', async () => {
-        const job = new Job({
+        const job: Job = {
             availableContracts: ['CDD', 'CDI'],
             details: '',
             experiences: ['Junior'],
@@ -73,10 +75,10 @@ describe('Jobs managmenent', () => {
             publicationDate: Date.now(),
             title: 'job 1',
             team: 'MTES'
-        });
+        };
 
         await usecases.addJob(job, {jobsService});
 
-        expect(jobsService.jobs).toContain(job);
+        expect(jobsService.state).toContain(job);
     })
 });
