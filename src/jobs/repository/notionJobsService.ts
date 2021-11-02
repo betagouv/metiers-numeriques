@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from 'dotenv';
+import { Job } from '../entities';
 import { JobsService } from '../interfaces';
 import { JobDetailDTO } from '../types';
 import { createPepProperties } from '../utils';
@@ -7,10 +8,10 @@ import { formatDetailFromPep, mapToJob } from './mappers';
 
 config();
 
-export class NotionService implements JobsService {
-    addJob(_job: Job): Promise<void> {
+export const NotionService: JobsService = {
+    addJob(job: Job): Promise<void> {
         throw new Error('Method not implemented.');
-    }
+    },
 
     async all({
                   startCursor = '',
@@ -74,7 +75,7 @@ export class NotionService implements JobsService {
             nextCursor,
         };
         // return data.results.map(mapToJob);
-    }
+    },
 
     async count() {
         let { data } = await axios.post(
@@ -111,7 +112,7 @@ export class NotionService implements JobsService {
         const countPep = pepData.results.length;
 
         return count + countPep;
-    }
+    },
 
     async get(pageId: string, tag: string) {
         let mapper = tag === 'pep' ? formatDetailFromPep : mapToJob;
@@ -132,7 +133,7 @@ export class NotionService implements JobsService {
             return mapper(result.data);
         }
         return null;
-    }
+    },
 
     async getPage(database: string, pageId: string) {
         try {
@@ -157,7 +158,7 @@ export class NotionService implements JobsService {
             console.error(e);
             throw new Error('Impossible de récupérer la page');
         }
-    }
+    },
 
     async createPage(database: string, properties: any) {
         const pepProperties = createPepProperties(properties);

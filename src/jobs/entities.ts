@@ -5,7 +5,7 @@ type Institution = UUID;
 type Experiences = 'Junior' | 'Confirmé' | 'Senior';
 type Contract = 'CDI' | 'CDD' | 'Freelance';
 
-interface JobProps {
+export interface Job {
     title: string;
     institution: Institution;
     team: string;
@@ -33,9 +33,4 @@ interface JobProps {
     // slug?: string
     // toApply?: string
 
-}
-
-class Job {
-    constructor(private props: JobProps, private id?: UUID) {
-    }
 }
