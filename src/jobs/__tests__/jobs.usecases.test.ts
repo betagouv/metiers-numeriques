@@ -4,10 +4,10 @@ import * as usecases from '../usecases';
 import { fakeJob } from './stubs/fakeJobs';
 
 describe('Jobs managmenent', () => {
-    let jobsService: typeof InMemoryJobsService;
+    let jobsService: InMemoryJobsService;
 
     beforeEach(() => {
-        jobsService = InMemoryJobsService;
+        jobsService = new InMemoryJobsService();
     });
 
 
@@ -65,15 +65,18 @@ describe('Jobs managmenent', () => {
 
     it('should create a job with minimal data', async () => {
         const job = new Job({
+            availableContracts: ['CDD', 'CDI'],
+            details: '',
+            experiences: ['Junior'],
+            institution: 'uuid1',
+            limitDate: null,
+            publicationDate: Date.now(),
             title: 'job 1',
-            mission: 'short description',
-            departments: ['Ministère des armées'],
-            openedToContractTypes: ['CDD', 'CDI'],
-            team: 'MTES',
+            team: 'MTES'
         });
 
-        usecases.addJob(job, {jobsService});
+        await usecases.addJob(job, {jobsService});
 
-        expect(jobsService.jobs[0]).toEqual(job);
+        expect(jobsService.jobs).toContain(job);
     })
 });
