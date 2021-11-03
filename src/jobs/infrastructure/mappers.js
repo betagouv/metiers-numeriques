@@ -1,3 +1,4 @@
+const MarkdownIt = require('markdown-it');
 const { Job, Ministry } = require('../entities');
 const { toDate } = require('date-fns-tz');
 
@@ -49,6 +50,7 @@ const mapToJob = (rawJob, now = Date.now()) => {
 const mapToMinistry = (rawMinistry, now = Date.now()) => {
     const title = parseProperty(rawMinistry.properties['Titre'])
     const id = rawMinistry.id
+    const md = new MarkdownIt();
     return new Ministry({
         id,
         title,
@@ -56,29 +58,29 @@ const mapToMinistry = (rawMinistry, now = Date.now()) => {
         adress: parseProperty(rawMinistry.properties['Adresse']),
         adressBis: parseProperty(rawMinistry.properties['Adresse bis']),
         brandBlock: parseProperty(rawMinistry.properties['Bloc marque']),
-        keyNumbers: parseProperty(rawMinistry.properties['Les chiffres clés']),
+        keyNumbers: md.render(parseProperty(rawMinistry.properties['Les chiffres clés'])),
         keyNumbersMedia: parseProperty(rawMinistry.properties['Les chiffres clés - liens']),
-        missions: parseProperty(rawMinistry.properties['Les missions']),
-        projects: parseProperty(rawMinistry.properties['Les projets ou rélisations']),
+        missions: md.render(parseProperty(rawMinistry.properties['Les missions'])),
+        projects: md.render(parseProperty(rawMinistry.properties['Les projets ou rélisations'])),
         projectsMedia: parseProperty(rawMinistry.properties['Projets ou réalisations compléments']),
-        testimonials: parseProperty(rawMinistry.properties['Nos agents en parlent']),
+        testimonials: md.render(parseProperty(rawMinistry.properties['Nos agents en parlent'])),
         testimonialsMedia: parseProperty(rawMinistry.properties['Liens Nos agents en parlent']),
-        joinTeam: parseProperty(rawMinistry.properties['Nous rejoindre - Pourquoi?']),
+        joinTeam: md.render(parseProperty(rawMinistry.properties['Nous rejoindre - Pourquoi?'])),
         joinTeamMedia: parseProperty(rawMinistry.properties['Nous rejoindre - Infos']),
-        motivation: parseProperty(rawMinistry.properties["Raison d'être"]),
+        motivation: md.render(parseProperty(rawMinistry.properties["Raison d'être"])),
         motivationMedia: parseProperty(rawMinistry.properties["Raison d'être complément"]),
-        profile: parseProperty(rawMinistry.properties['Ton profil']),
+        profile: md.render(parseProperty(rawMinistry.properties['Ton profil'])),
         websites: parseProperty(rawMinistry.properties['Site(s) institutionel(s)']),
         jobsLink: parseProperty(rawMinistry.properties['Toutes les offres disponibles']),
-        values: parseProperty(rawMinistry.properties['Valeurs']),
+        values: md.render(parseProperty(rawMinistry.properties['Valeurs'])),
         valuesMedia: parseProperty(rawMinistry.properties['Valeurs complément']),
-        schedule: parseProperty(rawMinistry.properties['Agenda']),
+        schedule: md.render(parseProperty(rawMinistry.properties['Agenda'])),
         socialNetworks: parseProperty(rawMinistry.properties['Réseaux sociaux']),
         visualBanner: parseProperty(rawMinistry.properties['Bandeau visuel']),
-        challenges: parseProperty(rawMinistry.properties['Nos enjeux']),
-        organization: parseProperty(rawMinistry.properties['Notre organisation']),
+        challenges: md.render(parseProperty(rawMinistry.properties['Nos enjeux'])),
+        organization: md.render(parseProperty(rawMinistry.properties['Notre organisation'])),
         organizationMedia: parseProperty(rawMinistry.properties['Notre organisation compléments']),
-        hiringProcess: parseProperty(rawMinistry.properties['Processus de recrutement']),
+        hiringProcess: md.render(parseProperty(rawMinistry.properties['Processus de recrutement'])),
         slug: buildSlug(title, id),
         publicationDate: toDate("2021-09-13" + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
     });

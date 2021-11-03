@@ -18,6 +18,10 @@ p.rf-hint-text {
     margin-bottom: 0;
 }
 
+p {
+    margin: 0 0 1rem;
+}
+
 .tofill {
     background-color: #fffacd;
     font-weight: lighter;
