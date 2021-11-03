@@ -112,7 +112,12 @@ span.tofill::before {
 }
 
 #ministeres .fr-card__img {
-    filter: brightness(75%);
+    filter: brightness(90%);
+    background: white;
+}
+
+.fr-card__img img {
+    object-fit: contain;
 }
 
 @-webkit-keyframes rotating /* Safari and Chrome */

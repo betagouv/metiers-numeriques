@@ -86,6 +86,7 @@ module.exports.Job = class Job {
  * @property {string} adress
  * @property {string} adressBis
  * @property {string} brandBlock
+ * @property {string} thumbnail
  * @property {string} keyNumbers
  * @property {string[]} keyNumbersMedia
  * @property {string[]} missions
@@ -129,6 +130,7 @@ module.exports.Ministry = class Ministry {
         adress,
         adressBis,
         brandBlock,
+        thumbnail,
         keyNumbers,
         keyNumbersMedia,
         missions,
@@ -162,6 +164,7 @@ module.exports.Ministry = class Ministry {
         this.adress = adress,
         this.adressBis = adressBis,
         this.brandBlock = brandBlock,
+        this.thumbnail = thumbnail,
         this.keyNumbers = keyNumbers,
         this.keyNumbersMedia = keyNumbersMedia,
         this.missions = missions,
