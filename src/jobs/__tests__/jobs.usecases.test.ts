@@ -1,84 +1,127 @@
-import { Job } from '../entities';
-import { JobDetailDTO } from '../types';
+import { createJob, Job } from '../entities';
 import { InMemoryJobsService } from '../repository/inMemoryJobsService';
+import { JobDetailDTO } from '../types';
 import * as usecases from '../usecases';
-import { fakeJob, fakeJobs } from './stubs/fakeJobs';
+import { AddJobDTO } from '../usecases';
+import { fakeJobs } from './stubs/fakeJobs';
 
-describe('Jobs managmenent', () => {
-    let jobsService: typeof InMemoryJobsService;
+describe('Listing job', () => {
+    let jobsService: typeof InMemoryJobsService = InMemoryJobsService;
 
     beforeEach(() => {
-        jobsService = InMemoryJobsService;
+        jobsService.state = [];
     });
 
 
     it('should get the job list', async () => {
-        jobsService.feedWith(fakeJobs);
-        const result = await usecases.listJobs(null, { jobsService });
+        await jobsService.feedWith(fakeJobs);
+        const result = await usecases.listJobs({}, { jobsService });
 
+        expect(result.jobs.length).toEqual(2);
         expect(result.jobs).toEqual([
             {
-                id: 'id2',
-                title: 'job2',
-                mission: 'mon job 2',
-                experiences: ['5 ans'],
-                locations: ['Paris'],
-                department: ['Ministère des armées'],
-                openedToContractTypes: ['CDD', 'CDI'],
-                salary: '50k',
+                id: '1',
+                title: 'job1',
+                experiences: ['Junior'],
+                institution: { id: 'institution1', name: 'Institution 1' },
+                availableContracts: ['CDD', 'CDI'],
                 team: 'MTES',
-                tasks: [],
-                profile: undefined
+                publicationDate: fakeJobs[0].publicationDate,
+                limitDate: null,
+                details: '',
+                updatedAt: null,
             },
             {
-                id: 'id2',
+                id: '2',
                 title: 'job2',
-                mission: 'mon job 2',
-                experiences: ['5 ans'],
-                locations: ['Paris'],
-                department: ['Ministère des armées'],
-                openedToContractTypes: ['CDD', 'CDI'],
-                salary: '50k',
-                team: 'MTES',
-                tasks: [],
-                profile: undefined
+                experiences: ['Senior'],
+                institution: { id: 'institution2', name: 'Institution 2' },
+                availableContracts: ['Freelance'],
+                team: 'MCIS',
+                publicationDate: fakeJobs[1].publicationDate,
+                limitDate: null,
+                details: '',
+                updatedAt: fakeJobs[1].updatedAt,
             },
         ]);
     });
 
     it('should get one job detail', async () => {
-        const result: JobDetailDTO = await usecases.getJob(fakeJob.title, { jobsService }, '') as JobDetailDTO;
+        await jobsService.feedWith(fakeJobs);
+        const result: JobDetailDTO = await usecases.getJob(fakeJobs[1].id, { jobsService }) as JobDetailDTO;
 
         expect(result).toEqual(
             {
-                id: 'id2',
+                id: '2',
                 title: 'job2',
-                mission: 'mon job 2',
-                experiences: ['5 ans'],
-                locations: ['Paris'],
-                department: ['Ministère des armées'],
-                openedToContractTypes: ['CDD', 'CDI'],
-                salary: '50k',
-                team: 'MTES',
-                tasks: [],
-                profile: undefined
+                experiences: ['Senior'],
+                institution: { id: 'institution2', name: 'Institution 2' },
+                availableContracts: ['Freelance'],
+                team: 'MCIS',
+                publicationDate: fakeJobs[1].publicationDate,
+                limitDate: null,
+                details: '',
+                updatedAt: fakeJobs[1].updatedAt,
             });
+    });
+});
+
+describe('Creating jobs', () => {
+    let jobsService: typeof InMemoryJobsService = InMemoryJobsService;
+
+    beforeEach(() => {
+        jobsService.state = [];
     });
 
     it('should create a job with minimal data', async () => {
-        const job: Job = {
-            availableContracts: ['CDD', 'CDI'],
-            details: '',
+        const now = new Date();
+        const jobDTO: AddJobDTO = {
+            id: '1',
+            title: 'job1',
             experiences: ['Junior'],
-            institution: 'uuid1',
+            institution: 'institution1',
+            availableContracts: ['CDD', 'CDI'],
+            team: 'MTES',
+            publicationDate: now.toISOString(),
             limitDate: null,
-            publicationDate: Date.now(),
-            title: 'job 1',
-            team: 'MTES'
+            details: '',
         };
 
-        await usecases.addJob(job, {jobsService});
+        await usecases.addJob(jobDTO, { jobsService });
 
-        expect(jobsService.state).toContain(job);
-    })
+        expect(jobsService.state[0]).toEqual(
+            createJob(
+                {
+                    id: '1',
+                    title: 'job1',
+                    experiences: ['Junior'],
+                    institution: 'institution1',
+                    availableContracts: ['CDD', 'CDI'],
+                    team: 'MTES',
+                    publicationDate: now.toISOString(),
+                    limitDate: null,
+                    details: '',
+                }) as Job);
+    });
+
+
+    it('should error when creating with missing data', async () => {
+        const jobDTO: AddJobDTO = {
+            id: 'def',
+            title: 'job1',
+            experiences: ['Junior'],
+            institution: 'institution1',
+            // @ts-ignore
+            availableContracts: undefined,
+            team: 'MTES',
+            publicationDate: new Date().toISOString(),
+            limitDate: null,
+            details: '',
+        };
+
+        await expect(usecases.addJob(jobDTO, { jobsService })).rejects.toThrow();
+    });
+
+
+    // TODO: more validation
 });

@@ -4,7 +4,7 @@ import { JobDetailDTO } from './types';
 export interface JobsService {
     add(job: Job): Promise<void>;
     count(): Promise<number>;
-    all(params: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string; }>;
+    all(params: {offset?: number; title?: string; institution?: string; }): Promise<{ jobs: JobDetailDTO[]; offset: number }>;
     get(jobId: UUID): Promise<JobDetailDTO | null>;
 }
 

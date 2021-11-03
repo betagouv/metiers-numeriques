@@ -8,7 +8,7 @@ describe('Ministries managmenent', () => {
         ministriesService = InMemoryMinistriesService;
     })
 
-    it('should get the ministries list', async () => {
+    it.skip('should get the ministries list', async () => {
         const result = await usecases.listMinistries({ ministriesService });
 
         expect(result).toEqual([

@@ -1,14 +1,16 @@
+import { isError } from '../shared/utils';
 import { createJob } from './entities';
 import { JobsService, MinistriesService } from './interfaces';
 
-interface AddJobDTO {
+export interface AddJobDTO {
+    id?: string
     title: string;
     institution: string;
     team: string;
     availableContracts: string[]
     experiences: string[]
     publicationDate: string
-    limitDate: string
+    limitDate: string | null
     details: string
 }
 export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<void> => {
@@ -20,7 +22,12 @@ export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService
     return;
 }
 
-export const listJobs = async (params: any = null, deps: { jobsService: JobsService }) => {
+interface ListJobsParams {
+    offset?: number;
+    title?: string;
+    institution?: string;
+}
+export const listJobs = async (params: ListJobsParams = {}, deps: { jobsService: JobsService }) => {
     return await deps.jobsService.all(params);
 };
 

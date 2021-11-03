@@ -19,7 +19,7 @@ const buildSlug = (title: string, id: string) => {
         .replace(/[^\w-]+/g, '');
 };
 
-const mapToJob = (rawJob: any): JobDetailDTO => {
+const toDTO = (rawJob: any): JobDetailDTO => {
     const title = parseProperty(rawJob.properties['Name']) as string;
     const id: string = rawJob.id;
     return {

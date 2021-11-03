@@ -1,9 +1,11 @@
+import { fakeInstitutions } from '../__tests__/stubs/fakeInstitutions';
 import { Job } from '../entities';
 import { JobsService } from '../interfaces';
 import { JobDetailDTO } from '../types';
 
 interface InMemory {
     state: Job[];
+
     feedWith(jobs: Job[]): void;
 }
 
@@ -16,6 +18,7 @@ export const InMemoryJobsService: JobsService & InMemory = {
 
     async feedWith(jobs: Job[]): Promise<void> {
         for (const job of jobs) {
+            job.id = (this.state.length + 1).toString()
             await this.add(job);
         }
     },
@@ -25,11 +28,30 @@ export const InMemoryJobsService: JobsService & InMemory = {
     },
 
     // Read Side
-    async all(_query: any): Promise<{ jobs: JobDetailDTO[]; hasMore: string; nextCursor: string }> {
-        return Promise.resolve({ hasMore: '', jobs: [], nextCursor: '' });
+    async all(_params): Promise<{ jobs: JobDetailDTO[]; offset: number }> {
+        const jobsDetail: JobDetailDTO[] = this.state.map(toDTO);
+
+        return Promise.resolve({ jobs: jobsDetail, offset: 0 });
     },
 
-    async get(_jobId: string): Promise<JobDetailDTO | null> {
-        return Promise.resolve(null);
-    }
+    async get(jobId: string): Promise<JobDetailDTO | null> {
+        return toDTO(this.state.find(j => j.id === jobId)!);
+    },
+};
+
+function toDTO(job: Job) {
+    const { id, name } = fakeInstitutions.find(i => i.id === job.institution)!;
+    return {
+        id: job.id,
+        title: job.title,
+        institution: { id, name },
+        team: job.team,
+        availableContracts: job.availableContracts,
+        experiences: job.experiences,
+        publicationDate: job.publicationDate,
+        limitDate: job.limitDate,
+        details: job.details,
+
+        updatedAt: job.updatedAt || null,
+    };
 }

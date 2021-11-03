@@ -12,7 +12,8 @@ const fakeJobs: Job[] = [
             team: 'MTES',
             publicationDate: new Date().toISOString(),
             limitDate: null,
-            details: ''
+            details: '',
+            updatedAt: undefined
         }) as Job,
     createJob(
         {
@@ -24,7 +25,8 @@ const fakeJobs: Job[] = [
             team: 'MCIS',
             publicationDate: new Date().toISOString(),
             limitDate: null,
-            details: ''
+            details: '',
+            updatedAt: Date.now()
         }) as Job,
 ];
 

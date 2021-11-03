@@ -1,30 +1,19 @@
-import { Timestamp } from './entities';
-
 export interface JobDetailDTO {
     id: string
     title: string
-    institution: MinistryDetailDTO
-    mission: string
-    tasks: string[]
-    profile: string[]
-    experiences: string[]
-    locations: string[]
-    openedToContractTypes: string[]
-    salary: string
+    institution: Pick<InstitutionDetailDTO, 'id' | 'name'>
     team: string
-    hiringProcess: string
-    publicationDate: Date
-    conditions: string[]
-    teamInfo: string
-    toApply: string
-    more: string
-    limitDate: Date | null
-    advantages: string
+    availableContracts: string[]
+    experiences: string[]
+    publicationDate: number
+    limitDate: number | null
 
-    updatedAt: Timestamp
+    details: string
+
+    updatedAt: number | null
 }
 
-export interface MinistryDetailDTO {
+export interface InstitutionDetailDTO {
     id: string;
     name: string
     description: string

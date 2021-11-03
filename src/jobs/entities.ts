@@ -19,6 +19,7 @@ export interface Job {
 
     // details may be another VO/interface or MD block
     details: string
+    updatedAt?: number
     // mission: string;
     // team?: string
     // locations?: string[]
@@ -38,7 +39,7 @@ export interface Job {
 }
 
 interface NewJobProps {
-    id: UUID;
+    id?: UUID;
     title: string;
     institution: string;
     team: string;
@@ -47,11 +48,12 @@ interface NewJobProps {
     publicationDate: string
     limitDate: string | null
     details: string
+    updatedAt?: number
 }
 
 export const createJob = (
     {
-        id,
+        id = 'abc',
         title,
         institution,
         team,
@@ -60,13 +62,15 @@ export const createJob = (
         publicationDate,
         limitDate,
         details,
+        updatedAt
     }: NewJobProps): Job | Error => {
 
-    // fixme: Validation tres basique + cast pour validation à changer
-    if (!id || !title || !institution || !team || !availableContracts || !experiences || !publicationDate) {
-        return Error('Missing fields');
+    // fixme: Validation tres basique + cast pour validation à changer avec des VOs
+    if (!title || !institution || !team || !availableContracts || !experiences || !publicationDate) {
+        return new Error('Missing fields');
     }
 
+    // add domain methods here later
     return {
         id,
         title,
@@ -77,5 +81,6 @@ export const createJob = (
         publicationDate: parseJSON(publicationDate).getTime(),
         limitDate: limitDate ? parseJSON(limitDate).getTime() : null,
         details,
+        updatedAt
     };
 };
