@@ -58,6 +58,7 @@ const mapToMinistry = (rawMinistry, now = Date.now()) => {
         adress: parseProperty(rawMinistry.properties['Adresse']),
         adressBis: parseProperty(rawMinistry.properties['Adresse bis']),
         brandBlock: parseProperty(rawMinistry.properties['Bloc marque']),
+        thumbnail: parseProperty(rawMinistry.properties['Vignette temporaire']),
         keyNumbers: md.render(parseProperty(rawMinistry.properties['Les chiffres clés'])),
         keyNumbersMedia: parseProperty(rawMinistry.properties['Les chiffres clés - liens']),
         missions: md.render(parseProperty(rawMinistry.properties['Les missions'])),
