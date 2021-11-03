@@ -1,0 +1,85 @@
+<%- include('partials/header') -%>
+<div id="add-job" class="fr-container fr-mt-4w">
+    <h1 style='display: flex; justify-content: center; align-items: center;'>Créer un job</h1>
+    <form name="job" method="post" action='/annonces/new' style='display: flex; flex-direction: column'>
+        <label class="fr-label" for="title">Titre:</label>
+        <input class="fr-input" type="text" id="title" name="title" required />
+
+        <label class="fr-label" for="institution">
+            Institution
+        </label>
+        <select class="fr-select" id="institution" name="institution" required>
+            <option value="" selected disabled hidden>Selectionnez une institution</option>
+            <option value="institution1">Institution 1</option>
+            <option value="institution2">Institution 2</option>
+        </select>
+
+        <label class="fr-label" for="publicationDate">Date de publication</label>
+        <input class="fr-input" type="date" id="publicationDate" name="publicationDate" required />
+
+        <label class="fr-label" for="limitDate">Date limite de l'offre</label>
+        <input class="fr-input" type="date" id="limitDate" name="limitDate" />
+
+        <label class="fr-label" for="team">Nom de l'équipe</label>
+        <input class="fr-input" type="text" id="team" name="team" required />
+
+        <div class="fr-form-group">
+            <fieldset class="fr-fieldset fr-fieldset--inline">
+                <legend class="fr-fieldset__legend fr-text--regular" id='experiences-legend'>
+                    Expériences souhaitées
+                </legend>
+                <div class="fr-fieldset__content">
+                    <div class="fr-checkbox-group">
+                        <input type="checkbox" id="experiences-junior" value="junior" name='experiences[]'>
+                        <label class="fr-label" for="experiences-junior">Junior
+                        </label>
+                    </div>
+                    <div class="fr-checkbox-group">
+                        <input type="checkbox" id="experiences-confirme" value="confirme" name='experiences[]'>
+                        <label class="fr-label" for="experiences-confirme">Confirmé
+                        </label>
+                    </div>
+                    <div class="fr-checkbox-group">
+                        <input type="checkbox" id="experiences-senior" value="senior" name='experiences[]'>
+                        <label class="fr-label" for="experiences-senior">Senior
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="fr-form-group">
+            <fieldset class="fr-fieldset fr-fieldset--inline">
+                <legend class="fr-fieldset__legend fr-text--regular" id='contracts'>
+                    Contrats disponibles
+                </legend>
+                <div class="fr-fieldset__content">
+                    <div class="fr-checkbox-group">
+                        <input type="checkbox" id="contracts-cdi" name='contracts[]' value="cdi">
+                        <label class="fr-label" for="contracts-cdi">CDI
+                        </label>
+                    </div>
+                    <div class="fr-checkbox-group">
+                        <input type="checkbox" id="contracts-cdd" name='contracts[]' value="cdd">
+                        <label class="fr-label" for="contracts-cdd">CDD
+                        </label>
+                    </div>
+                    <div class="fr-checkbox-group">
+                        <input type="checkbox" id="contracts-freelance" name='contracts[]' value="freelance">
+                        <label class="fr-label" for="contracts-freelance">Freelance
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <label class="fr-label" for="details">Détails</label>
+        <textarea class="fr-input" id="details" name="details"></textarea>
+
+        <div style='height: 2rem'></div>
+
+        <button class='fr-btn' type="submit">Enregistrer</button>
+    </form>
+</div>
+<br>
+<%- include('partials/footer') -%>

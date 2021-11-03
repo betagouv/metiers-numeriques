@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { jobsService } from './dependencies';
+import { AddJobDTO } from './usecases';
 import * as usecases from './usecases';
 import { dateReadableFormat } from './utils';
 
@@ -30,6 +31,27 @@ export async function get(req: Request, res: Response) {
         job: result,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
+}
+
+export async function add(req: Request, res: Response) {
+    if (req.method == "POST") {
+        const dto: AddJobDTO = {
+            title: req.body.title,
+            institution: req.body.institution,
+            publicationDate: req.body.publicationDate,
+            limitDate: req.body.limitDate,
+            team: req.body.team,
+            experiences: req.body.experiences,
+            availableContracts: req.body.contracts,
+            details: ''
+        }
+        await usecases.addJob(dto, { jobsService });
+        res.redirect('/annonces')
+    } else {
+        res.render('addJob', {
+            contactEmail: 'contact@metiers.numerique.gouv.fr',
+        });
+    }
 }
 
 // export async function listMinistries(_: Request, res: Response) {

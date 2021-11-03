@@ -18,20 +18,20 @@ export const InMemoryJobsService: JobsService & InMemory = {
 
     async feedWith(jobs: Job[]): Promise<void> {
         for (const job of jobs) {
-            job.id = (this.state.length + 1).toString()
+            job.id = (this.state.length + 1).toString();
             await this.add(job);
         }
     },
 
     async count(): Promise<number> {
-        return Promise.resolve(0);
+        return this.state.length;
     },
 
     // Read Side
     async all(_params): Promise<{ jobs: JobDetailDTO[]; offset: number }> {
         const jobsDetail: JobDetailDTO[] = this.state.map(toDTO);
 
-        return Promise.resolve({ jobs: jobsDetail, offset: 0 });
+        return { jobs: jobsDetail, offset: 0 };
     },
 
     async get(jobId: string): Promise<JobDetailDTO | null> {

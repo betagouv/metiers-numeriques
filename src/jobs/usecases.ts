@@ -1,7 +1,9 @@
+import { v4 } from 'uuid';
 import { isError } from '../shared/utils';
 import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
 import { createJob } from './entities';
 import { JobsService, MinistriesService } from './interfaces';
+import { JobDetailDTO } from './types';
 
 export interface AddJobDTO {
     id?: string
@@ -14,16 +16,17 @@ export interface AddJobDTO {
     limitDate: string | null
     details: string
 }
-export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<void | Error> => {
+export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<string | Error> => {
     if (!fakeInstitutions.find(j => j.id === jobDTO.institution)) {
         return new Error('Institution not found')
     }
-    const job = createJob(jobDTO);
+    const id = jobDTO.id || v4();
+    const job = createJob({id, ...jobDTO});
     if (isError(job)) {
         return job;
     }
     await deps.jobsService.add(job);
-    return;
+    return id;
 }
 
 interface ListJobsParams {
@@ -35,7 +38,7 @@ export const listJobs = async (params: ListJobsParams = {}, deps: { jobsService:
     return await deps.jobsService.all(params);
 };
 
-export const getJob = async (id: string, deps: { jobsService: JobsService }) => {
+export const getJob = async (id: string, deps: { jobsService: JobsService }): Promise<JobDetailDTO | null> => {
     return await deps.jobsService.get(id);
 };
 

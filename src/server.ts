@@ -27,6 +27,8 @@ app.use(function(req: Request, res: Response, next) {
     next();
 });
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (_req: Request, res: Response) => {
     res.render('landing', {
         contactEmail: 'contact@metiers.numerique.gouv.fr',
