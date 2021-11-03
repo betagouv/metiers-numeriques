@@ -1,4 +1,5 @@
 import { isError } from '../shared/utils';
+import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
 import { createJob } from './entities';
 import { JobsService, MinistriesService } from './interfaces';
 
@@ -13,10 +14,13 @@ export interface AddJobDTO {
     limitDate: string | null
     details: string
 }
-export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<void> => {
+export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<void | Error> => {
+    if (!fakeInstitutions.find(j => j.id === jobDTO.institution)) {
+        return new Error('Institution not found')
+    }
     const job = createJob(jobDTO);
     if (isError(job)) {
-        throw job;
+        return job;
     }
     await deps.jobsService.add(job);
     return;

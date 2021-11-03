@@ -119,9 +119,28 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        await expect(usecases.addJob(jobDTO, { jobsService })).rejects.toThrow();
+        const result = await usecases.addJob(jobDTO, { jobsService }) as Error;
+        await expect(result).toBeInstanceOf(Error);
+        await expect(result.message).toEqual('Missing fields');
     });
 
+    it('should error when the institution is not found', async () => {
+        const jobDTO: AddJobDTO = {
+            id: 'def',
+            title: 'job1',
+            experiences: ['Junior'],
+            institution: 'institution3',
+            availableContracts: ['CDD', 'CDI'],
+            team: 'MTES',
+            publicationDate: new Date().toISOString(),
+            limitDate: null,
+            details: '',
+        };
 
-    // TODO: more validation
+        const result = await usecases.addJob(jobDTO, { jobsService }) as Error;
+        await expect(result).toBeInstanceOf(Error);
+        await expect(result.message).toEqual('Institution not found');
+    });
+
+    // TODO: more validation on fields
 });
