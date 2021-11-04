@@ -1,0 +1,17 @@
+<%- include('partials/header') -%>
+<div id="add-job" class="fr-container fr-mt-4w">
+    <h1 style='display: flex; justify-content: center; align-items: center;'>Ajouter une institution</h1>
+    <form name="job" method="post" action='/institutions/new' style='display: flex; flex-direction: column'>
+        <label class="fr-label" for="name">Nom de l'institution</label>
+        <input class="fr-input" type="text" id="name" name="name" required />
+
+        <label class="fr-label" for="description">Description</label>
+        <textarea class="fr-input" id="description" name="description"></textarea>
+
+        <div style='height: 2rem'></div>
+
+        <button class='fr-btn' type="submit">Enregistrer</button>
+    </form>
+</div>
+<br>
+<%- include('partials/footer') -%>
