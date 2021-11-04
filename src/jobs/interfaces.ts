@@ -1,5 +1,5 @@
-import { Job, UUID } from './entities';
-import { JobDetailDTO } from './types';
+import { Institution, Job, UUID } from './entities';
+import { InstitutionDetailDTO, JobDetailDTO } from './types';
 
 export interface JobsService {
     add(job: Job): Promise<void>;
@@ -8,7 +8,9 @@ export interface JobsService {
     get(jobId: UUID): Promise<JobDetailDTO | null>;
 }
 
-export interface MinistriesService {
-    listMinistries(): Promise<any>;
-    getMinistry(id: string): Promise<any>;
+export interface InstitutionsService {
+    add(institution: Institution): Promise<void>;
+    count(): Promise<number>;
+    all(): Promise<InstitutionDetailDTO[]>;
+    get(institutionId: UUID): Promise<InstitutionDetailDTO | null>;
 }

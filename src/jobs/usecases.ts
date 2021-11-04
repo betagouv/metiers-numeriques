@@ -1,8 +1,8 @@
 import { v4 } from 'uuid';
 import { isError } from '../shared/utils';
 import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
-import { createJob } from './entities';
-import { JobsService, MinistriesService } from './interfaces';
+import { createInstitution, createJob } from './entities';
+import { JobsService, InstitutionsService } from './interfaces';
 import { JobDetailDTO } from './types';
 
 export interface AddJobDTO {
@@ -42,10 +42,30 @@ export const getJob = async (id: string, deps: { jobsService: JobsService }): Pr
     return await deps.jobsService.get(id);
 };
 
-export const listMinistries = async (deps: { ministriesService: MinistriesService }) => {
-    return await deps.ministriesService.listMinistries();
+export interface AddInstitutionDTO {
+    id?: string
+    name: string
+    description: string
+}
+
+export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { institutionsService: InstitutionsService }) => {
+    const id = institutionDTO.id || v4();
+    const institution = createInstitution({
+        id,
+        name: institutionDTO.name,
+        description: institutionDTO.description
+    });
+    if (isError(institution)) {
+        return institution;
+    }
+    await deps.institutionsService.add(institution);
+    return id;
 };
 
-export const getMinistry = async (id: string, deps: { ministriesService: MinistriesService }) => {
-    return await deps.ministriesService.getMinistry(id);
+export const listInstitutions = async (deps: { institutionsService: InstitutionsService }) => {
+    return await deps.institutionsService.all();
+};
+
+export const getInstitution = async (id: string, deps: { institutionsService: InstitutionsService }) => {
+    return await deps.institutionsService.get(id);
 };

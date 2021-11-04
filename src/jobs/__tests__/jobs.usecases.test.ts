@@ -143,4 +143,5 @@ describe('Creating jobs', () => {
     });
 
     // TODO: more validation on fields
+    // check date publication / limite valide (pas dans le passé ie)
 });

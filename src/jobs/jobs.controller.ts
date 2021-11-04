@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { jobsService } from './dependencies';
-import { AddJobDTO } from './usecases';
+import { jobsService, institutionsService } from './dependencies';
+import { AddInstitutionDTO, AddJobDTO } from './usecases';
 import * as usecases from './usecases';
 import { dateReadableFormat } from './utils';
 
@@ -54,25 +54,42 @@ export async function add(req: Request, res: Response) {
     }
 }
 
-// export async function listMinistries(_: Request, res: Response) {
-//     try {
-//         const ministries = await usecases.listMinistries({
-//             ministriesService,
-//         });
-//
-//         res.render('ministries', {
-//             ministries: ministries,
-//             contactEmail: 'contact@metiers.numerique.gouv.fr',
-//         });
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
-//
-// export async function getMinistry(req: Request, res: Response) {
-//     const ministry = await usecases.getMinistry(req.query.id as string, { ministriesService });
-//     res.render('ministryDetail', {
-//         job: ministry,
-//         contactEmail: 'contact@metiers.numerique.gouv.fr',
-//     });
-// }
+
+// Institutions
+export async function listInstitutions(_: Request, res: Response) {
+    try {
+        const ministries = await usecases.listInstitutions({
+            institutionsService,
+        });
+
+        res.render('ministries', {
+            ministries: ministries,
+            contactEmail: 'contact@metiers.numerique.gouv.fr',
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export async function getInstitution(req: Request, res: Response) {
+    const ministry = await usecases.getInstitution(req.query.id as string, { institutionsService });
+    res.render('institutionDetail', {
+        job: ministry,
+        contactEmail: 'contact@metiers.numerique.gouv.fr',
+    });
+}
+
+export async function addInstitution(req: Request, res: Response) {
+    if (req.method == "POST") {
+        const dto: AddInstitutionDTO = {
+            name: req.body.name,
+            description: req.body.description
+        }
+        await usecases.addInstitution(dto, { institutionsService });
+        res.redirect('/institutions')
+    } else {
+        res.render('addInstitution', {
+            contactEmail: 'contact@metiers.numerique.gouv.fr',
+        });
+    }
+}
