@@ -1,4 +1,6 @@
+import { v4 } from 'uuid';
 import { database } from '../../database';
+import { JobModel } from '../../knex/models';
 import { PgJobsServiceFactory } from '../repository/PgJobsService';
 import { fakeJobs } from './stubs/fakeJobs';
 
@@ -10,70 +12,25 @@ describe('Listing job', () => {
     // });
 
 
-    it('should get the job list', async () => {
-        await jobsService.feedWith(fakeJobs);
-        const result = await usecases.listJobs({}, { jobsService });
-
+    it.skip('should get the job list', async () => {
+        const result = await jobsService.list({})
         expect(result.jobs.length).toEqual(2);
-        expect(result.jobs).toEqual([
-            {
-                id: '1',
-                title: 'job1',
-                experiences: ['Junior'],
-                institution: { id: 'institution1', name: 'Institution 1' },
-                availableContracts: ['CDD', 'CDI'],
-                team: 'MTES',
-                publicationDate: fakeJobs[0].publicationDate,
-                limitDate: null,
-                details: '',
-                updatedAt: null,
-            },
-            {
-                id: '2',
-                title: 'job2',
-                experiences: ['Senior'],
-                institution: { id: 'institution2', name: 'Institution 2' },
-                availableContracts: ['Freelance'],
-                team: 'MCIS',
-                publicationDate: fakeJobs[1].publicationDate,
-                limitDate: null,
-                details: '',
-                updatedAt: fakeJobs[1].updatedAt,
-            },
-        ]);
     });
 
-    it('should get one job detail', async () => {
-        await jobsService.feedWith(fakeJobs);
-        const result: JobDetailDTO = await usecases.getJob(fakeJobs[1].id, { jobsService }) as JobDetailDTO;
+    it.skip('should get one job detail', async () => {
+        const result = await jobsService.get('a')
+        expect(result).toBeDefined();
+    });
 
-        expect(result).toEqual(
-            {
-                id: '2',
-                title: 'job2',
-                experiences: ['Senior'],
-                institution: { id: 'institution2', name: 'Institution 2' },
-                availableContracts: ['Freelance'],
-                team: 'MCIS',
-                publicationDate: fakeJobs[1].publicationDate,
-                limitDate: null,
-                details: '',
-                updatedAt: fakeJobs[1].updatedAt,
-            });
+    it('should save a job', async () => {
+        const testUUID = v4();
+        const job = {
+            ...fakeJobs[0],
+            uuid: testUUID,
+            institutionId: testUUID,
+        };
+        await jobsService.add(job);
+        const result = await database<JobModel>('jobs').where('title', 'job1').first();
+        expect(result!.uuid).toEqual(testUUID);
     });
 });
-
-// describe('Jobs database', () => {
-//     let jobsService = PgJobsService;
-//
-//     // beforeEach(() => {
-//     //     jobsService.state = [];
-//     // });
-//
-//     it('should save a job', async () => {
-//         const job = fakeJobs[0];
-//         await jobsService.add(job)
-//         const result = await database<JobModel>('jobs').where('title', 'job1').first();
-//         expect(result)
-//     });
-// });

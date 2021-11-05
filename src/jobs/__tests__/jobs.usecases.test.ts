@@ -1,3 +1,4 @@
+import { UuidProvider, uuidProviderFactory } from '../../shared/uuidProvider';
 import { createJob, Job } from '../entities';
 import { InMemoryJobsService } from '../repository/inMemoryJobsService';
 import { JobDetailDTO } from '../types';
@@ -68,15 +69,16 @@ describe('Listing job', () => {
 
 describe('Creating jobs', () => {
     let jobsService: typeof InMemoryJobsService = InMemoryJobsService;
+    let uuidProvider: UuidProvider;
 
     beforeEach(() => {
         jobsService.state = [];
+        uuidProvider = uuidProviderFactory('abc');
     });
 
     it('should create a job with minimal data', async () => {
         const now = new Date();
         const jobDTO: AddJobDTO = {
-            uuid: '1',
             title: 'job1',
             experiences: ['Junior'],
             institutionId: 'institution1',
@@ -87,12 +89,12 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        await usecases.addJob(jobDTO, { jobsService });
+        await usecases.addJob(jobDTO, { jobsService, uuidProvider });
 
         expect(jobsService.state[0]).toEqual(
             createJob(
                 {
-                    uuid: '1',
+                    uuid: uuidProvider(),
                     title: 'job1',
                     experiences: ['Junior'],
                     institutionId: 'institution1',
@@ -107,7 +109,6 @@ describe('Creating jobs', () => {
 
     it('should error when creating with missing data', async () => {
         const jobDTO: AddJobDTO = {
-            uuid: 'def',
             title: 'job1',
             experiences: ['Junior'],
             institutionId: 'institution1',
@@ -119,14 +120,13 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        const result = await usecases.addJob(jobDTO, { jobsService }) as Error;
+        const result = await usecases.addJob(jobDTO, { jobsService, uuidProvider }) as Error;
         await expect(result).toBeInstanceOf(Error);
         await expect(result.message).toEqual('Missing fields');
     });
 
     it('should error when the institution is not found', async () => {
         const jobDTO: AddJobDTO = {
-            uuid: 'def',
             title: 'job1',
             experiences: ['Junior'],
             institutionId: 'institution3',
@@ -137,7 +137,7 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        const result = await usecases.addJob(jobDTO, { jobsService }) as Error;
+        const result = await usecases.addJob(jobDTO, { jobsService, uuidProvider }) as Error;
         await expect(result).toBeInstanceOf(Error);
         await expect(result.message).toEqual('Institution not found');
     });

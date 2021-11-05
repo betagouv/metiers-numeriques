@@ -1,12 +1,12 @@
 import { v4 } from 'uuid';
 import { isError } from '../shared/utils';
+import { UuidProvider } from '../shared/uuidProvider';
 import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
 import { createInstitution, createJob } from './entities';
-import { JobsService, InstitutionsService } from './interfaces';
+import { InstitutionsService, JobsService } from './interfaces';
 import { JobDetailDTO } from './types';
 
 export interface AddJobDTO {
-    uuid?: string
     title: string;
     institutionId: string;
     team: string;
@@ -16,11 +16,11 @@ export interface AddJobDTO {
     limitDate: string | null
     details: string
 }
-export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<string | Error> => {
+export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService, uuidProvider: UuidProvider }): Promise<string | Error> => {
     if (!fakeInstitutions.find(j => j.uuid === jobDTO.institutionId)) {
         return new Error('Institution not found')
     }
-    const uuid = jobDTO.uuid || v4();
+    const uuid = deps.uuidProvider();
     const job = createJob({uuid, ...jobDTO});
     if (isError(job)) {
         return job;
@@ -35,7 +35,7 @@ interface ListJobsParams {
     institution?: string;
 }
 export const listJobs = async (params: ListJobsParams = {}, deps: { jobsService: JobsService }) => {
-    return await deps.jobsService.all(params);
+    return await deps.jobsService.list(params);
 };
 
 export const getJob = async (uuid: string, deps: { jobsService: JobsService }): Promise<JobDetailDTO | null> => {

@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import { InstitutionModel, JobModel } from '../../knex/models';
 import { Job } from '../entities';
 import { JobsService } from '../interfaces';
-import { JobDetailDTO } from '../types';
+import { JobDetailDTO, JobListDTO } from '../types';
 
 export const PgJobsServiceFactory = (db: Knex): JobsService => ({
     // Write Side
@@ -15,7 +15,7 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
     },
 
     // Read Side
-    async all(params): Promise<{ jobs: JobDetailDTO[]; offset: number }> {
+    async list(params): Promise<{ jobs: JobListDTO; offset: number }> {
         const results = await db
             .select(
                 'jobs.uuid',
@@ -26,35 +26,69 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
                 'jobs.publication_date',
                 'jobs.limit_date',
                 'jobs.updated_at',
-                'institution.uuid',
-                'institution.name',
+                'institutions.uuid',
+                'institutions.name',
             )
             .from<JobModel | InstitutionModel>('jobs')
+            .join<InstitutionModel>('institutions', 'jobs.institution_id', '=', 'institutions.uuid')
             .limit(30)
-            .offset(params.offset || 0)
-            .join<InstitutionModel>('institutions', 'jobs.institution_id', '=', 'institution.uuid');
+            .offset(params.offset || 0);
 
-        const jobs: JobDetailDTO[] = results.map(r => ({
+        const jobs: JobListDTO = results.map(r => ({
             uuid: r.uuid,
             availableContracts: JSON.parse(r.available_contracts),
             details: '',
             experiences: JSON.parse(r.experiences),
             institution: {
-                uuid: r.institution.uuid,
-                name: r.institution.name,
+                uuid: r.institutions.uuid,
+                name: r.institutions.name,
             },
             limitDate: r.limit_date,
             publicationDate: r.publication_date,
             team: r.team,
             title: r.title,
             updatedAt: r.updated_at,
-
         }));
         return { jobs, offset: params.offset || 0 };
     },
 
     async get(_jobId: string): Promise<JobDetailDTO | null> {
-        return null;
+        const result = await db
+            .select(
+                'jobs.uuid',
+                'jobs.title',
+                'jobs.team',
+                'jobs.available_contracts',
+                'jobs.experiences',
+                'jobs.publication_date',
+                'jobs.limit_date',
+                'jobs.updated_at',
+                'institutions.uuid',
+                'institutions.name',
+            )
+            .from<JobModel | InstitutionModel>('jobs')
+            .join<InstitutionModel>('institutions', 'jobs.institution_id', '=', 'institutions.uuid')
+            .first();
+
+        if (!result) {
+            return null;
+        }
+
+        return {
+            uuid: result.uuid,
+            availableContracts: JSON.parse(result.available_contracts),
+            details: '',
+            experiences: JSON.parse(result.experiences),
+            institution: {
+                uuid: result.institutions.uuid,
+                name: result.institutions.name,
+            },
+            limitDate: result.limit_date,
+            publicationDate: result.publication_date,
+            team: result.team,
+            title: result.title,
+            updatedAt: result.updated_at,
+        };
     },
 });
 

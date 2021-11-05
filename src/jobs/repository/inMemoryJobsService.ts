@@ -1,7 +1,7 @@
 import { fakeInstitutions } from '../__tests__/stubs/fakeInstitutions';
 import { Job } from '../entities';
 import { JobsService } from '../interfaces';
-import { JobDetailDTO } from '../types';
+import { JobDetailDTO, JobListDTO } from '../types';
 
 interface InMemory {
     state: Job[];
@@ -27,8 +27,8 @@ export const InMemoryJobsService: JobsService & InMemory = {
     },
 
     // Read Side
-    async all(_params): Promise<{ jobs: JobDetailDTO[]; offset: number }> {
-        const jobsDetail: JobDetailDTO[] = this.state.map(toDTO);
+    async list(_params): Promise<{ jobs: JobListDTO; offset: number }> {
+        const jobsDetail: JobListDTO = this.state.map(toDTO);
 
         return { jobs: jobsDetail, offset: 0 };
     },

@@ -1,10 +1,10 @@
 import { Institution, Job, UUID } from './entities';
-import { InstitutionDetailDTO, JobDetailDTO } from './types';
+import { InstitutionDetailDTO, JobDetailDTO, JobListDTO } from './types';
 
 export interface JobsService {
     add(job: Job): Promise<void>;
     count(): Promise<number>;
-    all(params: {offset?: number; title?: string; institution?: string; }): Promise<{ jobs: JobDetailDTO[]; offset: number }>;
+    list(params: {offset?: number; title?: string; institution?: string; }): Promise<{ jobs: JobListDTO; offset: number }>;
     get(jobId: UUID): Promise<JobDetailDTO | null>;
 }
 
