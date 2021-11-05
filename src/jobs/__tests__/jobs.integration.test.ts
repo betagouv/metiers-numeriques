@@ -1,21 +1,32 @@
 import { database } from '../../database';
 import { JobModel } from '../../knex/models';
 import { UuidGenerator, uuidGeneratorFactory } from '../../shared/uuidGenerator';
+import { JobsService } from '../interfaces';
 import { PgJobsServiceFactory } from '../repository/PgJobsService';
 import { fakeJobs } from './stubs/fakeJobs';
 
 describe('Listing job', () => {
-    let jobsService = PgJobsServiceFactory(database);
+    let jobsService: JobsService;
     let uuidGenerator: UuidGenerator;
 
-    beforeEach(() => {
-        // seed db
-        uuidGenerator = uuidGeneratorFactory("407ccaa8-9812-4abe-a8b3-fc88e5b1b993");
+    beforeEach(async () => {
+        // reset and seed db
+        // await database.raw('create database metiernumtest');
+        // await database.schema = 'metiernumtest'
+        await database.migrate.rollback();
+        await database.migrate.latest();
+        await database.seed.run();
+        jobsService = PgJobsServiceFactory(database);
+        uuidGenerator = uuidGeneratorFactory('407ccaa8-9812-4abe-a8b3-fc88e5b1b993');
+    });
+
+    afterEach(async () => {
+        await database.migrate.rollback();
     });
 
     afterAll(() => {
-        database.destroy()
-    })
+        database.destroy();
+    });
 
 
     it.skip('should get the job list', async () => {

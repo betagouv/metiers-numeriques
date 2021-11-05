@@ -7,12 +7,12 @@ const config: Knex.Config = {
     },
     migrations: {
         extension: 'ts',
-        directory: 'knex/migrations',
+        directory: 'src/knex/migrations',
         tableName: 'migrations_history',
     },
     seeds: {
         extension: 'ts',
-        directory: 'knex/seeds',
+        directory: 'src/knex/seeds',
     },
 };
 
