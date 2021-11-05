@@ -4,7 +4,7 @@ import { InstitutionDetailDTO } from '../types';
 
 interface InMemory {
     state: Institution[];
-    feedWith(institution: Institution[]): void;
+    feedWith(institution: Institution[]): InstitutionsService;
 }
 
 export const InMemoryInstitutionsService: InstitutionsService & InMemory = {
@@ -14,10 +14,12 @@ export const InMemoryInstitutionsService: InstitutionsService & InMemory = {
         this.state.push(institution);
     },
 
-    async feedWith(institutions: Institution[]): Promise<void> {
+    feedWith(institutions: Institution[]): InstitutionsService {
         for (const institution of institutions) {
-            await this.add(institution);
+            this.add(institution).then();
         }
+
+        return this;
     },
 
     async count(): Promise<number> {

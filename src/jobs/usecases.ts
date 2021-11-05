@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { isError } from '../shared/utils';
-import { UuidProvider } from '../shared/uuidProvider';
+import { UuidGenerator } from '../shared/uuidGenerator';
 import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
 import { createInstitution, createJob } from './entities';
 import { InstitutionsService, JobsService } from './interfaces';
@@ -16,11 +16,11 @@ export interface AddJobDTO {
     limitDate: string | null
     details: string
 }
-export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService, uuidProvider: UuidProvider }): Promise<string | Error> => {
+export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService, uuidGenerator: UuidGenerator }): Promise<string | Error> => {
     if (!fakeInstitutions.find(j => j.uuid === jobDTO.institutionId)) {
         return new Error('Institution not found')
     }
-    const uuid = deps.uuidProvider();
+    const uuid = deps.uuidGenerator();
     const job = createJob({uuid, ...jobDTO});
     if (isError(job)) {
         return job;

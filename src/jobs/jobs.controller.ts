@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { jobsService, institutionsService } from './dependencies';
+import { jobsService, institutionsService, uuidGenerator } from './dependencies';
 import { AddInstitutionDTO, AddJobDTO } from './usecases';
 import * as usecases from './usecases';
 import { dateReadableFormat } from './utils';
@@ -45,7 +45,7 @@ export async function add(req: Request, res: Response) {
             availableContracts: req.body.contracts,
             details: ''
         }
-        await usecases.addJob(dto, { jobsService });
+        await usecases.addJob(dto, { jobsService, uuidGenerator });
         res.redirect('/annonces')
     } else {
         res.render('addJob', {

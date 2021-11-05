@@ -5,7 +5,7 @@ import { JobDetailDTO, JobListDTO } from '../types';
 
 interface InMemory {
     state: Job[];
-    feedWith(jobs: Job[]): void;
+    feedWith(jobs: Job[]): JobsService;
 }
 
 export const InMemoryJobsService: JobsService & InMemory = {
@@ -15,11 +15,13 @@ export const InMemoryJobsService: JobsService & InMemory = {
         this.state.push(job);
     },
 
-    async feedWith(jobs: Job[]): Promise<void> {
+    feedWith(jobs: Job[]): JobsService {
         for (const job of jobs) {
             job.uuid = (this.state.length + 1).toString();
-            await this.add(job);
+            this.add(job).then();
         }
+
+        return this;
     },
 
     async count(): Promise<number> {

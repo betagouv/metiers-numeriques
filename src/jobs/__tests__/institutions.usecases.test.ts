@@ -12,7 +12,7 @@ describe('Institution display', () => {
     })
 
     it('should get the institutions list', async () => {
-        await institutionsService.feedWith(fakeInstitutions)
+        institutionsService.feedWith(fakeInstitutions)
         const result = await usecases.listInstitutions({ institutionsService });
 
         expect(result).toEqual([
@@ -30,7 +30,7 @@ describe('Institution display', () => {
     });
 
     it('should get one institution detail', async () => {
-        await institutionsService.feedWith(fakeInstitutions)
+        institutionsService.feedWith(fakeInstitutions)
         const result = await usecases.getInstitution(fakeInstitutions[0].uuid, {institutionsService});
 
         expect(result).toEqual(

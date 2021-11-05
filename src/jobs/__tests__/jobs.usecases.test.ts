@@ -1,4 +1,4 @@
-import { UuidProvider, uuidProviderFactory } from '../../shared/uuidProvider';
+import { UuidGenerator, uuidGeneratorFactory } from '../../shared/uuidGenerator';
 import { createJob, Job } from '../entities';
 import { InMemoryJobsService } from '../repository/inMemoryJobsService';
 import { JobDetailDTO } from '../types';
@@ -15,7 +15,7 @@ describe('Listing job', () => {
 
 
     it('should get the job list', async () => {
-        await jobsService.feedWith(fakeJobs);
+        jobsService.feedWith(fakeJobs);
         const result = await usecases.listJobs({}, { jobsService });
 
         expect(result.jobs.length).toEqual(2);
@@ -48,7 +48,7 @@ describe('Listing job', () => {
     });
 
     it('should get one job detail', async () => {
-        await jobsService.feedWith(fakeJobs);
+        jobsService.feedWith(fakeJobs);
         const result: JobDetailDTO = await usecases.getJob(fakeJobs[1].uuid, { jobsService }) as JobDetailDTO;
 
         expect(result).toEqual(
@@ -69,11 +69,11 @@ describe('Listing job', () => {
 
 describe('Creating jobs', () => {
     let jobsService: typeof InMemoryJobsService = InMemoryJobsService;
-    let uuidProvider: UuidProvider;
+    let uuidGenerator: UuidGenerator;
 
     beforeEach(() => {
         jobsService.state = [];
-        uuidProvider = uuidProviderFactory('abc');
+        uuidGenerator = uuidGeneratorFactory('abc');
     });
 
     it('should create a job with minimal data', async () => {
@@ -89,12 +89,12 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        await usecases.addJob(jobDTO, { jobsService, uuidProvider });
+        await usecases.addJob(jobDTO, { jobsService, uuidGenerator });
 
         expect(jobsService.state[0]).toEqual(
             createJob(
                 {
-                    uuid: uuidProvider(),
+                    uuid: uuidGenerator(),
                     title: 'job1',
                     experiences: ['Junior'],
                     institutionId: 'institution1',
@@ -120,7 +120,7 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        const result = await usecases.addJob(jobDTO, { jobsService, uuidProvider }) as Error;
+        const result = await usecases.addJob(jobDTO, { jobsService, uuidGenerator }) as Error;
         await expect(result).toBeInstanceOf(Error);
         await expect(result.message).toEqual('Missing fields');
     });
@@ -137,7 +137,7 @@ describe('Creating jobs', () => {
             details: '',
         };
 
-        const result = await usecases.addJob(jobDTO, { jobsService, uuidProvider }) as Error;
+        const result = await usecases.addJob(jobDTO, { jobsService, uuidGenerator }) as Error;
         await expect(result).toBeInstanceOf(Error);
         await expect(result.message).toEqual('Institution not found');
     });
