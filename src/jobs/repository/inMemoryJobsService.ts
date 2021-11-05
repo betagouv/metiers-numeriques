@@ -5,7 +5,6 @@ import { JobDetailDTO } from '../types';
 
 interface InMemory {
     state: Job[];
-
     feedWith(jobs: Job[]): void;
 }
 
@@ -18,7 +17,7 @@ export const InMemoryJobsService: JobsService & InMemory = {
 
     async feedWith(jobs: Job[]): Promise<void> {
         for (const job of jobs) {
-            job.id = (this.state.length + 1).toString();
+            job.uuid = (this.state.length + 1).toString();
             await this.add(job);
         }
     },
@@ -35,16 +34,16 @@ export const InMemoryJobsService: JobsService & InMemory = {
     },
 
     async get(jobId: string): Promise<JobDetailDTO | null> {
-        return toDTO(this.state.find(j => j.id === jobId)!);
+        return toDTO(this.state.find(j => j.uuid === jobId)!);
     },
 };
 
 function toDTO(job: Job) {
-    const { id, name } = fakeInstitutions.find(i => i.id === job.institution)!;
+    const { uuid, name } = fakeInstitutions.find(i => i.uuid === job.institutionId)!;
     return {
-        id: job.id,
+        uuid: job.uuid,
         title: job.title,
-        institution: { id, name },
+        institution: { uuid, name },
         team: job.team,
         availableContracts: job.availableContracts,
         experiences: job.experiences,

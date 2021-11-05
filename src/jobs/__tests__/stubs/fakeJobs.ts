@@ -4,10 +4,10 @@ import { createJob, Job } from '../../entities';
 const fakeJobs: Job[] = [
     createJob(
         {
-            id: '1',
+            uuid: '1',
             title: 'job1',
             experiences: ['Junior'],
-            institution: 'institution1',
+            institutionId: 'institution1',
             availableContracts: ['CDD', 'CDI'],
             team: 'MTES',
             publicationDate: new Date().toISOString(),
@@ -17,10 +17,10 @@ const fakeJobs: Job[] = [
         }) as Job,
     createJob(
         {
-            id: '2',
+            uuid: '2',
             title: 'job2',
             experiences: ['Senior'],
-            institution: 'institution2',
+            institutionId: 'institution2',
             availableContracts: ['Freelance'],
             team: 'MCIS',
             publicationDate: new Date().toISOString(),

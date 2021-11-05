@@ -4,7 +4,6 @@ import { InstitutionDetailDTO } from '../types';
 
 interface InMemory {
     state: Institution[];
-
     feedWith(institution: Institution[]): void;
 }
 
@@ -31,13 +30,13 @@ export const InMemoryInstitutionsService: InstitutionsService & InMemory = {
     },
 
     async get(institutionId: string): Promise<InstitutionDetailDTO | null> {
-        return institutionToDTO(this.state.find(i => i.id === institutionId)!);
+        return institutionToDTO(this.state.find(i => i.uuid === institutionId)!);
     },
 };
 
 function institutionToDTO(institution: Institution): InstitutionDetailDTO {
     return {
-        id: institution.id,
+        uuid: institution.uuid,
         name: institution.name,
         description: institution.description
     };

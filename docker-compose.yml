@@ -5,6 +5,7 @@ services:
         environment:
             POSTGRES_USER: metiersnum
             POSTGRES_PASSWORD: metiersnum
+            POSTGRES_DB: metiersnum
         ports:
             - "5432:5432"
 

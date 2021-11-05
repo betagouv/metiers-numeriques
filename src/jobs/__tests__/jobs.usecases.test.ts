@@ -20,10 +20,10 @@ describe('Listing job', () => {
         expect(result.jobs.length).toEqual(2);
         expect(result.jobs).toEqual([
             {
-                id: '1',
+                uuid: '1',
                 title: 'job1',
                 experiences: ['Junior'],
-                institution: { id: 'institution1', name: 'Institution 1' },
+                institution: { uuid: 'institution1', name: 'Institution 1' },
                 availableContracts: ['CDD', 'CDI'],
                 team: 'MTES',
                 publicationDate: fakeJobs[0].publicationDate,
@@ -32,10 +32,10 @@ describe('Listing job', () => {
                 updatedAt: null,
             },
             {
-                id: '2',
+                uuid: '2',
                 title: 'job2',
                 experiences: ['Senior'],
-                institution: { id: 'institution2', name: 'Institution 2' },
+                institution: { uuid: 'institution2', name: 'Institution 2' },
                 availableContracts: ['Freelance'],
                 team: 'MCIS',
                 publicationDate: fakeJobs[1].publicationDate,
@@ -48,14 +48,14 @@ describe('Listing job', () => {
 
     it('should get one job detail', async () => {
         await jobsService.feedWith(fakeJobs);
-        const result: JobDetailDTO = await usecases.getJob(fakeJobs[1].id, { jobsService }) as JobDetailDTO;
+        const result: JobDetailDTO = await usecases.getJob(fakeJobs[1].uuid, { jobsService }) as JobDetailDTO;
 
         expect(result).toEqual(
             {
-                id: '2',
+                uuid: '2',
                 title: 'job2',
                 experiences: ['Senior'],
-                institution: { id: 'institution2', name: 'Institution 2' },
+                institution: { uuid: 'institution2', name: 'Institution 2' },
                 availableContracts: ['Freelance'],
                 team: 'MCIS',
                 publicationDate: fakeJobs[1].publicationDate,
@@ -76,10 +76,10 @@ describe('Creating jobs', () => {
     it('should create a job with minimal data', async () => {
         const now = new Date();
         const jobDTO: AddJobDTO = {
-            id: '1',
+            uuid: '1',
             title: 'job1',
             experiences: ['Junior'],
-            institution: 'institution1',
+            institutionId: 'institution1',
             availableContracts: ['CDD', 'CDI'],
             team: 'MTES',
             publicationDate: now.toISOString(),
@@ -92,10 +92,10 @@ describe('Creating jobs', () => {
         expect(jobsService.state[0]).toEqual(
             createJob(
                 {
-                    id: '1',
+                    uuid: '1',
                     title: 'job1',
                     experiences: ['Junior'],
-                    institution: 'institution1',
+                    institutionId: 'institution1',
                     availableContracts: ['CDD', 'CDI'],
                     team: 'MTES',
                     publicationDate: now.toISOString(),
@@ -107,10 +107,10 @@ describe('Creating jobs', () => {
 
     it('should error when creating with missing data', async () => {
         const jobDTO: AddJobDTO = {
-            id: 'def',
+            uuid: 'def',
             title: 'job1',
             experiences: ['Junior'],
-            institution: 'institution1',
+            institutionId: 'institution1',
             // @ts-ignore
             availableContracts: undefined,
             team: 'MTES',
@@ -126,10 +126,10 @@ describe('Creating jobs', () => {
 
     it('should error when the institution is not found', async () => {
         const jobDTO: AddJobDTO = {
-            id: 'def',
+            uuid: 'def',
             title: 'job1',
             experiences: ['Junior'],
-            institution: 'institution3',
+            institutionId: 'institution3',
             availableContracts: ['CDD', 'CDI'],
             team: 'MTES',
             publicationDate: new Date().toISOString(),

@@ -6,9 +6,9 @@ import { JobsService, InstitutionsService } from './interfaces';
 import { JobDetailDTO } from './types';
 
 export interface AddJobDTO {
-    id?: string
+    uuid?: string
     title: string;
-    institution: string;
+    institutionId: string;
     team: string;
     availableContracts: string[]
     experiences: string[]
@@ -17,16 +17,16 @@ export interface AddJobDTO {
     details: string
 }
 export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService }): Promise<string | Error> => {
-    if (!fakeInstitutions.find(j => j.id === jobDTO.institution)) {
+    if (!fakeInstitutions.find(j => j.uuid === jobDTO.institutionId)) {
         return new Error('Institution not found')
     }
-    const id = jobDTO.id || v4();
-    const job = createJob({id, ...jobDTO});
+    const uuid = jobDTO.uuid || v4();
+    const job = createJob({uuid, ...jobDTO});
     if (isError(job)) {
         return job;
     }
     await deps.jobsService.add(job);
-    return id;
+    return uuid;
 }
 
 interface ListJobsParams {
@@ -38,20 +38,20 @@ export const listJobs = async (params: ListJobsParams = {}, deps: { jobsService:
     return await deps.jobsService.all(params);
 };
 
-export const getJob = async (id: string, deps: { jobsService: JobsService }): Promise<JobDetailDTO | null> => {
-    return await deps.jobsService.get(id);
+export const getJob = async (uuid: string, deps: { jobsService: JobsService }): Promise<JobDetailDTO | null> => {
+    return await deps.jobsService.get(uuid);
 };
 
 export interface AddInstitutionDTO {
-    id?: string
+    uuid?: string
     name: string
     description: string
 }
 
 export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { institutionsService: InstitutionsService }) => {
-    const id = institutionDTO.id || v4();
+    const uuid = institutionDTO.uuid || v4();
     const institution = createInstitution({
-        id,
+        uuid,
         name: institutionDTO.name,
         description: institutionDTO.description
     });
@@ -59,13 +59,13 @@ export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { 
         return institution;
     }
     await deps.institutionsService.add(institution);
-    return id;
+    return uuid;
 };
 
 export const listInstitutions = async (deps: { institutionsService: InstitutionsService }) => {
     return await deps.institutionsService.all();
 };
 
-export const getInstitution = async (id: string, deps: { institutionsService: InstitutionsService }) => {
-    return await deps.institutionsService.get(id);
+export const getInstitution = async (uuid: string, deps: { institutionsService: InstitutionsService }) => {
+    return await deps.institutionsService.get(uuid);
 };

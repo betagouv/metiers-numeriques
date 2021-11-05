@@ -8,9 +8,9 @@ export type Experiences = 'Junior' | 'Confirmé' | 'Senior';
 export type Contract = 'CDI' | 'CDD' | 'Freelance';
 
 export interface Job {
-    id: UUID;
+    uuid: UUID;
     title: string;
-    institution: InstitutionID;
+    institutionId: InstitutionID;
     team: string;
     availableContracts: Contract[]
     experiences: Experiences[]
@@ -39,9 +39,9 @@ export interface Job {
 }
 
 interface NewJobProps {
-    id?: UUID;
+    uuid?: UUID;
     title: string;
-    institution: string;
+    institutionId: string;
     team: string;
     availableContracts: string[]
     experiences: string[]
@@ -53,9 +53,9 @@ interface NewJobProps {
 
 export const createJob = (
     {
-        id = 'abc',
+        uuid = 'abc',
         title,
-        institution,
+        institutionId,
         team,
         availableContracts,
         experiences,
@@ -66,15 +66,18 @@ export const createJob = (
     }: NewJobProps): Job | Error => {
 
     // fixme: Validation tres basique + cast pour validation à changer avec des VOs
-    if (!title || !institution || !team || !availableContracts || !experiences || !publicationDate) {
+    // Check dates are valids
+    // Check at least on value for exp and contacts
+    // ...
+    if (!title || !institutionId || !team || !availableContracts || !experiences || !publicationDate) {
         return new Error('Missing fields');
     }
 
     // add domain methods here later
     return {
-        id,
+        uuid,
         title,
-        institution,
+        institutionId,
         team,
         availableContracts: availableContracts as Contract[],
         experiences: experiences as Experiences[],
@@ -86,20 +89,20 @@ export const createJob = (
 };
 
 export interface Institution {
-    id: UUID;
+    uuid: UUID;
     name: string;
     description: string;
 }
 
 interface NewInstitutionProps {
-    id?: UUID;
+    uuid?: UUID;
     name: string;
     description: string;
 }
 
 export const createInstitution = (
     {
-        id = 'abc',
+        uuid = 'abc',
         name,
         description,
     }: NewInstitutionProps): Institution | Error => {
@@ -111,7 +114,7 @@ export const createInstitution = (
 
     // add domain methods here later
     return {
-        id,
+        uuid,
         name,
         description,
     };

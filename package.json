@@ -8,16 +8,20 @@
         "checkHTMLLocal": "site-validator --verbose --local --url http://localhost:8080",
         "dev": "ts-node-dev src/index.ts",
         "start": "node dist/index.js",
+        "build": "tsc -p tsconfig.json",
         "test": "npm run test:unit",
         "test:unit": "jest --config=jest.config.js",
         "test:unit:watch": "jest --watchAll --config=jest.config.js",
         "test:integration": "jest --config=jest.integration.config.js",
         "test:e2e": "jest --config=jest.e2e.config.js",
         "test:ci": "npm run test:unit && npm run test:integration && npm run test:e2e",
-        "build": "tsc -p tsconfig.json",
         "fix:prettier": "prettier \"src/**/*.ts\" --write",
         "fix:lint": "eslint src --ext .ts --fix",
-        "reset-hard": "git clean -dfx && git reset --hard && npm i"
+        "reset-hard": "git clean -dfx && git reset --hard && npm i",
+        "knex:run": "knex --knexfile src/knexfile.ts",
+        "migrate:make": "npm run knex:run -- migrate:make --",
+        "migrate:latest": "npm run knex:run -- migrate:latest --debug",
+        "migrate:rollback": "npm run knex:run -- migrate:rollback --all --debug"
     },
     "engines": {
         "node": ">14",
@@ -42,7 +46,9 @@
         "dotenv": "^10.0.0",
         "ejs": "^3.1.5",
         "express": "^4.17.1",
+        "knex": "^0.95.13",
         "moment": "^2.29.1",
+        "pg": "^8.7.1",
         "remixicon": "^2.5.0",
         "uuid": "^8.3.2"
     },

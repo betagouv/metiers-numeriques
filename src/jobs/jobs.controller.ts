@@ -37,7 +37,7 @@ export async function add(req: Request, res: Response) {
     if (req.method == "POST") {
         const dto: AddJobDTO = {
             title: req.body.title,
-            institution: req.body.institution,
+            institutionId: req.body.institution,
             publicationDate: req.body.publicationDate,
             limitDate: req.body.limitDate,
             team: req.body.team,

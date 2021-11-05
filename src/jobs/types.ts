@@ -1,7 +1,7 @@
 export interface JobDetailDTO {
-    id: string
+    uuid: string
     title: string
-    institution: Pick<InstitutionDetailDTO, 'id' | 'name'>
+    institution: Pick<InstitutionDetailDTO, 'uuid' | 'name'>
     team: string
     availableContracts: string[]
     experiences: string[]
@@ -14,7 +14,7 @@ export interface JobDetailDTO {
 }
 
 export interface InstitutionDetailDTO {
-    id: string;
+    uuid: string;
     name: string
     description: string
 }
