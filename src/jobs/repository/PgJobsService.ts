@@ -26,14 +26,15 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
                 'jobs.publication_date',
                 'jobs.limit_date',
                 'jobs.updated_at',
-                'institutions.uuid',
-                'institutions.name',
+                // 'institutions.uuid',
+                // 'institutions.name',
             )
-            .from<JobModel | InstitutionModel>('jobs')
+            .from<JobModel>('jobs')
             .join<InstitutionModel>('institutions', 'jobs.institution_id', '=', 'institutions.uuid')
-            .limit(30)
-            .offset(params.offset || 0);
+            // .limit(30)
+            // .offset(params.offset || 0);
 
+        console.log(results);
         const jobs: JobListDTO = results.map(r => ({
             uuid: r.uuid,
             availableContracts: JSON.parse(r.available_contracts),

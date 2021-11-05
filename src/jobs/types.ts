@@ -12,9 +12,7 @@ interface IJobListDTO {
 
     updatedAt: number | null
 }
-
 export type JobListDTO = IJobListDTO[];
-
 export interface JobDetailDTO {
     uuid: string
     title: string
@@ -30,6 +28,7 @@ export interface JobDetailDTO {
     updatedAt: number | null
 }
 
+export type InstitutionListDTO = InstitutionDetailDTO[];
 export interface InstitutionDetailDTO {
     uuid: string;
     name: string

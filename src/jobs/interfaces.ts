@@ -11,6 +11,6 @@ export interface JobsService {
 export interface InstitutionsService {
     add(institution: Institution): Promise<void>;
     count(): Promise<number>;
-    all(): Promise<InstitutionDetailDTO[]>;
+    list(): Promise<InstitutionDetailDTO[]>;
     get(institutionId: UUID): Promise<InstitutionDetailDTO | null>;
 }

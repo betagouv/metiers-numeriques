@@ -27,7 +27,7 @@ export const InMemoryInstitutionsService: InstitutionsService & InMemory = {
     },
 
     // Read Side
-    async all(): Promise<InstitutionDetailDTO[]> {
+    async list(): Promise<InstitutionDetailDTO[]> {
         return this.state.map(institutionToDTO);
     },
 

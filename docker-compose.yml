@@ -3,16 +3,13 @@ services:
     database:
         image: postgres:14
         environment:
-            POSTGRES_USER: metiersnum
-            POSTGRES_PASSWORD: metiersnum
-            POSTGRES_DB: metiersnum
+            POSTGRES_USER: ${POSTGRES_USER:-metiersnum}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-metiersnum}
+            POSTGRES_DB: ${POSTGRES_DB:-metiersnum}
         ports:
-            - "5432:5432"
+            - "${EXPOSED_PORT:-5432}:5432"
+        volumes:
+            - app-volume:/var/lib/postgresql/data
 
-    adminer:
-        image: adminer
-        depends_on:
-            - database
-        ports:
-            - 8080:8080
-        restart: unless-stopped
+volumes:
+    app-volume: #

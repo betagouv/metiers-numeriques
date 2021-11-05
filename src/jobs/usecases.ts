@@ -63,7 +63,7 @@ export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { 
 };
 
 export const listInstitutions = async (deps: { institutionsService: InstitutionsService }) => {
-    return await deps.institutionsService.all();
+    return await deps.institutionsService.list();
 };
 
 export const getInstitution = async (uuid: string, deps: { institutionsService: InstitutionsService }) => {
