@@ -2,12 +2,6 @@ import axios from 'axios';
 
 import csv from 'csvtojson';
 
-import { jobsService } from '../jobs/dependencies';
-
-import * as usecases from '../jobs/usecases';
-
-import { dateProvider } from '../shared/dependencies';
-
 
 export async function fetchPepJobs() {
     try {
@@ -18,9 +12,9 @@ export async function fetchPepJobs() {
         ).fromStream(((await axios.get(process.env.PEP_ENDPOINT!, {
                 responseType: 'stream',
             })).data),
-        ).subscribe((pepJob) => {
+        ).subscribe((_pepJob) => {
             return new Promise(async (resolve) => {
-                await usecases.updateLatestActivePepJobs(pepJob, { jobsService, dateProvider });
+                // await usecases.updateLatestActivePepJobs(pepJob, { jobsService, dateProvider });
                 count++;
                 resolve();
             });

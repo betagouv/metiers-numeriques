@@ -30,15 +30,28 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
                 // 'institutions.name',
             )
             .from<JobModel>('jobs')
-            .join<InstitutionModel>('institutions', 'jobs.institution_id', '=', 'institutions.uuid')
-            // .limit(30)
-            // .offset(params.offset || 0);
+            .join<InstitutionModel>('institutions', 'jobs.institution_id', '=', 'institutions.uuid');
+        // .limit(30)
+        // .offset(params.offset || 0);
 
         console.log(results);
         const jobs: JobListDTO = results.map(r => ({
             uuid: r.uuid,
             availableContracts: JSON.parse(r.available_contracts),
-            details: '',
+            details: {
+                team: r.team,
+                teamInfo: r.teamInfo,
+                mission: r.mission,
+                locations: r.locations,
+                tasks: r.tasks,
+                profile: r.profile,
+                salary: r.salary,
+                hiringProcess: r.hiringProcess,
+                conditions: r.conditions,
+                advantages: r.advantages,
+                more: r.more,
+                toApply: r.toApply,
+            },
             experiences: JSON.parse(r.experiences),
             institution: {
                 uuid: r.institutions.uuid,
@@ -78,7 +91,20 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
         return {
             uuid: result.uuid,
             availableContracts: JSON.parse(result.available_contracts),
-            details: '',
+            details: {
+                team: result.team,
+                teamInfo: result.teamInfo,
+                mission: result.mission,
+                locations: result.locations,
+                tasks: result.tasks,
+                profile: result.profile,
+                salary: result.salary,
+                hiringProcess: result.hiringProcess,
+                conditions: result.conditions,
+                advantages: result.advantages,
+                more: result.more,
+                toApply: result.toApply,
+            },
             experiences: JSON.parse(result.experiences),
             institution: {
                 uuid: result.institutions.uuid,
