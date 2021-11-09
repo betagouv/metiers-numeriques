@@ -4,7 +4,7 @@ import { UuidGenerator } from '../shared/uuidGenerator';
 import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
 import { createInstitution, createJob } from './entities';
 import { InstitutionsService, JobsService } from './interfaces';
-import { JobDetailDTO } from './types';
+import { JobDetailDTO, JobElementsDTO } from './types';
 
 export interface AddJobDTO {
     title: string;
@@ -14,7 +14,7 @@ export interface AddJobDTO {
     experiences: string[]
     publicationDate: string
     limitDate: string | null
-    details: string
+    details: JobElementsDTO
 }
 export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService, uuidGenerator: UuidGenerator }): Promise<string | Error> => {
     if (!fakeInstitutions.find(j => j.uuid === jobDTO.institutionId)) {

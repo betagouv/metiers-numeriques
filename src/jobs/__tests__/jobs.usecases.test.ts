@@ -6,6 +6,21 @@ import * as usecases from '../usecases';
 import { AddJobDTO } from '../usecases';
 import { fakeJobs } from './stubs/fakeJobs';
 
+const emptyDetails = {
+    mission: '',
+    team: '',
+    locations: '',
+    teamInfo: '',
+    tasks: '',
+    profile: '',
+    salary: '',
+    hiringProcess: '',
+    conditions: '',
+    advantages: '',
+    more: '',
+    toApply: '',
+}
+
 describe('Listing job', () => {
     let jobsService: typeof InMemoryJobsService = InMemoryJobsService;
 
@@ -29,7 +44,7 @@ describe('Listing job', () => {
                 team: 'MTES',
                 publicationDate: fakeJobs[0].publicationDate,
                 limitDate: null,
-                details: '',
+                details: emptyDetails,
                 updatedAt: null,
             },
             {
@@ -41,7 +56,7 @@ describe('Listing job', () => {
                 team: 'MCIS',
                 publicationDate: fakeJobs[1].publicationDate,
                 limitDate: null,
-                details: '',
+                details: emptyDetails,
                 updatedAt: fakeJobs[1].updatedAt,
             },
         ]);
@@ -61,7 +76,7 @@ describe('Listing job', () => {
                 team: 'MCIS',
                 publicationDate: fakeJobs[1].publicationDate,
                 limitDate: null,
-                details: '',
+                details: emptyDetails,
                 updatedAt: fakeJobs[1].updatedAt,
             });
     });
@@ -70,15 +85,13 @@ describe('Listing job', () => {
 describe('Creating jobs', () => {
     let jobsService: typeof InMemoryJobsService = InMemoryJobsService;
     let uuidGenerator: UuidGenerator;
+    let defaultJobDTO: AddJobDTO;
+    let now = new Date();
 
     beforeEach(() => {
         jobsService.state = [];
         uuidGenerator = uuidGeneratorFactory('abc');
-    });
-
-    it('should create a job with minimal data', async () => {
-        const now = new Date();
-        const jobDTO: AddJobDTO = {
+        defaultJobDTO = {
             title: 'job1',
             experiences: ['Junior'],
             institutionId: 'institution1',
@@ -86,10 +99,12 @@ describe('Creating jobs', () => {
             team: 'MTES',
             publicationDate: now.toISOString(),
             limitDate: null,
-            details: '',
+            details: emptyDetails,
         };
+    });
 
-        await usecases.addJob(jobDTO, { jobsService, uuidGenerator });
+    it('should create a job with minimal data', async () => {
+        await usecases.addJob(defaultJobDTO, { jobsService, uuidGenerator });
 
         expect(jobsService.state[0]).toEqual(
             createJob(
@@ -102,23 +117,15 @@ describe('Creating jobs', () => {
                     team: 'MTES',
                     publicationDate: now.toISOString(),
                     limitDate: null,
-                    details: '',
+                    details: defaultJobDTO.details,
                 }) as Job);
     });
 
 
     it('should error when creating with missing data', async () => {
-        const jobDTO: AddJobDTO = {
-            title: 'job1',
-            experiences: ['Junior'],
-            institutionId: 'institution1',
-            // @ts-ignore
-            availableContracts: undefined,
-            team: 'MTES',
-            publicationDate: new Date().toISOString(),
-            limitDate: null,
-            details: '',
-        };
+        const jobDTO: AddJobDTO = defaultJobDTO;
+        // @ts-ignore
+        jobDTO.availableContracts = undefined;
 
         const result = await usecases.addJob(jobDTO, { jobsService, uuidGenerator }) as Error;
         await expect(result).toBeInstanceOf(Error);
@@ -126,16 +133,8 @@ describe('Creating jobs', () => {
     });
 
     it('should error when the institution is not found', async () => {
-        const jobDTO: AddJobDTO = {
-            title: 'job1',
-            experiences: ['Junior'],
-            institutionId: 'institution3',
-            availableContracts: ['CDD', 'CDI'],
-            team: 'MTES',
-            publicationDate: new Date().toISOString(),
-            limitDate: null,
-            details: '',
-        };
+        const jobDTO: AddJobDTO = defaultJobDTO;
+        jobDTO.institutionId = 'institution3';
 
         const result = await usecases.addJob(jobDTO, { jobsService, uuidGenerator }) as Error;
         await expect(result).toBeInstanceOf(Error);

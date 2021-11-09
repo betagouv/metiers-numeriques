@@ -18,24 +18,23 @@ export interface Job {
     limitDate: Timestamp | null
 
     // details may be another VO/interface or MD block
-    details: string
+    details: JobElements
     updatedAt?: number
-    // mission: string;
-    // team?: string
-    // locations?: string[]
-    // teamInfo?: string
-    // mission?: string
-    // tasks?: string[]
-    // profile?: string[]
-    // salary?: string
-    // hiringProcess?: string
-    // conditions?: string[]
-    // advantages?: string
-    // more?: string
+}
 
-    // useless
-    // slug?: string
-    // toApply?: string
+export interface JobElements {
+    mission: string;
+    team: string
+    locations: string
+    teamInfo: string
+    tasks: string
+    profile: string
+    salary: string
+    hiringProcess: string
+    conditions: string
+    advantages: string
+    more: string
+    toApply: string
 }
 
 interface NewJobProps {
@@ -47,7 +46,7 @@ interface NewJobProps {
     experiences: string[]
     publicationDate: string
     limitDate: string | null
-    details: string
+    details: JobElements
     updatedAt?: number
 }
 
@@ -83,7 +82,7 @@ export const createJob = (
         experiences: experiences as Experiences[],
         publicationDate: parseJSON(publicationDate).getTime(),
         limitDate: limitDate ? parseJSON(limitDate).getTime() : null,
-        details,
+        details: details,
         updatedAt,
     };
 };

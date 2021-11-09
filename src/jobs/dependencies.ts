@@ -1,13 +1,13 @@
+import { database } from '../database';
 import { UuidGenerator, uuidGeneratorFactory } from '../shared/uuidGenerator';
-import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
-import { fakeJobs } from './__tests__/stubs/fakeJobs';
 import { InstitutionsService, JobsService } from './interfaces';
-import { InMemoryInstitutionsService } from './repository/inMemoryInstitutionService';
-import { InMemoryJobsService } from './repository/inMemoryJobsService';
+import { PgInstitutionsServiceFactory } from './repository/PgInstitutionsService';
+import { PgJobsServiceFactory } from './repository/PgJobsService';
 
-// const jobsRepository = process.env.NODE_ENV === 'production' ? NotionJobsService : InMemoryJobsService
-const jobsService: JobsService = InMemoryJobsService.feedWith(fakeJobs);
-const institutionsService: InstitutionsService = InMemoryInstitutionsService.feedWith(fakeInstitutions);
+// const jobsService: JobsService = InMemoryJobsService.feedWith(fakeJobs);
+// const institutionsService: InstitutionsService = InMemoryInstitutionsService.feedWith(fakeInstitutions);
+const jobsService: JobsService = PgJobsServiceFactory(database);
+const institutionsService: InstitutionsService = PgInstitutionsServiceFactory(database);
 
 const uuidGenerator: UuidGenerator = uuidGeneratorFactory()
 

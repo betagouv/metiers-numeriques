@@ -8,7 +8,7 @@ interface IJobListDTO {
     publicationDate: number
     limitDate: number | null
 
-    details: string
+    details: JobElementsDTO
 
     updatedAt: number | null
 }
@@ -23,9 +23,26 @@ export interface JobDetailDTO {
     publicationDate: number
     limitDate: number | null
 
-    details: string
+    details: JobElementsDTO
 
     updatedAt: number | null
+}
+
+export interface JobElementsDTO {
+    mission: string;
+    team: string
+    locations: string
+    teamInfo: string
+    tasks: string
+    profile: string
+    salary: string
+    hiringProcess: string
+    conditions: string
+    advantages: string
+    more: string
+    toApply: string
+} {
+
 }
 
 export type InstitutionListDTO = InstitutionDetailDTO[];

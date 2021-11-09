@@ -51,7 +51,20 @@ function toDTO(job: Job) {
         experiences: job.experiences,
         publicationDate: job.publicationDate,
         limitDate: job.limitDate,
-        details: job.details,
+        details: {
+            mission: job.details.mission,
+            team: job.details.team,
+            locations: job.details.locations,
+            teamInfo: job.details.teamInfo,
+            tasks: job.details.tasks,
+            profile: job.details.profile,
+            salary: job.details.salary,
+            hiringProcess: job.details.hiringProcess,
+            conditions: job.details.conditions,
+            advantages: job.details.advantages,
+            more: job.details.more,
+            toApply: job.details.toApply,
+        },
 
         updatedAt: job.updatedAt || null,
     };
