@@ -138,7 +138,13 @@
             <% if(ministry.testimonialsMedia){ %>
                 <% ministry.testimonialsMedia.forEach(function(media) { %>
                     <% if (media.file) { %>
-                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                        <% if (media.name.search('.jpg') != -1 ) { %>
+                            <a href="<%= media.file.url %>" target="_blank">
+                                <img class="fr-col-2 fr-mt-6w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                            </a>
+                        <% } else {%>
+                            <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                        <% } %>
                     <% } else { %>
                         <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
                     <% } %>
