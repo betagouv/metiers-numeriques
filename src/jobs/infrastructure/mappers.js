@@ -1,4 +1,5 @@
 const MarkdownIt = require('markdown-it');
+const { subDays } = require('date-fns');
 const { Job, Ministry } = require('../entities');
 const { toDate } = require('date-fns-tz');
 
@@ -11,6 +12,8 @@ function urlify(text) {
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
+const twoDaysAgo = subDays(new Date(), 2);
+
 const buildSlug = (title, id) => {
     const slug = `${title}-${id}`.toLowerCase()
         .normalize("NFD")
@@ -21,29 +24,32 @@ const buildSlug = (title, id) => {
 }
 
 const mapToJob = (rawJob, now = Date.now()) => {
+    // console.log(rawJob.properties['Name'])
     const title = parseProperty(rawJob.properties['Name'])
     const id = rawJob.id
+    const md = new MarkdownIt();
+
     return new Job({
         id: rawJob.id,
         title,
-        mission: parseProperty(rawJob.properties['Mission']),
+        mission: md.renderInline(parseProperty(rawJob.properties['Mission'])),
         experiences: parseProperty(rawJob.properties['Expérience']),
         locations: parseProperty(rawJob.properties['Localisation']),
-        department: parseProperty(rawJob.properties['Ministère']),
+        department: parseProperty(rawJob.properties['Ministère']).map(a => md.renderInline(a)),
         openedToContractTypes: parseProperty(rawJob.properties['Poste ouvert aux']),
         salary: parseProperty(rawJob.properties['Rémunération']),
         team: parseProperty(rawJob.properties['Équipe']),
         limitDate: parseProperty(rawJob.properties['Date limite']) ? parseProperty(rawJob.properties['Date limite']) : undefined,
-        toApply: parseProperty(rawJob.properties['Pour candidater']),
+        toApply: md.renderInline(parseProperty(rawJob.properties['Pour candidater'])),
         advantages: parseProperty(rawJob.properties['Les plus du poste']),
-        contact: parseProperty(rawJob.properties['Contact']),
+        contact: md.renderInline(parseProperty(rawJob.properties['Contact']) || ''),
         profile: parseProperty(rawJob.properties['Votre profil']).split('- ').filter(item => item),
         conditions: parseProperty(rawJob.properties['Conditions particulières du poste']).split('- ').filter(item => item),
-        teamInfo: parseProperty(rawJob.properties['Si vous avez des questions']),
+        teamInfo: md.renderInline(parseProperty(rawJob.properties['Si vous avez des questions'])),
         tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
         slug: buildSlug(title, id),
-        hiringProcess: parseProperty(rawJob.properties['Processus de recrutement']),
-        publicationDate: toDate("2021-09-13" + "T00:00:00+02:00", {timeZone: 'Europe/Paris'})
+        hiringProcess: md.renderInline(parseProperty(rawJob.properties['Processus de recrutement'])),
+        publicationDate: parseProperty(rawJob.properties['Date de saisie']) ? parseProperty(rawJob.properties['Date de saisie']) : twoDaysAgo,
     });
 };
 
@@ -125,7 +131,8 @@ const parseProperty = (item) => {
         } else if ('multi_select' in item) {
             return item.multi_select.map(item => item.name);
         } else if ('title' in item) {
-            return item.title[0].plain_text;
+            // Some titles have multiple empty elements, haven't figured why
+            return item.title.filter(item => item.plain_text)[0].plain_text;
         } else if ('email' in item) {
             return item.email[0].plain_text;
         } else if ('date' in item) {
