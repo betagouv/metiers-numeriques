@@ -34,35 +34,7 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
         // .limit(30)
         // .offset(params.offset || 0);
 
-        console.log(results);
-        const jobs: JobListDTO = results.map(r => ({
-            uuid: r.uuid,
-            availableContracts: JSON.parse(r.available_contracts),
-            details: {
-                team: r.team,
-                teamInfo: r.teamInfo,
-                mission: r.mission,
-                locations: r.locations,
-                tasks: r.tasks,
-                profile: r.profile,
-                salary: r.salary,
-                hiringProcess: r.hiringProcess,
-                conditions: r.conditions,
-                advantages: r.advantages,
-                more: r.more,
-                toApply: r.toApply,
-            },
-            experiences: JSON.parse(r.experiences),
-            institution: {
-                uuid: r.institutions.uuid,
-                name: r.institutions.name,
-            },
-            limitDate: r.limit_date,
-            publicationDate: r.publication_date,
-            team: r.team,
-            title: r.title,
-            updatedAt: r.updated_at,
-        }));
+        const jobs: JobListDTO = results.map(toDTO);
         return { jobs, offset: params.offset || 0 };
     },
 
@@ -88,36 +60,41 @@ export const PgJobsServiceFactory = (db: Knex): JobsService => ({
             return null;
         }
 
-        return {
-            uuid: result.uuid,
-            availableContracts: JSON.parse(result.available_contracts),
-            details: {
-                team: result.team,
-                teamInfo: result.teamInfo,
-                mission: result.mission,
-                locations: result.locations,
-                tasks: result.tasks,
-                profile: result.profile,
-                salary: result.salary,
-                hiringProcess: result.hiringProcess,
-                conditions: result.conditions,
-                advantages: result.advantages,
-                more: result.more,
-                toApply: result.toApply,
-            },
-            experiences: JSON.parse(result.experiences),
-            institution: {
-                uuid: result.institutions.uuid,
-                name: result.institutions.name,
-            },
-            limitDate: result.limit_date,
-            publicationDate: result.publication_date,
-            team: result.team,
-            title: result.title,
-            updatedAt: result.updated_at,
-        };
+        return toDTO(result);
     },
 });
+
+
+function toDTO(raw: any): JobDetailDTO {
+    return {
+        uuid: raw.uuid,
+        availableContracts: JSON.parse(raw.available_contracts),
+        details: {
+            team: raw.team,
+            teamInfo: raw.teamInfo,
+            mission: raw.mission,
+            locations: raw.locations,
+            tasks: raw.tasks,
+            profile: raw.profile,
+            salary: raw.salary,
+            hiringProcess: raw.hiringProcess,
+            conditions: raw.conditions,
+            advantages: raw.advantages,
+            more: raw.more,
+            toApply: raw.toApply,
+        },
+        experiences: JSON.parse(raw.experiences),
+        institution: {
+            uuid: raw.institutions.uuid,
+            name: raw.institutions.name,
+        },
+        limitDate: raw.limit_date,
+        publicationDate: raw.publication_date,
+        team: raw.team,
+        title: raw.title,
+        updatedAt: raw.updated_at,
+    };
+}
 
 function jobToDatabase(job: Job): JobModel {
     return {
