@@ -1,4 +1,5 @@
 const MarkdownIt = require('markdown-it');
+const { startOfDay } = require('date-fns');
 const { subDays } = require('date-fns');
 const { Job, Ministry } = require('../entities');
 const { toDate } = require('date-fns-tz');
@@ -12,7 +13,7 @@ function urlify(text) {
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
-const twoDaysAgo = subDays(new Date(), 2);
+const twoDaysAgo = subDays(startOfDay(new Date()), 2);
 
 const buildSlug = (title, id) => {
     const slug = `${title}-${id}`.toLowerCase()
@@ -48,7 +49,7 @@ const mapToJob = (rawJob, now = Date.now()) => {
         teamInfo: md.renderInline(parseProperty(rawJob.properties['Si vous avez des questions'])),
         tasks: parseProperty(rawJob.properties['Ce que vous ferez']).split('- ').filter(item => item),
         slug: buildSlug(title, id),
-        hiringProcess: md.renderInline(parseProperty(rawJob.properties['Processus de recrutement'])),
+        hiringProcess: md.renderInline(parseProperty(rawJob.properties['Processus de recrutement']) || '') || null,
         publicationDate: parseProperty(rawJob.properties['Date de saisie']) ? parseProperty(rawJob.properties['Date de saisie']) : twoDaysAgo,
     });
 };
