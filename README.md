@@ -8,28 +8,31 @@ npm start
 
 Ce repo contient tout ce qu'il faut pour tourner sur Scalingo. Il suffit de déployer la branche main sur votre instance Scalingo.
 
-
 ## Tester que le HTML d'un site est valide
+
 ```
-npm run checkHTML --  <url du site à tester>
+yarn checkHTML --  <url du site à tester>
 ```
+
 Si on veut checker pour une PR donnée, utiliser l'url de la review app de la PR (voir les checks dans la PR).
 
 
 ## Lancer ce site localement
-Vous devez avoir npm installé sur votre machine.
+
+Vous devez avoir npm et yarn installé sur votre machine.
 
 ```
 git clone https://github.com/betagouv/metiers-numeriques
 cd metiers-numeriques
-npm install
-npm run dev
+yarn
+yarn dev
 ```
 
 ## Mettre à jour le Design System
 
 - Modifier la version de @gouvfr/dsfr dans package.json
-- Lancer la commande 
+- Lancer la commande :
+
 ```
-npm install
+yarn
 ```
