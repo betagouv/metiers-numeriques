@@ -43,6 +43,7 @@ describe('Jobs fetch api', () => {
             experiences: ['3 ans minimum dans la mise en œuvre de projets de Data Science'],
             locations: ['61-65 rue Dutot 75015 Paris'],
             limitDate: new Date('2021-10-30T00:00:00.000+02:00'),
+            entity: null,
             publicationDate: twoDaysAgo,
             conditions: [],
             teamInfo: 'Catherine BRAX, cheffe du bureau des systèmes d’information de gestion et du décisionnel',

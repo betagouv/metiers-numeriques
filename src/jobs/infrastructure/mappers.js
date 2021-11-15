@@ -29,7 +29,6 @@ const mapToJob = (rawJob, now = Date.now()) => {
     const title = parseProperty(rawJob.properties['Name'])
     const id = rawJob.id
     const md = new MarkdownIt();
-    console.log(rawJob.properties['Entité recruteuse']);
 
     return new Job({
         id: rawJob.id,
