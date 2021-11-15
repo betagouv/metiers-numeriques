@@ -1,9 +1,9 @@
 {
-    "name": "metiers-numeriques",
-    "formation": {
-      "web": {
-        "amount": 1,
-        "size": "S"
-      }
+  "name": "metiers-numeriques",
+  "formation": {
+    "web": {
+      "amount": 1,
+      "size": "S"
     }
+  }
 }
