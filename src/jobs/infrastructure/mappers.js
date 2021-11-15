@@ -29,6 +29,7 @@ const mapToJob = (rawJob, now = Date.now()) => {
     const title = parseProperty(rawJob.properties['Name'])
     const id = rawJob.id
     const md = new MarkdownIt();
+    console.log(rawJob.properties['Entité recruteuse']);
 
     return new Job({
         id: rawJob.id,
@@ -37,6 +38,7 @@ const mapToJob = (rawJob, now = Date.now()) => {
         experiences: parseProperty(rawJob.properties['Expérience']),
         locations: parseProperty(rawJob.properties['Localisation']),
         department: parseProperty(rawJob.properties['Ministère']).map(a => md.renderInline(a)),
+        entity: md.renderInline(parseProperty(rawJob.properties['Entité recruteuse']) || '') || null,
         openedToContractTypes: parseProperty(rawJob.properties['Poste ouvert aux']),
         salary: parseProperty(rawJob.properties['Rémunération']),
         team: parseProperty(rawJob.properties['Équipe']),
@@ -131,6 +133,8 @@ const parseProperty = (item) => {
             return item.rich_text.map(rich_text => rich_text.plain_text).join('')
         } else if ('multi_select' in item) {
             return item.multi_select.map(item => item.name);
+        } else if ('select' in item) {
+            return item.select.name;
         } else if ('title' in item) {
             // Some titles have multiple empty elements, haven't figured why
             return item.title.filter(item => item.plain_text)[0].plain_text;

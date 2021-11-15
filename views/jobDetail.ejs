@@ -27,6 +27,16 @@
                     </div>
                 </div>
             <% } %>
+            <% if (job.entity) { %>
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
+                        Entité recruteuse
+                    </div>
+                    <div class="fr-col-md-10 fr-col-sm-12">
+                        <b><%- job.entity %></b>
+                    </div>
+                </div>
+            <% } %>
             <% if (job.locations) { %>
                 <div class="fr-grid-row fr-grid-row--gutters">
                     <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
