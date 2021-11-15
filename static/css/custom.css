@@ -58,6 +58,15 @@ span.tofill::before {
     font-size: x-small;
 }
 
+.no-link a {
+    pointer-events: none;
+    box-shadow: none;
+}
+
+.no-link strong {
+    font-weight:normal;
+}
+
 /* Medias */
 
 .stories-picture {
