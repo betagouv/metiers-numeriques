@@ -1,20 +1,20 @@
 import { Institution } from '../entities';
-import { InstitutionsService } from '../interfaces';
+import { InstitutionsRepository } from '../interfaces';
 import { InstitutionDetailDTO } from '../types';
 
 interface InMemory {
     state: Institution[];
-    feedWith(institution: Institution[]): InstitutionsService;
+    feedWith(institution: Institution[]): InstitutionsRepository;
 }
 
-export const InMemoryInstitutionsService: InstitutionsService & InMemory = {
+export const InMemoryInstitutionsService: InstitutionsRepository & InMemory = {
     state: [],
     // Write Side
     async add(institution: InstitutionDetailDTO): Promise<void> {
         this.state.push(institution);
     },
 
-    feedWith(institutions: Institution[]): InstitutionsService {
+    feedWith(institutions: Institution[]): InstitutionsRepository {
         for (const institution of institutions) {
             this.add(institution).then();
         }

@@ -3,7 +3,7 @@ import { isError } from '../shared/utils';
 import { UuidGenerator } from '../shared/uuidGenerator';
 import { fakeInstitutions } from './__tests__/stubs/fakeInstitutions';
 import { createInstitution, createJob } from './entities';
-import { InstitutionsService, JobsService } from './interfaces';
+import { InstitutionsRepository, JobsRepositoy } from './interfaces';
 import { JobDetailDTO, JobElementsDTO } from './types';
 
 export interface AddJobDTO {
@@ -16,7 +16,7 @@ export interface AddJobDTO {
     limitDate: string | null
     details: JobElementsDTO
 }
-export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsService, uuidGenerator: UuidGenerator }): Promise<string | Error> => {
+export const addJob = async (jobDTO: AddJobDTO, deps: { jobsService: JobsRepositoy, uuidGenerator: UuidGenerator }): Promise<string | Error> => {
     if (!fakeInstitutions.find(j => j.uuid === jobDTO.institutionId)) {
         return new Error('Institution not found')
     }
@@ -34,11 +34,11 @@ interface ListJobsParams {
     title?: string;
     institution?: string;
 }
-export const listJobs = async (params: ListJobsParams = {}, deps: { jobsService: JobsService }) => {
+export const listJobs = async (params: ListJobsParams = {}, deps: { jobsService: JobsRepositoy }) => {
     return await deps.jobsService.list(params);
 };
 
-export const getJob = async (uuid: string, deps: { jobsService: JobsService }): Promise<JobDetailDTO | null> => {
+export const getJob = async (uuid: string, deps: { jobsService: JobsRepositoy }): Promise<JobDetailDTO | null> => {
     return await deps.jobsService.get(uuid);
 };
 
@@ -48,7 +48,7 @@ export interface AddInstitutionDTO {
     description: string
 }
 
-export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { institutionsService: InstitutionsService }) => {
+export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { institutionsService: InstitutionsRepository }) => {
     const uuid = institutionDTO.uuid || v4();
     const institution = createInstitution({
         uuid,
@@ -62,10 +62,10 @@ export const addInstitution = async (institutionDTO: AddInstitutionDTO, deps: { 
     return uuid;
 };
 
-export const listInstitutions = async (deps: { institutionsService: InstitutionsService }) => {
+export const listInstitutions = async (deps: { institutionsService: InstitutionsRepository }) => {
     return await deps.institutionsService.list();
 };
 
-export const getInstitution = async (uuid: string, deps: { institutionsService: InstitutionsService }) => {
+export const getInstitution = async (uuid: string, deps: { institutionsService: InstitutionsRepository }) => {
     return await deps.institutionsService.get(uuid);
 };

@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 import { InstitutionModel } from '../../knex/models';
 import { Institution } from '../entities';
-import { InstitutionsService } from '../interfaces';
+import { InstitutionsRepository } from '../interfaces';
 import { InstitutionDetailDTO, InstitutionListDTO } from '../types';
 
-export const PgInstitutionsServiceFactory = (db: Knex): InstitutionsService => ({
+export const PgInstitutionsRepository = (db: Knex): InstitutionsRepository => ({
     // Write Side
     async add(institution: Institution): Promise<void> {
         await db('institutions').insert(institutionToDatabase(institution));

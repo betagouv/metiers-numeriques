@@ -5,14 +5,14 @@ import { StartedDockerComposeEnvironment } from 'testcontainers/dist/docker-comp
 import { JobModel } from '../../knex/models';
 import config from '../../knexfile';
 import { UuidGenerator, uuidGeneratorFactory } from '../../shared/uuidGenerator';
-import { JobsService } from '../interfaces';
-import { PgJobsServiceFactory } from '../repository/PgJobsService';
+import { JobsRepositoy } from '../interfaces';
+import { PgJobsRepository } from '../repository/PgJobsRepository';
 import { fakeJobs } from './stubs/fakeJobs';
 
 describe('Jobs database', () => {
     let database: Knex;
     let environment: StartedDockerComposeEnvironment;
-    let jobsService: JobsService;
+    let jobsService: JobsRepositoy;
     let uuidGenerator: UuidGenerator;
 
     beforeAll(async () => {
@@ -30,7 +30,7 @@ describe('Jobs database', () => {
     });
 
     beforeEach(async () => {
-        jobsService = PgJobsServiceFactory(database);
+        jobsService = PgJobsRepository(database);
         uuidGenerator = uuidGeneratorFactory('407ccaa8-9812-4abe-a8b3-fc88e5b1b993');
     });
 

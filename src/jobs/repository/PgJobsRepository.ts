@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 import { InstitutionModel, JobModel } from '../../knex/models';
 import { Job } from '../entities';
-import { JobsService } from '../interfaces';
+import { JobsRepositoy } from '../interfaces';
 import { JobDetailDTO, JobListDTO } from '../types';
 
-export const PgJobsServiceFactory = (db: Knex): JobsService => ({
+export const PgJobsRepository = (db: Knex): JobsRepositoy => ({
     // Write Side
     async add(job: Job): Promise<void> {
         await db('jobs').insert(jobToDatabase(job));

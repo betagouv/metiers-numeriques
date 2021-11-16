@@ -1,21 +1,21 @@
 import { fakeInstitutions } from '../__tests__/stubs/fakeInstitutions';
 import { Job } from '../entities';
-import { JobsService } from '../interfaces';
+import { JobsRepositoy } from '../interfaces';
 import { JobDetailDTO, JobListDTO } from '../types';
 
 interface InMemory {
     state: Job[];
-    feedWith(jobs: Job[]): JobsService;
+    feedWith(jobs: Job[]): JobsRepositoy;
 }
 
-export const InMemoryJobsService: JobsService & InMemory = {
+export const InMemoryJobsService: JobsRepositoy & InMemory = {
     state: [],
     // Write Side
     async add(job: Job): Promise<void> {
         this.state.push(job);
     },
 
-    feedWith(jobs: Job[]): JobsService {
+    feedWith(jobs: Job[]): JobsRepositoy {
         for (const job of jobs) {
             job.uuid = (this.state.length + 1).toString();
             this.add(job).then();
