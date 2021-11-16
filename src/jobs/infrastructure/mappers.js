@@ -25,7 +25,6 @@ const buildSlug = (title, id) => {
 }
 
 const mapToJob = (rawJob, now = Date.now()) => {
-    // console.log(rawJob.properties['Name'])
     const title = parseProperty(rawJob.properties['Name'])
     const id = rawJob.id
     const md = new MarkdownIt({linkify: true});
