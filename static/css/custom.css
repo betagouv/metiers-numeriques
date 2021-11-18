@@ -22,8 +22,18 @@ code {
   background-color: #eeeeee;
 }
 
+ul {
+  list-style-type: '●';
+  padding-inline-start: 0.5rem;
+}
 ul > li {
-  display: flex;
+  padding-left: 0.25rem;
+}
+ul > li::before {
+  content: none;
+}
+ul > li::marker {
+  font-size: 0.75rem;
 }
 
 .rf-centered {
