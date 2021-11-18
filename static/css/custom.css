@@ -22,6 +22,10 @@ code {
   background-color: #eeeeee;
 }
 
+ul > li {
+  display: flex;
+}
+
 .rf-centered {
   text-align: center;
 }
