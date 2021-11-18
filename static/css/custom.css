@@ -1,61 +1,62 @@
 /* Global*/
 
 .rf-centered {
-    text-align: center;
+  text-align: center;
 }
 
-.rf-bg--alt, .rf-bg--alt h2 {
-    background-color: var(--bf500);
-    color: var(--g100);
+.rf-bg--alt,
+.rf-bg--alt h2 {
+  background-color: var(--bf500);
+  color: var(--g100);
 }
 
 .rf-bg--alt2 {
-    background-color: #F9EEC4;
-    font-weight: bold;
+  background-color: #f9eec4;
+  font-weight: bold;
 }
 
 p.rf-hint-text {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 p {
-    margin: 0 0 1rem;
+  margin: 0 0 1rem;
 }
 
 .tofill {
-    background-color: #fffacd;
-    font-weight: lighter;
-    padding: .1em .2em;
+  background-color: #fffacd;
+  font-weight: lighter;
+  padding: 0.1em 0.2em;
 }
 
 span.tofill::after {
-    content: "]";
+  content: ']';
 }
 
 span.tofill::before {
-    content: "[";
+  content: '[';
 }
 
 .text-grey {
-    color: var(--g600);
-    font-size: large;
-    letter-spacing: 1px;
+  color: var(--g600);
+  font-size: large;
+  letter-spacing: 1px;
 }
 
 /* Landing page */
 
 .home-bg--alt {
-    background-color: var(--g100);
+  background-color: var(--g100);
 }
 
 /* Contact*/
 
 .newsletter {
-    text-align: left;
+  text-align: left;
 }
 
 .consent-text {
-    font-size: x-small;
+  font-size: x-small;
 }
 
 .no-link a {
@@ -64,100 +65,99 @@ span.tofill::before {
 
 /* Medias */
 .stories-picture {
-    width: 200px;
-    height: 200px;
-    display: block;
-    margin: auto;
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: auto;
 }
 
 .stories {
-    display: flex;
-    flex-flow: wrap;
+  display: flex;
+  flex-flow: wrap;
 }
 
-.stories-name, .stories-link {
-    color: #FDB541;
+.stories-name,
+.stories-link {
+  color: #fdb541;
 }
 
 .stories-title {
-    color: var(--g600);
-    font-size: large;
-    font-style: bold;
+  color: var(--g600);
+  font-size: large;
+  font-style: bold;
 }
 
 .stories-text {
-    color: var(--g600);
-    font-style: italic;
+  color: var(--g600);
+  font-style: italic;
 }
 
-
 .card-icon {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 1rem;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 1rem;
 }
 
 #ministeres--list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 2rem;
 }
 
 #ministeres .fr-card {
-    margin-top: 2rem;
-    flex: 0 1 30%;
-    max-width: 30%;
+  margin-top: 2rem;
+  flex: 0 1 30%;
+  max-width: 30%;
 }
 
 #ministeres .fr-grid-row--center {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 #ministeres .fr-card__img {
-    filter: brightness(90%);
-    background: white;
+  filter: brightness(90%);
+  background: white;
 }
 
 .fr-card__img img {
-    object-fit: contain;
+  object-fit: contain;
 }
 
-@-webkit-keyframes rotating /* Safari and Chrome */
-{
-    from {
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes rotating {
-    from {
-        -ms-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    to {
-        -ms-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 .rotating {
-    -webkit-animation: rotating 2s linear infinite;
-    -moz-animation: rotating 2s linear infinite;
-    -ms-animation: rotating 2s linear infinite;
-    -o-animation: rotating 2s linear infinite;
-    animation: rotating 2s linear infinite;
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
 }

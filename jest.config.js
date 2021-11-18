@@ -31,7 +31,7 @@ module.exports = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -148,9 +148,9 @@ module.exports = {
   // The glob patterns Jest uses to detect test files
   testMatch: [
     // "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[tj]s?(x)",
-    "!**/*.integration.(spec|test).[tj]s?(x)",
-    "!**/*.e2e.(spec|test).[tj]s?(x)"
+    '**/?(*.)+(spec|test).[tj]s?(x)',
+    '!**/*.integration.(spec|test).[tj]s?(x)',
+    '!**/*.e2e.(spec|test).[tj]s?(x)',
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
@@ -193,4 +193,4 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-};
+}
