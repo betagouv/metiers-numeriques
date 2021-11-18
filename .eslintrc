@@ -7,7 +7,7 @@
   "parserOptions": {
     "ecmaVersion": 2021
   },
-  "ignorePatterns": ["src/**/*.js", "static/scripts/*.js"],
+  "ignorePatterns": ["src/jobs/**/*.js", "src/schedulers/**/*.js", "src/shared/**/*.js", "static/scripts/*.js"],
   "rules": {
     "no-console": "off",
     "no-new": "off",
