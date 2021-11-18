@@ -3,14 +3,13 @@ upstream app_server {
 }
 
 server {
-    server_name _;
-    listen <%= ENV['PORT'] %>;
+  server_name _;
+  listen <%= ENV['PORT'] %>;
 
-    location / {
+  location / {
+    auth_basic           on;
+    auth_basic_user_file /app/config/htpasswd;
 
-        auth_basic           on;
-        auth_basic_user_file /app/config/htpasswd;
-
-        proxy_pass http://app_server;
-    }
+    proxy_pass http://app_server;
+  }
 }
