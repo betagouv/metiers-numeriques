@@ -7,9 +7,6 @@ server {
   listen <%= ENV['PORT'] %>;
 
   location / {
-    auth_basic           on;
-    auth_basic_user_file /app/config/htpasswd;
-
     proxy_pass http://app_server;
   }
 }
