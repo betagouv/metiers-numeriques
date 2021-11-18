@@ -107,8 +107,10 @@ const createPepProperties = (pepJob) => {
     return properties;
 };
 
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+
 const dateReadableFormat = (date, now = new Date()) => {
-    return formatDistance(date, now, { addSuffix: true, locale: fr })
+    return capitalize(formatDistance(date, now, { addSuffix: true, locale: fr }));
 }
 
 module.exports = {

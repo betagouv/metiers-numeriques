@@ -59,8 +59,11 @@ span.tofill::before {
   font-size: x-small;
 }
 
-/* Medias */
+.no-link a {
+    box-shadow: none;
+}
 
+/* Medias */
 .stories-picture {
   width: 200px;
   height: 200px;

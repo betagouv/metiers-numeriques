@@ -5,8 +5,8 @@
                 <div class="fr-grid-row fr-grid-row--gutters">
                     <div class="fr-col-md-3 fr-col-sm-12">
                         <% if (jobs[i].department?.length) { %>
-                            <div class="fr-mb-2w fr-mt-1w">
-                                <%= jobs[i].department[0].slice(0, 100) ;%>
+                            <div class="fr-mb-2w fr-mt-1w no-link">
+                                <%- jobs[i].department[0] ;%>
                             </div>
                         <% } %>
                         <% if (jobs[i].publicationDate) { %>

@@ -1,6 +1,7 @@
 'use strict';
 
 const usecases = require('./usecases');
+const MarkdownIt = require('markdown-it');
 const { dateReadableFormat } = require('./utils');
 const { jobsRepository, ministriesRepository } = require('./dependencies');
 
@@ -12,6 +13,7 @@ module.exports.list = async (req, res) => {
             startCursor: req.query.start_cursor,
         });
         const view = req.query.start_cursor ? 'partials/jobList' : 'jobs';
+
         res.render(view, {
             jobs: jobs,
             dateReadableFormat,
@@ -28,8 +30,10 @@ module.exports.get = async (req, res) => {
     const id = req.url.split('-').slice(-5).join('-').split('?')[0];
     const tag = req.query.tag;
     const result = await usecases.getJob(id, { jobsRepository }, tag);
+
     res.render('jobDetail', {
         job: result,
+        dateReadableFormat,
         contactEmail: 'contact@metiers.numerique.gouv.fr',
     });
 };
