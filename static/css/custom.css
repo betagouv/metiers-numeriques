@@ -18,6 +18,10 @@ body:after {
   width: 12rem;
 }
 
+code {
+  background-color: #eeeeee;
+}
+
 .rf-centered {
   text-align: center;
 }
