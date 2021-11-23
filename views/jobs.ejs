@@ -1,20 +1,50 @@
 <%- include('partials/header') -%>
+
 <div id="offres-de-mission" class="fr-container fr-mt-4w">
-    <h1 style='display: flex; justify-content: center; align-items: center;'>Découvrez les offres d'emploi</h1>
-    <div style='display: flex; justify-content: center; align-items: center;'>
-        <h2>Vous ne trouvez pas ?</h2>
-        <a class='fr-btn' href='https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee' style='margin-left: 2em; margin-bottom: .5rem'>Déposez une candidature spontanée&nbsp<i class="ri-file-add-line"></i></a>
-    </div>
-    <div class="fr-px-2w fr-px-md-6w">
-        <div class="fr-grid-row" id="infinite-list">
-                <%- include('partials/jobList', {jobs: jobs, nextCursor, hasMore }) %>
+  <h1 style='display: flex; justify-content: center; align-items: center;'>Découvrez les offres d'emploi</h1>
+
+  <div style='display: flex; justify-content: center; align-items: center;'>
+    <h2>Vous ne trouvez pas ?</h2>
+    <a class='fr-btn' href='https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee' style='margin-left: 2em; margin-bottom: .5rem'>Déposez une candidature spontanée&nbsp<i class="ri-file-add-line"></i></a>
+  </div>
+
+
+  <div class="fr-px-2w fr-px-md-6w">
+    <div class="fr-grid-row">
+      <div style='display: flex; justify-content: space-between; align-items: center; padding: 1rem; width: 100%;'>
+        <div style='width: 100%;'>
+          <label class="fr-label" for="jobs-search-input">Métier</label>
+          <div class="fr-input-wrap fr-fi-search-line">
+            <input class="fr-input" type="text" id="jobs-search-input" />
+          </div>
         </div>
-        <div style='text-align: center'>
-            <button class='fr-btn' id='loadmore' data-next-cursor=''>Afficher plus de résultats</button>
-        </div>
+
+        <!-- <select class="fr-select" style="margin-left: 2rem;">
+          <option>A</option>
+          <option>B</option>
+        </select>
+
+        <select class="fr-select" style="margin-left: 2rem;">
+          <option>A</option>
+          <option>B</option>
+        </select> -->
+      </div>
+
+      <div id="jobs-list" style='width: 100%;'>
+        <%- include('partials/jobList', {jobs: jobs, nextCursor, hasMore }) %>
+      </div>
     </div>
+
+    <div id='load-more-section' style='text-align: center'>
+      <button class='fr-btn' id='load-more-button' data-next-cursor=''>Afficher plus de résultats</button>
+    </div>
+  </div>
 </div>
 <br>
 <br>
+
 <%- include('partials/footer') -%>
+
+<script type="text/javascript" src="/static/scripts/helpers.js"></script>
 <script type="text/javascript" src="/static/scripts/loadmore.js"></script>
+<script type="text/javascript" src="/static/scripts/search.js"></script>

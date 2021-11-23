@@ -2,7 +2,7 @@
 
 ## Lancer en prod
 
-```
+```sh
 npm start
 ```
 
@@ -10,7 +10,7 @@ Ce repo contient tout ce qu'il faut pour tourner sur Scalingo. Il suffit de dép
 
 ## Tester que le HTML d'un site est valide
 
-```
+```sh
 yarn checkHTML --  <url du site à tester>
 ```
 
@@ -20,10 +20,11 @@ Si on veut checker pour une PR donnée, utiliser l'url de la review app de la PR
 
 Vous devez avoir npm et yarn installé sur votre machine.
 
-```
+```sh
 git clone https://github.com/betagouv/metiers-numeriques
 cd metiers-numeriques
 yarn
+yarn dev:docker
 yarn dev
 ```
 
@@ -32,7 +33,7 @@ yarn dev
 - Modifier la version de @gouvfr/dsfr dans package.json
 - Lancer la commande :
 
-```
+```sh
 yarn
 ```
 

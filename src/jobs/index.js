@@ -1,5 +1,5 @@
-const routes = require('./jobs.routes');
+const routes = require('./jobs.routes')
 
 module.exports = {
-    jobRoutes: routes
+  jobRoutes: routes,
 }

@@ -1,11 +1,14 @@
-const { Router } = require('express');
-const jobController = require('./jobs.controller');
+const { Router } = require('express')
 
-const jobsRoutes = Router();
-jobsRoutes.get('/annonces/', jobController.list);
-jobsRoutes.get('/annonces/:id', jobController.get);
+const jobController = require('./jobs.controller')
 
-jobsRoutes.get('/ministeres', jobController.listMinistries);
-jobsRoutes.get('/ministeres/:id', jobController.getMinistry);
+const jobsRoutes = Router()
+jobsRoutes.get('/annonces', jobController.list)
+jobsRoutes.get('/annonces/:id', jobController.get)
+
+jobsRoutes.get('/ministeres', jobController.listMinistries)
+jobsRoutes.get('/ministeres/:id', jobController.getMinistry)
+
+jobsRoutes.get('/jobs/search', jobController.search)
 
 module.exports = jobsRoutes

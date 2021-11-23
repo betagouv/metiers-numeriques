@@ -1,85 +1,84 @@
-<% for (let i = 0; i < jobs.length; i++) { %>
-    <div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
-        <div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable">
-            <div class="fr-card__body">
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <% if (jobs[i].department?.length) { %>
-                            <div class="fr-mb-2w fr-mt-1w no-link">
-                                <%- jobs[i].department[0] ;%>
-                            </div>
-                        <% } %>
-                        <% if (jobs[i].publicationDate) { %>
-                            <div class="fr-my-2w">
-                                <div class="fr-grid-row">
-                                    <div class="fr-col-2">
-                      <span aria-hidden="true" class="fr-fi ri-calendar-line"
-                            style="font-size: 1.2em;">
-                      </span>
-                                    </div>
-                                    <div class="fr-col-10">
-                                        <%= dateReadableFormat(jobs[i].publicationDate) ;%>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
-                        <% if (jobs[i].locations) { %>
-                            <!-- <div class="fr-my-2w">
-                  <span><span aria-hidden="true" class="fr-fi ri-map-pin-line"
-                  style="font-size: 1.2em; margin-right: 0.25em;top: 0.2em;position: relative;">
-                  </span>
-                  <%= jobs[i].location ;%></span>
-                </div> -->
-                            <div class="fr-my-2w">
-                                <div class="fr-grid-row">
-                                    <div class="fr-col-2">
-                      <span aria-hidden="true" class="fr-fi ri-map-pin-line"
-                            style="font-size: 1.2em;">
-                      </span>
-                                    </div>
-                                    <div class="fr-col-10">
-                                        <%= jobs[i].locations ;%>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <h4 class="fr-card__lead">
-                            <a href="/annonces/<%= jobs[i].slug ;%>" class="fr-card__link">
-                                <%= jobs[i].title ;%>
-                            </a>
-                        </h4>
-                        <p class="fr-card__desc" style="
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 3; /* number of lines to show */
-                  font-size: 1rem;
-                  -webkit-box-orient: vertical;">
-                            <%- (jobs[i].mission || jobs[i].tasks[0] || '').replace(/\n/g, '<br>'); %>
-                        </p>
-                        <ul class="fr-tags-group">
-                            <% jobs[i].experiences.forEach(function(experience) { %>
-                                <a href="#" class="fr-tag fr-tag--sm"><%= experience ;%></a>
-                            <% }); %>
-                            <% if (jobs[i].openedToContractTypes.length) { %>
-                                <a href="#" class="fr-tag fr-tag--sm">
-                                    <%= jobs[i].openedToContractTypes.join(', ') ;%>
-                                </a>
-                            <% } %>
-                        </ul>
-                    </div>
-                </div>
-                <div
-                        style="display: flex; justify-content: end; align-items: center;">
-                    <a href="/annonces/<%= jobs[i].slug ;%>"
-                       class="fr-btn fr-btn--sm">Lire l'offre d'emploi
-                        <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<% if (jobs.length === 0) { %>
+	<div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w">
+    <p>Aucune offre d'emploi ne correspond à cette recherche.</p>
+  </div>
 <% } %>
-<div id='loadmore-data' data-next-cursor='<%= nextCursor ;%>'></div>
+
+<% for (let i = 0; i < jobs.length; i++) { %>
+	<div class="fr-col-12 fr-col-md-12 fr-px-2w fr-py-2w job-card">
+		<div class="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable">
+      <div class="fr-card__body">
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <% if (jobs[i].department?.length) { %>
+              <div class="fr-mb-2w fr-mt-1w no-link">
+                <%- jobs[i].department[0] ;%>
+              </div>
+            <% } %>
+
+            <% if (jobs[i].publicationDate) { %>
+              <div class="fr-my-2w">
+                <div class="fr-grid-row">
+                  <div class="fr-col-2">
+                    <span aria-hidden="true" class="fr-fi ri-calendar-line" style="font-size: 1.2em;"></span>
+                  </div>
+                  <div class="fr-col-10">
+                    <%# dateReadableFormat(jobs[i].publicationDate) ;%>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+            <% if (jobs[i].locations) { %>
+              <div class="fr-my-2w">
+                <div class="fr-grid-row">
+                  <div class="fr-col-2">
+                    <span aria-hidden="true" class="fr-fi ri-map-pin-line" style="font-size: 1.2em;"></span>
+                  </div>
+                  <div class="fr-col-10">
+                    <%= jobs[i].locations ;%>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+
+          <div class="fr-col-md-9 fr-col-sm-12">
+            <h4 class="fr-card__lead">
+              <a href="/annonces/<%= jobs[i].slug ;%>" class="fr-card__link">
+                <%= jobs[i].title ;%>
+              </a>
+            </h4>
+
+            <p class="fr-card__desc" style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; /* number of lines to show */ font-size: 1rem; -webkit-box-orient: vertical;">
+              <%- (jobs[i].mission || jobs[i].tasks[0] || '').replace(/\n/g, '<br>'); %>
+            </p>
+
+            <ul class="fr-tags-group">
+              <% jobs[i].experiences.forEach(function(experience) { %>
+                <a href="#" class="fr-tag fr-tag--sm"><%= experience ;%></a>
+              <% }); %>
+
+              <% if (jobs[i].openedToContractTypes.length) { %>
+                <a href="#" class="fr-tag fr-tag--sm">
+                  <%= jobs[i].openedToContractTypes.join(', ') ;%>
+                </a>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: end; align-items: center;">
+          <a href="/annonces/<%= jobs[i].slug ;%>" class="fr-btn fr-btn--sm">
+            Lire l'offre d'emploi
+            <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+		</div>
+	</div>
+<% } %>
+
+<% if (typeof nextCursor !== 'undefined') { %>
+  <div id='loadmore-data' data-next-cursor='<%= nextCursor ;%>'></div>
+<% } %>
