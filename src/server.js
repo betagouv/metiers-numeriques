@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 
+const { apiRoutes } = require('./api')
 const { jobRoutes } = require('./jobs')
 
 const appName = `metiers.numerique.gouv.fr`
@@ -27,6 +28,8 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/', apiRoutes)
+
 app.get('/', (req, res) => {
   res.render('landing', {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
@@ -47,5 +50,8 @@ app.get('/suivi', (req, res) => {
 })
 
 app.use('/', jobRoutes)
+app.use((req, res) => {
+  res.status(404).end()
+})
 
 module.exports = app

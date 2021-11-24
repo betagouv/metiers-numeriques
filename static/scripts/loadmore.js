@@ -1,71 +1,54 @@
-var setInnerHTML = function(elm, html) {
-    elm.innerHTML = html;
-    Array.from(elm.querySelectorAll('script')).forEach(oldScript => {
-        const newScript = document.createElement('script');
-        Array.from(oldScript.attributes)
-            .forEach(attr => newScript.setAttribute(attr.name, attr.value));
-        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-        oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
-};
+/**
+ * @param {HTMLElement} $parentNode
+ */
+const appendLoaderTo = $parentNode => {
+  const $loadingSpinner = document.createElement('div')
+  $loadingSpinner.id = 'loader'
+  $loadingSpinner.className = 'fr-my-4w'
+  $loadingSpinner.style = 'text-align: center; width: 100%;'
+  $loadingSpinner.innerHTML = '<i class="ri-loader-4-fill rotating" style="font-size: 2em; display: inline-block;"></i>'
 
-function appendHtml(el, str) {
-    var tpl = document.createElement('template');
-    // tpl.innerHTML = str;
-    // setInnerHTML(tpl, str)
-    // el.appendChild(tpl.content);
-    setInnerHTML(el, el.innerHTML + str);
+  $parentNode.appendChild($loadingSpinner)
 }
 
-function appendLoader(parent) {
-    var el = document.createElement('div');
-    el.id = 'loader';
-    el.className = 'fr-my-4w';
-    el.style = 'text-align: center; width: 100%;';
-    el.innerHTML = '<i class="ri-loader-4-fill rotating" style="font-size: 2em; display: inline-block;"></i>';
-    parent.appendChild(el);
+/**
+ * @param {HTMLElement} $parentNode
+ */
+const prependLoaderTo = $parentNode => {
+  const $loadingSpinner = document.createElement('div')
+  $loadingSpinner.id = 'loader'
+  $loadingSpinner.className = 'fr-my-4w'
+  $loadingSpinner.style = 'text-align: center; width: 100%;'
+  $loadingSpinner.innerHTML = '<i class="ri-loader-4-fill rotating" style="font-size: 2em; display: inline-block;"></i>'
+
+  $parentNode.prepend($loadingSpinner)
 }
 
-function removeLoader(parent) {
-    parent.removeChild(parent.querySelector('#loader'));
+/**
+ * @param {HTMLElement} $parentNode
+ */
+const removeLoaderFrom = $parentNode => {
+  const $loadingSpinner = $parentNode.querySelector('#loader')
+  if ($loadingSpinner === null) {
+    return
+  }
+
+  $parentNode.removeChild($loadingSpinner)
 }
 
-function httpGet(url, callback) {
-    var xhr = new XMLHttpRequest();
-    // we defined the xhr
-    xhr.onreadystatechange = function() {
-        if (this.readyState !== 4) return;
-        if (this.status === 200) {
-            callback(this.responseText);
-            // var data = JSON.parse(this.responseText);
-            // we get the returned data
-        }
-        // end of state change: it can be after some time (async)
-    };
-    xhr.open('GET', url, true);
-    xhr.send();
-}
+const $jobsList = document.querySelector('#jobs-list')
+const $loadMoreButton = document.querySelector('#load-more-button')
 
-var listElm = document.querySelector('#infinite-list');
-var loadMoreButton = document.querySelector('#loadmore');
+$loadMoreButton.addEventListener('click', () => {
+  const $loadMoreData = document.getElementById('loadmore-data')
+  const nextCursor = $loadMoreData.dataset.nextCursor
 
+  $loadMoreData.remove()
+  appendLoaderTo($jobsList)
 
-// Add 20 items.
-var nextItem = 1;
-var loadMore = function(nextCursor) {
-    appendLoader(listElm);
-    httpGet(
-        window.location.protocol + '//' + window.location.host + `/annonces?start_cursor=${nextCursor}`,
-        (htmlContent) => {
-            removeLoader(listElm);
-            appendHtml(listElm, htmlContent); // "body" has two more children -
-        },
-    );
-};
-
-loadMoreButton.addEventListener('click', function() {
-    var data = document.getElementById('loadmore-data');
-    var nextCursor = data.getAttribute('data-next-cursor');
-    data.remove();
-    loadMore(nextCursor);
-});
+  // Load 20 more jobs
+  httpGet(`/annonces?isUpdate=1&start_cursor=${nextCursor}`, jobsListHtmlSource => {
+    removeLoaderFrom($jobsList)
+    setInnerHtml($jobsList, jobsListHtmlSource)
+  })
+})
