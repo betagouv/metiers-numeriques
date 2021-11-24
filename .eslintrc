@@ -11,6 +11,7 @@
     "src/jobs/**/*.js",
     "!src/jobs/controllers/*.js",
     "!src/jobs/index.js",
+    "!src/jobs/infrastructure/notionJobsService.js",
     "!src/jobs/jobs.controller.js",
     "!src/jobs/jobs.routes.js",
     "src/schedulers/**/*.js",
@@ -33,7 +34,7 @@
       }
     },
     {
-      "files": ["**/*.test.js"],
+      "files": ["**/*.test.js", "jest.setup.js"],
       "env": {
         "jest": true
       }
