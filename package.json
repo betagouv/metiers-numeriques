@@ -41,8 +41,7 @@
     "string-strip-html": "8.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "14.1.0",
-    "@commitlint/config-conventional": "14.1.0",
+    "@ivangabriele/commitlint-config": "1.0.2",
     "@ivangabriele/eslint-config-base": "2.0.0",
     "@ivangabriele/prettier-config": "2.0.1",
     "@types/jest": "27.0.2",
