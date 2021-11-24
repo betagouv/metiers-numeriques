@@ -3,4 +3,4 @@
 
 [ -n "$CI" ] && exit 0
 
-yarn test:lint
+yarn commitlint --edit "$1"
