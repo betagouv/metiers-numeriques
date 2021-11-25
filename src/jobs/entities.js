@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable max-classes-per-file */
 
 /**
  * JobParams
@@ -23,6 +23,7 @@
  * @property {string} toApply
  * @property {string|null} [more]
  * @property {Date} limitDate
+ * @property {string|null} advantages
  */
 
 /**
@@ -30,54 +31,55 @@
  * @class
  */
 module.exports.Job = class Job {
-    /**
-     * @param {JobParams} job
-     */
-    constructor({
-                    id,
-                    title,
-                    mission,
-                    tasks,
-                    profile,
-                    experiences,
-                    locations,
-                    department,
-                    entity,
-                    openedToContractTypes,
-                    salary,
-                    team,
-                    slug,
-                    hiringProcess = null,
-                    publicationDate= null,
-                    conditions,
-                    teamInfo,
-                    toApply,
-                    more = null,
-                    limitDate
-                }) {
-        this.id = id;
-        this.title = title;
-        this.mission = mission;
-        this.experiences = experiences;
-        this.locations = locations;
-        this.department = department;
-        this.entity = entity;
-        this.openedToContractTypes = openedToContractTypes;
-        this.salary = salary;
-        this.team = team;
-        this.tasks = tasks;
-        this.profile = profile;
-        this.slug = slug;
-        this.hiringProcess = hiringProcess;
-        this.publicationDate = publicationDate;
-        this.conditions = conditions
-        this.teamInfo = teamInfo
-        this.toApply = toApply
-        this.more = more
-        this.limitDate = limitDate
-    }
-};
-
+  /**
+   * @param {JobParams} job
+   */
+  constructor({
+    advantages = null,
+    conditions,
+    department,
+    entity,
+    experiences,
+    hiringProcess = null,
+    id,
+    limitDate,
+    locations,
+    mission,
+    more = null,
+    openedToContractTypes,
+    profile,
+    publicationDate = null,
+    salary,
+    slug,
+    tasks,
+    team,
+    teamInfo,
+    title,
+    toApply,
+  }) {
+    this.id = id
+    this.title = title
+    this.mission = mission
+    this.experiences = experiences
+    this.locations = locations
+    this.department = department
+    this.entity = entity
+    this.openedToContractTypes = openedToContractTypes
+    this.salary = salary
+    this.team = team
+    this.tasks = tasks
+    this.profile = profile
+    this.slug = slug
+    this.hiringProcess = hiringProcess
+    this.publicationDate = publicationDate
+    this.conditions = conditions
+    this.teamInfo = teamInfo
+    this.toApply = toApply
+    this.more = more
+    this.limitDate = limitDate
+    this.advantages = advantages
+  }
+}
 
 /**
  * MinistryParams
@@ -122,77 +124,76 @@ module.exports.Job = class Job {
  * @class
  */
 module.exports.Ministry = class Ministry {
-    /**
-     * @param {MinistryParams} ministry
-     */
-    constructor({
-        id,
-        title,
-        description,
-        fullName,
-        adress,
-        adressBis,
-        brandBlock,
-        thumbnail,
-        keyNumbers,
-        keyNumbersMedia,
-        missions,
-        projects,
-        projectsMedia,
-        testimonials,
-        testimonialsMedia,
-        joinTeam,
-        joinTeamMedia,
-        motivation,
-        motivationMedia,
-        profile,
-        websites,
-        jobsLink,
-        values,
-        valuesMedia,
-        schedule,
-        socialNetworks,
-        visualBanner,
-        challenges,
-        organization,
-        organizationMedia,
-        hiringProcess,
-        slug,
-        publicationDate = null,
-    }) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.fullName = fullName,
-        this.adress = adress,
-        this.adressBis = adressBis,
-        this.brandBlock = brandBlock,
-        this.thumbnail = thumbnail,
-        this.keyNumbers = keyNumbers,
-        this.keyNumbersMedia = keyNumbersMedia,
-        this.missions = missions,
-        this.projects = projects,
-        this.projectsMedia = projectsMedia,
-        this.testimonials = testimonials,
-        this.testimonialsMedia = testimonialsMedia,
-        this.joinTeam = joinTeam,
-        this.joinTeamMedia = joinTeamMedia,
-        this.motivation = motivation,
-        this.motivationMedia = motivationMedia,
-        this.profile = profile,
-        this.websites = websites,
-        this.jobsLink = jobsLink,
-        this.values = values,
-        this.valuesMedia = valuesMedia,
-        this.schedule = schedule,
-        this.socialNetworks = socialNetworks,
-        this.visualBanner = visualBanner,
-        this.challenges = challenges,
-        this.organization = organization,
-        this.organizationMedia = organizationMedia,
-        this.hiringProcess = hiringProcess,
-        this.slug = slug,
-        this.publicationDate = publicationDate
-    }
-};
-
+  /**
+   * @param {MinistryParams} ministry
+   */
+  constructor({
+    adress,
+    adressBis,
+    brandBlock,
+    challenges,
+    description,
+    fullName,
+    hiringProcess,
+    id,
+    jobsLink,
+    joinTeam,
+    joinTeamMedia,
+    keyNumbers,
+    keyNumbersMedia,
+    missions,
+    motivation,
+    motivationMedia,
+    organization,
+    organizationMedia,
+    profile,
+    projects,
+    projectsMedia,
+    publicationDate = null,
+    schedule,
+    slug,
+    socialNetworks,
+    testimonials,
+    testimonialsMedia,
+    thumbnail,
+    title,
+    values,
+    valuesMedia,
+    visualBanner,
+    websites,
+  }) {
+    this.id = id
+    this.title = title
+    this.description = description
+    this.fullName = fullName
+    this.adress = adress
+    this.adressBis = adressBis
+    this.brandBlock = brandBlock
+    this.thumbnail = thumbnail
+    this.keyNumbers = keyNumbers
+    this.keyNumbersMedia = keyNumbersMedia
+    this.missions = missions
+    this.projects = projects
+    this.projectsMedia = projectsMedia
+    this.testimonials = testimonials
+    this.testimonialsMedia = testimonialsMedia
+    this.joinTeam = joinTeam
+    this.joinTeamMedia = joinTeamMedia
+    this.motivation = motivation
+    this.motivationMedia = motivationMedia
+    this.profile = profile
+    this.websites = websites
+    this.jobsLink = jobsLink
+    this.values = values
+    this.valuesMedia = valuesMedia
+    this.schedule = schedule
+    this.socialNetworks = socialNetworks
+    this.visualBanner = visualBanner
+    this.challenges = challenges
+    this.organization = organization
+    this.organizationMedia = organizationMedia
+    this.hiringProcess = hiringProcess
+    this.slug = slug
+    this.publicationDate = publicationDate
+  }
+}

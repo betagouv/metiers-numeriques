@@ -10,7 +10,9 @@
   "ignorePatterns": [
     "src/jobs/**/*.js",
     "!src/jobs/controllers/*.js",
+    "!src/jobs/entities.js",
     "!src/jobs/index.js",
+    "!src/jobs/infrastructure/mappers.js",
     "!src/jobs/infrastructure/notionJobsService.js",
     "!src/jobs/jobs.controller.js",
     "!src/jobs/jobs.routes.js",
