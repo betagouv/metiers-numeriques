@@ -1,45 +1,20 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:title" content="metiers.numerique.gouv.fr">
-  <meta property="og:description" content="L’Etat Numérique : Des projets à découvrir, des missions à pourvoir !">
-  <meta property="og:image" content="/static/images/main-illu.png">
-  <title>
-    <% if (locals.pageTitle) { %>
-      <%= pageTitle %> | <%= appName %>
-    <% } else { %>
-      <%= appName %>
-    <% } %>
-  </title>
-  <!-- todo(estellecomment) : import min css and js -->
-  <script type="text/javascript" src="/static/scripts/crisp.js"></script>
-  <link rel="stylesheet" href="/~/@gouvfr/dsfr/dist/css/dsfr.css">
-  <link rel="stylesheet" href="/~/remixicon/fonts/remixicon.css">
-  <link rel="stylesheet" href="/static/css/custom.css">
-  <link rel="apple-touch-icon" href="/~/@gouvfr/dsfr/dist/favicons/apple-touch-icon.png"><!-- 180×180 -->
-  <link rel="icon" href="/~/@gouvfr/dsfr/dist/favicons/favicon.svg" type="image/svg+xml">
-  <link rel="shortcut icon" href="/~/@gouvfr/dsfr/dist/favicons/favicon.ico" type="image/x-icon"><!-- 32×32 -->
-</head>
-<body>
-  <div class="fr-skiplinks">
-    <nav class="fr-container" role="navigation" aria-label="Accès rapide">
-        <ul class="fr-skiplinks__list">
-            <li>
-                <a class="fr-nav__link" href="#contenu">Contenu</a>
-            </li>
-            <li>
-                <a class="fr-nav__link" href="#header-navigation">Menu</a>
-            </li>
-            <li>
-                <a class="fr-nav__link" href="#header-search">Recherche</a>
-            </li>
-            <li>
-                <a class="fr-nav__link" href="#footer">Pied de page</a>
-            </li>
-        </ul>
-    </nav>
+<div class="fr-skiplinks">
+  <nav class="fr-container" role="navigation" aria-label="Accès rapide">
+    <ul class="fr-skiplinks__list">
+      <li>
+        <a class="fr-nav__link" href="#contenu">Contenu</a>
+      </li>
+      <li>
+        <a class="fr-nav__link" href="#header-navigation">Menu</a>
+      </li>
+      <li>
+        <a class="fr-nav__link" href="#header-search">Recherche</a>
+      </li>
+      <li>
+        <a class="fr-nav__link" href="#footer">Pied de page</a>
+      </li>
+    </ul>
+  </nav>
 </div>
 
 <header role="banner" class="fr-header">
@@ -66,23 +41,24 @@
             </a>
             <p class="fr-header__service-tagline"><%= appDescription %></p>
           </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-    <div class="fr-container">
+
+  <div class="fr-container">
     <nav class="fr-nav" id="header-navigation" role="navigation" aria-label="Menu principal">
-        <ul class="fr-nav__list">
-            <li class="fr-nav__item">
-                <a class="fr-nav__link" href="/" target="_self" aria-current="page">Accueil</a>
-            </li>
-            <li class="fr-nav__item">
-                <a class="fr-nav__link" href="/annonces" target="_self">Les offres d'emplois</a>
-            </li>
-            <li class="fr-nav__item">
-                <a class="fr-nav__link" href="/ministeres" target="_self">Les institutions</a>
-            </li>
-        </ul>
+      <ul class="fr-nav__list">
+        <li class="fr-nav__item">
+          <a class="fr-nav__link" href="/" target="_self" aria-current="page">Accueil</a>
+        </li>
+        <li class="fr-nav__item">
+          <a class="fr-nav__link" href="/annonces" target="_self">Les offres d'emplois</a>
+        </li>
+        <li class="fr-nav__item">
+          <a class="fr-nav__link" href="/ministeres" target="_self">Les institutions</a>
+        </li>
+      </ul>
     </nav>
-    </div>
+  </div>
 </header>
