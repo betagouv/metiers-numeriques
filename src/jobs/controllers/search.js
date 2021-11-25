@@ -18,9 +18,14 @@ const getCachedJobs = async () =>
 const search = async (req, res) => {
   const jobsIndex = await getCachedJobs()
   const fuse = new Fuse(jobsIndex, {
+    includeScore: true,
     keys: ['title'],
   })
-  const foundJobs = fuse.search(req.query.query).map(({ item }) => item)
+  const foundJobs = fuse
+    .search(req.query.query)
+    .filter(({ score }) => score < 0.75)
+    .map(({ item }) => item)
+  console.log(fuse.search(req.query.query))
 
   res.render('partials/jobList', {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
