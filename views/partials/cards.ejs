@@ -14,10 +14,10 @@
     <div class="fr-container">
         <div class="fr-grid-row fr-mt-4v">
             <% cards.parts.forEach(function(part) { %>
-                <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-col-12 fr-col-md-4 fr-mb-3w">
                     <div class="rf-centered fr-mx-3w">
                         <img class="card-icon " src="<%= part.src; %>" alt="<%= part.alt; %>">
-                        <h4 class=""><%= part.title; %></h4>
+                        <h4 style="margin-bottom: 0.25rem;"><%= part.title; %></h4>
                         <p class="fr-text--md"><%= part.text; %></p>
                     </div>
                 </div>
