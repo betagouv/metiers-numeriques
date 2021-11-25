@@ -31,7 +31,6 @@ const mapToJob = rawJob => {
   const title = parseProperty(rawJob.properties.Name)
   const { id } = rawJob
   const md = new MarkdownIt({ linkify: true })
-  console.log(rawJob)
 
   return new Job({
     advantages: md.renderInline(parseProperty(rawJob.properties['Les plus du poste'])),
