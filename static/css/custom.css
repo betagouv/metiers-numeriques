@@ -22,21 +22,10 @@ code {
   background-color: #eeeeee;
 }
 
-ul {
-  list-style-type: '●';
-  padding-inline-start: 0.5rem;
-}
-
-ul > li {
-  padding-left: 0.25rem;
-}
-
-ul > li::before {
-  content: none;
-}
-
-ul > li::marker {
-  font-size: 0.75rem;
+p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 0 0 1rem;
 }
 
 .rf-centered {
@@ -56,10 +45,6 @@ ul > li::marker {
 
 p.rf-hint-text {
   margin-bottom: 0;
-}
-
-p {
-  margin: 0 0 1rem;
 }
 
 .tofill {
@@ -205,6 +190,57 @@ span.tofill::before {
 
 .hidden {
   display: none;
+}
+
+#ministry-detail ul,
+#job-detail ul {
+  margin: 0;
+  padding-left: 0;
+}
+#ministry-detail ol > li,
+#job-detail ol > li {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  padding-left: 1rem;
+}
+#ministry-detail ul > li,
+#job-detail ul > li {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  list-style-type: none;
+  padding-left: 2.5rem;
+  position: relative;
+}
+#ministry-detail ul > li::before,
+#job-detail ul > li::before {
+  border-color: #00a8a8;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  content: '';
+  display: block;
+  height: 1rem;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform-origin: bottom left;
+  transform: rotate(40deg);
+  width: 0;
+}
+#ministry-detail ul > li *,
+#job-detail ul > li * {
+  font-size: inherit;
+  line-height: inherit;
+}
+#ministry-detail ul > li > ul > li::before,
+#job-detail ul > li > ul > li::before {
+  width: 0.625rem;
+}
+
+#ministry-detail-main-fields .fr-col-md-9,
+#job-detail-main-fields .fr-col-md-9 {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  padding-top: 1.2rem;
 }
 
 #load-more-section {
