@@ -4,7 +4,7 @@ const path = require('path')
 const { jobRoutes } = require('./jobs')
 
 const appName = `metiers.numerique.gouv.fr`
-const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’Etat'
+const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’Etat.'
 const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const appRoot = path.resolve(__dirname)
 

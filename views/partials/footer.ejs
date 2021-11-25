@@ -1,36 +1,28 @@
-<!-- todo(estellecomment) : import min css and js -->
-<script type="module" src="/~/@gouvfr/dsfr/dist/js/dsfr.module.js"></script>
-<script type="text/javascript" nomodule src="/~/@gouvfr/dsfr/dist/js/dsfr.nomodule.js"></script>
-<script type="text/javascript" src="/static/scripts/matomo.js"></script>
-<script type="text/javascript" src="/static/scripts/custom.js"></script>
 <footer role="contentinfo" class="fr-footer" id="footer">
   <div class="fr-container">
     <div class="fr-footer__body">
       <div class="fr-footer__brand fr-enlarge-link">
-          <a href="/" title="Retour à l’accueil">
-              <p class="fr-logo">
-                  République
-                  <br>française
-              </p>
-          </a>
+        <a href="/" title="Retour à l’accueil">
+          <p class="fr-logo">
+            République<br>
+            française
+          </p>
+        </a>
       </div>
+
       <div class="fr-footer__content">
         <p class="fr-footer__content-desc">
           <%= appDescription %>
         </p>
+
         <p class="fr-footer__content-desc">
-            Le code source est ouvert et les contributions sont bienvenues.
-            <a title="Voir le code source"
-               href="<%= appRepo %>"
-               target="_blank"
-               rel="noopener"
-               >Voir le code source</a>
+          Le code source est ouvert et les contributions sont bienvenues.
+          <a title="Voir le code source" href="<%= appRepo %>" target="_blank" rel="noopener">Voir le code source</a>.
         </p>
+
         <ul class="fr-footer__content-list">
           <li class="fr-footer__content-item">
-            <a class="fr-footer__content-link"
-               title="Contactez-nous"
-               href="mailto:<%= contactEmail %>">
+            <a class="fr-footer__content-link" title="Contactez-nous" href="mailto:<%= contactEmail %>">
               Contactez-nous
             </a>
           </li>
@@ -46,6 +38,7 @@
         </ul>
       </div>
     </div>
+
     <div class="fr-footer__bottom">
       <ul class="fr-footer__bottom-list">
         <li class="fr-footer__bottom-item">
@@ -58,23 +51,39 @@
           <a class="fr-footer__bottom-link" href="/suivi">Données personnelles et cookies</a>
         </li>
         <li class="fr-footer__bottom-item">
-          <a class="fr-footer__bottom-link"
-          href="mailto:<%= contactEmail %>"
-           target="_blank"
-           rel="noopener noreferrer"
-          >Contactez-nous</a>
+          <a class="fr-footer__bottom-link" href="mailto:<%= contactEmail %>" target="_blank" rel="noopener noreferrer">
+            Contactez-nous
+          </a>
         </li>
         <li class="fr-footer__bottom-item">
-            <button class="fr-footer__bottom-link fr-fi-sun-fill-line fr-link--icon-left" aria-controls="fr-theme-modal" data-fr-opened="false">Paramètres d'affichage</button>
+          <button class="fr-footer__bottom-link fr-fi-sun-fill-line fr-link--icon-left" aria-controls="fr-theme-modal" data-fr-opened="false">
+            Paramètres d'affichage
+          </button>
         </li>
       </ul>
+
       <div class="fr-footer__bottom-copy">
-        <p>Sauf mention contraire, tous les textes de ce site sont sous <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank">licence etalab-2.0</a>
+        <p>
+          Sauf mention contraire, tous les textes de ce site sont sous
+          <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank">licence etalab-2.0</a>.
         </p>
       </div>
     </div>
   </div>
-  <%- include('dark-mode-modale') -%>
 </footer>
-</body>
-</html>
+
+<button id="scroll-to-top-button" class="fr-btn fr-btn--secondary fr-fi-arrow-up-line" title="Revenir en haut de la page">
+  Revenir en haut de la page
+</button>
+
+<%- include('dark-mode-modale') -%>
+
+<!-- todo(estellecomment) : import min css and js -->
+<script type="module" src="/~/@gouvfr/dsfr/dist/js/dsfr.module.js"></script>
+<script type="text/javascript" nomodule src="/~/@gouvfr/dsfr/dist/js/dsfr.nomodule.js"></script>
+
+<script type="text/javascript" src="/static/scripts/helpers.js"></script>
+<script type="text/javascript" src="/static/scripts/custom.js"></script>
+
+<script type="text/javascript" src="/static/scripts/matomo.js"></script>
+<script type="text/javascript" src="/static/scripts/crisp.js"></script>

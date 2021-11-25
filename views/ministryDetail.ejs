@@ -1,308 +1,317 @@
-<%- include('partials/header') -%>
-  <div class="fr-container">
-    <div class="fr-grid-row fr-grid-row--gutters">
-        <% if (ministry.brandBlock.length) { %>
-            <div class="fr-col-2 fr-mb-4w fr-mt-6w">
-                <img src="<%= ministry.brandBlock[0].file.url %>" class="fr-responsive-img" alt="<%= ministry.brandBlock[0].name %>" >
-            </div>
-        <% } else {%>
-            <div class="fr-col-2 fr-mb-4w fr-mt-6w">
-            </div>
-        <% } %>
-        <div class="fr-col-8 fr-mb-4w fr-mt-8w fr-ml-2w">
-            <h1>
-                <%= ministry.title %>
-            </h1>
-            <p>
-                <%= ministry.fullName %>
-            </p>
-      </div>
-    </div>
-      <div class="fr-callout fr-my-2w">
-        <div class="">
-          <% if (ministry.motivation) { %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-md-2 fr-col-sm-12" style="text-align: right;">
-                  <h5>Raison d‘être</h5>
-                </div>
-                <div class="fr-col-md-10 fr-col-sm-12">
-                    <%- ministry.motivation %>
-                    <% if (ministry.motivationMedia.length) { %>
-                        <% ministry.motivationMedia.forEach(function(media) { %>
-                            <% if (media.file) { %>
-                                <a href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
-                            <% } else { %>
-                                <a href="<%= media.name %>" target="_blank">Présentation</a>
-                            <% } %>
-                        <% }); %>
-                    <% } %>
-                </div>
-            </div>
-          <% } %>
-        </div>
-      </div>
-      <div class="fr-my-4w">
-      <% if(ministry.values){ %>
+<!DOCTYPE html>
+<html lang="fr">
+  <%- include('partials/head') -%>
+
+  <body>
+    <%- include('partials/header') -%>
+
+    <div class="fr-container">
       <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-md-2 fr-col-sm-12">
-          <h3>Valeurs</h3>
-        </div>
-        <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <%- ministry.values %>
-            <% ministry.valuesMedia.forEach(function(media) { %>
-                <% if (media.file) { %>
-                    <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
-                <% } else { %>
-                    <a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a>
-                <% } %>
-            <% }); %>
+          <% if (ministry.brandBlock.length) { %>
+              <div class="fr-col-3 fr-mb-4w fr-mt-6w">
+                  <img src="<%= ministry.brandBlock[0].file.url %>" class="fr-responsive-img" alt="<%= ministry.brandBlock[0].name %>" >
+              </div>
+          <% } else {%>
+              <div class="fr-col-2 fr-mb-4w fr-mt-6w">
+              </div>
+          <% } %>
+          <div class="fr-col-7 fr-mb-4w fr-mt-8w fr-ml-2w">
+              <h1>
+                  <%= ministry.title %>
+              </h1>
+              <p>
+                  <%= ministry.fullName %>
+              </p>
         </div>
       </div>
-      <% } %>
-      <% if(ministry.challenges){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-            <h3>Nos enjeux</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12">
-            <%- ministry.challenges %>
-          </div>
-        </div>
-        <% } %>
-      <% if(ministry.missions){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-           <h3>Missions</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12">
-            <%- ministry.missions %>
-          </div>
-        </div>
-      <% } %>
-      <% if(ministry.projects){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-           <h3>Projets</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <%- ministry.projects %>
-            <ul>
-            <% ministry.projectsMedia.forEach(function(media) { %>
-                <% if (media.file) { %>
-                    <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
-                <% } else { %>
-                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
-                <% } %>
-            <% }); %>
-            </ul>
-          </div>
-        </div>
-      <% } %>
-      <% if(ministry.organization || ministry.organizationMedia.length){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-           <h3>Notre organisation</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-6w">
-            <% if (ministry.organization) { %>
-                <%- ministry.organization %>
-            <% } %>
-            <% ministry.organizationMedia.forEach(function(media) { %>
-                <ul>
-                <% if (media.file) { %>
-                    <span>
-                    <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
-                        <a href="<%= media.file.url %>" target="_blank">
-                            <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
-                        </a>
-                    <% } else { %>
-                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
-                    <% } %>
-                </span>
-                <% } else { %>
-                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
-                <% } %>
-                </ul>
-            <% }); %>
-          </div>
-        </div>
-      <% } %>
-      <% if(ministry.testimonials || ministry.testimonialsMedia.length){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-           <h3>Nos agents en parlent</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            Découvrez le témoignage de nos agents:
-            <%- ministry.testimonials %>
-            <% if(ministry.testimonialsMedia){ %>
-                <% ministry.testimonialsMedia.forEach(function(media) { %>
-                    <% if (media.file) { %>
-                        <% if (media.name.search('.jpg') != -1 ) { %>
-                            <a href="<%= media.file.url %>" target="_blank">
-                                <img class="fr-col-2 fr-mt-6w" src="<%= media.file.url %>" alt="<%= media.name %>">
-                            </a>
-                        <% } else {%>
-                            <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
-                        <% } %>
-                    <% } else { %>
-                        <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
-                    <% } %>
-                <% }); %>
-            <% } %>
-          </div>
-        </div>
-      <% } %>
-      <% if(ministry.profile){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-            <h3>Ton profil</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <%- ministry.profile %>
-          </div>
-        </div>
-        <% } %>
-        <% if(ministry.hiringProcess){ %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-              <div class="fr-col-md-2 fr-col-sm-12">
-                <h3>Processus de recrutement</h3>
-              </div>
-              <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-                <%- ministry.hiringProcess %>
+
+      <% if (ministry.motivation) { %>
+        <div class="fr-callout fr-px-0 fr-my-2w">
+              <div class="fr-grid-row fr-grid-row--gutters">
+                  <div class="fr-col-sm-12 fr-px-8w">
+                    <h5>Raison d‘être</h5>
+                      <%- ministry.motivation %>
+                      <% if (ministry.motivationMedia.length) { %>
+                          <% ministry.motivationMedia.forEach(function(media) { %>
+                              <% if (media.file) { %>
+                                  <a href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                              <% } else { %>
+                                  <a href="<%= media.name %>" target="_blank">Présentation</a>
+                              <% } %>
+                          <% }); %>
+                      <% } %>
+                  </div>
               </div>
             </div>
-            <% } %>
-        <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-2 fr-col-sm-12">
-           <h3>Nous rejoindre</h3>
-          </div>
-          <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <% if(ministry.joinTeam){ %>
-                <%- ministry.joinTeam %>
-            <ul class="fr-mb-4w">
-            <% ministry.joinTeamMedia.forEach(function(media) { %>
-                <% if (media.file) { %>
-                    <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
-                        <a href="<%= media.file.url %>" target="_blank">
-                            <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
-                        </a>
-                    <% } else { %>
-                        <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
-                    <% } %>
-                <% } else { %>
-                    <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
-                <% } %>
-            <% }); %>
-            </ul>
-            <% } %>
-            <% if(ministry.jobsLink.length){ %>
-                <a href="<%= ministry.jobsLink[0].name %>"
-                    class="fr-btn fr-btn--sm">Découvrez nos offres d'emploi
-                     <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
-                  </a>
-            <% } %>
-            </div>
-        </div>
       <% } %>
-    </div>
-  </div>
-  <div class="fr-container fr-container--fluid fr-py-4w fr-mb-4w" style="background-color: #F0F0F0">
-    <% if(ministry.keyNumbers){ %>
-    <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-md-2 fr-col-sm-12">
-            <h5>Chiffres clés</h5>
-        </div>
-        <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-            <%- ministry.keyNumbers %>
-        </div>
-    </div>
-    <% } %>
-    <% if(ministry.schedule){ %>
+
+      <div class="fr-my-4w">
+        <% if(ministry.values){ %>
         <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-md-2 fr-col-sm-12">
-                <h5>Agenda</h5>
-            </div>
-            <div class="fr-col-md-10 fr-col-sm-12 fr-mb-4w">
-                <%- ministry.schedule %>
-            </div>
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <h3>Valeurs</h3>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <%- ministry.values %>
+              <% ministry.valuesMedia.forEach(function(media) { %>
+                  <% if (media.file) { %>
+                      <a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a>
+                  <% } else { %>
+                      <a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a>
+                  <% } %>
+              <% }); %>
+          </div>
         </div>
         <% } %>
-    <% if(ministry.websites){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-md-2 fr-col-sm-12">
-            <h5>Sites & réseaux</h5>
+        <% if(ministry.challenges){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Nos enjeux</h3>
             </div>
-            <div class="fr-col-md-10 fr-col-sm-12">
-                <ul>
-                    <% ministry.websites.forEach(function(website) { %>
-                        <li>
-                            <a href="<%= website.name %>" target="_blank"><%= website.name %></a>
-                        </li>
-                    <% }); %>
-                </ul>
-                <p>
-                <% ministry.socialNetworks.forEach(function(network) { %>
-                    <% if(network.name.search('linkedin.com') != -1 ){ %>
-                        <a href="<%= network.name %>">
-                            <span class="fr-fi-linkedin-box-fill" aria-hidden="true"></span>
-                        </a>
-                    <% } else if(network.name.search('twitter.com') != -1){ %>
-                        <a href="<%= network.name %>">
-                            <span class="fr-fi-twitter-fill" aria-hidden="true"></span>
-                        </a>
-                    <% } else if(network.name.search('facebook.com') != -1){ %>
-                        <a href="<%= network.name %>">
-                            <span class="fr-fi-facebook-circle-fill" aria-hidden="true"></span>
-                        </a>
-                    <% } else if(network.name.search('instagram.com') != -1){ %>
-                        <a href="<%= network.name %>">
-                            <span class="fr-fi-instagram-fill" aria-hidden="true"></span>
-                        </a>
-                    <% } else if(network.name.search('youtube.com') != -1){ %>
-                        <a href="<%= network.name %>">
-                            <span class="fr-fi-youtube-fill" aria-hidden="true"></span>
-                        </a>
-                    <% } else if(network.name.search('github.com') != -1){ %>
-                        <a href="<%= network.name %>">Github</a>
-                    <% } else if(network.name.search('dailymotion.com') != -1){ %>
-                        <a href="<%= network.name %>">Dailymotion</a>
-                    <% } else { %>
-                        <a href="<%= network.name %>">Soundcloud</a>
-                    <% } %>
-                <% }); %>
-                </p>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- ministry.challenges %>
             </div>
-        </div>
-    <% } %>
-      <% if(ministry.adress){ %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-md-2 fr-col-sm-12">
-            <h5>Adresses</h5>
+          </div>
+          <% } %>
+        <% if(ministry.missions){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+            <h3>Missions</h3>
             </div>
-            <div class="fr-col-md-10 fr-col-sm-12">
-                <p>
-                <%- ministry.adress %>
-                </p>
-                <% ministry.adressBis.forEach(function(adress) { %>
-                    <span>
-                    <% if(adress.name.search('google.com') != -1){ %>
-                        <a href="<%= adress.name %>" target="_blank">Voir sur Google maps</a>
-                    <% } else { %>
-                        <% if (adress.name.search('.jpg') != -1 ) { %>
-                            <a href="<%= adress.file.url %>" target="_blank">
-                                <img class="fr-col-2 fr-mt-6w" src="<%= adress.file.url %>" alt="<%= adress.name %>">
-                            </a>
-                        <% } %>
-                    <% } %>
-                    </span>
-                <% }); %>
-            </p>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- ministry.missions %>
             </div>
-        </div>
+          </div>
+        <% } %>
+        <% if(ministry.projects){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+            <h3>Projets</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <%- ministry.projects %>
+              <ul>
+              <% ministry.projectsMedia.forEach(function(media) { %>
+                  <% if (media.file) { %>
+                      <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                  <% } else { %>
+                      <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                  <% } %>
+              <% }); %>
+              </ul>
+            </div>
+          </div>
+        <% } %>
+        <% if(ministry.organization || ministry.organizationMedia.length){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+            <h3>Notre organisation</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12 fr-mb-6w">
+              <% if (ministry.organization) { %>
+                  <%- ministry.organization %>
+              <% } %>
+              <% ministry.organizationMedia.forEach(function(media) { %>
+                  <ul>
+                  <% if (media.file) { %>
+                      <span>
+                      <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
+                          <a href="<%= media.file.url %>" target="_blank">
+                              <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                          </a>
+                      <% } else { %>
+                          <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                      <% } %>
+                  </span>
+                  <% } else { %>
+                      <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                  <% } %>
+                  </ul>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+        <% if(ministry.testimonials || ministry.testimonialsMedia.length){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+            <h3>Nos agents en parlent</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              Découvrez le témoignage de nos agents:
+              <%- ministry.testimonials %>
+              <% if(ministry.testimonialsMedia){ %>
+                  <% ministry.testimonialsMedia.forEach(function(media) { %>
+                      <% if (media.file) { %>
+                          <% if (media.name.search('.jpg') != -1 ) { %>
+                              <a href="<%= media.file.url %>" target="_blank">
+                                  <img class="fr-col-2 fr-mt-6w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                              </a>
+                          <% } else {%>
+                              <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                          <% } %>
+                      <% } else { %>
+                          <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                      <% } %>
+                  <% }); %>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+        <% if(ministry.profile){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Ton profil</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <%- ministry.profile %>
+            </div>
+          </div>
+          <% } %>
+          <% if(ministry.hiringProcess){ %>
+              <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-md-3 fr-col-sm-12">
+                  <h3>Processus de recrutement</h3>
+                </div>
+                <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                  <%- ministry.hiringProcess %>
+                </div>
+              </div>
+              <% } %>
+          <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+            <h3>Nous rejoindre</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <% if(ministry.joinTeam){ %>
+                  <%- ministry.joinTeam %>
+              <ul class="fr-mb-4w">
+              <% ministry.joinTeamMedia.forEach(function(media) { %>
+                  <% if (media.file) { %>
+                      <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
+                          <a href="<%= media.file.url %>" target="_blank">
+                              <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
+                          </a>
+                      <% } else { %>
+                          <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                      <% } %>
+                  <% } else { %>
+                      <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
+                  <% } %>
+              <% }); %>
+              </ul>
+              <% } %>
+              <% if(ministry.jobsLink.length){ %>
+                  <a href="<%= ministry.jobsLink[0].name %>"
+                      class="fr-btn fr-btn--sm">Découvrez nos offres d'emploi
+                      <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
+                    </a>
+              <% } %>
+              </div>
+          </div>
         <% } %>
       </div>
     </div>
 
-  <%- include('partials/footer') -%>
+    <div class="fr-container fr-py-4w" style="background-color: #F0F0F0">
+      <% if(ministry.keyNumbers){ %>
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-3 fr-col-sm-12">
+          <h5>Chiffres clés</h5>
+        </div>
+        <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+          <%- ministry.keyNumbers %>
+        </div>
+      </div>
+      <% } %>
+
+      <% if(ministry.schedule){ %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12">
+                  <h5>Agenda</h5>
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                  <%- ministry.schedule %>
+              </div>
+          </div>
+          <% } %>
+
+      <% if(ministry.websites){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <h5>Sites & réseaux</h5>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12">
+              <ul>
+                  <% ministry.websites.forEach(function(website) { %>
+                      <li>
+                          <a href="<%= website.name %>" target="_blank"><%= website.name %></a>
+                      </li>
+                  <% }); %>
+              </ul>
+              <p>
+              <% ministry.socialNetworks.forEach(function(network) { %>
+                  <% if(network.name.search('linkedin.com') != -1 ){ %>
+                      <a href="<%= network.name %>">
+                          <span class="fr-fi-linkedin-box-fill" aria-hidden="true"></span>
+                      </a>
+                  <% } else if(network.name.search('twitter.com') != -1){ %>
+                      <a href="<%= network.name %>">
+                          <span class="fr-fi-twitter-fill" aria-hidden="true"></span>
+                      </a>
+                  <% } else if(network.name.search('facebook.com') != -1){ %>
+                      <a href="<%= network.name %>">
+                          <span class="fr-fi-facebook-circle-fill" aria-hidden="true"></span>
+                      </a>
+                  <% } else if(network.name.search('instagram.com') != -1){ %>
+                      <a href="<%= network.name %>">
+                          <span class="fr-fi-instagram-fill" aria-hidden="true"></span>
+                      </a>
+                  <% } else if(network.name.search('youtube.com') != -1){ %>
+                      <a href="<%= network.name %>">
+                          <span class="fr-fi-youtube-fill" aria-hidden="true"></span>
+                      </a>
+                  <% } else if(network.name.search('github.com') != -1){ %>
+                      <a href="<%= network.name %>">Github</a>
+                  <% } else if(network.name.search('dailymotion.com') != -1){ %>
+                      <a href="<%= network.name %>">Dailymotion</a>
+                  <% } else { %>
+                      <a href="<%= network.name %>">Soundcloud</a>
+                  <% } %>
+              <% }); %>
+              </p>
+          </div>
+        </div>
+      <% } %>
+
+      <% if(ministry.adress){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+              <h5>Adresses</h5>
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                  <p>
+                  <%- ministry.adress %>
+                  </p>
+                  <% ministry.adressBis.forEach(function(adress) { %>
+                      <span>
+                      <% if(adress.name.search('google.com') != -1){ %>
+                          <a href="<%= adress.name %>" target="_blank">Voir sur Google maps</a>
+                      <% } else { %>
+                          <% if (adress.name.search('.jpg') != -1 ) { %>
+                              <a href="<%= adress.file.url %>" target="_blank">
+                                  <img class="fr-col-2 fr-mt-6w" src="<%= adress.file.url %>" alt="<%= adress.name %>">
+                              </a>
+                          <% } %>
+                      <% } %>
+                      </span>
+                  <% }); %>
+              </p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+    <%- include('partials/footer') -%>
+  </body>
+</html>
