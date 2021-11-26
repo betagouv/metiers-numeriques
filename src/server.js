@@ -4,7 +4,7 @@ const path = require('path')
 const { jobRoutes } = require('./jobs')
 
 const appName = `metiers.numerique.gouv.fr`
-const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’Etat.'
+const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’État.'
 const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const appRoot = path.resolve(__dirname)
 
@@ -30,12 +30,15 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.render('landing', {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
+    pageDescription: appDescription,
+    pageTitle: 'Découvrez les métiers numériques de l’État',
   })
 })
 
 app.get('/mentions-legales', (req, res) => {
   res.render('legalNotice', {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
+    pageDescription: '',
     pageTitle: 'Mentions légales',
   })
 })
@@ -43,6 +46,8 @@ app.get('/mentions-legales', (req, res) => {
 app.get('/suivi', (req, res) => {
   res.render('suivi', {
     contactEmail: 'contact@metiers.numerique.gouv.fr',
+    pageDescription: '',
+    pageTitle: 'Données personnelles et cookies',
   })
 })
 
