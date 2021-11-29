@@ -19,7 +19,7 @@ function toggleNavActive() {
   }
 }
 
-window.onload = toggleNavActive
+toggleNavActive()
 
 const $scrollToTopButton = document.querySelector('#scroll-to-top-button')
 

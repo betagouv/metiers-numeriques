@@ -1,13 +1,23 @@
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="<%= pageDescription %>">
+
+  <% if (typeof pageDescription !== "undefined") { %>
+    <meta name="description" content="<%= pageDescription %>">
+  <% } else { %>
+    <meta name="description" content="<%= appDescription %>">
+  <% } %>
+
   <meta name="google-site-verification" content="rbHd2NXOspK6-avguNFUvBzgddpFwWzph-a8Ebxepvo" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta property="og:title" content="metiers.numerique.gouv.fr">
   <meta property="og:description" content="L’Etat Numérique : Des projets à découvrir, des missions à pourvoir !">
   <meta property="og:image" content="/static/images/main-illu.png">
 
-  <title><%= pageTitle %> | <%= appName %></title>
+  <% if (typeof pageTitle !== "undefined") { %>
+    <title><%= pageTitle %> | <%= appName %></title>
+  <% } else { %>
+    <title><%= appName %></title>
+  <% } %>
 
   <!-- todo(estellecomment) : import min css and js -->
   <link rel="stylesheet" href="/~/@gouvfr/dsfr/dist/css/dsfr.css">

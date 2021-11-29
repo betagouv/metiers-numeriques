@@ -1,7 +1,6 @@
 const axios = require('axios')
 
 const app = require('../src/server')
-require('dotenv').config()
 
 describe('Displaying jobs on website', () => {
   const port = 8888
