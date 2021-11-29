@@ -6,7 +6,7 @@ const handleError = require('../helpers/handleError')
 const { dateReadableFormat } = require('../jobs/utils')
 const notionJob = require('../services/notionJob')
 
-const getCachedJobs = async () =>
+const getCachedJobsIndex = async () =>
   cache.getOrCacheWith('JOBS.SEARCH_INDEX', async () => {
     const { jobs } = await notionJob.all()
 
@@ -15,17 +15,16 @@ const getCachedJobs = async () =>
       departmentsAsText: job.department.map(department => stripHtml(department).result).join(', '),
     }))
 
-    const fusedJobs = new Fuse(jobsIndex, {
-      includeScore: true,
-      keys: ['title'],
-    })
-
-    return fusedJobs
+    return jobsIndex
   })
 
 const searchJobs = async (req, res) => {
   try {
-    const fusedJobs = await getCachedJobs()
+    const jobsIndex = await getCachedJobsIndex()
+    const fusedJobs = new Fuse(jobsIndex, {
+      includeScore: true,
+      keys: ['title'],
+    })
     const foundJobs = fusedJobs
       .search(req.query.query)
       .filter(({ score }) => score < 0.75)
