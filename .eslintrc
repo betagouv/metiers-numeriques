@@ -7,20 +7,10 @@
   "parserOptions": {
     "ecmaVersion": 2021
   },
-  "ignorePatterns": [
-    "src/jobs/**/*.js",
-    "!src/jobs/controllers/*.js",
-    "!src/jobs/entities.js",
-    "!src/jobs/index.js",
-    "!src/jobs/infrastructure/mappers.js",
-    "!src/jobs/infrastructure/notionJobsService.js",
-    "!src/jobs/jobs.controller.js",
-    "!src/jobs/jobs.routes.js",
-    "src/schedulers/**/*.js",
-    "src/shared/**/*.js",
-    "static/scripts/*.js"
-  ],
+  "ignorePatterns": ["src/schedulers/**/*.js", "src/shared/**/*.js", "static/scripts/*.js"],
   "rules": {
+    "class-methods-use-this": "off",
+    "consistent-return": "off",
     "no-console": "off",
     "no-new": "off",
     "no-plusplus": "off",

@@ -1,5 +1,3 @@
-'use strict'
-
 const { formatDistance, parse, parseISO } = require('date-fns')
 const { fr } = require('date-fns/locale')
 
@@ -80,7 +78,7 @@ const createPepProperties = pepJob => {
       }
     }
     if (property === 'JobDescriptionTranslation_JobTitle_') {
-      acc['Name'] = {
+      acc.Name = {
         title: [
           {
             text: {
@@ -97,16 +95,18 @@ const createPepProperties = pepJob => {
       acc[property] = {
         rich_text: propertyContent.map(content => ({
           text: {
-            content: content,
+            content,
           },
         })),
       }
     }
+
     return acc
   }, {})
-  properties['Link'] = {
+  properties.Link = {
     url: `https://place-emploi-public.gouv.fr/offre-emploi/${pepJob.Offer_Reference_}/`,
   }
+
   return properties
 }
 
@@ -127,7 +127,7 @@ const dateReadableFormat = (date, now = new Date()) => {
 }
 
 module.exports = {
-  JOB_FILTERS,
   createPepProperties,
   dateReadableFormat,
+  JOB_FILTERS,
 }

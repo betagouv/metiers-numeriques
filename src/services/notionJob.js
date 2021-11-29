@@ -1,13 +1,12 @@
 /* eslint-disable no-shadow */
 
-require('dotenv').config()
 const axios = require('axios')
 
-const cache = require('../../helpers/cache')
-const { createPepProperties } = require('../utils')
-const { formatDetailFromPep, mapToJob } = require('./mappers')
+const cache = require('../helpers/cache')
+const { formatDetailFromPep, mapToJob } = require('../jobs/infrastructure/mappers')
+const { createPepProperties } = require('../jobs/utils')
 
-module.exports.NotionService = {
+class NotionJob {
   async all({ pageSize = 20, startCursor } = {}) {
     let jobs = []
     let jobsPep = []
@@ -16,7 +15,7 @@ module.exports.NotionService = {
 
     if (!startCursor || !startCursor.startsWith('pep-')) {
       if (startCursor === undefined) {
-        const cachedResult = await cache.getOrCacheWith('jobs.default', async () => {
+        const cachedResult = await cache.getOrCacheWith('JOBS.DEFAULT', async () => {
           const { data } = await axios.post(
             `https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
             {
@@ -110,7 +109,7 @@ module.exports.NotionService = {
       nextCursor,
     }
     // return data.results.map(mapToJob);
-  },
+  }
 
   async count() {
     const { data } = await axios
@@ -156,7 +155,7 @@ module.exports.NotionService = {
     const countPep = pepData.results.length
 
     return count + countPep
-  },
+  }
 
   async createPage(database, properties) {
     const pepProperties = createPepProperties(properties)
@@ -178,7 +177,7 @@ module.exports.NotionService = {
       console.error(e)
       throw new Error('Impossible de crééer une page')
     }
-  },
+  }
 
   async get(pageId, tag) {
     const mapper = tag === 'pep' ? formatDetailFromPep : mapToJob
@@ -199,7 +198,7 @@ module.exports.NotionService = {
     }
 
     return null
-  },
+  }
 
   async getPage(database, pageId) {
     try {
@@ -229,5 +228,7 @@ module.exports.NotionService = {
       console.error(e)
       throw new Error('Impossible de récupérer la page')
     }
-  },
+  }
 }
+
+module.exports = new NotionJob()

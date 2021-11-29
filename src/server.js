@@ -1,10 +1,15 @@
 const express = require('express')
 const path = require('path')
 
-const { jobRoutes } = require('./jobs')
+const getJob = require('./controllers/getJob')
+const getJobs = require('./controllers/getJobs')
+const getMinistries = require('./controllers/getMinistries')
+const getMinistry = require('./controllers/getMinistry')
+const searchJobs = require('./controllers/searchJobs')
 
 const appName = `metiers.numerique.gouv.fr`
 const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’État.'
+const appContactEmail = 'contact@metiers.numerique.gouv.fr'
 const appRepo = 'https://github.com/betagouv/metiers-numeriques'
 const appRoot = path.resolve(__dirname)
 
@@ -21,6 +26,7 @@ app.use('/~', express.static(path.join(__dirname, '../node_modules')))
 app.use((req, res, next) => {
   res.locals.appName = appName
   res.locals.appDescription = appDescription
+  res.locals.appContactEmail = appContactEmail
   res.locals.appRepo = appRepo
   res.locals.page = req.url
   res.locals.appRoot = appRoot
@@ -29,7 +35,6 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
   res.render('landing', {
-    contactEmail: 'contact@metiers.numerique.gouv.fr',
     pageDescription: appDescription,
     pageTitle: 'Découvrez les métiers numériques de l’État',
   })
@@ -37,7 +42,6 @@ app.get('/', (req, res) => {
 
 app.get('/mentions-legales', (req, res) => {
   res.render('legalNotice', {
-    contactEmail: 'contact@metiers.numerique.gouv.fr',
     pageDescription: '',
     pageTitle: 'Mentions légales',
   })
@@ -45,13 +49,17 @@ app.get('/mentions-legales', (req, res) => {
 
 app.get('/suivi', (req, res) => {
   res.render('suivi', {
-    contactEmail: 'contact@metiers.numerique.gouv.fr',
     pageDescription: '',
     pageTitle: 'Données personnelles et cookies',
   })
 })
 
-app.use('/', jobRoutes)
+app.get('/annonces', getJobs)
+app.get('/annonces/:id', getJob)
+app.get('/jobs/search', searchJobs)
+app.get('/ministeres', getMinistries)
+app.get('/ministeres/:id', getMinistry)
+
 app.use((req, res) => {
   res.status(404).end()
 })

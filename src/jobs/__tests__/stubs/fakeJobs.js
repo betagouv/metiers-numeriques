@@ -1,41 +1,37 @@
-'use strict';
-
-const { Job } = require('../../entities');
+const Job = require('../../../models/Job')
 
 const fakeJobs = [
-    new Job(
-        {
-            id: 'id2',
-            title: 'job2',
-            mission: 'mon job 2',
-            experiences: ['5 ans'],
-            locations: ['Paris'],
-            department: ['Ministère des armées'],
-            openedToContractTypes: ['CDD', 'CDI'],
-            salary: '50k',
-            team: 'MTES',
-            profile: '',
-            tasks: [],
-        }),
-    new Job(
-        {
-            id: 'id2',
-            title: 'job2',
-            mission: 'mon job 2',
-            experiences: ['5 ans'],
-            locations: ['Paris'],
-            department: ['Ministère des armées'],
-            openedToContractTypes: ['CDD', 'CDI'],
-            salary: '50k',
-            team: 'MTES',
-            profile: '',
-            tasks: [],
-        })
-];
+  new Job({
+    department: ['Ministère des armées'],
+    experiences: ['5 ans'],
+    id: 'id2',
+    locations: ['Paris'],
+    mission: 'mon job 2',
+    openedToContractTypes: ['CDD', 'CDI'],
+    profile: '',
+    salary: '50k',
+    tasks: [],
+    team: 'MTES',
+    title: 'job2',
+  }),
+  new Job({
+    department: ['Ministère des armées'],
+    experiences: ['5 ans'],
+    id: 'id2',
+    locations: ['Paris'],
+    mission: 'mon job 2',
+    openedToContractTypes: ['CDD', 'CDI'],
+    profile: '',
+    salary: '50k',
+    tasks: [],
+    team: 'MTES',
+    title: 'job2',
+  }),
+]
 
-const fakeJob = fakeJobs[0];
+const fakeJob = fakeJobs[0]
 
 module.exports = {
-    fakeJobs,
-    fakeJob
-};
+  fakeJob,
+  fakeJobs,
+}
