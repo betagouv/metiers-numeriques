@@ -49,6 +49,6 @@ $loadMoreButton.addEventListener('click', () => {
   // Load 20 more jobs
   httpGet(`/annonces?isUpdate=1&start_cursor=${nextCursor}`, jobsListHtmlSource => {
     removeLoaderFrom($jobsList)
-    setInnerHtml($jobsList, jobsListHtmlSource)
+    appendInnerHtmlTo($jobsList, jobsListHtmlSource)
   })
 })

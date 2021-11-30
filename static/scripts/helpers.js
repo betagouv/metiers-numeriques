@@ -1,5 +1,12 @@
-const CACHE = {}
-const GLOBAL = {}
+/**
+ * @param {HTMLElement} $node
+ * @param {string} htmlSource
+ */
+const appendInnerHtmlTo = ($node, htmlSource) => {
+  const oldHtmlSource = $node.innerHTML
+
+  $node.innerHTML = `${oldHtmlSource}${htmlSource}`
+}
 
 /**
  * @param {Function} call
