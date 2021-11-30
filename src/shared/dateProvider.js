@@ -1,18 +1,12 @@
 const fixedDateProvider = {
-    date: (date) => {
-        return date;
-    }
+  date: date => date,
 }
 
-const systemDateProvider =  {
-    date: () => {
-        return new Date();
-    }
+const systemDateProvider = {
+  date: () => new Date(),
 }
 
 module.exports = {
-    fixedDateProvider,
-    systemDateProvider
+  fixedDateProvider,
+  systemDateProvider,
 }
-
-

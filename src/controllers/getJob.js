@@ -1,7 +1,7 @@
 const cache = require('../helpers/cache')
 const handleError = require('../helpers/handleError')
-const usecases = require('../jobs/usecases')
-const { dateReadableFormat } = require('../jobs/utils')
+const usecases = require('../legacy/usecases')
+const { dateReadableFormat } = require('../legacy/utils')
 const notionJob = require('../services/notionJob')
 
 const getJob = async (req, res) => {

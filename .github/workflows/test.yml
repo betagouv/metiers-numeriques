@@ -63,4 +63,3 @@ jobs:
           PEP_DATABASE_ID: fakepepdatabaseid
           PEP_ENDPOINT: fakepependpoint
           FEATURE_FLAG_FETCH_PEP_JOBS: false
-          CRON_IMPORT_ALL: false

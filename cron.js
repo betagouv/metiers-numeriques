@@ -1,15 +1,17 @@
+const ß = require('bhala')
 const { CronJob } = require('cron')
 
-const { fetchPepJobs } = require('./src/schedulers/pepJobsScheduler')
+const updatePepJobs = require('./src/jobs/updatePepJobs')
+
+const { FEATURE_FLAG_FETCH_PEP_JOBS } = process.env
 
 const jobs = [
   {
-    cronTime: '0 8 * * *',
-    isActive: process.env.FEATURE_FLAG_FETCH_PEP_JOBS,
-
-    name: 'fetchPepJobs',
     // every day at 8:00
-    onTick: () => fetchPepJobs,
+    cronTime: '0 8 * * *',
+    isActive: FEATURE_FLAG_FETCH_PEP_JOBS === 'true',
+    name: 'Update PEP Jobs',
+    onTick: updatePepJobs,
   },
 ]
 
@@ -17,12 +19,16 @@ let activeJobs = 0
 for (const job of jobs) {
   const cronjob = { start: true, timeZone: 'Europe/Paris', ...job }
 
-  if (cronjob.isActive) {
-    console.log(`🚀 The job "${cronjob.name}" is ON ${cronjob.cronTime}`)
-    new CronJob(cronjob)
-    activeJobs++
-  } else {
-    console.log(`❌ The job "${cronjob.name}" is OFF`)
+  if (!cronjob.isActive) {
+    ß.error(`The job "${cronjob.name}" is OFF`)
+
+    // eslint-disable-next-line no-continue
+    continue
   }
+
+  ß.info(`The job "${cronjob.name}" is ON ${cronjob.cronTime}`)
+  new CronJob(cronjob)
+  activeJobs++
 }
-console.log(`Started ${activeJobs} / ${jobs.length} cron jobs`)
+
+ß.info(`Started ${activeJobs} / ${jobs.length} cron jobs`)

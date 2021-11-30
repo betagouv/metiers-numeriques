@@ -7,7 +7,7 @@
   "parserOptions": {
     "ecmaVersion": 2021
   },
-  "ignorePatterns": ["src/schedulers/**/*.js", "src/shared/**/*.js", "static/scripts/*.js"],
+  "ignorePatterns": ["static/scripts/*.js"],
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",

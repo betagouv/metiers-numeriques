@@ -3,7 +3,7 @@ const { stripHtml } = require('string-strip-html')
 
 const cache = require('../helpers/cache')
 const handleError = require('../helpers/handleError')
-const { dateReadableFormat } = require('../jobs/utils')
+const { dateReadableFormat } = require('../legacy/utils')
 const notionJob = require('../services/notionJob')
 
 const getCachedJobsIndex = async () =>
