@@ -3,8 +3,9 @@
 const axios = require('axios')
 
 const cache = require('../helpers/cache')
-const { formatDetailFromPep, mapToJob } = require('../jobs/infrastructure/mappers')
-const { createPepProperties } = require('../jobs/utils')
+const handleError = require('../helpers/handleError')
+const { formatDetailFromPep, mapToJob } = require('../legacy/infrastructure/mappers')
+const { createPepProperties } = require('../legacy/utils')
 
 class NotionJob {
   async all({ pageSize = 20, startCursor } = {}) {
@@ -224,9 +225,8 @@ class NotionJob {
       }
 
       return null
-    } catch (e) {
-      console.error(e)
-      throw new Error('Impossible de récupérer la page')
+    } catch (err) {
+      handleError(err, 'services/NotionJob.getPage()')
     }
   }
 }

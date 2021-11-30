@@ -49,7 +49,12 @@ function handleError(error, path, res) {
 
   if (!(error instanceof AppError) || !error.isHandled) {
     ß.error(`[${errorPath}] ${errorString}`)
-    console.error(error)
+
+    if (error instanceof Error && error.isAxiosError) {
+      console.error(error.response?.data)
+    } else {
+      console.error(error)
+    }
   }
 
   if (res === undefined) {

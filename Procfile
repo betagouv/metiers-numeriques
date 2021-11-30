@@ -1,2 +1,2 @@
-web: (bin/run &) && npm start
-worker: node cron.js
+web: (bin/run &) && yarn start
+worker: yarn start:cron

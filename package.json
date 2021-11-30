@@ -17,7 +17,6 @@
     "start": "node -r dotenv/config index.js",
     "start:cron": "node -r dotenv/config cron.js",
     "test": "yarn test:unit && yarn test:integration",
-    "test:commit": "commitlint --from 2c0f739 --to HEAD --verbose",
     "test:lint": "eslint --ext js .",
     "test:e2e": "jest --config=jest.e2e.config.js",
     "test:integration": "jest --config=jest.integration.config.js",
