@@ -1,7 +1,7 @@
-const handleError = require('../helpers/handleError')
-const usecases = require('../legacy/usecases')
-const { dateReadableFormat } = require('../legacy/utils')
-const notionJob = require('../services/notionJob')
+import handleError from '../helpers/handleError'
+import usecases from '../legacy/usecases'
+import { dateReadableFormat } from '../legacy/utils'
+import notionJob from '../services/notionJob'
 
 async function getJobs(req, res) {
   try {
@@ -30,4 +30,4 @@ async function getJobs(req, res) {
   }
 }
 
-module.exports = getJobs
+export default getJobs

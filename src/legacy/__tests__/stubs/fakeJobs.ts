@@ -1,6 +1,6 @@
-const Job = require('../../../models/Job')
+import Job from '../../../models/Job'
 
-const fakeJobs = [
+export const fakeJobs = [
   new Job({
     department: ['Ministère des armées'],
     experiences: ['5 ans'],
@@ -8,12 +8,12 @@ const fakeJobs = [
     locations: ['Paris'],
     mission: 'mon job 2',
     openedToContractTypes: ['CDD', 'CDI'],
-    profile: '',
+    profile: [''],
     salary: '50k',
     tasks: [],
     team: 'MTES',
     title: 'job2',
-  }),
+  } as any),
   new Job({
     department: ['Ministère des armées'],
     experiences: ['5 ans'],
@@ -21,17 +21,12 @@ const fakeJobs = [
     locations: ['Paris'],
     mission: 'mon job 2',
     openedToContractTypes: ['CDD', 'CDI'],
-    profile: '',
+    profile: [''],
     salary: '50k',
     tasks: [],
     team: 'MTES',
     title: 'job2',
-  }),
+  } as any),
 ]
 
-const fakeJob = fakeJobs[0]
-
-module.exports = {
-  fakeJob,
-  fakeJobs,
-}
+export const fakeJob = fakeJobs[0]

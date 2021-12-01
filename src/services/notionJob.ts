@@ -1,20 +1,33 @@
 /* eslint-disable no-shadow */
 
-const axios = require('axios')
+import axios from 'axios'
 
-const cache = require('../helpers/cache')
-const handleError = require('../helpers/handleError')
-const { formatDetailFromPep, mapToJob } = require('../legacy/infrastructure/mappers')
-const { createPepProperties } = require('../legacy/utils')
+import cache from '../helpers/cache'
+import handleError from '../helpers/handleError'
+import { formatDetailFromPep, mapToJob } from '../legacy/infrastructure/mappers'
+import { createPepProperties } from '../legacy/utils'
 
 class NotionJob {
-  async all({ pageSize = 20, startCursor } = {}) {
+  async all(
+    options: {
+      pageSize?: number
+      startCursor?: string
+    } = {},
+  ): Promise<any> {
+    const finalOptions = {
+      ...{
+        pageSize: 20,
+      },
+      ...options,
+    }
+    const { pageSize, startCursor } = finalOptions
+
     let jobs = []
     let jobsPep = []
     let nextCursor
     let hasMore
 
-    if (!startCursor || !startCursor.startsWith('pep-')) {
+    if (startCursor === undefined || !startCursor.startsWith('pep-')) {
       if (startCursor === undefined) {
         const cachedResult = await cache.getOrCacheWith('JOBS.DEFAULT', async () => {
           const { data } = await axios.post(
@@ -49,29 +62,25 @@ class NotionJob {
         jobs = cachedResult.jobs
         nextCursor = cachedResult.nextCursor
       } else {
-        const { data } = await axios
-          .post(
-            `https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
-            {
-              filter: {
-                property: 'redaction_status',
-                select: {
-                  equals: 'published',
-                },
-              },
-              page_size: pageSize,
-              start_cursor: startCursor,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
-                'Notion-Version': '2021-08-16',
+        const { data } = await axios.post(
+          `https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
+          {
+            filter: {
+              property: 'redaction_status',
+              select: {
+                equals: 'published',
               },
             },
-          )
-          .catch(error => {
-            console.log(`Request Error: ${error}`)
-          })
+            page_size: pageSize,
+            start_cursor: startCursor,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+              'Notion-Version': '2021-08-16',
+            },
+          },
+        )
 
         jobs = data.results.map(mapToJob)
         nextCursor = data.next_cursor
@@ -113,27 +122,24 @@ class NotionJob {
   }
 
   async count() {
-    const { data } = await axios
-      .post(
-        `https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
-        {
-          filter: {
-            property: 'redaction_status',
-            select: {
-              equals: 'published',
-            },
+    const { data } = await axios.post(
+      `https://api.notion.com/v1/databases/${process.env.NOTION_JOBS_DATABASE_ID}/query`,
+      {
+        filter: {
+          property: 'redaction_status',
+          select: {
+            equals: 'published',
           },
         },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
-            'Notion-Version': '2021-08-16',
-          },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+          'Notion-Version': '2021-08-16',
         },
-      )
-      .catch(error => {
-        console.log(`Request Error: ${error}`)
-      })
+      },
+    )
+
     const count = data.results.length
 
     const { data: pepData } = await axios.post(
@@ -180,7 +186,7 @@ class NotionJob {
     }
   }
 
-  async get(pageId, tag) {
+  async get(pageId: string, tag?: string) {
     const mapper = tag === 'pep' ? formatDetailFromPep : mapToJob
     let result
     try {
@@ -231,4 +237,4 @@ class NotionJob {
   }
 }
 
-module.exports = new NotionJob()
+export default new NotionJob()

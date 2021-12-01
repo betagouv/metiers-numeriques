@@ -1,8 +1,8 @@
-const cache = require('../helpers/cache')
-const handleError = require('../helpers/handleError')
-const usecases = require('../legacy/usecases')
-const { dateReadableFormat } = require('../legacy/utils')
-const notionJob = require('../services/notionJob')
+import cache from '../helpers/cache'
+import handleError from '../helpers/handleError'
+import usecases from '../legacy/usecases'
+import { dateReadableFormat } from '../legacy/utils'
+import notionJob from '../services/notionJob'
 
 const getJob = async (req, res) => {
   try {
@@ -28,4 +28,4 @@ const getJob = async (req, res) => {
   }
 }
 
-module.exports = getJob
+export default getJob

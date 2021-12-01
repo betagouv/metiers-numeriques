@@ -1,8 +1,12 @@
-const ß = require('bhala')
+/* eslint-disable no-console */
 
-const AppError = require('../libs/AppError')
+import { AxiosError } from 'axios'
+import ß from 'bhala'
+import { Response } from 'express'
 
-const getErrorConstructorName = error => {
+import AppError from '../libs/AppError'
+
+const getErrorConstructorName = (error: any): string => {
   if (error === undefined || error.constructor === undefined) {
     return 'undefined'
   }
@@ -17,12 +21,8 @@ const getErrorConstructorName = error => {
  * handleError(err, "controllers/MyClass.myMethod()");
  * handleError(err, "helpers/myFunction()");
  * handleError(err, "scripts/myFileName#oneOfTheScriptFunctions()");
- *
- * @param {*} error
- * @param {string} [path]
- * @param {import('express').Response} [res]
  */
-function handleError(error, path, res) {
+export default function handleError(error: any, path?: string, res?: Response): never {
   const errorPath = path || 'Unknown Path'
 
   let errorString
@@ -50,8 +50,8 @@ function handleError(error, path, res) {
   if (!(error instanceof AppError) || !error.isHandled) {
     ß.error(`[${errorPath}] ${errorString}`)
 
-    if (error instanceof Error && error.isAxiosError) {
-      console.error(error.response?.data)
+    if (error instanceof Error && (error as AxiosError).isAxiosError) {
+      console.error((error as AxiosError).response?.data)
     } else {
       console.error(error)
     }
@@ -62,6 +62,6 @@ function handleError(error, path, res) {
   }
 
   res.render('error')
-}
 
-module.exports = handleError
+  throw new Error()
+}

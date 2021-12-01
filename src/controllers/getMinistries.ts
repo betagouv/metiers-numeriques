@@ -1,6 +1,6 @@
-const cache = require('../helpers/cache')
-const handleError = require('../helpers/handleError')
-const notionMinistry = require('../services/notionMinistry')
+import cache from '../helpers/cache'
+import handleError from '../helpers/handleError'
+import notionMinistry from '../services/notionMinistry'
 
 const getMinistries = async (req, res) => {
   try {
@@ -20,4 +20,4 @@ const getMinistries = async (req, res) => {
   }
 }
 
-module.exports = getMinistries
+export default getMinistries

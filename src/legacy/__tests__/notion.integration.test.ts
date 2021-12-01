@@ -1,25 +1,24 @@
-const axios = require('axios')
-const { startOfDay } = require('date-fns')
-const { subDays } = require('date-fns')
+import axios from 'axios'
+import { startOfDay, subDays } from 'date-fns'
 
-const notionJob = require('../../services/notionJob')
-const jobsStub = require('./stubs/jobs.stub.json')
+import notionJob from '../../services/notionJob'
+import jobsStub from './stubs/jobs.stub.json'
 
 jest.mock('axios')
 
 describe('Jobs fetch api', () => {
   it('should fetch and return a list of job', async () => {
-    axios.post.mockImplementation(() => Promise.resolve({ data: jobsStub }))
+    ;(axios.post as jest.Mock).mockImplementation(() => Promise.resolve({ data: jobsStub }))
 
     const { jobs } = await notionJob.all()
 
-    expect(jobs.length).toEqual(jobsStub.results.length + jobsStub.results.length)
+    expect(jobs).toHaveLength(jobsStub.results.length + jobsStub.results.length)
     expect(jobs[0].id).toEqual('acd471f0-2db5-4685-bdb7-eeaba1f03875')
     expect(jobs[0].title).toEqual('Data scientist F/H')
   })
 
   it('should fetch and return one job details', async () => {
-    axios.get.mockImplementation(url =>
+    ;(axios.get as jest.Mock).mockImplementation(url =>
       Promise.resolve({
         data: jobsStub.results.find(p => url.replace('https://api.notion.com/v1/pages/', '') === p.id),
       }),

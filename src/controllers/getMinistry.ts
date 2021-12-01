@@ -1,7 +1,7 @@
-const cache = require('../helpers/cache')
-const handleError = require('../helpers/handleError')
-const uncapitalizeFirstLetter = require('../helpers/uncapitalizeFirstLetter')
-const notionMinistry = require('../services/notionMinistry')
+import cache from '../helpers/cache'
+import handleError from '../helpers/handleError'
+import uncapitalizeFirstLetter from '../helpers/uncapitalizeFirstLetter'
+import notionMinistry from '../services/notionMinistry'
 
 const getMinistry = async (req, res) => {
   try {
@@ -22,4 +22,4 @@ const getMinistry = async (req, res) => {
   }
 }
 
-module.exports = getMinistry
+export default getMinistry

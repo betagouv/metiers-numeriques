@@ -1,6 +1,5 @@
-const Job = require('../../models/Job')
-const usecases = require('../usecases')
-const { fakeJob, fakeJobs } = require('./stubs/fakeJobs')
+import usecases from '../usecases'
+import { fakeJob, fakeJobs } from './stubs/fakeJobs'
 
 describe('Jobs managmenent', () => {
   it('should get the job list', async () => {
@@ -10,33 +9,33 @@ describe('Jobs managmenent', () => {
 
     const result = await usecases.listJobs({ jobsRepository })
 
-    expect(result).toEqual([
-      new Job({
+    expect(result).toMatchObject([
+      {
         department: ['Ministère des armées'],
         experiences: ['5 ans'],
         id: 'id2',
         locations: ['Paris'],
         mission: 'mon job 2',
         openedToContractTypes: ['CDD', 'CDI'],
-        profile: '',
+        profile: [''],
         salary: '50k',
         tasks: [],
         team: 'MTES',
         title: 'job2',
-      }),
-      new Job({
+      },
+      {
         department: ['Ministère des armées'],
         experiences: ['5 ans'],
         id: 'id2',
         locations: ['Paris'],
         mission: 'mon job 2',
         openedToContractTypes: ['CDD', 'CDI'],
-        profile: '',
+        profile: [''],
         salary: '50k',
         tasks: [],
         team: 'MTES',
         title: 'job2',
-      }),
+      },
     ])
   })
 
@@ -47,20 +46,18 @@ describe('Jobs managmenent', () => {
 
     const result = await usecases.getJob(fakeJob.title, { jobsRepository })
 
-    expect(result).toEqual(
-      new Job({
-        department: ['Ministère des armées'],
-        experiences: ['5 ans'],
-        id: 'id2',
-        locations: ['Paris'],
-        mission: 'mon job 2',
-        openedToContractTypes: ['CDD', 'CDI'],
-        profile: '',
-        salary: '50k',
-        tasks: [],
-        team: 'MTES',
-        title: 'job2',
-      }),
-    )
+    expect(result).toMatchObject({
+      department: ['Ministère des armées'],
+      experiences: ['5 ans'],
+      id: 'id2',
+      locations: ['Paris'],
+      mission: 'mon job 2',
+      openedToContractTypes: ['CDD', 'CDI'],
+      profile: [''],
+      salary: '50k',
+      tasks: [],
+      team: 'MTES',
+      title: 'job2',
+    })
   })
 })

@@ -1,7 +1,7 @@
-const { formatDistance, parse, parseISO } = require('date-fns')
-const { fr } = require('date-fns/locale')
+import { formatDistance, parse, parseISO } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
-const JOB_FILTERS = [
+export const JOB_FILTERS = [
   'Technicienne / Technicien support utilisateurs',
   'Cheffe / Chef de projet maitrise d’œuvre SI',
   "Cheffe / Chef de projet maitrise d'ouvrage SI",
@@ -56,8 +56,8 @@ const JOB_FILTERS = [
   'Testeuse / Testeur',
 ]
 
-const createPepProperties = pepJob => {
-  const properties = Object.keys(pepJob).reduce((acc, property) => {
+export const createPepProperties = pepJob => {
+  const properties: any = Object.keys(pepJob).reduce((acc: any, property) => {
     if (
       [
         'SchedulingData_DefaultPublicationBeginDate_',
@@ -112,7 +112,7 @@ const createPepProperties = pepJob => {
 
 const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
 
-const dateReadableFormat = (date, now = new Date()) => {
+export const dateReadableFormat = (date, now = new Date()) => {
   try {
     // https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments
     const dateInstance = typeof date === 'string' ? parseISO(date) : date
@@ -124,10 +124,4 @@ const dateReadableFormat = (date, now = new Date()) => {
 
     return ''
   }
-}
-
-module.exports = {
-  createPepProperties,
-  dateReadableFormat,
-  JOB_FILTERS,
 }

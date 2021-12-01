@@ -1,8 +1,8 @@
 // var csv is the CSV file with headers
-module.exports = function csvJSON(csv) {
+export default function csvJSON(csv) {
   const lines = csv.split('\n')
 
-  const result = []
+  const result: any[] = []
 
   // NOTE: If your columns contain commas in their values, you'll need
   // to deal with those before doing the next step
