@@ -1,7 +1,7 @@
-const ß = require('bhala')
-const { CronJob } = require('cron')
+import ß from 'bhala'
+import { CronJob } from 'cron'
 
-const updatePepJobs = require('./src/jobs/updatePepJobs')
+import updatePepJobs from './jobs/updatePepJobs'
 
 const { FEATURE_FLAG_FETCH_PEP_JOBS } = process.env
 
@@ -27,7 +27,9 @@ for (const job of jobs) {
   }
 
   ß.info(`The job "${cronjob.name}" is ON ${cronjob.cronTime}`)
+  // eslint-disable-next-line no-new
   new CronJob(cronjob)
+  // eslint-disable-next-line no-plusplus
   activeJobs++
 }
 

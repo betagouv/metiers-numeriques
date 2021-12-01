@@ -2,7 +2,7 @@ const basejestConfig = require('./jest.config')
 
 module.exports = {
   ...basejestConfig,
-  setupFilesAfterEnv: ['./jest.setup.js'],
-  testMatch: ['**/*.integration.(spec|test).[tj]s?(x)'],
+  setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'],
+  testMatch: ['**/*.integration.test.[tj]s?(x)'],
   testTimeout: 30000,
 }

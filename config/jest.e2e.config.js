@@ -2,5 +2,6 @@ const basejestConfig = require('./jest.config')
 
 module.exports = {
   ...basejestConfig,
-  testMatch: ['**/*.e2e.(spec|test).[tj]s?(x)'],
+  // preset: 'ts-jest',
+  testMatch: ['**/*.e2e.test.[tj]s?(x)'],
 }

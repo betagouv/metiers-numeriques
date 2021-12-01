@@ -7,7 +7,7 @@
   "parserOptions": {
     "ecmaVersion": 2021
   },
-  "ignorePatterns": ["static/scripts/*.js"],
+  "ignorePatterns": ["/build/", "/static/scripts/"],
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",
@@ -19,6 +19,19 @@
   },
   "overrides": [
     {
+      "files": ["**/*.ts"],
+      "extends": "@ivangabriele/eslint-config-typescript-base",
+      "parserOptions": {
+        "ecmaVersion": 2021,
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "no-restricted-syntax": "off",
+
+        "@typescript-eslint/no-shadow": "off"
+      }
+    },
+    {
       "files": ["./static/**/*.js"],
       "env": {
         "browser": true,
@@ -26,7 +39,7 @@
       }
     },
     {
-      "files": ["**/*.test.js", "jest.setup.js"],
+      "files": ["**/*.test.js", "**/*.test.ts", "jest.setup.js"],
       "env": {
         "jest": true
       }
