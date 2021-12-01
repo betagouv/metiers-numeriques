@@ -1,4 +1,4 @@
-name: Test
+name: Check
 
 on: push
 
@@ -17,7 +17,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Lint
-        run: yarn test:lint
+        run: yarn test:lint --ignore-pattern '/__tests__/*'
 
   test:
     name: Unit Test
@@ -54,6 +54,8 @@ jobs:
           postgresql password: postgres
       - name: Install
         run: yarn
+      - name: Build
+        run: yarn build
       - name: Test (E2E)
         run: yarn test:integration
         env:

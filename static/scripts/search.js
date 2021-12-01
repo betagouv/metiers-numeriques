@@ -1,8 +1,6 @@
 const $jobsSearchInput = document.querySelector('#jobs-search-input')
 const $loadMoreSection = document.querySelector('#load-more-section')
 
-GLOBAL.isNewJobSearch = true
-
 $jobsSearchInput.addEventListener(
   'input',
   debounce(() => {

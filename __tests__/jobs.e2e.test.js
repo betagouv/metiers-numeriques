@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const app = require('../src/server')
+const app = require('../build/server')
 
 describe('Displaying jobs on website', () => {
   const port = 8888
