@@ -2,7 +2,11 @@
 
 import axios from 'axios'
 
+import { NotionJob } from '../../types/NotionJob'
+import { NotionMinistry } from '../../types/NotionMinistry'
+import { NotionPepJob } from '../../types/NotionPepJob'
 import NotionDatabase from './NotionDatabase'
+import NotionPage from './NotionPage'
 
 const { NOTION_JOBS_DATABASE_ID, NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PEP_DATABASE_ID } = process.env as {
   [key: string]: string
@@ -10,6 +14,7 @@ const { NOTION_JOBS_DATABASE_ID, NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PE
 
 class Notion {
   public database: NotionDatabase
+  public page: NotionPage
 
   constructor() {
     const axiosInstance = axios.create({
@@ -20,8 +25,8 @@ class Notion {
       },
     })
 
-    /** @type {NotionDatabase} */
     this.database = new NotionDatabase(axiosInstance)
+    this.page = new NotionPage(axiosInstance)
   }
 
   async countPepJob(offerId: string): Promise<number> {
@@ -33,7 +38,7 @@ class Notion {
     })
   }
 
-  async findManyJobs<T = any>(): Promise<T[]> {
+  async findManyJobs(): Promise<NotionJob[]> {
     return this.database.findMany(NOTION_JOBS_DATABASE_ID, {
       property: 'redaction_status',
       select: {
@@ -42,11 +47,11 @@ class Notion {
     })
   }
 
-  async findManyMinistries<T = any>(): Promise<T[]> {
+  async findManyMinistries(): Promise<NotionMinistry[]> {
     return this.database.findMany(NOTION_MINISTRIES_DATABASE_ID)
   }
 
-  async findManyPepJobs<T = any>(): Promise<T[]> {
+  async findManyPepJobs(): Promise<NotionPepJob[]> {
     return this.database.findMany(PEP_DATABASE_ID)
   }
 

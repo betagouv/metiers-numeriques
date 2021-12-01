@@ -1,23 +1,27 @@
 import Fuse from 'fuse.js'
-import { stripHtml } from 'string-strip-html'
+import * as R from 'ramda'
 
 import cache from '../helpers/cache'
-import generateJobFromNotionJobData from '../helpers/generateJobFromNotionJobData'
+import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
+import generateJobFromNotionPepJob from '../helpers/generateJobFromNotionPepJob'
 import handleError from '../helpers/handleError'
-import { dateReadableFormat } from '../legacy/utils'
+import stripHtmlTags from '../helpers/stripHtmlTags'
+import Job from '../models/Job'
 import notion from '../services/notion'
+
+const sortByPublishedAtDesc: (jobs: Job[]) => Job[] = R.sortWith([R.descend(R.prop('$publishedAt'))])
 
 const getCachedJobsIndex = async () =>
   cache.getOrCacheWith('JOBS.SEARCH_INDEX', async () => {
     const notionJobs = await notion.findManyJobs()
-    const jobs = notionJobs.map(generateJobFromNotionJobData)
-    console.log(jobs)
-    const jobsIndex = jobs.map(job => ({
-      ...job,
-      departmentsAsText: job.department.map(department => stripHtml(department).result).join(', '),
-    }))
+    const notionPepJobs = await notion.findManyPepJobs()
+    const jobs = notionJobs.map(generateJobFromNotionJob)
+    const pepJobs = notionPepJobs.map(generateJobFromNotionPepJob)
 
-    return jobsIndex
+    const allJobsIndex = [...jobs, ...pepJobs]
+    const allJobsSortedIndex = sortByPublishedAtDesc(allJobsIndex)
+
+    return allJobsSortedIndex
   })
 
 const searchJobs = async (req, res) => {
@@ -33,8 +37,10 @@ const searchJobs = async (req, res) => {
       .map(({ item }) => item)
 
     res.render('partials/jobList', {
-      dateReadableFormat,
       hasMore: false,
+      helper: {
+        stripHtmlTags,
+      },
       jobs: foundJobs,
       nextCursor: req.query.nextCursor,
     })

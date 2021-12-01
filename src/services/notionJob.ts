@@ -181,6 +181,7 @@ class NotionJob {
         },
       )
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e)
       throw new Error('Impossible de crééer une page')
     }
@@ -197,6 +198,7 @@ class NotionJob {
         },
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err)
     }
 

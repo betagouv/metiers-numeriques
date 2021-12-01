@@ -4,7 +4,7 @@ import handleError from './handleError'
 
 const markdownIt = new MarkdownIt({ linkify: true })
 
-export default function convertMarkdownToHtml(markdownSource: string): string {
+export default function convertMarkdownToInlineHtml(markdownSource: string): string {
   try {
     let mormalizedMarkdownSource = markdownSource
 
@@ -16,11 +16,7 @@ export default function convertMarkdownToHtml(markdownSource: string): string {
         .replace(/mailto:mailto:/g, 'mailto:')
     }
 
-    const htmlSource = markdownIt
-      .render(mormalizedMarkdownSource)
-      .replace(/\n/g, '')
-      .replace(/<p><\/p>/g, '')
-      .trim()
+    const htmlSource = markdownIt.renderInline(mormalizedMarkdownSource).replace(/\n/g, '').replace(/^-/, '').trim()
 
     return htmlSource
   } catch (err) {

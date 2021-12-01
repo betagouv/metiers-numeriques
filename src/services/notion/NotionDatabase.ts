@@ -3,8 +3,9 @@
 import { AxiosInstance } from 'axios'
 
 import handleError from '../../helpers/handleError'
+import { NotionDatabaseItem } from '../../types/Notion'
 
-class NotionDatabase {
+export default class NotionDatabase {
   private axiosInstance: AxiosInstance
 
   constructor(axiosInstance) {
@@ -28,7 +29,7 @@ class NotionDatabase {
     }
   }
 
-  async findMany<T = any>(databaseId: string, filter?: any): Promise<T[]> {
+  async findMany<T extends NotionDatabaseItem>(databaseId: string, filter?: any): Promise<T[]> {
     try {
       const { data } = await this.axiosInstance.post(
         `/databases/${databaseId}/query`,
@@ -65,5 +66,3 @@ class NotionDatabase {
     }
   }
 }
-
-export default NotionDatabase

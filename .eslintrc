@@ -11,7 +11,6 @@
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",
-    "no-console": "off",
     "no-new": "off",
     "no-plusplus": "off",
     "no-restricted-syntax": "off",
@@ -28,7 +27,6 @@
       "rules": {
         "class-methods-use-this": "off",
         "consistent-return": "off",
-        "no-console": "off",
         "no-new": "off",
         "no-plusplus": "off",
         "no-restricted-syntax": "off",

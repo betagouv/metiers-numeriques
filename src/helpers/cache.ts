@@ -24,7 +24,6 @@ class Cache {
     try {
       redisClient.on('error', err => handleError(err, 'helpers/Cache.getOrCacheWith()'))
 
-      console.log(redisClient.isOpen)
       if (!redisClient.isOpen) {
         await redisClient.connect()
       }

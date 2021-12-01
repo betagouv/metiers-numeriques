@@ -120,6 +120,7 @@ export const dateReadableFormat = (date, now = new Date()) => {
 
     return humanizedTimeAgo
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err)
 
     return ''
