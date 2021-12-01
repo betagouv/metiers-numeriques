@@ -2,14 +2,16 @@ import Fuse from 'fuse.js'
 import { stripHtml } from 'string-strip-html'
 
 import cache from '../helpers/cache'
+import generateJobFromNotionJobData from '../helpers/generateJobFromNotionJobData'
 import handleError from '../helpers/handleError'
 import { dateReadableFormat } from '../legacy/utils'
-import notionJob from '../services/notionJob'
+import notion from '../services/notion'
 
 const getCachedJobsIndex = async () =>
   cache.getOrCacheWith('JOBS.SEARCH_INDEX', async () => {
-    const { jobs } = await notionJob.all()
-
+    const notionJobs = await notion.findManyJobs()
+    const jobs = notionJobs.map(generateJobFromNotionJobData)
+    console.log(jobs)
     const jobsIndex = jobs.map(job => ({
       ...job,
       departmentsAsText: job.department.map(department => stripHtml(department).result).join(', '),
