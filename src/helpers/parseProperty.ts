@@ -1,4 +1,4 @@
-const { toDate } = require('date-fns-tz')
+import { toDate } from 'date-fns-tz'
 
 function parseProperty(item) {
   if (!item) {
@@ -46,4 +46,4 @@ function parseProperty(item) {
   }
 }
 
-module.exports = parseProperty
+export default parseProperty

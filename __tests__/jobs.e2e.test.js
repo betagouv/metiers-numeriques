@@ -1,19 +1,16 @@
 const axios = require('axios')
 
-const app = require('../build/server')
+const server = require('../build/server')
 
 describe('Displaying jobs on website', () => {
   const port = 8888
-  let server = null
 
-  beforeEach(() => {
-    server = app.listen(port, () => {
-      console.log(`Server listening at http://localhost:${port}`)
-    })
+  beforeAll(() => {
+    server.default.listen(port)
   })
 
-  afterEach(() => {
-    server.close()
+  afterAll(() => {
+    process.exit()
   })
 
   it('should display the list of jobs', async () => {

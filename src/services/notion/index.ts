@@ -1,14 +1,18 @@
 /* eslint-disable no-shadow */
 
-const axios = require('axios')
+import axios from 'axios'
 
-const NotionDatabase = require('./NotionDatabase')
+import NotionDatabase from './NotionDatabase'
 
-const { NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PEP_DATABASE_ID } = process.env
+const { NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PEP_DATABASE_ID } = process.env as {
+  [key: string]: string
+}
 
 class Notion {
+  public database: NotionDatabase
+
   constructor() {
-    const axiosInstance = axios.default.create({
+    const axiosInstance = axios.create({
       baseURL: 'https://api.notion.com/v1',
       headers: {
         Authorization: `Bearer ${NOTION_TOKEN}`,
@@ -20,11 +24,7 @@ class Notion {
     this.database = new NotionDatabase(axiosInstance)
   }
 
-  /**
-   * @param {string} offerId
-   * @returns {Promise<number>}
-   */
-  async countPepJob(offerId) {
+  async countPepJob(offerId: string): Promise<number> {
     return this.database.count(PEP_DATABASE_ID, {
       property: 'OfferID',
       text: {
@@ -33,18 +33,11 @@ class Notion {
     })
   }
 
-  /**
-   * @returns {Promise<*[]>}
-   */
-  async findManyJobs() {
+  async findManyJobs<T = any>(): Promise<T[]> {
     return this.database.findMany(NOTION_MINISTRIES_DATABASE_ID)
   }
 
-  /**
-   * @param {string} offerId
-   * @returns {Promise<boolean>}
-   */
-  async hasPepJob(offerId) {
+  async hasPepJob(offerId: string): Promise<boolean> {
     return this.database.has(PEP_DATABASE_ID, {
       property: 'OfferID',
       text: {
@@ -54,4 +47,4 @@ class Notion {
   }
 }
 
-module.exports = new Notion()
+export default new Notion()

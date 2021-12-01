@@ -1,21 +1,17 @@
 /* eslint-disable no-shadow */
 
-const handleError = require('../../helpers/handleError')
+import { AxiosInstance } from 'axios'
+
+import handleError from '../../helpers/handleError'
 
 class NotionDatabase {
-  /**
-   * @param {import('axios').AxiosInstance} axiosInstance
-   */
+  private axiosInstance: AxiosInstance
+
   constructor(axiosInstance) {
     this.axiosInstance = axiosInstance
   }
 
-  /**
-   * @param {string} databaseId
-   * @param {*=} filter
-   * @returns {Promise<number>}
-   */
-  async count(databaseId, filter) {
+  async count(databaseId: string, filter?: any): Promise<number> {
     try {
       const { data } = await this.axiosInstance.post(
         `/databases/${databaseId}/query`,
@@ -32,12 +28,7 @@ class NotionDatabase {
     }
   }
 
-  /**
-   * @param {string} databaseId
-   * @param {*=} filter
-   * @returns {Promise<*[]>}
-   */
-  async findMany(databaseId, filter) {
+  async findMany<T = any>(databaseId: string, filter?: any): Promise<T[]> {
     try {
       const { data } = await this.axiosInstance.post(
         `/databases/${databaseId}/query`,
@@ -54,12 +45,7 @@ class NotionDatabase {
     }
   }
 
-  /**
-   * @param {string} databaseId
-   * @param {*} filter
-   * @returns {Promise<boolean>}
-   */
-  async has(databaseId, filter) {
+  async has(databaseId: string, filter: any): Promise<boolean> {
     try {
       const count = await this.count(databaseId, filter)
 
@@ -69,12 +55,7 @@ class NotionDatabase {
     }
   }
 
-  /**
-   * @returns {Promise<any[]>}
-   *
-   * @deprecated
-   */
-  async list() {
+  async list<T = any>(): Promise<T[]> {
     try {
       const { data } = await this.axiosInstance.get(`/databases`)
 
@@ -85,4 +66,4 @@ class NotionDatabase {
   }
 }
 
-module.exports = NotionDatabase
+export default NotionDatabase

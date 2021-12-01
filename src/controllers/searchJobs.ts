@@ -1,10 +1,10 @@
-const Fuse = require('fuse.js')
-const { stripHtml } = require('string-strip-html')
+import Fuse from 'fuse.js'
+import { stripHtml } from 'string-strip-html'
 
-const cache = require('../helpers/cache')
-const handleError = require('../helpers/handleError')
-const { dateReadableFormat } = require('../legacy/utils')
-const notionJob = require('../services/notionJob')
+import cache from '../helpers/cache'
+import handleError from '../helpers/handleError'
+import { dateReadableFormat } from '../legacy/utils'
+import notionJob from '../services/notionJob'
 
 const getCachedJobsIndex = async () =>
   cache.getOrCacheWith('JOBS.SEARCH_INDEX', async () => {
@@ -27,7 +27,7 @@ const searchJobs = async (req, res) => {
     })
     const foundJobs = fusedJobs
       .search(req.query.query)
-      .filter(({ score }) => score < 0.75)
+      .filter(({ score }) => score !== undefined && score < 0.75)
       .map(({ item }) => item)
 
     res.render('partials/jobList', {
@@ -41,4 +41,4 @@ const searchJobs = async (req, res) => {
   }
 }
 
-module.exports = searchJobs
+export default searchJobs

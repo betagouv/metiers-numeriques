@@ -1,18 +1,22 @@
 /* eslint-disable no-await-in-loop, no-continue */
 
-const axios = require('axios')
-const ß = require('bhala')
-const csv = require('csvtojson')
+import axios from 'axios'
+import ß from 'bhala'
+import csv from 'csvtojson'
 
-const handleError = require('../helpers/handleError')
-const { JOB_FILTERS } = require('../legacy/utils')
-const AppError = require('../libs/AppError')
-const notion = require('../services/notion')
-const notionJob = require('../services/notionJob')
+import handleError from '../helpers/handleError'
+import { JOB_FILTERS } from '../legacy/utils'
+import AppError from '../libs/AppError'
+import notion from '../services/notion'
+import notionJob from '../services/notionJob'
+
+const { PEP_ENDPOINT } = process.env as {
+  [key: string]: string
+}
 
 async function updatePepJobs() {
   try {
-    const { data: pepJobsAsCsv } = await axios.get(process.env.PEP_ENDPOINT)
+    const { data: pepJobsAsCsv } = await axios.get(PEP_ENDPOINT)
     const pepJobs = await csv({
       delimiter: ';',
     }).fromString(pepJobsAsCsv)
@@ -44,4 +48,4 @@ async function updatePepJobs() {
   }
 }
 
-module.exports = updatePepJobs
+export default updatePepJobs

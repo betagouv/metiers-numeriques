@@ -26,8 +26,15 @@
         "project": "./tsconfig.json"
       },
       "rules": {
+        "class-methods-use-this": "off",
+        "consistent-return": "off",
+        "no-console": "off",
+        "no-new": "off",
+        "no-plusplus": "off",
         "no-restricted-syntax": "off",
+        "no-underscore-dangle": "off",
 
+        "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
         "@typescript-eslint/no-shadow": "off"
       }
     },
@@ -42,6 +49,12 @@
       "files": ["**/*.test.js", "**/*.test.ts", "jest.setup.js"],
       "env": {
         "jest": true
+      }
+    },
+    {
+      "files": ["**/__tests__/**/*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.test.json"
       }
     }
   ]

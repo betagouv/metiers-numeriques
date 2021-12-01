@@ -1,11 +1,10 @@
-const axios = require('axios')
-const { toDate } = require('date-fns-tz')
-const MarkdownIt = require('markdown-it')
+import axios from 'axios'
+import { toDate } from 'date-fns-tz'
+import MarkdownIt from 'markdown-it'
 
-const handleError = require('../helpers/handleError')
-const parseProperty = require('../helpers/parseProperty')
-const AppError = require('../libs/AppError')
-const Ministry = require('../models/Ministry')
+import handleError from '../helpers/handleError'
+import parseProperty from '../helpers/parseProperty'
+import Ministry from '../models/Ministry'
 
 const buildSlug = (title, id) => {
   const slug = `${title}-${id}`
@@ -39,8 +38,6 @@ class NotionMinistry {
       return ministries
     } catch (err) {
       handleError(err, 'services/NotionMinistry.getAll()')
-
-      throw new AppError('This error is handled.', true)
     }
   }
 
@@ -107,4 +104,4 @@ class NotionMinistry {
   }
 }
 
-module.exports = new NotionMinistry()
+export default new NotionMinistry()

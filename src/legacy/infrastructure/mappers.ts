@@ -1,9 +1,8 @@
-const { startOfDay } = require('date-fns')
-const { subDays } = require('date-fns')
-const MarkdownIt = require('markdown-it')
+import { startOfDay, subDays } from 'date-fns'
+import MarkdownIt from 'markdown-it'
 
-const parseProperty = require('../../helpers/parseProperty')
-const Job = require('../../models/Job')
+import parseProperty from '../../helpers/parseProperty'
+import Job from '../../models/Job'
 
 function urlify(text) {
   const urlRegex = /(https?:\/\/[^\s]+)/g
@@ -26,7 +25,7 @@ const buildSlug = (title, id) => {
   return slug
 }
 
-const mapToJob = rawJob => {
+export const mapToJob = rawJob => {
   const title = parseProperty(rawJob.properties.Name)
   const { id } = rawJob
   const md = new MarkdownIt({ linkify: true })
@@ -36,7 +35,7 @@ const mapToJob = rawJob => {
     conditions: parseProperty(rawJob.properties['Conditions particulières du poste'])
       .split('- ')
       .filter(item => item),
-    contact: md.renderInline(parseProperty(rawJob.properties.Contact) || ''),
+    // contact: md.renderInline(parseProperty(rawJob.properties.Contact) || ''),
     department: parseProperty(rawJob.properties['Ministère']).map(a => md.renderInline(a)),
     entity: md.renderInline(parseProperty(rawJob.properties['Entité recruteuse']) || '') || null,
     experiences: parseProperty(rawJob.properties['Expérience']),
@@ -67,7 +66,7 @@ const mapToJob = rawJob => {
   })
 }
 
-const formatDetailFromPep = job => {
+export const formatDetailFromPep = job => {
   const item = job.properties
   const title = parseProperty(item.Name)
   const { id } = job
@@ -75,7 +74,7 @@ const formatDetailFromPep = job => {
   return new Job({
     advantages: '',
     conditions: [],
-    contact: parseProperty(item.Origin_CustomFieldsTranslation_ShortText2_),
+    // contact: parseProperty(item.Origin_CustomFieldsTranslation_ShortText2_),
     department: [parseProperty(item.Origin_Entity_)],
     experiences: parseProperty(item.ApplicantCriteria_EducationLevel_)
       ? [parseProperty(item.ApplicantCriteria_EducationLevel_)]
@@ -98,9 +97,4 @@ const formatDetailFromPep = job => {
     title,
     toApply: parseProperty(item.Origin_CustomFieldsTranslation_ShortText1_),
   })
-}
-
-module.exports = {
-  formatDetailFromPep,
-  mapToJob,
 }

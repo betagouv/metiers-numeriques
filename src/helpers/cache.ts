@@ -1,6 +1,7 @@
-const { createClient } = require('redis')
+// import ß from 'bhala'
+import { createClient } from 'redis'
 
-const handleError = require('./handleError')
+import handleError from './handleError'
 
 const { REDIS_URL } = process.env
 const CACHE_DURATION = process.env.CACHE_DURATION ? Number(process.env.CACHE_DURATION) : 60
@@ -16,13 +17,19 @@ class Cache {
    * @param {number=} forInSeconds
    * @returns {Promise<any>}
    */
-  async getOrCacheWith(key, cacheGetter, forInSeconds = CACHE_DURATION) {
+  async getOrCacheWith<T = any>(
+    key: string,
+    cacheGetter: () => Promise<T>,
+    forInSeconds: number = CACHE_DURATION,
+  ): Promise<T> {
     try {
       redisClient.on('error', err => handleError(err, 'helpers/Cache.getOrCacheWith()'))
 
       await redisClient.connect()
 
       const maybeCachedValueAsJson = await redisClient.get(key)
+      // ß.info('- info -', 'FROM CACHE')
+
       if (maybeCachedValueAsJson !== null) {
         await redisClient.disconnect()
 
@@ -31,16 +38,20 @@ class Cache {
         return maybeCachedValue
       }
 
+      // ß.info('- info -', key, 'FROM CACHE')
+
       const value = await cacheGetter()
       const valueAsJson = JSON.stringify(value)
-      await redisClient.set(key, valueAsJson, 'EX', forInSeconds)
+      await redisClient.set(key, valueAsJson, {
+        EX: forInSeconds,
+      })
       await redisClient.disconnect()
 
       return value
     } catch (err) {
-      handleError(err, 'helpers/Cache.getOrCacheWith()')
+      return handleError(err, 'helpers/Cache.getOrCacheWith()')
     }
   }
 }
 
-module.exports = new Cache()
+export default new Cache()
