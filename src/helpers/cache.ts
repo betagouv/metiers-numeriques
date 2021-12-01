@@ -1,4 +1,3 @@
-// import ß from 'bhala'
 import { createClient } from 'redis'
 
 import handleError from './handleError'
@@ -28,7 +27,6 @@ class Cache {
       await redisClient.connect()
 
       const maybeCachedValueAsJson = await redisClient.get(key)
-      // ß.info('- info -', 'FROM CACHE')
 
       if (maybeCachedValueAsJson !== null) {
         await redisClient.disconnect()
@@ -37,8 +35,6 @@ class Cache {
 
         return maybeCachedValue
       }
-
-      // ß.info('- info -', key, 'FROM CACHE')
 
       const value = await cacheGetter()
       const valueAsJson = JSON.stringify(value)
