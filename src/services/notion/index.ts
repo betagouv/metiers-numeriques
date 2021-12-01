@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import NotionDatabase from './NotionDatabase'
 
-const { NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PEP_DATABASE_ID } = process.env as {
+const { NOTION_JOBS_DATABASE_ID, NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PEP_DATABASE_ID } = process.env as {
   [key: string]: string
 }
 
@@ -34,7 +34,20 @@ class Notion {
   }
 
   async findManyJobs<T = any>(): Promise<T[]> {
+    return this.database.findMany(NOTION_JOBS_DATABASE_ID, {
+      property: 'redaction_status',
+      select: {
+        equals: 'published',
+      },
+    })
+  }
+
+  async findManyMinistries<T = any>(): Promise<T[]> {
     return this.database.findMany(NOTION_MINISTRIES_DATABASE_ID)
+  }
+
+  async findManyPepJobs<T = any>(): Promise<T[]> {
+    return this.database.findMany(PEP_DATABASE_ID)
   }
 
   async hasPepJob(offerId: string): Promise<boolean> {

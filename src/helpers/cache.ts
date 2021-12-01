@@ -24,7 +24,10 @@ class Cache {
     try {
       redisClient.on('error', err => handleError(err, 'helpers/Cache.getOrCacheWith()'))
 
-      await redisClient.connect()
+      console.log(redisClient.isOpen)
+      if (!redisClient.isOpen) {
+        await redisClient.connect()
+      }
 
       const maybeCachedValueAsJson = await redisClient.get(key)
 
