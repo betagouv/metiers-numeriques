@@ -31,15 +31,17 @@ export const mapToJob = rawJob => {
   const md = new MarkdownIt({ linkify: true })
 
   return new Job({
+    $publishedAt: 0,
+
     advantages: md.renderInline(parseProperty(rawJob.properties['Les plus du poste'])),
     conditions: parseProperty(rawJob.properties['Conditions particulières du poste'])
       .split('- ')
       .filter(item => item),
     // contact: md.renderInline(parseProperty(rawJob.properties.Contact) || ''),
     department: parseProperty(rawJob.properties['Ministère']).map(a => md.renderInline(a)),
-    entity: md.renderInline(parseProperty(rawJob.properties['Entité recruteuse']) || '') || null,
+    entity: md.renderInline(parseProperty(rawJob.properties['Entité recruteuse']) || '') || undefined,
     experiences: parseProperty(rawJob.properties['Expérience']),
-    hiringProcess: md.renderInline(parseProperty(rawJob.properties['Processus de recrutement']) || '') || null,
+    hiringProcess: md.renderInline(parseProperty(rawJob.properties['Processus de recrutement']) || '') || undefined,
     id: rawJob.id,
     limitDate: parseProperty(rawJob.properties['Date limite'])
       ? parseProperty(rawJob.properties['Date limite'])
@@ -72,28 +74,29 @@ export const formatDetailFromPep = job => {
   const { id } = job
 
   return new Job({
-    advantages: '',
-    conditions: [],
-    // contact: parseProperty(item.Origin_CustomFieldsTranslation_ShortText2_),
+    $publishedAt: 0,
+
+    advantages: undefined,
+    conditions: undefined,
     department: [parseProperty(item.Origin_Entity_)],
     experiences: parseProperty(item.ApplicantCriteria_EducationLevel_)
       ? [parseProperty(item.ApplicantCriteria_EducationLevel_)]
       : [],
     id,
-    limitDate: '',
+    limitDate: undefined,
     locations: [(parseProperty(item.Location_JobLocation_) || '').replace('- -', '')],
     mission: urlify(parseProperty(item.JobDescriptionTranslation_Description1_) || ''),
     more: urlify(`https://place-emploi-public.gouv.fr/offre-emploi/${parseProperty(item.Offer_Reference_)}/`),
     openedToContractTypes: parseProperty(item.JobDescription_Contract_)
       ? [parseProperty(item.JobDescription_Contract_)]
       : [],
-    profile: [parseProperty(item.JobDescriptionTranslation_Description2_)],
+    profile: parseProperty(item.JobDescriptionTranslation_Description2_),
     publicationDate: (parseProperty(item.FirstPublicationDate) || '').split(' ')[0],
     salary: undefined,
     slug: `${buildSlug(title, id)}?tag=pep`,
     tasks: undefined,
-    team: '',
-    teamInfo: '',
+    team: undefined,
+    teamInfo: undefined,
     title,
     toApply: parseProperty(item.Origin_CustomFieldsTranslation_ShortText1_),
   })

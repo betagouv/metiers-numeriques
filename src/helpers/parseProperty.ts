@@ -1,6 +1,8 @@
 import { toDate } from 'date-fns-tz'
 
-function parseProperty(item) {
+import { NotionDatabaseItemProperty } from '../types/Notion'
+
+function parseProperty(item: NotionDatabaseItemProperty) {
   if (!item) {
     return undefined
   }
@@ -20,22 +22,31 @@ function parseProperty(item) {
 
       return markdownSource
     }
+
     if ('multi_select' in item) {
       return item.multi_select.map(select => select.name)
     }
+
     if ('select' in item) {
-      return item.select.name
+      return item.select !== null ? item.select.name : ''
     }
+
     if ('title' in item) {
       // Some titles have multiple empty elements, haven't figured why
       return item.title.filter(titleChunck => titleChunck.plain_text)[0].plain_text
     }
+
     if ('email' in item) {
-      return item.email[0].plain_text
+      return (item as any).email[0].plain_text
     }
     if ('date' in item) {
+      if (item.date === null) {
+        return new Date()
+      }
+
       return toDate(`${item.date.start}T00:00:00+02:00`, { timeZone: 'Europe/Paris' })
     }
+
     if ('files' in item) {
       return item.files
     }

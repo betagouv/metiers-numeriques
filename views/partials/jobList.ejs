@@ -12,7 +12,7 @@
           <div class="fr-col-md-3 fr-col-sm-12">
             <% if (jobs[i].department?.length) { %>
               <div class="fr-mb-2w fr-mt-1w no-link">
-                <%- jobs[i].department[0] ;%>
+                <%- jobs[i].department[0] %>
               </div>
             <% } %>
 
@@ -23,20 +23,20 @@
                     <span aria-hidden="true" class="fr-fi ri-calendar-line" style="font-size: 1.2em;"></span>
                   </div>
                   <div class="fr-col-10">
-                    <%= dateReadableFormat(jobs[i].publicationDate) %>
+                    <%= jobs[i].publicationDate %>
                   </div>
                 </div>
               </div>
             <% } %>
 
-            <% if (jobs[i].locations) { %>
+            <% if (jobs[i].locations?.length) { %>
               <div class="fr-my-2w">
                 <div class="fr-grid-row">
                   <div class="fr-col-2">
                     <span aria-hidden="true" class="fr-fi ri-map-pin-line" style="font-size: 1.2em;"></span>
                   </div>
                   <div class="fr-col-10">
-                    <%= jobs[i].locations ;%>
+                    <%= jobs[i].locations[0] %>
                   </div>
                 </div>
               </div>
@@ -46,12 +46,12 @@
           <div class="fr-col-md-9 fr-col-sm-12">
             <h4 class="fr-card__lead">
               <a href="/annonces/<%= jobs[i].slug ;%>" class="fr-card__link">
-                <%= jobs[i].title ;%>
+                <%= jobs[i].title %>
               </a>
             </h4>
 
-            <p class="fr-card__desc" style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; /* number of lines to show */ font-size: 1rem; -webkit-box-orient: vertical;">
-              <%- (jobs[i].mission || jobs[i].tasks[0] || '').replace(/\n/g, '<br>'); %>
+            <p class="fr-card__desc excerpt">
+              <%- helper.stripHtmlTags(jobs[i].mission || jobs[i].tasks[0] || '') %>
             </p>
 
             <ul class="fr-tags-group">
@@ -77,8 +77,4 @@
       </div>
 		</div>
 	</div>
-<% } %>
-
-<% if (typeof nextCursor !== 'undefined') { %>
-  <div id='loadmore-data' data-next-cursor='<%= nextCursor ;%>'></div>
 <% } %>

@@ -18,6 +18,7 @@ async function purgeRedisCache() {
     ß.success('[scripts/purgeRedisCache.js]', 'Redis cache purged.')
   } catch (err) {
     ß.error('[scripts/purgeRedisCache.js]', String(err))
+    // eslint-disable-next-line no-console
     console.error(err)
   }
 }

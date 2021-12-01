@@ -1,65 +1,72 @@
-type JobProps = {
-  advantages: string | null
-  conditions: string[]
-  department: string[]
-  entity?: string | null
-  experiences: string[]
-  hiringProcess?: string | null
+interface JobProps {
+  /** Unix Timestamp in seconds */
+  $publishedAt: number
+  advantages?: string
+  conditions?: string
+  department?: string[]
+  entity?: string
+  experiences?: string[]
+  hiringProcess?: string
   id: string
-  limitDate: string
-  locations: string[]
-  mission: string
-  more: string | null
-  openedToContractTypes: string[]
-  profile: string[]
-  publicationDate: Date | null
+  limitDate?: string
+  locations?: string[]
+  mission?: string
+  more?: string
+  openedToContractTypes?: string[]
+  profile?: string
+  publicationDate?: string
   salary?: string
   slug: string
-  tasks?: string[]
-  team: string
-  teamInfo: string
+  tasks?: string
+  team?: string
+  teamInfo?: string
   title: string
-  toApply: string
+  toApply?: string
 }
 
-class Job {
-  public advantages: string | null
-  public conditions: string[]
-  public department: string[]
-  public entity?: string | null
-  public experiences: string[]
-  public hiringProcess?: string | null
+class Job implements JobProps {
+  /** Unix Timestamp in seconds */
+  public $publishedAt: number
+
   public id: string
-  public limitDate: string
-  public locations: string[]
-  public mission: string
-  public more: string | null
-  public openedToContractTypes: string[]
-  public profile: string[]
-  public publicationDate: Date | null
-  public salary?: string
   public slug: string
-  public tasks?: string[]
-  public team: string
-  public teamInfo: string
   public title: string
-  public toApply: string
+
+  public advantages?: string
+  public conditions?: string
+  public department: string[] = []
+  public entity?: string
+  public experiences: string[] = []
+  public hiringProcess?: string
+  public limitDate?: string
+  public locations: string[] = []
+  public mission?: string
+  public more?: string
+  public openedToContractTypes: string[]
+  public profile?: string
+  public publicationDate?: string
+  public salary?: string
+  public tasks?: string
+  public team?: string
+  public teamInfo?: string
+  public toApply?: string
 
   constructor({
-    advantages = null,
+    $publishedAt,
+    advantages,
     conditions,
     department,
     entity,
     experiences,
-    hiringProcess = null,
+    hiringProcess,
     id,
     limitDate,
     locations,
     mission,
-    more = null,
+    more,
     openedToContractTypes,
     profile,
-    publicationDate = null,
+    publicationDate,
     salary,
     slug,
     tasks,
@@ -68,27 +75,29 @@ class Job {
     title,
     toApply,
   }: JobProps) {
-    this.id = id
-    this.title = title
-    this.mission = mission
-    this.experiences = experiences
-    this.locations = locations
-    this.department = department
-    this.entity = entity
-    this.openedToContractTypes = openedToContractTypes
-    this.salary = salary
-    this.team = team
-    this.tasks = tasks
-    this.profile = profile
-    this.slug = slug
-    this.hiringProcess = hiringProcess
-    this.publicationDate = publicationDate
-    this.conditions = conditions
-    this.teamInfo = teamInfo
-    this.toApply = toApply
-    this.more = more
-    this.limitDate = limitDate
+    this.$publishedAt = $publishedAt
+
     this.advantages = advantages
+    this.conditions = conditions
+    this.department = department || []
+    this.entity = entity
+    this.experiences = experiences || []
+    this.hiringProcess = hiringProcess
+    this.id = id
+    this.limitDate = limitDate
+    this.locations = locations || []
+    this.mission = mission
+    this.more = more
+    this.openedToContractTypes = openedToContractTypes || []
+    this.profile = profile
+    this.publicationDate = publicationDate
+    this.salary = salary
+    this.slug = slug
+    this.tasks = tasks
+    this.team = team
+    this.teamInfo = teamInfo
+    this.title = title
+    this.toApply = toApply
   }
 }
 

@@ -6,244 +6,218 @@
     <%- include('partials/header') -%>
 
     <div id="job-detail" class="fr-container">
-        <div class="fr-mb-4w fr-mt-6w">
-            <h1>
-                <%= job.title; %>
-            </h1>
-        </div>
-        <div class="fr-callout fr-px-0 fr-my-2w">
-            <div class="fr-callout__text fr-text--lg">
-                <% if (job.publicationDate) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Publié le
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%= dateReadableFormat(job.publicationDate); %></b>
-                        </div>
-                    </div>
-                <% } %>
-                <% if (job.department) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Ministère
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%- job.department.join(', '); %></b>
-                        </div>
-                    </div>
-                <% } %>
-                <% if (job.entity) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Entité recruteuse
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%- job.entity %></b>
-                        </div>
-                    </div>
-                <% } %>
-                <% if (job.locations) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Localisation
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%= job.locations; %></b>
-                        </div>
-                    </div>
-                <% } %>
-                <% if (job.openedToContractTypes.length) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Ouvert aux
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%= job.openedToContractTypes.join(', '); %></b>
-                        </div>
-                    </div>
-                <% } %>
-                <% if (job.salary) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Rémunération
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%= job.salary; %></b>
-                        </div>
-                    </div>
-                <% } %>
-                <% if (job.experiences.length) { %>
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                            Expérience
-                        </div>
-                        <div class="fr-col-md-9 fr-col-sm-12">
-                            <b><%= job.experiences.join(' | '); %></b>
-                        </div>
-                    </div>
-                <% } %>
+      <div class="fr-mb-4w fr-mt-6w">
+        <h1><%= job.title %></h1>
+      </div>
+
+      <div id="job-detail-header" class="fr-callout fr-px-0 fr-my-2w">
+        <div class="fr-callout__text fr-text--lg">
+          <% if (job.publicationDate) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Publié le
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <p><%= job.publicationDate %></p>
+              </div>
             </div>
+          <% } %>
+
+          <% if (job.department.length) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Ministère
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <p><%- job.department.join(', '); %></p>
+              </div>
+            </div>
+          <% } %>
+
+          <% if (job.entity) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Entité recruteuse
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <%- job.entity %>
+              </div>
+            </div>
+          <% } %>
+
+          <% if (job.locations.length) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Localisation
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <%- job.locations.map(location => `<p>${location}</p>`).join('') %>
+              </div>
+            </div>
+          <% } %>
+
+          <% if (job.openedToContractTypes.length) { %>
+              <div class="fr-grid-row fr-grid-row--gutters">
+                  <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                      Ouvert aux
+                  </div>
+                  <div class="fr-col-md-9 fr-col-sm-12">
+                      <p><%= job.openedToContractTypes.join(', '); %></p>
+                  </div>
+              </div>
+          <% } %>
+
+          <% if (job.salary) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Rémunération
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <%- job.salary %>
+              </div>
+            </div>
+          <% } %>
+
+          <% if (job.experiences.length) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Expérience
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <p><%= job.experiences.join(' | '); %></p>
+              </div>
+            </div>
+          <% } %>
         </div>
-        <div id="job-detail-main-fields" class="fr-my-4w">
-            <% if(job.team){ %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <h3>Équipe</h3>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <p><%= job.team; %></p>
-                    </div>
-                </div>
-            <% } %>
-            <% if(job.mission){ %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <h3>Mission</h3>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <p><%- job.mission.replace(/\n/g, '<br>'); %></p>
-                    </div>
-                </div>
-            <% } %>
-            <% if(job.tasks){ %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <h3>Ce que vous ferez</h3>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <ul>
-                            <% job.tasks.forEach(function(task) { %>
-                                <li>
-                                    <%= task; %>
-                                </li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                </div>
-            <% } %>
-            <% if(job.advantages){ %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <h3>Les plus du poste</h3>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <p><%= job.advantages; %></p>
-                    </div>
-                </div>
-            <% } %>
-            <% if(job.conditions.length){ %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <h3>
-                          Conditions particulières<br />
-                          du poste
-                        </h3>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <% if(job.conditions.length === 1){ %>
-                            <p>
-                                <%- job.conditions[0].replace(/\n/g, '<br>'); %>
-                            </p>
-                        <% } %>
-                        <% if(job.conditions.length > 1){ %>
-                            <ul>
-                                <% job.conditions.forEach(function(condition) { %>
-                                    <li>
-                                        <%= condition; %>
-                                    </li>
-                                <% }); %>
-                            </ul>
-                        <% } %>
-                    </div>
-                </div>
-            <% } %>
-            <% if(job.profile.length){ %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-md-3 fr-col-sm-12">
-                        <h3>Votre profil</h3>
-                    </div>
-                    <div class="fr-col-md-9 fr-col-sm-12">
-                        <% if(job.profile.length === 1){ %>
-                            <p>
-                                <%- job.profile[0].replace(/\n/g, '<br>'); %>
-                            </p>
-                        <% } %>
-                        <% if(job.profile.length > 1){ %>
-                            <ul>
-                                <% job.profile.forEach(function(profile) { %>
-                                    <li>
-                                        <%= profile; %>
-                                    </li>
-                                <% }); %>
-                            </ul>
-                        <% } %>
-                    </div>
-                </div>
-            <% } %>
-        </div>
+      </div>
+
+      <div id="job-detail-main-fields" class="fr-my-4w">
+        <% if (job.team) { %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Équipe</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- job.team; %>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (job.mission) { %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Équipe</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- job.mission %>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (job.tasks) { %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Ce que vous ferez</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- job.tasks %>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (job.advantages) { %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Les plus du poste</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- job.advantages %>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (job.conditions) { %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>
+                Conditions particulières<br />
+                du poste
+              </h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- job.conditions %>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (job.profile) { %>
+          <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-md-3 fr-col-sm-12">
+              <h3>Votre profil</h3>
+            </div>
+            <div class="fr-col-md-9 fr-col-sm-12">
+              <%- job.profile %>
+            </div>
+          </div>
+        <% } %>
+      </div>
     </div>
-    <div class="fr-container fr-py-4w" style="background-color: #F0F0F0">
-        <% if(job.teamInfo){ %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-md-3 fr-col-sm-12">
-                    <p>Si vous avez des questions</p>
-                </div>
-                <div class="fr-col-md-9 fr-col-sm-12">
-                    <p>
-                        <%- job.teamInfo; %>
-                    </p>
-                </div>
-            </div>
-        <% } %>
-        <% if(job.toApply){ %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-md-3 fr-col-sm-12">
-                    <p>Pour candidater</p>
-                </div>
-                <div class="fr-col-md-9 fr-col-sm-12">
-                    <p>
-                        <b><%- job.toApply; %></b>
-                    </p>
-                </div>
-            </div>
-        <% } %>
-        <% if(job.more){ %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-md-3 fr-col-sm-12">
-                    <p>Pour en savoir plus</p>
-                </div>
-                <div class="fr-col-md-9 fr-col-sm-12">
-                    <p>
-                        <%- job.more; %>
-                    </p>
-                </div>
-            </div>
-        <% } %>
-        <% if(job.limitDate){ %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-md-3 fr-col-sm-12">
-                    <p>Date Limite</p>
-                </div>
-                <div class="fr-col-md-9 fr-col-sm-12">
-                    <p>
-                        <%= dateReadableFormat(job.limitDate); %>
-                    </p>
-                </div>
-            </div>
-        <% } %>
-        <% if(job.hiringProcess){ %>
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-md-3 fr-col-sm-12">
-                    <p>Processus de recrutement</p>
-                </div>
-                <div class="fr-col-md-9 fr-col-sm-12">
-                    <p>
-                        <%= job.hiringProcess; %>
-                    </p>
-                </div>
-            </div>
-        <% } %>
+
+    <div id="job-detail-footer" class="fr-container fr-py-4w" style="background-color: #F0F0F0">
+      <% if (job.teamInfo) { %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <p>Si vous avez des questions</p>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12">
+            <%- job.teamInfo %>
+          </div>
+      </div>
+      <% } %>
+
+      <% if (job.toApply) { %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <p>Pour candidater</p>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12" style="font-weight: 700;">
+            <%- job.toApply %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (job.more) { %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <p>Pour en savoir plus</p>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12">
+            <%- job.more %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if(job.limitDate){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <p>Date Limite</p>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12">
+            <p><%= job.limitDate %></p>
+          </div>
+        </div>
+      <% } %>
+
+      <% if(job.hiringProcess){ %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <p>Processus de recrutement</p>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12">
+            <%- job.hiringProcess %>
+          </div>
+        </div>
+      <% } %>
     </div>
 
     <%- include('partials/footer') -%>
