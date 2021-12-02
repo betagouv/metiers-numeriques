@@ -1,10 +1,12 @@
 import cache from '../helpers/cache'
 import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
 import generateJobFromNotionPepJob from '../helpers/generateJobFromNotionPepJob'
+import generateJobFromNotionSkbJob from '../helpers/generateJobFromNotionSkbJob'
 import handleError from '../helpers/handleError'
 import notion from '../services/notion'
 import { NotionJob } from '../types/NotionJob'
 import { NotionPepJob } from '../types/NotionPepJob'
+import { NotionSkbJob } from '../types/NotionSkbJob'
 
 const getJob = async (req, res) => {
   try {
@@ -20,11 +22,21 @@ const getJob = async (req, res) => {
       const { data: notionJob, type } = maybeNotionPage
 
       let job
-      if (type === 'NOTION_JOB') {
-        job = generateJobFromNotionJob(notionJob as NotionJob)
-      }
-      if (type === 'NOTION_PEP_JOB') {
-        job = generateJobFromNotionPepJob(notionJob as NotionPepJob)
+      switch (type) {
+        case 'NOTION_JOB':
+          job = generateJobFromNotionJob(notionJob as NotionJob)
+          break
+
+        case 'NOTION_PEP_JOB':
+          job = generateJobFromNotionPepJob(notionJob as NotionPepJob)
+          break
+
+        case 'NOTION_SKB_JOB':
+          job = generateJobFromNotionSkbJob(notionJob as NotionSkbJob)
+          break
+
+        default:
+          throw new Error(`This Notion job type (${type}) is not supported.`)
       }
 
       return {

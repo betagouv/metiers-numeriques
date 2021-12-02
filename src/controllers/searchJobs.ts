@@ -9,7 +9,7 @@ import stripHtmlTags from '../helpers/stripHtmlTags'
 import Job from '../models/Job'
 import notion from '../services/notion'
 
-const sortByPublishedAtDesc: (jobs: Job[]) => Job[] = R.sortWith([R.descend(R.prop('$publishedAt'))])
+const sortByPublishedAtDesc: (jobs: Job[]) => Job[] = R.sortWith([R.descend(R.prop('$updatedAt'))])
 
 const getCachedJobsIndex = async () =>
   cache.getOrCacheWith('JOBS.SEARCH_INDEX', async () => {

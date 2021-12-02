@@ -197,7 +197,7 @@
         </div>
       <% } %>
 
-      <% if(job.limitDate){ %>
+      <% if (job.limitDate) { %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-3 fr-col-sm-12">
             <p>Date Limite</p>
@@ -208,13 +208,24 @@
         </div>
       <% } %>
 
-      <% if(job.hiringProcess){ %>
+      <% if (job.hiringProcess) { %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-3 fr-col-sm-12">
             <p>Processus de recrutement</p>
           </div>
           <div class="fr-col-md-9 fr-col-sm-12">
             <%- job.hiringProcess %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (job.$reference) { %>
+        <div class="fr-grid-row fr-grid-row--gutters">
+          <div class="fr-col-md-3 fr-col-sm-12">
+            <p>Référence interne</p>
+          </div>
+          <div class="fr-col-md-9 fr-col-sm-12">
+            <p><code><%= job.$reference %></code></p>
           </div>
         </div>
       <% } %>

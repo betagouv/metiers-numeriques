@@ -14,7 +14,7 @@ const { PEP_ENDPOINT } = process.env as {
   [key: string]: string
 }
 
-async function updatePepJobs() {
+export default async function updatePepJobs() {
   try {
     const { data: pepJobsAsCsv } = await axios.get(PEP_ENDPOINT)
     const pepJobs = await csv({
@@ -37,7 +37,7 @@ async function updatePepJobs() {
       }
 
       ß.info(`[jobs/updatePepJobs()] Adding PEP job #${pepJob.OfferID} to Notion…`)
-      await notionJob.createPage(process.env.PEP_DATABASE_ID, pepJob)
+      await notionJob.createPage(process.env.NOTION_PEP_JOBS_DATABASE_ID, pepJob)
     }
   } catch (err) {
     if (!(err instanceof AppError)) {
@@ -47,5 +47,3 @@ async function updatePepJobs() {
     process.exit(1)
   }
 }
-
-export default updatePepJobs

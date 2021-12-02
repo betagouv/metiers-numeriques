@@ -5,10 +5,18 @@ import axios from 'axios'
 import { NotionJob } from '../../types/NotionJob'
 import { NotionMinistry } from '../../types/NotionMinistry'
 import { NotionPepJob } from '../../types/NotionPepJob'
+import { NotionSkbJob } from '../../types/NotionSkbJob'
+import { SeekubeJobNormalized } from '../../types/Seekube'
 import NotionDatabase from './NotionDatabase'
 import NotionPage from './NotionPage'
 
-const { NOTION_JOBS_DATABASE_ID, NOTION_MINISTRIES_DATABASE_ID, NOTION_TOKEN, PEP_DATABASE_ID } = process.env as {
+const {
+  NOTION_JOBS_DATABASE_ID,
+  NOTION_MINISTRIES_DATABASE_ID,
+  NOTION_PEP_JOBS_DATABASE_ID,
+  NOTION_SKB_JOBS_DATABASE_ID,
+  NOTION_TOKEN,
+} = process.env as {
   [key: string]: string
 }
 
@@ -30,10 +38,23 @@ class Notion {
   }
 
   async countPepJob(offerId: string): Promise<number> {
-    return this.database.count(PEP_DATABASE_ID, {
+    return this.database.count(NOTION_PEP_JOBS_DATABASE_ID, {
       property: 'OfferID',
       text: {
         equals: offerId,
+      },
+    })
+  }
+
+  async createSkbJob(data: SeekubeJobNormalized): Promise<void> {
+    return this.page.create(NOTION_SKB_JOBS_DATABASE_ID, data)
+  }
+
+  async findSkbJob(id: string): Promise<NotionSkbJob | null> {
+    return this.database.find(NOTION_SKB_JOBS_DATABASE_ID, {
+      property: 'ID',
+      text: {
+        equals: id,
       },
     })
   }
@@ -52,14 +73,27 @@ class Notion {
   }
 
   async findManyPepJobs(): Promise<NotionPepJob[]> {
-    return this.database.findMany(PEP_DATABASE_ID)
+    return this.database.findMany(NOTION_PEP_JOBS_DATABASE_ID)
   }
 
-  async hasPepJob(offerId: string): Promise<boolean> {
-    return this.database.has(PEP_DATABASE_ID, {
+  async findManySkbJobs(): Promise<NotionSkbJob[]> {
+    return this.database.findMany(NOTION_SKB_JOBS_DATABASE_ID)
+  }
+
+  async hasPepJob(id: string): Promise<boolean> {
+    return this.database.has(NOTION_PEP_JOBS_DATABASE_ID, {
       property: 'OfferID',
       text: {
-        equals: offerId,
+        equals: id,
+      },
+    })
+  }
+
+  async hasSkbJob(id: string): Promise<boolean> {
+    return this.database.has(NOTION_SKB_JOBS_DATABASE_ID, {
+      property: 'ID',
+      text: {
+        equals: id,
       },
     })
   }

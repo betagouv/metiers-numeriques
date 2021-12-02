@@ -62,9 +62,8 @@ jobs:
   #         CI: true
   #         NOTION_TOKEN: faketoken
   #         NOTION_JOBS_DATABASE_ID: fakedatabaseid
-  #         PEP_DATABASE_ID: fakepepdatabaseid
+  #         NOTION_PEP_JOBS_DATABASE_ID: fakepepdatabaseid
   #         PEP_ENDPOINT: fakepependpoint
-  #         FEATURE_FLAG_FETCH_PEP_JOBS: false
 
   build:
     name: Build

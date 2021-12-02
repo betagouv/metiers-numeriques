@@ -1,4 +1,4 @@
-export type NotionError = {
+export type NotionResponseError = {
   code: string
   message: string
   object: 'error'
@@ -33,8 +33,11 @@ export type NotionDatabaseItemProperty =
   | NotionDatabaseItemPropertyAsCheckbox
   | NotionDatabaseItemPropertyAsCreatedTime
   | NotionDatabaseItemPropertyAsDate
+  | NotionDatabaseItemPropertyAsEmail
   | NotionDatabaseItemPropertyAsFiles
+  | NotionDatabaseItemPropertyAsLastEditedTime
   | NotionDatabaseItemPropertyAsMultiSelect
+  | NotionDatabaseItemPropertyAsNumber
   | NotionDatabaseItemPropertyAsPeople
   | NotionDatabaseItemPropertyAsRichText
   | NotionDatabaseItemPropertyAsSelect
@@ -56,12 +59,19 @@ export type NotionDatabaseItemPropertyAsCreatedTime = {
 
 export type NotionDatabaseItemPropertyAsDate = {
   date: {
-    end: null
     /** ISO date string */
-    start: string
+    end: string | null
+    /** ISO date string */
+    start: string | null
   } | null
   id: string
   type: 'date'
+}
+
+export type NotionDatabaseItemPropertyAsEmail = {
+  email: string | null
+  id: string
+  type: 'email'
 }
 
 export type NotionDatabaseItemPropertyAsFiles = {
@@ -88,14 +98,11 @@ export type NotionDatabaseItemPropertyAsFiles = {
   type: 'files'
 }
 
-export type NotionDatabaseItemPropertyAsPeople = {
+export type NotionDatabaseItemPropertyAsLastEditedTime = {
   id: string
-  people: Array<{
-    /** UUID v4 */
-    id: string
-    object: 'user'
-  }>
-  type: 'people'
+  /** ISO date string */
+  last_edited_time: string
+  type: 'last_edited_time'
 }
 
 export type NotionDatabaseItemPropertyAsMultiSelect = {
@@ -107,6 +114,22 @@ export type NotionDatabaseItemPropertyAsMultiSelect = {
     name: string
   }>
   type: 'multi_select'
+}
+
+export type NotionDatabaseItemPropertyAsNumber = {
+  id: string
+  number: number | null
+  type: 'number'
+}
+
+export type NotionDatabaseItemPropertyAsPeople = {
+  id: string
+  people: Array<{
+    /** UUID v4 */
+    id: string
+    object: 'user'
+  }>
+  type: 'people'
 }
 
 export type NotionDatabaseItemPropertyAsRichText = {

@@ -15,6 +15,8 @@
     "dev": "nodemon --ext js,json,ts --exec \"yarn start:dev\" --watch ./src",
     "dev:cron": "nodemon --exec \"yarn start:dev:cron\" --watch ./src",
     "dev:docker": "docker-compose down && docker-compose up -d cache",
+    "dev:job:skb": "node -r dotenv/config -r ts-node/register ./src/dev/runSkbJobsUpdate.ts",
+    "dev:notion:guess": "node -r dotenv/config -r ts-node/register ./src/dev/guessNotionDabaseType.ts",
     "prepare": "husky install",
     "prestart": "yarn cache:purge",
     "start": "node -r dotenv/config ./build/index.js",
@@ -43,10 +45,12 @@
     "fuse.js": "6.4.6",
     "markdown-it": "12.2.0",
     "moment": "2.29.1",
+    "object-hash": "2.2.0",
     "ramda": "0.27.1",
     "redis": "4.0.0",
     "remixicon": "2.5.0",
-    "string-strip-html": "8.3.0"
+    "string-strip-html": "8.3.0",
+    "xlsx": "0.17.4"
   },
   "devDependencies": {
     "@ivangabriele/commitlint-config": "1.0.2",
@@ -59,6 +63,7 @@
     "@types/jest": "27.0.3",
     "@types/markdown-it": "12.2.3",
     "@types/node": "16.11.11",
+    "@types/object-hash": "2.2.1",
     "@types/ramda": "0.27.58",
     "husky": "7.0.4",
     "jest": "27.4.0",

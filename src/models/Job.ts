@@ -1,6 +1,11 @@
 interface JobProps {
-  /** Unix Timestamp in seconds */
-  $publishedAt: number
+  /** ISO Date */
+  $createdAt: string
+  /** Used as an internal reference for debugging purposes */
+  $reference: string
+  /** ISO Date */
+  $updatedAt: string
+
   advantages?: string
   conditions?: string
   department?: string[]
@@ -25,8 +30,12 @@ interface JobProps {
 }
 
 class Job implements JobProps {
-  /** Unix Timestamp in seconds */
-  public $publishedAt: number
+  /** ISO Date */
+  public $createdAt: string
+  /** Used as an internal reference for debugging purposes */
+  public $reference: string
+  /** ISO Date */
+  public $updatedAt: string
 
   public id: string
   public slug: string
@@ -52,7 +61,9 @@ class Job implements JobProps {
   public toApply?: string
 
   constructor({
-    $publishedAt,
+    $createdAt,
+    $reference,
+    $updatedAt,
     advantages,
     conditions,
     department,
@@ -75,7 +86,9 @@ class Job implements JobProps {
     title,
     toApply,
   }: JobProps) {
-    this.$publishedAt = $publishedAt
+    this.$createdAt = $createdAt
+    this.$reference = $reference
+    this.$updatedAt = $updatedAt
 
     this.advantages = advantages
     this.conditions = conditions
