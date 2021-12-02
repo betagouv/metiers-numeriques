@@ -46,6 +46,10 @@ class Notion {
     })
   }
 
+  async createPepJob(data: SeekubeJobNormalized): Promise<void> {
+    return this.page.create(NOTION_PEP_JOBS_DATABASE_ID, data)
+  }
+
   async createSkbJob(data: SeekubeJobNormalized): Promise<void> {
     return this.page.create(NOTION_SKB_JOBS_DATABASE_ID, data)
   }

@@ -1,6 +1,5 @@
 /**
  * @example
- *
  * ```json
  * {
  *   "Titre": "SICCRF - Développeur fullstack ASP .net",
