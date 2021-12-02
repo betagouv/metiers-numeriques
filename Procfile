@@ -1,2 +1,7 @@
 web: (bin/run &) && yarn start
-worker: yarn start:cron
+
+# Cache Updater Worker
+cache: yarn start:worker:cache
+
+# Data Updater Worker
+data: yarn start:worker:data

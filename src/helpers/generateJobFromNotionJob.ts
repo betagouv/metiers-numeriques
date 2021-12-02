@@ -14,12 +14,9 @@ export default function generateJobFromNotionJob(notionJob: NotionJob) {
     }
 
     return new Job({
-      $createdAt: notionJob.properties.CreeLe.created_time,
-      $reference: `MNN-${id}`,
-      $updatedAt: notionJob.properties.MisAJourLe.last_edited_time,
-
       advantages: convertNotionNodeToHtml(notionJob.properties['Les plus du poste']),
       conditions: convertNotionNodeToHtml(notionJob.properties['Conditions particulières du poste']),
+      createdAt: notionJob.properties.CreeLe.created_time,
       department: convertNotionNodeToStrings(notionJob.properties['Ministère']),
       entity: convertNotionNodeToHtml(notionJob.properties['Entité recruteuse']),
       experiences: convertNotionNodeToStrings(notionJob.properties['Expérience']),
@@ -32,6 +29,7 @@ export default function generateJobFromNotionJob(notionJob: NotionJob) {
       openedToContractTypes: convertNotionNodeToStrings(notionJob.properties['Poste ouvert aux']),
       profile: convertNotionNodeToHtml(notionJob.properties['Votre profil']),
       publicationDate: convertNotionNodeToHtml(notionJob.properties['Date de saisie']),
+      reference: `MNN-${id}`,
       salary: convertNotionNodeToHtml(notionJob.properties['Rémunération']),
       slug: slugify(title, id),
       tasks: convertNotionNodeToHtml(notionJob.properties['Ce que vous ferez']),
@@ -39,6 +37,7 @@ export default function generateJobFromNotionJob(notionJob: NotionJob) {
       teamInfo: convertNotionNodeToHtml(notionJob.properties['Si vous avez des questions']),
       title,
       toApply: convertNotionNodeToHtml(notionJob.properties['Pour candidater']),
+      updatedAt: notionJob.properties.MisAJourLe.last_edited_time,
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionJob()')

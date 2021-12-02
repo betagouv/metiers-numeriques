@@ -15,19 +15,18 @@ export default function generateJobFromNotionSkbJob(notionSkbJob: NotionSkbJob) 
     }
 
     return new Job({
-      $createdAt: notionSkbJob.properties.CreeLe.created_time,
-      $reference: `SKB-${id}`,
-      $updatedAt: notionSkbJob.properties.MisAJourLe.last_edited_time,
-
       advantages: undefined,
       conditions: undefined,
+      createdAt: notionSkbJob.properties.CreeLe.created_time,
       department: convertNotionNodeToStrings(notionSkbJob.properties.Entreprise),
       id,
       limitDate: undefined,
       locations: convertNotionNodeToStrings(notionSkbJob.properties.Localisation),
       mission: convertNotionNodeToHtml(notionSkbJob.properties.Description),
+      reference: `SKB-${id}`,
       slug: slugify(title, id),
       title: capitalize(title),
+      updatedAt: notionSkbJob.properties.MisAJourLe.last_edited_time,
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionSkbJob()')

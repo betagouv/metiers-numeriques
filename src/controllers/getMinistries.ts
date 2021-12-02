@@ -1,10 +1,13 @@
+import { Request, Response } from 'express'
+
+import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
 import notionMinistry from '../services/notionMinistry'
 
-const getMinistries = async (req, res) => {
+export default async function getMinistries(req: Request, res: Response) {
   try {
-    const cachedResult = await cache.getOrCacheWith('MINISTRY.ALL', async () => {
+    const cachedResult = await cache.getOrCacheWith(CACHE_KEY.MINISTRIES, async () => {
       const ministries = await notionMinistry.getAll()
 
       return {
@@ -19,5 +22,3 @@ const getMinistries = async (req, res) => {
     handleError(err, 'controllers/getMinistries()', res)
   }
 }
-
-export default getMinistries

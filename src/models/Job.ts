@@ -1,13 +1,9 @@
 interface JobProps {
-  /** ISO Date */
-  $createdAt: string
-  /** Used as an internal reference for debugging purposes */
-  $reference: string
-  /** ISO Date */
-  $updatedAt: string
-
   advantages?: string
   conditions?: string
+  /** ISO Date */
+  createdAt: string
+
   department?: string[]
   entity?: string
   experiences?: string[]
@@ -20,6 +16,8 @@ interface JobProps {
   openedToContractTypes?: string[]
   profile?: string
   publicationDate?: string
+  /** Used as an internal reference for debugging purposes */
+  reference: string
   salary?: string
   slug: string
   tasks?: string
@@ -27,15 +25,17 @@ interface JobProps {
   teamInfo?: string
   title: string
   toApply?: string
+  /** ISO Date */
+  updatedAt: string
 }
 
 class Job implements JobProps {
   /** ISO Date */
-  public $createdAt: string
+  public createdAt: string
   /** Used as an internal reference for debugging purposes */
-  public $reference: string
+  public reference: string
   /** ISO Date */
-  public $updatedAt: string
+  public updatedAt: string
 
   public id: string
   public slug: string
@@ -61,11 +61,9 @@ class Job implements JobProps {
   public toApply?: string
 
   constructor({
-    $createdAt,
-    $reference,
-    $updatedAt,
     advantages,
     conditions,
+    createdAt,
     department,
     entity,
     experiences,
@@ -78,6 +76,7 @@ class Job implements JobProps {
     openedToContractTypes,
     profile,
     publicationDate,
+    reference,
     salary,
     slug,
     tasks,
@@ -85,10 +84,11 @@ class Job implements JobProps {
     teamInfo,
     title,
     toApply,
+    updatedAt,
   }: JobProps) {
-    this.$createdAt = $createdAt
-    this.$reference = $reference
-    this.$updatedAt = $updatedAt
+    this.createdAt = createdAt
+    this.reference = reference
+    this.updatedAt = updatedAt
 
     this.advantages = advantages
     this.conditions = conditions
