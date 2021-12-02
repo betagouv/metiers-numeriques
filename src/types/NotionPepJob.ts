@@ -3,6 +3,7 @@ import {
   NotionDatabaseItemPropertyAsCheckbox,
   NotionDatabaseItemPropertyAsCreatedTime,
   NotionDatabaseItemPropertyAsDate,
+  NotionDatabaseItemPropertyAsLastEditedTime,
   NotionDatabaseItemPropertyAsRichText,
   NotionDatabaseItemPropertyAsTitle,
   NotionDatabaseItemPropertyAsUrl,
@@ -14,6 +15,8 @@ export type NotionPepJob = NotionDatabaseItem<{
   ApplicantCriteria_ExperienceLevel_: NotionDatabaseItemPropertyAsRichText
   Author: NotionDatabaseItemPropertyAsRichText
   Created: NotionDatabaseItemPropertyAsCreatedTime
+  /** Automatically filled by Notion */
+  CreeLe: NotionDatabaseItemPropertyAsCreatedTime
   FirstPublicationDate: NotionDatabaseItemPropertyAsRichText
   FirstPublicationDateFormated: NotionDatabaseItemPropertyAsDate
   JobDescriptionTranslation_ContractLength_: NotionDatabaseItemPropertyAsRichText
@@ -38,6 +41,8 @@ export type NotionPepJob = NotionDatabaseItem<{
   Location_JobLocation_: NotionDatabaseItemPropertyAsRichText
   Location_Region_Region_: NotionDatabaseItemPropertyAsRichText
   MainSupervisor: NotionDatabaseItemPropertyAsRichText
+  /** Automatically filled by Notion */
+  MisAJourLe: NotionDatabaseItemPropertyAsLastEditedTime
   Name: NotionDatabaseItemPropertyAsTitle
   OF_CustomFields_Date1_: NotionDatabaseItemPropertyAsRichText
   OF_CustomFields_Date1_Formated: NotionDatabaseItemPropertyAsDate

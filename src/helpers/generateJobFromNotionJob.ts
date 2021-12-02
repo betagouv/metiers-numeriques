@@ -1,5 +1,3 @@
-import daysjs from 'dayjs'
-
 import Job from '../models/Job'
 import { NotionJob } from '../types/NotionJob'
 import convertNotionNodeToHtml from './convertNotionNodeToHtml'
@@ -9,11 +7,6 @@ import slugify from './slugify'
 
 export default function generateJobFromNotionJob(notionJob: NotionJob) {
   try {
-    const $publishedAt =
-      notionJob.properties['Date de saisie'].date !== null
-        ? daysjs(notionJob.properties['Date de saisie'].date.start).unix()
-        : 0
-
     const { id } = notionJob
     const title = convertNotionNodeToHtml(notionJob.properties.Name, true)
     if (title === undefined) {
@@ -21,7 +14,10 @@ export default function generateJobFromNotionJob(notionJob: NotionJob) {
     }
 
     return new Job({
-      $publishedAt,
+      $createdAt: notionJob.properties.CreeLe.created_time,
+      $reference: `MNN-${id}`,
+      $updatedAt: notionJob.properties.MisAJourLe.last_edited_time,
+
       advantages: convertNotionNodeToHtml(notionJob.properties['Les plus du poste']),
       conditions: convertNotionNodeToHtml(notionJob.properties['Conditions particulières du poste']),
       department: convertNotionNodeToStrings(notionJob.properties['Ministère']),

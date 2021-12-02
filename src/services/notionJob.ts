@@ -90,7 +90,7 @@ class NotionJob {
     if (jobs.length < 20) {
       const startPepCursor = startCursor && startCursor.startsWith('pep-') ? startCursor.replace('pep-', '') : undefined
       const { data } = await axios.post(
-        `https://api.notion.com/v1/databases/${process.env.PEP_DATABASE_ID}/query`,
+        `https://api.notion.com/v1/databases/${process.env.NOTION_PEP_JOBS_DATABASE_ID}/query`,
         {
           filter: {
             checkbox: {
@@ -143,7 +143,7 @@ class NotionJob {
     const count = data.results.length
 
     const { data: pepData } = await axios.post(
-      `https://api.notion.com/v1/databases/${process.env.PEP_DATABASE_ID}/query`,
+      `https://api.notion.com/v1/databases/${process.env.NOTION_PEP_JOBS_DATABASE_ID}/query`,
       {
         filter: {
           checkbox: {

@@ -8,22 +8,9 @@ export default async function outputTypeFromNotionDatabase(databaseId: string) {
     const data = await notion.database.findMany(databaseId)
 
     const propertiesShape = data.reduce((shape, { properties }) => {
-      const shapeKeys = Object.keys(shape)
+      // console.log(properties)
+
       const newKeys = Object.keys(properties)
-
-      shapeKeys.forEach(shapeKey => {
-        if (newKeys.includes(shapeKey)) {
-          // if (properties[shapeKey].type === 'url' && (properties[shapeKey] as any).url === null) {
-          // if ((properties as any)[shapeKey].type === 'people' && (properties as any)[shapeKey].people.length > 0) {
-          //   console.log((properties as any)[shapeKey])
-          //   console.log((properties as any)[shapeKey].people[0])
-          // }
-
-          return
-        }
-
-        shapeKeys[shapeKey].isOptional = true
-      })
 
       newKeys.forEach(newKey => {
         if (shape[newKey] !== undefined) {
@@ -46,43 +33,55 @@ export default async function outputTypeFromNotionDatabase(databaseId: string) {
 
       switch (shape.type) {
         case 'created_time':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsCreatedTime`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsCreatedTime`)
           break
 
         case 'checkbox':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsCheckbox`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsCheckbox`)
           break
 
         case 'date':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsDate`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsDate`)
           break
 
         case 'files':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsFiles`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsFiles`)
+          break
+
+        case 'email':
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsEmail`)
+          break
+
+        case 'last_edited_time':
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsLastEditedTime`)
           break
 
         case 'multi_select':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsMultiSelect`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsMultiSelect`)
+          break
+
+        case 'number':
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsNumber`)
           break
 
         case 'people':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsPeople`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsPeople`)
           break
 
         case 'rich_text':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsRichText`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsRichText`)
           break
 
         case 'select':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsSelect`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsSelect`)
           break
 
         case 'title':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsTitle`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsTitle`)
           break
 
         case 'url':
-          ß.debug(`'${shapeKey}'${shape.isOptional ? '?' : ''}: NotionDatabaseItemPropertyAsUrl`)
+          ß.debug(`'${shapeKey}': NotionDatabaseItemPropertyAsUrl`)
           break
 
         default:

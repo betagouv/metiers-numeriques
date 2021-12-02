@@ -3,6 +3,8 @@ import MarkdownIt from 'markdown-it'
 
 import parseProperty from '../../helpers/parseProperty'
 import Job from '../../models/Job'
+import { NotionJob } from '../../types/NotionJob'
+import { NotionPepJob } from '../../types/NotionPepJob'
 
 function urlify(text) {
   const urlRegex = /(https?:\/\/[^\s]+)/g
@@ -25,13 +27,15 @@ const buildSlug = (title, id) => {
   return slug
 }
 
-export const mapToJob = rawJob => {
+export const mapToJob = (rawJob: NotionJob) => {
   const title = parseProperty(rawJob.properties.Name)
   const { id } = rawJob
   const md = new MarkdownIt({ linkify: true })
 
   return new Job({
-    $publishedAt: 0,
+    $createdAt: rawJob.properties.CreeLe.created_time,
+    $reference: `LGC-${id}`,
+    $updatedAt: rawJob.properties.MisAJourLe.last_edited_time,
 
     advantages: md.renderInline(parseProperty(rawJob.properties['Les plus du poste'])),
     conditions: parseProperty(rawJob.properties['Conditions particulières du poste'])
@@ -68,13 +72,15 @@ export const mapToJob = rawJob => {
   })
 }
 
-export const formatDetailFromPep = job => {
+export const formatDetailFromPep = (job: NotionPepJob) => {
   const item = job.properties
   const title = parseProperty(item.Name)
   const { id } = job
 
   return new Job({
-    $publishedAt: 0,
+    $createdAt: job.properties.CreeLe.created_time,
+    $reference: `LGC-${id}`,
+    $updatedAt: job.properties.MisAJourLe.last_edited_time,
 
     advantages: undefined,
     conditions: undefined,

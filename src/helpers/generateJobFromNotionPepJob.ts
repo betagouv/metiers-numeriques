@@ -4,23 +4,18 @@ import capitalize from './capitalize'
 import convertMarkdownToHtml from './convertMarkdownToHtml'
 import convertNotionNodeToHtml from './convertNotionNodeToHtml'
 import convertNotionNodeToStrings from './convertNotionNodeToStrings'
-import getPepJobPublicationDate from './getPepJobPublicationDate'
 import handleError from './handleError'
 import humanizePepDate from './humanizePepDate'
 import slugify from './slugify'
 
 export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) {
   try {
-    const $publishedAt =
-      notionPepJob.properties.FirstPublicationDate.rich_text.length > 0
-        ? getPepJobPublicationDate(notionPepJob.properties.FirstPublicationDate.rich_text[0].plain_text)
-        : 0
-
     const { id } = notionPepJob
     const title = convertNotionNodeToHtml(notionPepJob.properties.Name, true)
     if (title === undefined) {
       throw new Error(`Notion PEP job #${id} has an undefined title.`)
     }
+
     const offerReference = convertNotionNodeToHtml(notionPepJob.properties.Offer_Reference_, true)
     const pepUrl = `https://place-emploi-public.gouv.fr/offre-emploi/${offerReference}/`
     const more = convertMarkdownToHtml(`[${pepUrl}](${pepUrl})`)
@@ -30,7 +25,9 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
         : undefined
 
     return new Job({
-      $publishedAt,
+      $createdAt: notionPepJob.properties.CreeLe.created_time,
+      $reference: `PEP-${id}`,
+      $updatedAt: notionPepJob.properties.MisAJourLe.last_edited_time,
 
       advantages: undefined,
       conditions: undefined,

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
 import {
-  NotionDatabaseItemProperty,
   NotionDatabaseItemPropertyAsDate,
+  NotionDatabaseItemPropertyAsLastEditedTime,
   NotionDatabaseItemPropertyAsRichText,
   NotionDatabaseItemPropertyAsSelect,
   NotionDatabaseItemPropertyAsTitle,
@@ -13,13 +13,21 @@ import handleError from './handleError'
 import humanizeDate from './humanizeDate'
 
 export default function convertNotionNodeToHtml(
-  value: NotionDatabaseItemProperty,
+  value:
+    | NotionDatabaseItemPropertyAsDate
+    | NotionDatabaseItemPropertyAsLastEditedTime
+    | NotionDatabaseItemPropertyAsRichText
+    | NotionDatabaseItemPropertyAsSelect
+    | NotionDatabaseItemPropertyAsTitle,
   isInline: boolean = false,
 ): string | undefined {
   try {
     switch (value.type) {
       case 'date':
         return fromDate(value)
+
+      case 'last_edited_time':
+        return fromLastEditedTime(value)
 
       case 'rich_text':
         return fromRichText(value, isInline)
@@ -39,11 +47,15 @@ export default function convertNotionNodeToHtml(
 }
 
 function fromDate(value: NotionDatabaseItemPropertyAsDate): string | undefined {
-  if (value.date === null) {
+  if (value.date === null || value.date.start === null) {
     return undefined
   }
 
   return humanizeDate(value.date.start)
+}
+
+function fromLastEditedTime(value: NotionDatabaseItemPropertyAsLastEditedTime): string | undefined {
+  return humanizeDate(value.last_edited_time)
 }
 
 function fromRichText(value: NotionDatabaseItemPropertyAsRichText, isInline: boolean): string {

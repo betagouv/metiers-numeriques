@@ -2,35 +2,29 @@ import ß from 'bhala'
 import { CronJob } from 'cron'
 
 import updatePepJobs from './jobs/updatePepJobs'
+import updateSkbJobs from './jobs/updateSkbJobs'
 
-const { FEATURE_FLAG_FETCH_PEP_JOBS } = process.env
-
-const jobs = [
+const JOBS = [
   {
-    // every day at 8:00
-    cronTime: '0 8 * * *',
-    isActive: FEATURE_FLAG_FETCH_PEP_JOBS === 'true',
+    // every day at 6am
+    cronTime: '0 6 * * *',
     name: 'Update PEP Jobs',
     onTick: updatePepJobs,
   },
+  {
+    // every day at 8am
+    cronTime: '0 8 * * *',
+    name: 'Update Seekube Jobs',
+    onTick: updateSkbJobs,
+  },
 ]
 
-let activeJobs = 0
-for (const job of jobs) {
+JOBS.forEach(job => {
   const cronjob = { start: true, timeZone: 'Europe/Paris', ...job }
 
-  if (!cronjob.isActive) {
-    ß.error(`The job "${cronjob.name}" is OFF`)
-
-    // eslint-disable-next-line no-continue
-    continue
-  }
-
-  ß.info(`The job "${cronjob.name}" is ON ${cronjob.cronTime}`)
+  ß.info(`[cron.js] Initializing job "${cronjob.name}" on ${cronjob.cronTime}…`)
   // eslint-disable-next-line no-new
   new CronJob(cronjob)
-  // eslint-disable-next-line no-plusplus
-  activeJobs++
-}
+})
 
-ß.info(`Started ${activeJobs} / ${jobs.length} cron jobs`)
+ß.success(`[cron.js] Started ${JOBS.length} cron jobs.`)

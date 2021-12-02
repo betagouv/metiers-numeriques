@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
-import {
-  NotionDatabaseItemProperty,
-  NotionDatabaseItemPropertyAsMultiSelect,
-  NotionDatabaseItemPropertyAsRichText,
-} from '../types/Notion'
+import { NotionDatabaseItemPropertyAsMultiSelect, NotionDatabaseItemPropertyAsRichText } from '../types/Notion'
 import convertMarkdownToInlineHtml from './convertMarkdownToInlineHtml'
 import handleError from './handleError'
 
-export default function convertNotionNodeToStrings(value: NotionDatabaseItemProperty): string[] {
+export default function convertNotionNodeToStrings(
+  value: NotionDatabaseItemPropertyAsMultiSelect | NotionDatabaseItemPropertyAsRichText,
+): string[] {
   try {
     switch (value.type) {
       case 'multi_select':

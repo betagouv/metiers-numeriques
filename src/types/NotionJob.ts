@@ -1,6 +1,8 @@
 import {
   NotionDatabaseItem,
+  NotionDatabaseItemPropertyAsCreatedTime,
   NotionDatabaseItemPropertyAsDate,
+  NotionDatabaseItemPropertyAsLastEditedTime,
   NotionDatabaseItemPropertyAsMultiSelect,
   NotionDatabaseItemPropertyAsRichText,
   NotionDatabaseItemPropertyAsSelect,
@@ -11,6 +13,8 @@ export type NotionJob = NotionDatabaseItem<{
   'Ce que vous ferez': NotionDatabaseItemPropertyAsRichText
   'Conditions particulières du poste': NotionDatabaseItemPropertyAsRichText
   Contact: NotionDatabaseItemPropertyAsRichText
+  /** Automatically filled by Notion */
+  CreeLe: NotionDatabaseItemPropertyAsCreatedTime
   'Date de saisie': NotionDatabaseItemPropertyAsDate
   'Date limite': NotionDatabaseItemPropertyAsDate
   'Entité recruteuse': NotionDatabaseItemPropertyAsSelect
@@ -18,6 +22,8 @@ export type NotionJob = NotionDatabaseItem<{
   'Les plus du poste': NotionDatabaseItemPropertyAsRichText
   Localisation: NotionDatabaseItemPropertyAsMultiSelect
   Ministère: NotionDatabaseItemPropertyAsMultiSelect
+  /** Automatically filled by Notion */
+  MisAJourLe: NotionDatabaseItemPropertyAsLastEditedTime
   Mission: NotionDatabaseItemPropertyAsRichText
   Name: NotionDatabaseItemPropertyAsTitle
   'Poste ouvert aux': NotionDatabaseItemPropertyAsMultiSelect

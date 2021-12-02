@@ -12,7 +12,7 @@ export default class NotionDatabase {
     this.axiosInstance = axiosInstance
   }
 
-  async count(databaseId: string, filter?: any): Promise<number> {
+  public async count(databaseId: string, filter?: any): Promise<number> {
     try {
       const { data } = await this.axiosInstance.post(
         `/databases/${databaseId}/query`,
@@ -29,9 +29,34 @@ export default class NotionDatabase {
     }
   }
 
-  async findMany<T extends NotionDatabaseItem>(databaseId: string, filter?: any): Promise<T[]> {
+  public async find<T extends NotionDatabaseItem>(databaseId: string, filter?: any): Promise<T | null> {
     try {
-      const { data } = await this.axiosInstance.post(
+      const { data } = await this.axiosInstance.post<{
+        results: T[]
+      }>(
+        `/databases/${databaseId}/query`,
+        filter
+          ? {
+              filter,
+            }
+          : {},
+      )
+
+      if (data.results.length === 0) {
+        return null
+      }
+
+      return data.results[0]
+    } catch (err) {
+      handleError(err, 'services/Notion.database.findMany()')
+    }
+  }
+
+  public async findMany<T extends NotionDatabaseItem>(databaseId: string, filter?: any): Promise<T[]> {
+    try {
+      const { data } = await this.axiosInstance.post<{
+        results: T[]
+      }>(
         `/databases/${databaseId}/query`,
         filter
           ? {
@@ -46,7 +71,7 @@ export default class NotionDatabase {
     }
   }
 
-  async has(databaseId: string, filter: any): Promise<boolean> {
+  public async has(databaseId: string, filter: any): Promise<boolean> {
     try {
       const count = await this.count(databaseId, filter)
 
@@ -56,9 +81,11 @@ export default class NotionDatabase {
     }
   }
 
-  async list<T = any>(): Promise<T[]> {
+  public async list<T = any>(): Promise<T[]> {
     try {
-      const { data } = await this.axiosInstance.get(`/databases`)
+      const { data } = await this.axiosInstance.get<{
+        results: T[]
+      }>(`/databases`)
 
       return data.results
     } catch (err) {
