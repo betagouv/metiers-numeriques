@@ -25,12 +25,9 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
         : undefined
 
     return new Job({
-      $createdAt: notionPepJob.properties.CreeLe.created_time,
-      $reference: `PEP-${id}`,
-      $updatedAt: notionPepJob.properties.MisAJourLe.last_edited_time,
-
       advantages: undefined,
       conditions: undefined,
+      createdAt: notionPepJob.properties.CreeLe.created_time,
       department: convertNotionNodeToStrings(notionPepJob.properties.Origin_Entity_),
       experiences: convertNotionNodeToStrings(notionPepJob.properties.ApplicantCriteria_EducationLevel_),
       id,
@@ -41,6 +38,7 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
       openedToContractTypes: convertNotionNodeToStrings(notionPepJob.properties.JobDescription_Contract_),
       profile: convertNotionNodeToHtml(notionPepJob.properties.JobDescriptionTranslation_Description2_),
       publicationDate,
+      reference: `PEP-${id}`,
       salary: undefined,
       slug: slugify(title, id),
       tasks: undefined,
@@ -48,6 +46,7 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
       teamInfo: undefined,
       title: capitalize(title),
       toApply: convertNotionNodeToHtml(notionPepJob.properties.Origin_CustomFieldsTranslation_ShortText1_),
+      updatedAt: notionPepJob.properties.MisAJourLe.last_edited_time,
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionPepJob()')

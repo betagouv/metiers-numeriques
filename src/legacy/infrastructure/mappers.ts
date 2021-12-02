@@ -33,14 +33,11 @@ export const mapToJob = (rawJob: NotionJob) => {
   const md = new MarkdownIt({ linkify: true })
 
   return new Job({
-    $createdAt: rawJob.properties.CreeLe.created_time,
-    $reference: `LGC-${id}`,
-    $updatedAt: rawJob.properties.MisAJourLe.last_edited_time,
-
     advantages: md.renderInline(parseProperty(rawJob.properties['Les plus du poste'])),
     conditions: parseProperty(rawJob.properties['Conditions particulières du poste'])
       .split('- ')
       .filter(item => item),
+    createdAt: rawJob.properties.CreeLe.created_time,
     // contact: md.renderInline(parseProperty(rawJob.properties.Contact) || ''),
     department: parseProperty(rawJob.properties['Ministère']).map(a => md.renderInline(a)),
     entity: md.renderInline(parseProperty(rawJob.properties['Entité recruteuse']) || '') || undefined,
@@ -60,6 +57,7 @@ export const mapToJob = (rawJob: NotionJob) => {
     publicationDate: parseProperty(rawJob.properties['Date de saisie'])
       ? parseProperty(rawJob.properties['Date de saisie'])
       : twoDaysAgo,
+    reference: `LGC-${id}`,
     salary: parseProperty(rawJob.properties['Rémunération']),
     slug: buildSlug(title, id),
     tasks: parseProperty(rawJob.properties['Ce que vous ferez'])
@@ -69,6 +67,7 @@ export const mapToJob = (rawJob: NotionJob) => {
     teamInfo: md.renderInline(parseProperty(rawJob.properties['Si vous avez des questions'])),
     title,
     toApply: md.renderInline(parseProperty(rawJob.properties['Pour candidater'])),
+    updatedAt: rawJob.properties.MisAJourLe.last_edited_time,
   })
 }
 
@@ -78,12 +77,9 @@ export const formatDetailFromPep = (job: NotionPepJob) => {
   const { id } = job
 
   return new Job({
-    $createdAt: job.properties.CreeLe.created_time,
-    $reference: `LGC-${id}`,
-    $updatedAt: job.properties.MisAJourLe.last_edited_time,
-
     advantages: undefined,
     conditions: undefined,
+    createdAt: job.properties.CreeLe.created_time,
     department: [parseProperty(item.Origin_Entity_)],
     experiences: parseProperty(item.ApplicantCriteria_EducationLevel_)
       ? [parseProperty(item.ApplicantCriteria_EducationLevel_)]
@@ -98,6 +94,7 @@ export const formatDetailFromPep = (job: NotionPepJob) => {
       : [],
     profile: parseProperty(item.JobDescriptionTranslation_Description2_),
     publicationDate: (parseProperty(item.FirstPublicationDate) || '').split(' ')[0],
+    reference: `LGC-${id}`,
     salary: undefined,
     slug: `${buildSlug(title, id)}?tag=pep`,
     tasks: undefined,
@@ -105,5 +102,6 @@ export const formatDetailFromPep = (job: NotionPepJob) => {
     teamInfo: undefined,
     title,
     toApply: parseProperty(item.Origin_CustomFieldsTranslation_ShortText1_),
+    updatedAt: job.properties.MisAJourLe.last_edited_time,
   })
 }

@@ -1,61 +1,31 @@
+import { Request, Response } from 'express'
+import * as R from 'ramda'
+
+import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
-import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
-import generateJobFromNotionPepJob from '../helpers/generateJobFromNotionPepJob'
-import generateJobFromNotionSkbJob from '../helpers/generateJobFromNotionSkbJob'
 import handleError from '../helpers/handleError'
-import notion from '../services/notion'
-import { NotionJob } from '../types/NotionJob'
-import { NotionPepJob } from '../types/NotionPepJob'
-import { NotionSkbJob } from '../types/NotionSkbJob'
+import data from '../services/data'
 
-const getJob = async (req, res) => {
+export default async function getJob(req: Request, res: Response) {
   try {
-    const jobId = req.url.split('-').slice(-5).join('-').split('?')[0]
+    const id = req.url.split('-').slice(-5).join('-').split('?')[0]
 
-    const cachedResult = await cache.getOrCacheWith(`JOB.${jobId}`, async () => {
-      const maybeNotionPage = await notion.page.findById(jobId)
+    const jobs = await cache.getOrCacheWith(CACHE_KEY.JOBS, data.getJobs)
 
-      if (maybeNotionPage === null) {
-        return null
-      }
+    const maybeJob = R.find(R.propEq('id', id), jobs)
 
-      const { data: notionJob, type } = maybeNotionPage
-
-      let job
-      switch (type) {
-        case 'NOTION_JOB':
-          job = generateJobFromNotionJob(notionJob as NotionJob)
-          break
-
-        case 'NOTION_PEP_JOB':
-          job = generateJobFromNotionPepJob(notionJob as NotionPepJob)
-          break
-
-        case 'NOTION_SKB_JOB':
-          job = generateJobFromNotionSkbJob(notionJob as NotionSkbJob)
-          break
-
-        default:
-          throw new Error(`This Notion job type (${type}) is not supported.`)
-      }
-
-      return {
-        job,
-        pageDescription: job.mission || '',
-        pageTitle: job.title,
-      }
-    })
-
-    if (cachedResult === null) {
+    if (maybeJob === undefined) {
       res.render('404')
 
       return
     }
 
-    res.render('jobDetail', cachedResult)
+    res.render('jobDetail', {
+      job: maybeJob,
+      pageDescription: maybeJob.mission || '',
+      pageTitle: maybeJob.title,
+    })
   } catch (err) {
     handleError(err, 'controllers/getJob()', res)
   }
 }
-
-export default getJob

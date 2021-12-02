@@ -1,9 +1,11 @@
+import { Request, Response } from 'express'
+
 import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
 import uncapitalizeFirstLetter from '../helpers/uncapitalizeFirstLetter'
 import notionMinistry from '../services/notionMinistry'
 
-const getMinistry = async (req, res) => {
+export default async function getMinistry(req: Request, res: Response) {
   try {
     const { id } = req.params
     const cachedResult = await cache.getOrCacheWith(`MINISTRY.${id}`, async () => {
@@ -21,5 +23,3 @@ const getMinistry = async (req, res) => {
     handleError(err, 'controllers/getMinistry()', res)
   }
 }
-
-export default getMinistry
