@@ -31,8 +31,6 @@ class Cache {
       const maybeCachedValueAsJson = await redisClient.get(key)
 
       if (maybeCachedValueAsJson !== null) {
-        await redisClient.disconnect()
-
         const maybeCachedValue = JSON.parse(maybeCachedValueAsJson)
 
         return maybeCachedValue
@@ -40,10 +38,14 @@ class Cache {
 
       const value = await cacheGetter()
       const valueAsJson = JSON.stringify(value)
+
+      if (!redisClient.isOpen) {
+        await redisClient.connect()
+      }
+
       await redisClient.set(key, valueAsJson, {
         EX: forInSeconds,
       })
-      await redisClient.disconnect()
 
       return value
     } catch (err) {
