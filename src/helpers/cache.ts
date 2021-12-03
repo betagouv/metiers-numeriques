@@ -1,4 +1,3 @@
-import ß from 'bhala'
 import dayjs from 'dayjs'
 import * as R from 'ramda'
 import { createClient } from 'redis'
@@ -22,11 +21,10 @@ class Cache {
 
   constructor() {
     try {
-      this.redisClient.on('error', async err => {
+      this.redisClient.on('error', async () => {
         try {
-          ß.error(`[helpers/Cache.constructor() | Redis Error] ${err}`)
-          ß.error(`[helpers/Cache.constructor() | Redis Error] Trying to recover…`)
-
+          // TODO Investigate Redis "Socket closed unexpectedly" errors.
+          // Try to recover from "Socket closed unexpectedly" errors (seems to hold for now)
           if (!this.redisClient.isOpen) {
             this.redisClient.connect()
           }
@@ -45,7 +43,6 @@ class Cache {
         await this.redisClient.connect()
       }
       const maybeCachedValueAsJson = await this.redisClient.get(key)
-      await this.redisClient.quit()
 
       if (maybeCachedValueAsJson !== null) {
         const maybeCachedValue = JSON.parse(maybeCachedValueAsJson) as CacheValue<T>
@@ -81,7 +78,6 @@ class Cache {
         await this.redisClient.connect()
       }
       await this.redisClient.set(key, valueAsJson)
-      await this.redisClient.quit()
 
       this.inProgressCachingKeys = R.without([key])(this.inProgressCachingKeys)
     } catch (err) {
@@ -99,7 +95,6 @@ class Cache {
         await this.redisClient.connect()
       }
       const maybeCachedValueAsJson = await this.redisClient.get(key)
-      await this.redisClient.quit()
       if (maybeCachedValueAsJson === null) {
         return true
       }
