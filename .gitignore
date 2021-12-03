@@ -107,4 +107,4 @@ dist
 # Custom
 
 /build
-/sitemap.xml
+/static/sitemap.xml
