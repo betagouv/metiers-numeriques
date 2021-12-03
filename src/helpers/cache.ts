@@ -22,8 +22,6 @@ class Cache {
 
   public async getOrCacheWith<T = any>(key: string, cacheGetter: () => Promise<T>): Promise<T> {
     try {
-      redisClient.on('error', err => handleError(err, 'helpers/Cache.getOrCacheWith()'))
-
       if (!redisClient.isOpen) {
         await redisClient.connect()
       }
