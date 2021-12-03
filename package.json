@@ -18,7 +18,7 @@
     "cache:purge": "node -r dotenv/config ./scripts/purgeRedisCache.js",
     "cache:update": "node -r dotenv/config ./build/scripts/runCacheUpdate.js",
     "dev": "concurrently \"yarn dev:assets\" \"yarn dev:server\"",
-    "dev:assets": "yarn build:assets --watch",
+    "dev:assets": "yarn build:assets && rollup -cw",
     "dev:server": "nodemon --ext js,json,ts --exec \"yarn start:dev\" --watch ./src",
     "dev:docker": "docker-compose down && docker-compose up -d cache",
     "dev:job:skb": "node -r dotenv/config -r ts-node/register ./src/scripts/runSkbJobsUpdate.ts",
