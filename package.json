@@ -8,7 +8,7 @@
     "npm": "7"
   },
   "scripts": {
-    "build": "yarn build:assets && yarn build:server && yarn build:sitemap && yarn postbuild",
+    "build": "yarn build:assets && yarn build:server && yarn build:sitemap",
     "build:assets": "rm -Rf ./static/assets && rollup -c && rm -f ./static/index.js",
     "build:server": "rm -Rf ./build && tsc",
     "build:sitemap": "node -r dotenv/config -r ts-node/register ./src/scripts/generateSitemap.ts",
