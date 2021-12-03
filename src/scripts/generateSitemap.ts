@@ -11,7 +11,7 @@ async function generateSitemap() {
   ß.info('[scripts/generateSitemap.js] Fetching jobs…')
   const jobs = await data.getJobs()
 
-  ß.info('[scripts/generateSitemap.js] Fetching jobs…')
+  ß.info('[scripts/generateSitemap.js] Fetching ministries…')
   const ministries = await data.getMinistries()
 
   const sitemap = new SitemapStream({
