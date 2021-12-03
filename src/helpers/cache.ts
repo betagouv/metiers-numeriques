@@ -1,3 +1,4 @@
+import ß from 'bhala'
 import dayjs from 'dayjs'
 import * as R from 'ramda'
 import { createClient } from 'redis'
@@ -7,10 +8,6 @@ import handleError from './handleError'
 const { REDIS_URL } = process.env
 const CACHE_DURATION = process.env.CACHE_DURATION ? Number(process.env.CACHE_DURATION) : 60
 
-const redisClient = createClient({
-  url: REDIS_URL,
-})
-
 type CacheValue<T> = {
   data: T
   /** ISO date */
@@ -19,13 +16,36 @@ type CacheValue<T> = {
 
 class Cache {
   private inProgressCachingKeys: string[] = []
+  private redisClient = createClient({
+    url: REDIS_URL,
+  })
+
+  constructor() {
+    try {
+      this.redisClient.on('error', async err => {
+        try {
+          ß.error(`[helpers/Cache.constructor() | Redis Error] ${err}`)
+          ß.error(`[helpers/Cache.constructor() | Redis Error] Trying to recover…`)
+
+          if (!this.redisClient.isOpen) {
+            this.redisClient.connect()
+          }
+        } catch (err) {
+          handleError(err, 'helpers/Cache.constructor() | Redis Error')
+        }
+      })
+    } catch (err) {
+      handleError(err, 'helpers/Cache.constructor()')
+    }
+  }
 
   public async getOrCacheWith<T = any>(key: string, cacheGetter: () => Promise<T>): Promise<T> {
     try {
-      if (!redisClient.isOpen) {
-        await redisClient.connect()
+      if (!this.redisClient.isOpen) {
+        await this.redisClient.connect()
       }
-      const maybeCachedValueAsJson = await redisClient.get(key)
+      const maybeCachedValueAsJson = await this.redisClient.get(key)
+      await this.redisClient.quit()
 
       if (maybeCachedValueAsJson !== null) {
         const maybeCachedValue = JSON.parse(maybeCachedValueAsJson) as CacheValue<T>
@@ -57,10 +77,11 @@ class Cache {
       }
       const valueAsJson = JSON.stringify(value)
 
-      if (!redisClient.isOpen) {
-        await redisClient.connect()
+      if (!this.redisClient.isOpen) {
+        await this.redisClient.connect()
       }
-      await redisClient.set(key, valueAsJson)
+      await this.redisClient.set(key, valueAsJson)
+      await this.redisClient.quit()
 
       this.inProgressCachingKeys = R.without([key])(this.inProgressCachingKeys)
     } catch (err) {
@@ -74,10 +95,11 @@ class Cache {
         return false
       }
 
-      if (!redisClient.isOpen) {
-        await redisClient.connect()
+      if (!this.redisClient.isOpen) {
+        await this.redisClient.connect()
       }
-      const maybeCachedValueAsJson = await redisClient.get(key)
+      const maybeCachedValueAsJson = await this.redisClient.get(key)
+      await this.redisClient.quit()
       if (maybeCachedValueAsJson === null) {
         return true
       }
