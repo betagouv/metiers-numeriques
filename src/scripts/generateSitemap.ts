@@ -18,7 +18,7 @@ async function generateSitemap() {
     hostname: 'https://metiers.numerique.gouv.fr',
   })
 
-  const writeStream = createWriteStream('./sitemap.xml')
+  const writeStream = createWriteStream('./static/sitemap.xml')
   sitemap.pipe(writeStream)
 
   ß.info('[scripts/generateSitemap.js] Mapping main pages…')
