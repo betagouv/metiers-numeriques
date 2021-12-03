@@ -9,11 +9,9 @@ import data from '../services/data'
 
 export default async function getMinistry(req: Request, res: Response) {
   try {
-    const { id } = req.params
-
     const ministries = await cache.getOrCacheWith(CACHE_KEY.MINISTRIES, data.getMinistries)
 
-    const maybeMinistry = R.find(R.propEq('id', id), ministries)
+    const maybeMinistry = R.find(R.propEq('slug', req.params.slug), ministries)
     if (maybeMinistry === undefined) {
       res.render('404')
 

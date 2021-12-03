@@ -11,7 +11,7 @@ $jobsSearchInput.addEventListener(
       removeAllChildNodesFrom($jobsList)
       appendLoaderTo($jobsList)
 
-      httpGet(`/annonces?isUpdate=1`, jobsListHtmlSource => {
+      httpGet(`/emplois?isUpdate=1`, jobsListHtmlSource => {
         removeLoaderFrom($jobsList)
         setInnerHtml($jobsList, jobsListHtmlSource)
         showNode($loadMoreSection)

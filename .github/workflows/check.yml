@@ -79,4 +79,4 @@ jobs:
       - name: Install
         run: yarn
       - name: Build
-        run: yarn build
+        run: yarn test:build

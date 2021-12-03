@@ -45,7 +45,7 @@ $loadMoreButton.addEventListener('click', () => {
   const fromIndex = $jobsList.childElementCount
 
   // Load 10 more jobs
-  httpGet(`/annonces?isUpdate=1&fromIndex=${fromIndex}`, jobsListHtmlSource => {
+  httpGet(`/emplois?isUpdate=1&fromIndex=${fromIndex}`, jobsListHtmlSource => {
     removeLoaderFrom($jobsList)
     appendInnerHtmlTo($jobsList, jobsListHtmlSource)
   })

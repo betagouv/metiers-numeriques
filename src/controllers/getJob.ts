@@ -8,11 +8,9 @@ import data from '../services/data'
 
 export default async function getJob(req: Request, res: Response) {
   try {
-    const id = req.url.split('-').slice(-5).join('-').split('?')[0]
-
     const jobs = await cache.getOrCacheWith(CACHE_KEY.JOBS, data.getJobs)
 
-    const maybeJob = R.find(R.propEq('id', id), jobs)
+    const maybeJob = R.find(R.propEq('slug', req.params.slug), jobs)
     if (maybeJob === undefined) {
       res.render('404')
 

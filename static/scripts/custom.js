@@ -9,7 +9,7 @@ function toggleNavActive() {
       break
     }
 
-    if (href.substring(1) && pathname.includes(href.substring(1))) {
+    if (href.substring(1) && pathname.includes(href.substring(1, href.length - 2))) {
       nav.setAttribute('aria-current', 'page')
       link.setAttribute('aria-current', 'page')
     } else {
