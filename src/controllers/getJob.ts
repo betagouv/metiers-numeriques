@@ -21,6 +21,7 @@ export default async function getJob(req: Request, res: Response) {
       job: maybeJob,
       pageDescription: maybeJob.mission || '',
       pageTitle: maybeJob.title,
+      selectedMenu: 'jobs',
     })
   } catch (err) {
     handleError(err, 'controllers/getJob()', res)

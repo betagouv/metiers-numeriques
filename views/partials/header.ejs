@@ -47,16 +47,28 @@
   </div>
 
   <div class="fr-container">
-    <nav class="fr-nav" id="header-navigation" role="navigation" aria-label="Menu principal">
+    <nav aria-label="Menu principal" class="fr-nav" role="navigation">
       <ul class="fr-nav__list">
         <li class="fr-nav__item">
-          <a class="fr-nav__link" href="/" target="_self" aria-current="page">Accueil</a>
+          <% if (selectedMenu === 'home') { %>
+            <a class="fr-nav__link" href="/" aria-current="page">Accueil </a>
+          <% } else { %>
+            <a class="fr-nav__link" href="/">Accueil</a>
+          <% } %>
         </li>
         <li class="fr-nav__item">
-          <a class="fr-nav__link" href="/emplois" target="_self">Les offres d'emplois</a>
+          <% if (selectedMenu === 'jobs') { %>
+            <a class="fr-nav__link" href="/emplois" aria-current="page">Les offres d'emplois</a>
+          <% } else { %>
+            <a class="fr-nav__link" href="/emplois">Les offres d'emplois</a>
+          <% } %>
         </li>
         <li class="fr-nav__item">
-          <a class="fr-nav__link" href="/institutions" target="_self">Les institutions</a>
+          <% if (selectedMenu === 'institutions') { %>
+            <a class="fr-nav__link" href="/institutions" aria-current="page">Les institutions</a>
+          <% } else { %>
+            <a class="fr-nav__link" href="/institutions">Les institutions</a>
+          <% } %>
         </li>
       </ul>
     </nav>

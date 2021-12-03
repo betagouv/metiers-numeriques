@@ -18,9 +18,9 @@
         <div class="fr-grid-row">
           <div style='display: flex; justify-content: space-between; align-items: center; padding: 1rem; width: 100%;'>
             <div style='width: 100%;'>
-              <label class="fr-label" for="jobs-search-input">Métier</label>
+              <label class="fr-label" for="JobsSearchInput">Métier</label>
               <div class="fr-input-wrap fr-fi-search-line">
-                <input class="fr-input" type="text" id="jobs-search-input" />
+                <input class="fr-input" type="text" id="JobsSearchInput" />
               </div>
             </div>
 
@@ -35,20 +35,17 @@
             </select> -->
           </div>
 
-          <div id="jobs-list" style='width: 100%;'>
+          <div id="JobsList" style='width: 100%;'>
             <%- include('partials/jobList', { helper, jobs }) %>
           </div>
         </div>
 
-        <div id="load-more-section" class="fr-py-4w">
-          <button class="fr-btn" id="load-more-button" data-next-cursor="">Afficher plus de résultats</button>
+        <div id="LoadMoreSection" class="fr-py-4w">
+          <button id="LoadMoreButton" class="fr-btn">Afficher plus de résultats</button>
         </div>
       </div>
     </div>
 
     <%- include('partials/footer') -%>
-
-    <script type="text/javascript" src="/static/scripts/loadmore.js"></script>
-    <script type="text/javascript" src="/static/scripts/search.js"></script>
   </body>
 </html>
