@@ -15,9 +15,9 @@ type MinistryProps = {
   logoUrl?: string
   missions?: string
   motivation?: string
-  motivationMedia: string[]
+  motivationFiles: NotionDatabaseItemPropertyAsFiles['files']
   organization?: string
-  organizationMedia: string[]
+  organizationFiles: NotionDatabaseItemPropertyAsFiles['files']
   otherAdresses: NotionDatabaseItemPropertyAsFiles['files']
   profile?: string
   projects?: string
@@ -25,7 +25,7 @@ type MinistryProps = {
   publicationDate?: Date
   schedule?: string
   slug: string
-  socialNetworks: string[]
+  socialNetworkUrls: string[]
   testimonials?: string
   testimonialsMedia: string[]
   thumbnailUrl: string
@@ -33,7 +33,7 @@ type MinistryProps = {
   values?: string
   valuesMedia: string[]
   visualBanner?: string
-  websites: string[]
+  websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 }
 
 class Ministry implements MinistryProps {
@@ -55,21 +55,21 @@ class Ministry implements MinistryProps {
   public logoUrl?: string
   public missions?: string
   public motivation?: string
-  public motivationMedia: string[]
+  public motivationFiles: NotionDatabaseItemPropertyAsFiles['files']
   public organization?: string
-  public organizationMedia: string[]
+  public organizationFiles: NotionDatabaseItemPropertyAsFiles['files']
   public otherAdresses: NotionDatabaseItemPropertyAsFiles['files']
   public profile?: string
   public projects?: string
   public projectsMedia: string[]
   public publicationDate?: Date
   public schedule?: string
-  public socialNetworks: string[]
+  public socialNetworkUrls: string[]
   public testimonials?: string
   public testimonialsMedia: string[]
   public values?: string
   public valuesMedia: string[]
-  public websites: string[]
+  public websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 
   constructor({
     adress,
@@ -86,9 +86,9 @@ class Ministry implements MinistryProps {
     logoUrl,
     missions,
     motivation,
-    motivationMedia,
+    motivationFiles,
     organization,
-    organizationMedia,
+    organizationFiles,
     otherAdresses,
     profile,
     projects,
@@ -96,14 +96,14 @@ class Ministry implements MinistryProps {
     publicationDate,
     schedule,
     slug,
-    socialNetworks,
+    socialNetworkUrls,
     testimonials,
     testimonialsMedia,
     thumbnailUrl,
     title,
     values,
     valuesMedia,
-    websites,
+    websiteFiles,
   }: MinistryProps) {
     this.id = id
     this.title = title
@@ -123,17 +123,17 @@ class Ministry implements MinistryProps {
     this.joinTeam = joinTeam
     this.joinTeamMedia = joinTeamMedia
     this.motivation = motivation
-    this.motivationMedia = motivationMedia
+    this.motivationFiles = motivationFiles
     this.profile = profile
-    this.websites = websites
+    this.websiteFiles = websiteFiles
     this.jobsLink = jobsLink
     this.values = values
     this.valuesMedia = valuesMedia
     this.schedule = schedule
-    this.socialNetworks = socialNetworks
+    this.socialNetworkUrls = socialNetworkUrls
     this.challenges = challenges
     this.organization = organization
-    this.organizationMedia = organizationMedia
+    this.organizationFiles = organizationFiles
     this.hiringProcess = hiringProcess
     this.slug = slug
     this.publicationDate = publicationDate

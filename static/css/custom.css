@@ -203,18 +203,18 @@ span.tofill::before {
   display: none;
 }
 
-#ministry-detail ul,
+#Institution ul,
 #job-detail ul {
   margin: 0;
   padding-left: 0;
 }
-#ministry-detail ol > li,
+#Institution ol > li,
 #job-detail ol > li {
   font-size: 1.25rem;
   line-height: 1.6;
   padding-left: 1rem;
 }
-#ministry-detail ul > li,
+#Institution ul > li,
 #job-detail ul > li {
   font-size: 1.25rem;
   line-height: 1.6;
@@ -222,7 +222,7 @@ span.tofill::before {
   padding-left: 2.5rem;
   position: relative;
 }
-#ministry-detail ul > li::before,
+#Institution ul > li::before,
 #job-detail ul > li::before {
   border-color: #00a8a8;
   border-style: solid;
@@ -237,25 +237,25 @@ span.tofill::before {
   transform: rotate(40deg);
   width: 0;
 }
-#ministry-detail ul > li *,
+#Institution ul > li *,
 #job-detail ul > li * {
   font-size: inherit;
   line-height: inherit;
 }
-#ministry-detail ul > li > ul > li::before,
+#Institution ul > li > ul > li::before,
 #job-detail ul > li > ul > li::before {
   width: 0.625rem;
 }
 
-#ministry-detail-main-fields .fr-col-md-9,
-#ministry-detail-main-fields .fr-col-md-9 p,
+#Institution-main-fields .fr-col-md-9,
+#Institution-main-fields .fr-col-md-9 p,
 #job-detail-main-fields .fr-col-md-9,
 #job-detail-main-fields .fr-col-md-9 p {
   font-size: 1.25rem;
   line-height: 1.6;
 }
 
-#ministry-detail-main-fields .fr-col-md-9,
+#Institution-main-fields .fr-col-md-9,
 #job-detail-main-fields .fr-col-md-9 {
   padding-top: 0.85rem;
 }

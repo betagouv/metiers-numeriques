@@ -1,0 +1,56 @@
+#Institution .MotivationFileSection {
+  align-items: center;
+  display: flex;
+  padding-top: 2rem;
+}
+#Institution .MotivationFileSection a {
+  align-items: center;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+  max-width: 8rem;
+}
+#Institution .MotivationFileSection i {
+  font-size: 300%;
+}
+#Institution .MotivationFileSection a span {
+  font-size: 115%;
+  font-weight: 700;
+  padding-top: 1rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+#Institution .MotivationFileSection div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#Institution .MotivationFileSection div iframe {
+  height: 18rem;
+  width: 32rem;
+}
+
+#Institution .SocialNetworkParagraph {
+  align-items: center;
+  display: flex;
+}
+#Institution .SocialNetworkParagraph a {
+  box-shadow: none;
+  display: inline-flex;
+  margin-right: 0.5rem;
+}
+#Institution .SocialNetworkParagraph a::after {
+  content: '';
+}
+#Institution .SocialNetworkParagraph a i {
+  font-size: 150%;
+}
+#Institution .SocialNetworkParagraph a img {
+  height: 1.5rem;
+  opacity: 0.75;
+  width: 1.5rem;
+}
