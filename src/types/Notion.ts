@@ -5,6 +5,13 @@ export type NotionResponseError = {
   status: number
 }
 
+export type NotionResponseList<T> = {
+  has_more: boolean
+  next_cursor: string
+  object: 'list'
+  results: T[]
+}
+
 export type NotionDatabaseItem<
   T = {
     [key: string]: NotionDatabaseItemProperty

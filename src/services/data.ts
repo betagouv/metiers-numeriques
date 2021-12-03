@@ -4,12 +4,13 @@ import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
 import generateJobFromNotionPepJob from '../helpers/generateJobFromNotionPepJob'
 import generateJobFromNotionSkbJob from '../helpers/generateJobFromNotionSkbJob'
 import generateMinistryFromNotionMinistry from '../helpers/generateMinistryFromNotionMinistry'
+import sortJobsByQuality from '../helpers/sortJobsByQuality'
 import Job from '../models/Job'
 import Ministry from '../models/Ministry'
 import notion from './notion'
 
-const sortByUpdatedAtDesc: (jobs: Job[]) => Job[] = R.sortWith([R.descend(R.prop('updatedAt'))])
-const sortByTitleAsc: (ministries: Ministry[]) => Ministry[] = R.sortWith([R.ascend(R.prop('title'))])
+const sortByUpdatedAtDesc: (jobs: Job[]) => Job[] = R.sort(R.descend(R.prop('updatedAt')))
+const sortByTitleAsc: (ministries: Ministry[]) => Ministry[] = R.sort(R.ascend(R.prop('title')))
 
 class Data {
   public async getJobs(): Promise<Job[]> {
@@ -21,9 +22,10 @@ class Data {
     const skbJobs = notionSkbJobs.map(generateJobFromNotionSkbJob)
 
     const allJobs = [...jobs, ...pepJobs, ...skbJobs]
-    const allJobsSorted = sortByUpdatedAtDesc(allJobs)
+    const allJobsSortedByUpdatedAtDesc = sortByUpdatedAtDesc(allJobs)
+    const allJobsSortedByQuality = sortJobsByQuality(allJobsSortedByUpdatedAtDesc)
 
-    return allJobsSorted
+    return allJobsSortedByQuality
   }
 
   public async getMinistries(): Promise<Ministry[]> {

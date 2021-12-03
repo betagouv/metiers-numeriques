@@ -73,11 +73,21 @@ class Notion {
   }
 
   async findManyPepJobs(): Promise<NotionPepJob[]> {
-    return this.database.findMany(NOTION_PEP_JOBS_DATABASE_ID)
+    return this.database.findMany(NOTION_PEP_JOBS_DATABASE_ID, {
+      checkbox: {
+        equals: false,
+      },
+      property: 'hide',
+    })
   }
 
   async findManySkbJobs(): Promise<NotionSkbJob[]> {
-    return this.database.findMany(NOTION_SKB_JOBS_DATABASE_ID)
+    return this.database.findMany(NOTION_SKB_JOBS_DATABASE_ID, {
+      checkbox: {
+        equals: true,
+      },
+      property: 'EstPublie',
+    })
   }
 
   async hasPepJob(id: string): Promise<boolean> {
