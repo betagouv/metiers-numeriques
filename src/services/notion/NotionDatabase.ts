@@ -3,7 +3,7 @@
 import { AxiosInstance } from 'axios'
 
 import handleError from '../../helpers/handleError'
-import { NotionDatabaseItem } from '../../types/Notion'
+import { NotionDatabaseItem, NotionResponseList } from '../../types/Notion'
 
 export default class NotionDatabase {
   private axiosInstance: AxiosInstance
@@ -31,39 +31,44 @@ export default class NotionDatabase {
 
   public async find<T extends NotionDatabaseItem>(databaseId: string, filter?: any): Promise<T | null> {
     try {
-      const { data } = await this.axiosInstance.post<{
-        results: T[]
-      }>(
-        `/databases/${databaseId}/query`,
-        filter
-          ? {
-              filter,
-            }
-          : {},
-      )
+      const data = await this.findMany<T>(databaseId, filter)
 
-      if (data.results.length === 0) {
+      if (data.length === 0) {
         return null
       }
 
-      return data.results[0]
+      return data[0]
     } catch (err) {
       handleError(err, 'services/Notion.database.findMany()')
     }
   }
 
-  public async findMany<T extends NotionDatabaseItem>(databaseId: string, filter?: any): Promise<T[]> {
+  public async findMany<T extends NotionDatabaseItem>(
+    databaseId: string,
+    filter?: any,
+    startCursor?: string,
+  ): Promise<T[]> {
     try {
-      const { data } = await this.axiosInstance.post<{
-        results: T[]
-      }>(
-        `/databases/${databaseId}/query`,
-        filter
-          ? {
-              filter,
-            }
-          : {},
-      )
+      const body: any = {
+        sorts: [
+          {
+            direction: 'descending',
+            timestamp: 'last_edited_time',
+          },
+        ],
+      }
+      if (filter !== undefined) {
+        body.filter = filter
+      }
+      if (startCursor !== undefined) {
+        body.start_cursor = startCursor
+      }
+
+      const { data } = await this.axiosInstance.post<NotionResponseList<T>>(`/databases/${databaseId}/query`, body)
+
+      if (data.has_more) {
+        return [...data.results, ...(await this.findMany<T>(databaseId, filter, data.next_cursor))]
+      }
 
       return data.results
     } catch (err) {
