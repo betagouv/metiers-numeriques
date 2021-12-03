@@ -24,12 +24,13 @@ server.use('/static', express.static(path.join(__dirname, '../static')))
 server.use('/~', express.static(path.join(__dirname, '../node_modules')))
 // Populate some variables for all views
 server.use((req, res, next) => {
-  res.locals.appName = appName
-  res.locals.appDescription = appDescription
   res.locals.appContactEmail = appContactEmail
+  res.locals.appDescription = appDescription
+  res.locals.appName = appName
   res.locals.appRepo = appRepo
-  res.locals.page = req.url
   res.locals.appRoot = appRoot
+  res.locals.selectedMenu = ''
+
   next()
 })
 
@@ -37,6 +38,7 @@ server.get('/', (req, res) => {
   res.render('landing', {
     pageDescription: appDescription,
     pageTitle: 'Découvrez les métiers numériques de l’État',
+    selectedMenu: 'home',
   })
 })
 

@@ -72,18 +72,13 @@
   </div>
 </footer>
 
-<button id="scroll-to-top-button" class="fr-btn fr-btn--secondary fr-fi-arrow-up-line" title="Revenir en haut de la page">
+<button id="TopScrollerButton" class="fr-btn fr-fi-arrow-up-line" title="Revenir en haut de la page">
   Revenir en haut de la page
 </button>
 
 <%- include('dark-mode-modale') -%>
 
-<!-- todo(estellecomment) : import min css and js -->
-<script type="module" src="/~/@gouvfr/dsfr/dist/js/dsfr.module.js"></script>
-<script type="text/javascript" nomodule src="/~/@gouvfr/dsfr/dist/js/dsfr.nomodule.js"></script>
+<script type="text/javascript" src="/static/scripts/index.bundle.js"></script>
 
-<script type="text/javascript" src="/static/scripts/helpers.js"></script>
-<script type="text/javascript" src="/static/scripts/custom.js"></script>
-
-<script type="text/javascript" src="/static/scripts/matomo.js"></script>
-<script type="text/javascript" src="/static/scripts/crisp.js"></script>
+<script type="text/javascript" src="/static/scripts/externals/matomo.js" defer></script>
+<script type="text/javascript" src="/static/scripts/externals/crisp.js" defer></script>

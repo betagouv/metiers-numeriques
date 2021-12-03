@@ -22,6 +22,7 @@ export default async function getMinistry(req: Request, res: Response) {
       ministry: maybeMinistry,
       pageDescription: `Tout savoir sur ${uncapitalizeFirstLetter(maybeMinistry.fullName)}.`,
       pageTitle: maybeMinistry.title,
+      selectedMenu: 'institutions',
     })
   } catch (err) {
     handleError(err, 'controllers/getMinistry()', res)

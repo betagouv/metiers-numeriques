@@ -264,25 +264,6 @@ span.tofill::before {
   font-weight: 700;
 }
 
-#load-more-section {
+#LoadMoreSection {
   text-align: center;
-}
-
-#scroll-to-top-button {
-  background-color: #2943d1;
-  border-radius: 50%;
-  bottom: 6.25rem;
-  box-shadow: none;
-  color: white;
-  height: 3.75rem;
-  max-height: 3.75rem;
-  max-width: 3.75rem;
-  opacity: 0;
-  padding: 1.125rem;
-  position: fixed;
-  right: 1.5rem;
-  width: 3.75rem;
-}
-#scroll-to-top-button:hover {
-  background-image: none;
 }
