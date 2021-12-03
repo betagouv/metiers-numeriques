@@ -110,4 +110,5 @@ dist
 /static/assets/*
 /static/css/index.bundle.css
 /static/scripts/index.bundle.js
+/static/index.js
 /static/sitemap.xml
