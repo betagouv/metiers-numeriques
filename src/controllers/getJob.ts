@@ -13,7 +13,6 @@ export default async function getJob(req: Request, res: Response) {
     const jobs = await cache.getOrCacheWith(CACHE_KEY.JOBS, data.getJobs)
 
     const maybeJob = R.find(R.propEq('id', id), jobs)
-
     if (maybeJob === undefined) {
       res.render('404')
 

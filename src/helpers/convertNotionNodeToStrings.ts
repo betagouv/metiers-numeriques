@@ -1,14 +1,24 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
-import { NotionDatabaseItemPropertyAsMultiSelect, NotionDatabaseItemPropertyAsRichText } from '../types/Notion'
+import {
+  NotionDatabaseItemPropertyAsFiles,
+  NotionDatabaseItemPropertyAsMultiSelect,
+  NotionDatabaseItemPropertyAsRichText,
+} from '../types/Notion'
 import convertMarkdownToInlineHtml from './convertMarkdownToInlineHtml'
 import handleError from './handleError'
 
 export default function convertNotionNodeToStrings(
-  value: NotionDatabaseItemPropertyAsMultiSelect | NotionDatabaseItemPropertyAsRichText,
+  value:
+    | NotionDatabaseItemPropertyAsFiles
+    | NotionDatabaseItemPropertyAsMultiSelect
+    | NotionDatabaseItemPropertyAsRichText,
 ): string[] {
   try {
     switch (value.type) {
+      case 'files':
+        return fromFiles(value)
+
       case 'multi_select':
         return fromMultiSelect(value)
 
@@ -21,6 +31,16 @@ export default function convertNotionNodeToStrings(
   } catch (err) {
     handleError(err, 'helpers/convertNotionNodeToStrings()')
   }
+}
+
+function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string[] {
+  return value.files.map(file => {
+    if (file.type === 'external') {
+      return file.external.url
+    }
+
+    return file.file.url
+  })
 }
 
 function fromMultiSelect(value: NotionDatabaseItemPropertyAsMultiSelect): string[] {
