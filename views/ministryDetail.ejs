@@ -5,7 +5,7 @@
   <body>
     <%- include('partials/header') -%>
 
-    <div id="ministry-detail">
+    <div id="Institution">
       <div class="fr-container">
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-3 fr-mb-4w fr-mt-6w">
@@ -25,18 +25,54 @@
               <div class="fr-col-sm-12 fr-px-8w">
                 <h5>Raison d‘être</h5>
                 <%- ministry.motivation %>
-                <% if (ministry.motivationMedia.length) { %>
-                  <% ministry.motivationMedia.forEach(function(media) { %>
-                    <%- media %>
-                  <% }); %>
+
+                <% if (ministry.motivationFiles.length) { %>
+                  <div class="MotivationFileSection">
+                    <%
+                      ministry.motivationFiles
+                        .filter(motivationFile => !motivationFile.external.url.includes('youtube.com'))
+                        .forEach(function(motivationFile) {
+                    %>
+                      <% if (/\.pdf$/.test(motivationFile.external.url)) { %>
+                        <a href="<%= motivationFile.external.url %>" target="_blank">
+                          <i class="ri-file-pdf-fill"></i>
+                          <span><%= motivationFile.name %></span>
+                        </a>
+                      <% } else if (/\.pdf$/.test(motivationFile.external.url)) { %>
+                        <a href="<%= motivationFile.external.url %>" target="_blank">
+                          <i class="ri-file-pdf-fill"></i>
+                          <span><%= motivationFile.name %></span>
+                        </a>
+                      <% } else { %>
+                        <a href="<%= motivationFile.external.url %>" target="_blank">
+                          <%= motivationFile.name %>
+                        </a>
+                      <% } %>
+                    <% }); %>
+
+                    <%
+                      ministry.motivationFiles
+                        .filter(motivationFile => motivationFile.external.url.includes('youtube.com'))
+                        .forEach(function(motivationFile) {
+                    %>
+                      <div>
+                        <iframe
+                          allowfullscreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          frameborder="0"
+                          src="https://www.youtube.com/embed/<%= motivationFile.external.url.match(/[^=]+$/)[0] %>"
+                        ></iframe>
+                      </div>
+                    <% }); %>
+                  </div>
                 <% } %>
               </div>
             </div>
           </div>
         <% } %>
 
-        <div id="ministry-detail-main-fields" class="fr-my-4w">
-          <% if(ministry.values){ %>
+        <div id="Institution-main-fields" class="fr-my-4w">
+          <% if (ministry.values) { %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
               <h3>Valeurs</h3>
@@ -53,7 +89,7 @@
             </div>
           </div>
           <% } %>
-          <% if(ministry.challenges){ %>
+          <% if (ministry.challenges) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Nos enjeux</h3>
@@ -63,7 +99,7 @@
               </div>
             </div>
             <% } %>
-          <% if(ministry.missions){ %>
+          <% if (ministry.missions) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
               <h3>Missions</h3>
@@ -73,7 +109,7 @@
               </div>
             </div>
           <% } %>
-          <% if(ministry.projects){ %>
+          <% if (ministry.projects) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
               <h3>Projets</h3>
@@ -92,36 +128,37 @@
               </div>
             </div>
           <% } %>
-          <% if(ministry.organization || ministry.organizationMedia.length){ %>
+          <% if (ministry.organization || ministry.organizationFiles.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
               <h3>Notre organisation</h3>
               </div>
               <div class="fr-col-md-9 fr-col-sm-12 fr-mb-6w">
                 <% if (ministry.organization) { %>
-                    <%- ministry.organization %>
+                  <%- ministry.organization %>
                 <% } %>
-                <% ministry.organizationMedia.forEach(function(media) { %>
-                    <ul>
-                    <% if (media.file) { %>
-                        <span>
-                        <% if (media.name.search('.jpg') != -1 || media.name.search('.png') != -1 ) { %>
-                            <a href="<%= media.file.url %>" target="_blank">
-                                <img class="fr-col-2 fr-mt-2w" src="<%= media.file.url %>" alt="<%= media.name %>">
-                            </a>
+
+                <% if (ministry.organizationFiles.length) { %>
+                  <ul>
+                    <% ministry.organizationFiles.forEach(function(media) { %>
+                      <li>
+                        <% if (media.file) { %>
+                          <a href="<%= media.file.url %>" target="_blank">
+                            <%= media.name %>
+                          </a>
                         <% } else { %>
-                            <li><a class="fr-text--sm" href="<%= media.file.url %>" target="_blank"><%= media.name %></a></li>
+                          <a href="<%= media.external.url %>" target="_blank">
+                            <%= media.name %>
+                          </a>
                         <% } %>
-                    </span>
-                    <% } else { %>
-                        <li><a class="fr-text--sm" href="<%= media.name %>" target="_blank"><%= media.name %></a></li>
-                    <% } %>
-                    </ul>
-                <% }); %>
+                      </li>
+                    <% }); %>
+                  </ul>
+                <% } %>
               </div>
             </div>
           <% } %>
-          <% if(ministry.testimonials || ministry.testimonialsMedia.length){ %>
+          <% if (ministry.testimonials || ministry.testimonialsMedia.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
               <h3>Nos agents en parlent</h3>
@@ -129,7 +166,7 @@
               <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
                 Découvrez le témoignage de nos agents:
                 <%- ministry.testimonials %>
-                <% if(ministry.testimonialsMedia){ %>
+                <% if (ministry.testimonialsMedia) { %>
                     <% ministry.testimonialsMedia.forEach(function(media) { %>
                         <% if (media.file) { %>
                             <% if (media.name.search('.jpg') != -1 ) { %>
@@ -147,7 +184,7 @@
               </div>
             </div>
           <% } %>
-          <% if(ministry.profile){ %>
+          <% if (ministry.profile) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Ton profil</h3>
@@ -157,7 +194,7 @@
               </div>
             </div>
             <% } %>
-            <% if(ministry.hiringProcess){ %>
+            <% if (ministry.hiringProcess) { %>
                 <div class="fr-grid-row fr-grid-row--gutters">
                   <div class="fr-col-md-3 fr-col-sm-12">
                     <h3>Processus de recrutement</h3>
@@ -167,13 +204,13 @@
                   </div>
                 </div>
                 <% } %>
-            <% if(ministry.joinTeam || ministry.jobsLink.length){ %>
+            <% if (ministry.joinTeam || ministry.jobsLink.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
               <h3>Nous rejoindre</h3>
               </div>
               <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
-                <% if(ministry.joinTeam){ %>
+                <% if (ministry.joinTeam) { %>
                     <%- ministry.joinTeam %>
                 <ul class="fr-mb-4w">
                 <% ministry.joinTeamMedia.forEach(function(media) { %>
@@ -191,7 +228,7 @@
                 <% }); %>
                 </ul>
                 <% } %>
-                <% if(ministry.jobsLink.length){ %>
+                <% if (ministry.jobsLink.length) { %>
                     <a href="<%= ministry.jobsLink[0].name %>"
                         class="fr-btn fr-btn--sm">Découvrez nos offres d'emploi
                         <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
@@ -204,7 +241,7 @@
       </div>
 
       <div class="fr-container fr-py-4w" style="background-color: #F0F0F0">
-        <% if(ministry.keyNumbers){ %>
+        <% if (ministry.keyNumbers) { %>
         <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-md-3 fr-col-sm-12">
             <h5>Chiffres clés</h5>
@@ -215,7 +252,7 @@
         </div>
         <% } %>
 
-        <% if(ministry.schedule){ %>
+        <% if (ministry.schedule) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-md-3 fr-col-sm-12">
                     <h5>Agenda</h5>
@@ -226,47 +263,58 @@
             </div>
             <% } %>
 
-        <% if(ministry.websites){ %>
+        <% if (ministry.websiteFiles.length) { %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
               <h5>Sites & réseaux</h5>
             </div>
             <div class="fr-col-md-9 fr-col-sm-12">
               <ul>
-                <% ministry.websites.forEach(function(website) { %>
+                <% ministry.websiteFiles.forEach(function(websiteFile) { %>
                   <li>
-                    <a href="<%= website.name %>" target="_blank"><%= website.name %></a>
+                    <a href="<%= websiteFile.external.url %>" target="_blank"><%= websiteFile.name %></a>
                   </li>
                 <% }); %>
               </ul>
-              <p>
-                <% ministry.socialNetworks.forEach(function(network) { %>
-                  <% if(network.search('linkedin.com') != -1 ){ %>
-                    <a href="<%= network %>">
-                      <span class="fr-fi-linkedin-box-fill" aria-hidden="true"></span>
+
+              <p class="SocialNetworkParagraph">
+                <% ministry.socialNetworkUrls.forEach(function(socialNetworkUrl) { %>
+                  <% if (socialNetworkUrl.search('linkedin.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <i class="ri-linkedin-fill"></i>
                     </a>
-                  <% } else if(network.search('twitter.com') != -1){ %>
-                    <a href="<%= network %>">
-                      <span class="fr-fi-twitter-fill" aria-hidden="true"></span>
+                  <% } else if (socialNetworkUrl.search('twitter.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <i class="ri-twitter-fill"></i>
                     </a>
-                  <% } else if(network.search('facebook.com') != -1){ %>
-                    <a href="<%= network %>">
-                      <span class="fr-fi-facebook-circle-fill" aria-hidden="true"></span>
+                  <% } else if (socialNetworkUrl.search('facebook.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <i class="ri-facebook-fill"></i>
                     </a>
-                  <% } else if(network.search('instagram.com') != -1){ %>
-                    <a href="<%= network %>">
-                      <span class="fr-fi-instagram-fill" aria-hidden="true"></span>
+                  <% } else if (socialNetworkUrl.search('instagram.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <i class="ri-instagram-fill"></i>
                     </a>
-                  <% } else if(network.search('youtube.com') != -1){ %>
-                    <a href="<%= network %>">
-                      <span class="fr-fi-youtube-fill" aria-hidden="true"></span>
+                  <% } else if (socialNetworkUrl.search('youtube.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank" style="padding-top: 0.25rem;">
+                      <i class="ri-youtube-fill"></i>
                     </a>
-                  <% } else if(network.search('github.com') != -1){ %>
-                    <a href="<%= network %>">Github</a>
-                  <% } else if(network.search('dailymotion.com') != -1){ %>
-                    <a href="<%= network %>">Dailymotion</a>
+                  <% } else if (socialNetworkUrl.search('github.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <i class="ri-github-fill"></i>
+                    </a>
+                  <% } else if (socialNetworkUrl.search('dailymotion.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <img src="/static/icons/dailymotion.svg" />
+                    </a>
+                  <% } else if (socialNetworkUrl.search('soundcloud.com') !== -1) { %>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <i class="ri-soundcloud-fill"></i>
+                    </a>
                   <% } else { %>
-                    <a href="<%= network %>">Soundcloud</a>
+                    <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <%= socialNetworkUrl %>
+                    </a>
                   <% } %>
                 <% }); %>
               </p>
@@ -274,7 +322,7 @@
           </div>
         <% } %>
 
-        <% if(ministry.adress){ %>
+        <% if (ministry.adress) { %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
               <h5>Adresses</h5>
@@ -285,7 +333,7 @@
               </p>
               <% ministry.otherAdresses.forEach(function(adress) { %>
                 <span>
-                  <% if(adress.name.search('google.com') != -1){ %>
+                  <% if (adress.name.search('google.com') != -1) { %>
                     <a href="<%= adress.name %>" target="_blank">Voir sur Google maps</a>
                   <% } else { %>
                     <% if (adress.name.search('.jpg') != -1 ) { %>

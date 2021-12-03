@@ -3,4 +3,6 @@
 
 @import './custom.css';
 
+@import './pages/Institution.css';
+
 @import './components/TopScrollerButton.css';

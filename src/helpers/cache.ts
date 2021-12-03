@@ -44,7 +44,7 @@ class Cache {
       }
       const maybeCachedValueAsJson = await this.redisClient.get(key)
 
-      if (maybeCachedValueAsJson !== null) {
+      if (maybeCachedValueAsJson !== null && process.env.NODE_ENV === 'production') {
         const maybeCachedValue = JSON.parse(maybeCachedValueAsJson) as CacheValue<T>
 
         return maybeCachedValue.data
