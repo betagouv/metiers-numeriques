@@ -1,78 +1,78 @@
+import { NotionDatabaseItemPropertyAsFiles } from '../types/Notion'
+
 type MinistryProps = {
-  adress: string
-  adressBis: string
-  brandBlock: string
-  challenges: string
+  adress?: string
+  challenges?: string
   description?: string
   fullName: string
-  hiringProcess: string
+  hiringProcess?: string
   id: string
   jobsLink: string[]
-  joinTeam: string
-  joinTeamMedia: string
-  keyNumbers: string
+  joinTeam?: string
+  joinTeamMedia: string[]
+  keyNumbers?: string
   keyNumbersMedia: string[]
-  missions: string
-  motivation: string
-  motivationMedia: string
-  organization: string
-  organizationMedia: string
-  profile: string
-  projects: string
-  projectsMedia: string
-  publicationDate: Date | null
-  schedule: string
+  logoUrl?: string
+  missions?: string
+  motivation?: string
+  motivationMedia: string[]
+  organization?: string
+  organizationMedia: string[]
+  otherAdresses: NotionDatabaseItemPropertyAsFiles['files']
+  profile?: string
+  projects?: string
+  projectsMedia: string[]
+  publicationDate?: Date
+  schedule?: string
   slug: string
   socialNetworks: string[]
-  testimonials: string
+  testimonials?: string
   testimonialsMedia: string[]
-  thumbnail: string
+  thumbnailUrl: string
   title: string
-  values: string
+  values?: string
   valuesMedia: string[]
-  visualBanner: string
+  visualBanner?: string
   websites: string[]
 }
 
-class Ministry {
-  public adress: string
-  public adressBis: string
-  public brandBlock: string
-  public challenges: string
-  public description?: string
-  public fullName: string
-  public hiringProcess: string
+class Ministry implements MinistryProps {
   public id: string
-  public jobsLink: string[]
-  public joinTeam: string
-  public joinTeamMedia: string
-  public keyNumbers: string
-  public keyNumbersMedia: string[]
-  public missions: string
-  public motivation: string
-  public motivationMedia: string
-  public organization: string
-  public organizationMedia: string
-  public profile: string
-  public projects: string
-  public projectsMedia: string
-  public publicationDate: Date | null
-  public schedule: string
   public slug: string
-  public socialNetworks: string[]
-  public testimonials: string
-  public testimonialsMedia: string[]
-  public thumbnail: string
   public title: string
-  public values: string
+  public fullName: string
+  public thumbnailUrl: string
+
+  public adress?: string
+  public challenges?: string
+  public description?: string
+  public hiringProcess?: string
+  public jobsLink: string[]
+  public joinTeam?: string
+  public joinTeamMedia: string[]
+  public keyNumbers?: string
+  public keyNumbersMedia: string[]
+  public logoUrl?: string
+  public missions?: string
+  public motivation?: string
+  public motivationMedia: string[]
+  public organization?: string
+  public organizationMedia: string[]
+  public otherAdresses: NotionDatabaseItemPropertyAsFiles['files']
+  public profile?: string
+  public projects?: string
+  public projectsMedia: string[]
+  public publicationDate?: Date
+  public schedule?: string
+  public socialNetworks: string[]
+  public testimonials?: string
+  public testimonialsMedia: string[]
+  public values?: string
   public valuesMedia: string[]
-  public visualBanner: string
   public websites: string[]
 
   constructor({
     adress,
-    adressBis,
-    brandBlock,
     challenges,
     description,
     fullName,
@@ -83,25 +83,26 @@ class Ministry {
     joinTeamMedia,
     keyNumbers,
     keyNumbersMedia,
+    logoUrl,
     missions,
     motivation,
     motivationMedia,
     organization,
     organizationMedia,
+    otherAdresses,
     profile,
     projects,
     projectsMedia,
-    publicationDate = null,
+    publicationDate,
     schedule,
     slug,
     socialNetworks,
     testimonials,
     testimonialsMedia,
-    thumbnail,
+    thumbnailUrl,
     title,
     values,
     valuesMedia,
-    visualBanner,
     websites,
   }: MinistryProps) {
     this.id = id
@@ -109,9 +110,9 @@ class Ministry {
     this.description = description
     this.fullName = fullName
     this.adress = adress
-    this.adressBis = adressBis
-    this.brandBlock = brandBlock
-    this.thumbnail = thumbnail
+    this.otherAdresses = otherAdresses
+    this.logoUrl = logoUrl
+    this.thumbnailUrl = thumbnailUrl
     this.keyNumbers = keyNumbers
     this.keyNumbersMedia = keyNumbersMedia
     this.missions = missions
@@ -130,7 +131,6 @@ class Ministry {
     this.valuesMedia = valuesMedia
     this.schedule = schedule
     this.socialNetworks = socialNetworks
-    this.visualBanner = visualBanner
     this.challenges = challenges
     this.organization = organization
     this.organizationMedia = organizationMedia

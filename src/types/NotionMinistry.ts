@@ -18,12 +18,12 @@ export type NotionMinistry = NotionDatabaseItem<{
   Date: NotionDatabaseItemPropertyAsDate
   'Les chiffres clés': NotionDatabaseItemPropertyAsRichText
   'Les chiffres clés - liens': NotionDatabaseItemPropertyAsFiles
-  'Les missions': NotionDatabaseItemPropertyAsRichText
   'Les projets ou rélisations': NotionDatabaseItemPropertyAsRichText
   'Liens Nos agents en parlent': NotionDatabaseItemPropertyAsFiles
   'Nom complet': NotionDatabaseItemPropertyAsRichText
   'Nos agents en parlent': NotionDatabaseItemPropertyAsRichText
   'Nos enjeux': NotionDatabaseItemPropertyAsRichText
+  'Nos missions': NotionDatabaseItemPropertyAsRichText
   'Notre organisation': NotionDatabaseItemPropertyAsRichText
   'Notre organisation compléments': NotionDatabaseItemPropertyAsFiles
   'Nous rejoindre - Infos': NotionDatabaseItemPropertyAsFiles

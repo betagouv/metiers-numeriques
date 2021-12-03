@@ -2,6 +2,7 @@
 
 import {
   NotionDatabaseItemPropertyAsDate,
+  NotionDatabaseItemPropertyAsFiles,
   NotionDatabaseItemPropertyAsLastEditedTime,
   NotionDatabaseItemPropertyAsRichText,
   NotionDatabaseItemPropertyAsSelect,
@@ -15,6 +16,7 @@ import humanizeDate from './humanizeDate'
 export default function convertNotionNodeToHtml(
   value:
     | NotionDatabaseItemPropertyAsDate
+    | NotionDatabaseItemPropertyAsFiles
     | NotionDatabaseItemPropertyAsLastEditedTime
     | NotionDatabaseItemPropertyAsRichText
     | NotionDatabaseItemPropertyAsSelect
@@ -25,6 +27,9 @@ export default function convertNotionNodeToHtml(
     switch (value.type) {
       case 'date':
         return fromDate(value)
+
+      case 'files':
+        return fromFiles(value)
 
       case 'last_edited_time':
         return fromLastEditedTime(value)
@@ -52,6 +57,20 @@ function fromDate(value: NotionDatabaseItemPropertyAsDate): string | undefined {
   }
 
   return humanizeDate(value.date.start)
+}
+
+function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string | undefined {
+  if (value.files.length === 0) {
+    return undefined
+  }
+
+  const firstFile = value.files[0]
+
+  if (firstFile.type === 'external') {
+    return firstFile.external.url
+  }
+
+  return firstFile.file.url
 }
 
 function fromLastEditedTime(value: NotionDatabaseItemPropertyAsLastEditedTime): string | undefined {

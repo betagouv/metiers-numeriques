@@ -5,8 +5,8 @@ import updateCache from '../jobs/updateCache'
 
 const JOBS = [
   {
-    // Each 5s
-    cronTime: '*/5 * * * * *',
+    // Each minute
+    cronTime: '* * * * *',
     name: 'Update Cache',
     onTick: updateCache,
   },
