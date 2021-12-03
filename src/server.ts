@@ -54,11 +54,11 @@ server.get('/suivi', (req, res) => {
   })
 })
 
-server.get('/annonces', getJobs)
-server.get('/annonces/:id', getJob)
+server.get('/emplois', getJobs)
+server.get('/emploi/:slug', getJob)
 server.get('/jobs/search', searchJobs)
-server.get('/ministeres', getMinistries)
-server.get('/ministeres/:id', getMinistry)
+server.get('/institutions', getMinistries)
+server.get('/institution/:slug', getMinistry)
 
 server.use((req, res) => {
   res.status(404).end()

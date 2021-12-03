@@ -4,7 +4,7 @@ import { createClient } from 'redis'
 
 import handleError from './handleError'
 
-const { NODE_ENV, REDIS_URL } = process.env
+const { REDIS_URL } = process.env
 const CACHE_DURATION = process.env.CACHE_DURATION ? Number(process.env.CACHE_DURATION) : 60
 
 const redisClient = createClient({
@@ -29,7 +29,7 @@ class Cache {
       }
       const maybeCachedValueAsJson = await redisClient.get(key)
 
-      if (maybeCachedValueAsJson !== null && NODE_ENV === 'production') {
+      if (maybeCachedValueAsJson !== null) {
         const maybeCachedValue = JSON.parse(maybeCachedValueAsJson) as CacheValue<T>
 
         return maybeCachedValue.data
