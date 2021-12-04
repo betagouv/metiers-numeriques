@@ -20,7 +20,7 @@ export default function convertMarkdownToHtml(markdownSource: string): string {
       .render(mormalizedMarkdownSource)
       .replace(/\n/g, '')
       .replace(/<p>\s*<\/p>/g, '')
-      .replace(/<a href="/g, '<a target="_blank" href="')
+      .replace(/<a href="/g, '<a target="_blank" rel="noopener" href="')
       .trim()
 
     return htmlSource

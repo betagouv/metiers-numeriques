@@ -238,7 +238,7 @@
                 <ul>
                   <% ministry.websiteFiles.forEach(function(websiteFile) { %>
                     <li>
-                      <a href="<%= websiteFile.external.url %>" target="_blank"><%= websiteFile.name %></a>
+                      <a href="<%= websiteFile.external.url %>" rel="noopener" target="_blank"><%= websiteFile.name %></a>
                     </li>
                   <% }); %>
                 </ul>
@@ -248,39 +248,39 @@
                 <p class="SocialNetworkParagraph">
                   <% ministry.socialNetworkUrls.forEach(function(socialNetworkUrl) { %>
                     <% if (socialNetworkUrl.search('linkedin.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <i class="ri-linkedin-fill"></i>
                       </a>
                     <% } else if (socialNetworkUrl.search('twitter.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <i class="ri-twitter-fill"></i>
                       </a>
                     <% } else if (socialNetworkUrl.search('facebook.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <i class="ri-facebook-fill"></i>
                       </a>
                     <% } else if (socialNetworkUrl.search('instagram.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <i class="ri-instagram-fill"></i>
                       </a>
                     <% } else if (socialNetworkUrl.search('youtube.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank" style="padding-top: 0.25rem;">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank" style="padding-top: 0.25rem;">
                         <i class="ri-youtube-fill"></i>
                       </a>
                     <% } else if (socialNetworkUrl.search('github.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <i class="ri-github-fill"></i>
                       </a>
                     <% } else if (socialNetworkUrl.search('dailymotion.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <img src="/static/icons/dailymotion.svg" />
                       </a>
                     <% } else if (socialNetworkUrl.search('soundcloud.com') !== -1) { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <i class="ri-soundcloud-fill"></i>
                       </a>
                     <% } else { %>
-                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                      <a href="<%= socialNetworkUrl %>" rel="noopener" target="_blank">
                         <%= socialNetworkUrl %>
                       </a>
                     <% } %>
@@ -305,10 +305,10 @@
                 <div>
                   <% ministry.addressFiles.forEach(function(addressFile) { %>
                     <% if (addressFile.name.search('google.com') != -1) { %>
-                      <a href="<%= addressFile.name %>" target="_blank">Voir sur Google maps</a>
+                      <a href="<%= addressFile.name %>" rel="noopener" target="_blank">Voir sur Google maps</a>
                     <% } else { %>
                       <% if (addressFile.name.search('.jpg') != -1 ) { %>
-                        <a href="<%= addressFile.file.url %>" target="_blank">
+                        <a href="<%= addressFile.file.url %>" rel="noopener" target="_blank">
                           <img class="fr-col-2 fr-mt-6w" src="<%= addressFile.file.url %>" alt="<%= addressFile.name %>">
                         </a>
                       <% } %>
