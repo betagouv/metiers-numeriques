@@ -20,7 +20,14 @@ export default function convertNotionNodeToHtmls(value: NotionDatabaseItemProper
 const embedDailymotion = (url: string, name: string): string => {
   const maybeResults = url.match(/[^/]+$/)
   if (maybeResults === null) {
-    return `<a href="${url}" target="_blank">${name}</a>`
+    return `
+      <div class="FileAsDocument">
+        <a href="${url}" rel="noopener" target="_blank">
+          <i class="ri-file-mark-fill"></i>
+          <b>${name}</b>
+        </a>
+      </div>
+    `.trim()
   }
 
   const [dailymotionId] = maybeResults
@@ -43,7 +50,14 @@ const embedDailymotion = (url: string, name: string): string => {
 const embedYoutube = (url: string, name: string): string => {
   const maybeResults = url.match(/[^=]+$/)
   if (maybeResults === null) {
-    return `<a href="${url}" target="_blank">${name}</a>`
+    return `
+      <div class="FileAsDocument">
+        <a href="${url}" rel="noopener" target="_blank">
+          <i class="ri-file-mark-fill"></i>
+          <b>${name}</b>
+        </a>
+      </div>
+    `.trim()
   }
 
   const [youtubeId] = maybeResults
@@ -77,7 +91,7 @@ function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string[] {
           ...htmlSources,
           `
             <div class="FileAsDocument">
-              <a href="${url}" target="_blank">
+              <a href="${url}" rel="noopener" target="_blank">
                 <i class="ri-file-pdf-fill"></i>
                 <b>${name}</b>
               </a>
@@ -96,7 +110,7 @@ function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string[] {
           ...htmlSources,
           `
             <div class="FileAsDocument">
-              <a href="${url}" target="_blank">
+              <a href="${url}" rel="noopener" target="_blank">
                 <i class="ri-file-mark-fill"></i>
                 <b>${name}</b>
               </a>

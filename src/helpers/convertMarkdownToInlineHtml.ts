@@ -21,7 +21,7 @@ export default function convertMarkdownToInlineHtml(markdownSource: string): str
       .replace(/\n/g, '')
       .replace(/^-/, '')
       .trim()
-      .replace(/<a href="/g, '<a target="_blank" href="')
+      .replace(/<a href="/g, '<a target="_blank" rel="noopener" href="')
 
     return htmlSource
   } catch (err) {
