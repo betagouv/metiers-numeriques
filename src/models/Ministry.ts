@@ -8,7 +8,7 @@ type MinistryProps = {
   fullName: string
   hiringProcess?: string
   id: string
-  jobsLink: string[]
+  // jobsLink: string[]
   joinTeam?: string
   joinTeamFiles: string[]
   keyNumbers?: string
@@ -20,35 +20,35 @@ type MinistryProps = {
   organization?: string
   organizationFiles: string[]
   profile?: string
+  project?: string
   projectFiles: string[]
-  projects?: string
   publicationDate?: Date
   schedule?: string
   slug: string
   socialNetworkUrls: string[]
-  testimonials?: string
-  testimonialsFiles: string[]
+  testimonial?: string
+  testimonialFiles: string[]
   thumbnailUrl: string
   title: string
+  value?: string
   valueFiles: string[]
-  values?: string
   visualBanner?: string
   websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 }
 
 class Ministry implements MinistryProps {
   public id: string
-  public slug: string
-  public title: string
   public fullName: string
+  public slug: string
   public thumbnailUrl: string
+  public title: string
 
   public address?: string
   public addressFiles: NotionDatabaseItemPropertyAsFiles['files']
   public challenges?: string
   public description?: string
   public hiringProcess?: string
-  public jobsLink: string[]
+  // public jobsLink: string[]
   public joinTeam?: string
   public joinTeamFiles: string[]
   public keyNumbers?: string
@@ -60,14 +60,14 @@ class Ministry implements MinistryProps {
   public organization?: string
   public organizationFiles: string[]
   public profile?: string
-  public projects?: string
+  public project?: string
   public projectFiles: string[]
   public publicationDate?: Date
   public schedule?: string
   public socialNetworkUrls: string[]
-  public testimonials?: string
-  public testimonialsFiles: string[]
-  public values?: string
+  public testimonial?: string
+  public testimonialFiles: string[]
+  public value?: string
   public valueFiles: string[]
   public websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 
@@ -79,7 +79,7 @@ class Ministry implements MinistryProps {
     fullName,
     hiringProcess,
     id,
-    jobsLink,
+    // jobsLink,
     joinTeam,
     joinTeamFiles,
     keyNumbers,
@@ -91,52 +91,53 @@ class Ministry implements MinistryProps {
     organization,
     organizationFiles,
     profile,
+    project,
     projectFiles,
-    projects,
     publicationDate,
     schedule,
     slug,
     socialNetworkUrls,
-    testimonials,
-    testimonialsFiles,
+    testimonial,
+    testimonialFiles,
     thumbnailUrl,
     title,
+    value,
     valueFiles,
-    values,
     websiteFiles,
   }: MinistryProps) {
     this.id = id
-    this.title = title
-    this.description = description
     this.fullName = fullName
+    this.slug = slug
+    this.title = title
+    this.thumbnailUrl = thumbnailUrl
+
     this.address = address
     this.addressFiles = addressFiles
-    this.logoUrl = logoUrl
-    this.thumbnailUrl = thumbnailUrl
-    this.keyNumbers = keyNumbers
-    this.keyNumbersMedia = keyNumbersMedia
-    this.missions = missions
-    this.projects = projects
-    this.projectFiles = projectFiles
-    this.testimonials = testimonials
-    this.testimonialsFiles = testimonialsFiles
+    this.challenges = challenges
+    this.description = description
+    this.hiringProcess = hiringProcess
+    // this.jobsLink = jobsLink
     this.joinTeam = joinTeam
     this.joinTeamFiles = joinTeamFiles
+    this.keyNumbers = keyNumbers
+    this.keyNumbersMedia = keyNumbersMedia
+    this.logoUrl = logoUrl
+    this.missions = missions
     this.motivation = motivation
     this.motivationFiles = motivationFiles
-    this.profile = profile
-    this.websiteFiles = websiteFiles
-    this.jobsLink = jobsLink
-    this.values = values
-    this.valueFiles = valueFiles
-    this.schedule = schedule
-    this.socialNetworkUrls = socialNetworkUrls
-    this.challenges = challenges
     this.organization = organization
     this.organizationFiles = organizationFiles
-    this.hiringProcess = hiringProcess
-    this.slug = slug
+    this.profile = profile
+    this.project = project
+    this.projectFiles = projectFiles
     this.publicationDate = publicationDate
+    this.schedule = schedule
+    this.socialNetworkUrls = socialNetworkUrls
+    this.testimonial = testimonial
+    this.testimonialFiles = testimonialFiles
+    this.value = value
+    this.valueFiles = valueFiles
+    this.websiteFiles = websiteFiles
   }
 }
 
