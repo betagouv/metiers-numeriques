@@ -16,7 +16,12 @@ export default function convertMarkdownToInlineHtml(markdownSource: string): str
         .replace(/mailto:mailto:/g, 'mailto:')
     }
 
-    const htmlSource = markdownIt.renderInline(mormalizedMarkdownSource).replace(/\n/g, '').replace(/^-/, '').trim()
+    const htmlSource = markdownIt
+      .renderInline(mormalizedMarkdownSource)
+      .replace(/\n/g, '')
+      .replace(/^-/, '')
+      .trim()
+      .replace(/<a href="/g, '<a target="_blank" href="')
 
     return htmlSource
   } catch (err) {
