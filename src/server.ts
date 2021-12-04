@@ -18,10 +18,7 @@ const server = express()
 server.set('view engine', 'ejs')
 server.set('views', path.join(__dirname, '../views'))
 
-// server.use('/static', express.static('../static'));
 server.use('/static', express.static(path.join(__dirname, '../static')))
-// Hack for importing css from npm package
-server.use('/~', express.static(path.join(__dirname, '../node_modules')))
 // Populate some variables for all views
 server.use((req, res, next) => {
   res.locals.appContactEmail = appContactEmail
