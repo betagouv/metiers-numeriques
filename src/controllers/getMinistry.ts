@@ -13,7 +13,7 @@ export default async function getMinistry(req: Request, res: Response) {
 
     const maybeMinistry = R.find(R.propEq('slug', req.params.slug), ministries)
     if (maybeMinistry === undefined) {
-      res.render('404')
+      res.status(404).render('404')
 
       return
     }

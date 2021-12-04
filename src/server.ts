@@ -59,8 +59,15 @@ server.get('/jobs/search', searchJobs)
 server.get('/institutions', getMinistries)
 server.get('/institution/:slug', getMinistry)
 
+server.get('/annonces/:slug', (req, res) => {
+  res.redirect(301, `/emploi/${req.params.slug}`)
+})
+server.get('/annonces', (req, res) => {
+  res.redirect(301, `/emplois`)
+})
+
 server.use((req, res) => {
-  res.status(404).end()
+  res.status(404).render('404')
 })
 
 export default server

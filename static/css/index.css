@@ -6,4 +6,5 @@
 @import './pages/Institution.css';
 
 @import './components/FileSection.css';
+@import './components/Header.css';
 @import './components/TopScrollerButton.css';
