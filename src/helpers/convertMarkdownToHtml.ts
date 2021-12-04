@@ -19,7 +19,8 @@ export default function convertMarkdownToHtml(markdownSource: string): string {
     const htmlSource = markdownIt
       .render(mormalizedMarkdownSource)
       .replace(/\n/g, '')
-      .replace(/<p><\/p>/g, '')
+      .replace(/<p>\s*<\/p>/g, '')
+      .replace(/<a href="/g, '<a target="_blank" href="')
       .trim()
 
     return htmlSource

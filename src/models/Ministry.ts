@@ -1,7 +1,8 @@
 import { NotionDatabaseItemPropertyAsFiles } from '../types/Notion'
 
 type MinistryProps = {
-  adress?: string
+  address?: string
+  addressFiles: NotionDatabaseItemPropertyAsFiles['files']
   challenges?: string
   description?: string
   fullName: string
@@ -9,29 +10,28 @@ type MinistryProps = {
   id: string
   jobsLink: string[]
   joinTeam?: string
-  joinTeamMedia: string[]
+  joinTeamFiles: string[]
   keyNumbers?: string
   keyNumbersMedia: string[]
   logoUrl?: string
   missions?: string
   motivation?: string
-  motivationFiles: NotionDatabaseItemPropertyAsFiles['files']
+  motivationFiles: string[]
   organization?: string
-  organizationFiles: NotionDatabaseItemPropertyAsFiles['files']
-  otherAdresses: NotionDatabaseItemPropertyAsFiles['files']
+  organizationFiles: string[]
   profile?: string
+  projectFiles: string[]
   projects?: string
-  projectsMedia: string[]
   publicationDate?: Date
   schedule?: string
   slug: string
   socialNetworkUrls: string[]
   testimonials?: string
-  testimonialsMedia: string[]
+  testimonialsFiles: string[]
   thumbnailUrl: string
   title: string
+  valueFiles: string[]
   values?: string
-  valuesMedia: string[]
   visualBanner?: string
   websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 }
@@ -43,36 +43,37 @@ class Ministry implements MinistryProps {
   public fullName: string
   public thumbnailUrl: string
 
-  public adress?: string
+  public address?: string
+  public addressFiles: NotionDatabaseItemPropertyAsFiles['files']
   public challenges?: string
   public description?: string
   public hiringProcess?: string
   public jobsLink: string[]
   public joinTeam?: string
-  public joinTeamMedia: string[]
+  public joinTeamFiles: string[]
   public keyNumbers?: string
   public keyNumbersMedia: string[]
   public logoUrl?: string
   public missions?: string
   public motivation?: string
-  public motivationFiles: NotionDatabaseItemPropertyAsFiles['files']
+  public motivationFiles: string[]
   public organization?: string
-  public organizationFiles: NotionDatabaseItemPropertyAsFiles['files']
-  public otherAdresses: NotionDatabaseItemPropertyAsFiles['files']
+  public organizationFiles: string[]
   public profile?: string
   public projects?: string
-  public projectsMedia: string[]
+  public projectFiles: string[]
   public publicationDate?: Date
   public schedule?: string
   public socialNetworkUrls: string[]
   public testimonials?: string
-  public testimonialsMedia: string[]
+  public testimonialsFiles: string[]
   public values?: string
-  public valuesMedia: string[]
+  public valueFiles: string[]
   public websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 
   constructor({
-    adress,
+    address,
+    addressFiles,
     challenges,
     description,
     fullName,
@@ -80,7 +81,7 @@ class Ministry implements MinistryProps {
     id,
     jobsLink,
     joinTeam,
-    joinTeamMedia,
+    joinTeamFiles,
     keyNumbers,
     keyNumbersMedia,
     logoUrl,
@@ -89,46 +90,45 @@ class Ministry implements MinistryProps {
     motivationFiles,
     organization,
     organizationFiles,
-    otherAdresses,
     profile,
+    projectFiles,
     projects,
-    projectsMedia,
     publicationDate,
     schedule,
     slug,
     socialNetworkUrls,
     testimonials,
-    testimonialsMedia,
+    testimonialsFiles,
     thumbnailUrl,
     title,
+    valueFiles,
     values,
-    valuesMedia,
     websiteFiles,
   }: MinistryProps) {
     this.id = id
     this.title = title
     this.description = description
     this.fullName = fullName
-    this.adress = adress
-    this.otherAdresses = otherAdresses
+    this.address = address
+    this.addressFiles = addressFiles
     this.logoUrl = logoUrl
     this.thumbnailUrl = thumbnailUrl
     this.keyNumbers = keyNumbers
     this.keyNumbersMedia = keyNumbersMedia
     this.missions = missions
     this.projects = projects
-    this.projectsMedia = projectsMedia
+    this.projectFiles = projectFiles
     this.testimonials = testimonials
-    this.testimonialsMedia = testimonialsMedia
+    this.testimonialsFiles = testimonialsFiles
     this.joinTeam = joinTeam
-    this.joinTeamMedia = joinTeamMedia
+    this.joinTeamFiles = joinTeamFiles
     this.motivation = motivation
     this.motivationFiles = motivationFiles
     this.profile = profile
     this.websiteFiles = websiteFiles
     this.jobsLink = jobsLink
     this.values = values
-    this.valuesMedia = valuesMedia
+    this.valueFiles = valueFiles
     this.schedule = schedule
     this.socialNetworkUrls = socialNetworkUrls
     this.challenges = challenges
