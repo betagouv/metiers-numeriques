@@ -19,14 +19,17 @@
           </div>
         </div>
 
-        <% if (ministry.motivation) { %>
+        <% if (ministry.motivation || ministry.motivationFiles && ministry.motivationFiles.length) { %>
           <div class="fr-callout fr-px-0 fr-my-2w">
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-sm-12 fr-px-8w">
                 <h5>Raison d‘être</h5>
-                <%- ministry.motivation %>
 
-                <% if (ministry.motivationFiles.length) { %>
+                <% if (ministry.motivation) { %>
+                  <%- ministry.motivation %>
+                <% } %>
+
+                <% if (ministry.motivationFiles && ministry.motivationFiles.length) { %>
                   <div class="FileSection">
                     <% ministry.motivationFiles.forEach(function(motivationFile) { %>
                       <%- motivationFile %>
@@ -39,15 +42,17 @@
         <% } %>
 
         <div id="Institution-main-fields" class="fr-my-4w">
-          <% if (ministry.values) { %>
+          <% if (ministry.value || ministry.valueFiles && ministry.valueFiles.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Valeurs</h3>
               </div>
               <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
-                <%- ministry.values %>
+                <% if (ministry.value) { %>
+                  <%- ministry.value %>
+                <% } %>
 
-                <% if (ministry.valueFiles.length) { %>
+                <% if (ministry.valueFiles && ministry.valueFiles.length) { %>
                   <div class="FileSection">
                     <% ministry.valueFiles.forEach(function(valueFile) { %>
                       <%- valueFile %>
@@ -80,15 +85,17 @@
             </div>
           <% } %>
 
-          <% if (ministry.projects) { %>
+          <% if (ministry.project || ministry.projectFiles && ministry.projectFiles.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Projets</h3>
               </div>
               <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
-                <%- ministry.projects %>
+                <% if (ministry.project) { %>
+                  <%- ministry.project %>
+                <% } %>
 
-                <% if (ministry.projectFiles.length) { %>
+                <% if (ministry.projectFiles && ministry.projectFiles.length) { %>
                   <div class="FileSection">
                     <% ministry.projectFiles.forEach(function(projectFile) { %>
                       <%- projectFile %>
@@ -99,7 +106,7 @@
             </div>
           <% } %>
 
-          <% if (ministry.organization || ministry.organizationFiles.length) { %>
+          <% if (ministry.organization || ministry.organizationFiles && ministry.organizationFiles.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Notre organisation</h3>
@@ -109,7 +116,7 @@
                   <%- ministry.organization %>
                 <% } %>
 
-                <% if (ministry.organizationFiles.length) { %>
+                <% if (ministry.organizationFiles && ministry.organizationFiles.length) { %>
                   <div class="FileSection">
                     <% ministry.organizationFiles.forEach(function(organizationFile) { %>
                       <%- organizationFile %>
@@ -120,7 +127,7 @@
             </div>
           <% } %>
 
-          <% if (ministry.testimonials || ministry.testimonialsFiles.length) { %>
+          <% if (ministry.testimonial || ministry.testimonialFiles && ministry.testimonialFiles.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Nos agents en parlent</h3>
@@ -128,13 +135,13 @@
               <div class="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
                 <p>Découvrez le témoignage de nos agents:</p>
 
-                <% if (ministry.testimonials) { %>
-                  <%- ministry.testimonials %>
+                <% if (ministry.testimonial) { %>
+                  <%- ministry.testimonial %>
                 <% } %>
 
-                <% if (ministry.testimonialsFiles.length) { %>
+                <% if (ministry.testimonialFiles && ministry.testimonialFiles.length) { %>
                   <div class="FileSection">
-                    <% ministry.testimonialsFiles.forEach(function(testimonialsFile) { %>
+                    <% ministry.testimonialFiles.forEach(function(testimonialsFile) { %>
                       <%- testimonialsFile %>
                     <% }); %>
                   </div>
@@ -165,7 +172,7 @@
             </div>
           <% } %>
 
-          <% if (ministry.joinTeam || ministry.joinTeamFiles.length || ministry.jobsLink.length) { %>
+          <% if (ministry.joinTeam || ministry.joinTeamFiles && ministry.joinTeamFiles.length) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12">
                 <h3>Nous rejoindre</h3>
@@ -175,7 +182,7 @@
                   <%- ministry.joinTeam %>
                 <% } %>
 
-                <% if (ministry.joinTeamFiles.length) { %>
+                <% if (ministry.joinTeamFiles && ministry.joinTeamFiles.length) { %>
                   <div class="FileSection">
                     <% ministry.joinTeamFiles.forEach(function(joinTeamFile) { %>
                       <%- joinTeamFile %>
@@ -183,12 +190,10 @@
                   </div>
                 <% } %>
 
-                <!-- <% if (ministry.jobsLink.length) { %>
-                  <a href="<%= ministry.jobsLink[0].name %>" class="fr-btn fr-btn--sm">
-                    Découvrez nos offres d'emploi
-                    <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
-                  </a>
-                <% } %> -->
+                <!--<a href="#" class="fr-btn fr-btn--sm">
+                  Découvrez nos offres d'emploi
+                  <span class="fr-fi-arrow-right-line fr-pl-1w" aria-hidden="true"></span>
+                </a>-->
               </div>
             </div>
           <% } %>
@@ -218,66 +223,75 @@
           </div>
         <% } %>
 
-        <% if (ministry.websiteFiles.length) { %>
+        <%
+          if (
+            ministry.websiteFiles && ministry.websiteFiles.length
+            || ministry.socialNetworkUrls && ministry.socialNetworkUrls.length
+          ) {
+        %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
               <h5>Sites & réseaux</h5>
             </div>
             <div class="fr-col-md-9 fr-col-sm-12">
-              <ul>
-                <% ministry.websiteFiles.forEach(function(websiteFile) { %>
-                  <li>
-                    <a href="<%= websiteFile.external.url %>" target="_blank"><%= websiteFile.name %></a>
-                  </li>
-                <% }); %>
-              </ul>
+              <% if (ministry.websiteFiles && ministry.websiteFiles.length) { %>
+                <ul>
+                  <% ministry.websiteFiles.forEach(function(websiteFile) { %>
+                    <li>
+                      <a href="<%= websiteFile.external.url %>" target="_blank"><%= websiteFile.name %></a>
+                    </li>
+                  <% }); %>
+                </ul>
+              <% } %>
 
-              <p class="SocialNetworkParagraph">
-                <% ministry.socialNetworkUrls.forEach(function(socialNetworkUrl) { %>
-                  <% if (socialNetworkUrl.search('linkedin.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <i class="ri-linkedin-fill"></i>
-                    </a>
-                  <% } else if (socialNetworkUrl.search('twitter.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <i class="ri-twitter-fill"></i>
-                    </a>
-                  <% } else if (socialNetworkUrl.search('facebook.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <i class="ri-facebook-fill"></i>
-                    </a>
-                  <% } else if (socialNetworkUrl.search('instagram.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <i class="ri-instagram-fill"></i>
-                    </a>
-                  <% } else if (socialNetworkUrl.search('youtube.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank" style="padding-top: 0.25rem;">
-                      <i class="ri-youtube-fill"></i>
-                    </a>
-                  <% } else if (socialNetworkUrl.search('github.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <i class="ri-github-fill"></i>
-                    </a>
-                  <% } else if (socialNetworkUrl.search('dailymotion.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <img src="/static/icons/dailymotion.svg" />
-                    </a>
-                  <% } else if (socialNetworkUrl.search('soundcloud.com') !== -1) { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <i class="ri-soundcloud-fill"></i>
-                    </a>
-                  <% } else { %>
-                    <a href="<%= socialNetworkUrl %>" target="_blank">
-                      <%= socialNetworkUrl %>
-                    </a>
-                  <% } %>
-                <% }); %>
-              </p>
+              <% if (ministry.socialNetworkUrls && ministry.socialNetworkUrls.length) { %>
+                <p class="SocialNetworkParagraph">
+                  <% ministry.socialNetworkUrls.forEach(function(socialNetworkUrl) { %>
+                    <% if (socialNetworkUrl.search('linkedin.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <i class="ri-linkedin-fill"></i>
+                      </a>
+                    <% } else if (socialNetworkUrl.search('twitter.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <i class="ri-twitter-fill"></i>
+                      </a>
+                    <% } else if (socialNetworkUrl.search('facebook.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <i class="ri-facebook-fill"></i>
+                      </a>
+                    <% } else if (socialNetworkUrl.search('instagram.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <i class="ri-instagram-fill"></i>
+                      </a>
+                    <% } else if (socialNetworkUrl.search('youtube.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank" style="padding-top: 0.25rem;">
+                        <i class="ri-youtube-fill"></i>
+                      </a>
+                    <% } else if (socialNetworkUrl.search('github.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <i class="ri-github-fill"></i>
+                      </a>
+                    <% } else if (socialNetworkUrl.search('dailymotion.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <img src="/static/icons/dailymotion.svg" />
+                      </a>
+                    <% } else if (socialNetworkUrl.search('soundcloud.com') !== -1) { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <i class="ri-soundcloud-fill"></i>
+                      </a>
+                    <% } else { %>
+                      <a href="<%= socialNetworkUrl %>" target="_blank">
+                        <%= socialNetworkUrl %>
+                      </a>
+                    <% } %>
+                  <% }); %>
+                </p>
+              <% } %>
             </div>
           </div>
         <% } %>
 
-        <% if (ministry.address) { %>
+        <% if (ministry.address || ministry.addressFiles && ministry.addressFiles.length) { %>
           <div class="fr-grid-row fr-grid-row--gutters">
             <div class="fr-col-md-3 fr-col-sm-12">
               <h5>Adresses</h5>
@@ -287,7 +301,7 @@
                 <%- ministry.address %>
               <% } %>
 
-              <% if (ministry.addressFiles.length) { %>
+              <% if (ministry.addressFiles && ministry.addressFiles.length) { %>
                 <div>
                   <% ministry.addressFiles.forEach(function(addressFile) { %>
                     <% if (addressFile.name.search('google.com') != -1) { %>
