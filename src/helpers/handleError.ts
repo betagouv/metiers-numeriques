@@ -61,7 +61,5 @@ export default function handleError(error: any, path?: string, res?: Response): 
     throw new AppError('This error is handled.', true)
   }
 
-  res.render('error')
-
-  throw new Error()
+  return res.render('500') as never
 }

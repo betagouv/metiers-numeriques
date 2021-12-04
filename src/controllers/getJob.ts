@@ -12,7 +12,7 @@ export default async function getJob(req: Request, res: Response) {
 
     const maybeJob = R.find(R.propEq('slug', req.params.slug), jobs)
     if (maybeJob === undefined) {
-      res.render('404')
+      res.status(404).render('job404')
 
       return
     }
