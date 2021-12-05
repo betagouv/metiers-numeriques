@@ -21,16 +21,18 @@
       </div>
 
       <div id='ministeres--list'>
-        <% for (let i=0; i < ministries.length; i++)  { %>
+        <% for (let i=0; i < institutions.length; i++)  { %>
           <div class="fr-card fr-enlarge-link">
             <div class="fr-card__body">
               <h4 class="fr-card__title">
-                <a href="/institution/<%= ministries[i].slug %>" class="fr-card__link"><%= ministries[i].title %></a>
+                <a href="/institution/<%= institutions[i].slug %>" class="fr-card__link">
+                  <%= institutions[i].title %>
+                </a>
               </h4>
-              <p class="fr-card__desc"><%= ministries[i].fullName %></p>
+              <p class="fr-card__desc"><%= institutions[i].fullName %></p>
             </div>
             <div class="fr-card__img">
-              <img src="<%= ministries[i].thumbnailUrl %>" class="fr-responsive-img" alt="">
+              <img src="<%= institutions[i].thumbnailUrl %>" class="fr-responsive-img" alt="">
             </div>
           </div>
         <% } %>

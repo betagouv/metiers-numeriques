@@ -1,10 +1,10 @@
 import express from 'express'
 import path from 'path'
 
+import getInstitution from './controllers/getInstitution'
+import getInstitutions from './controllers/getInstitutions'
 import getJob from './controllers/getJob'
 import getJobs from './controllers/getJobs'
-import getMinistries from './controllers/getMinistries'
-import getMinistry from './controllers/getMinistry'
 import searchJobs from './controllers/searchJobs'
 
 const appName = `metiers.numerique.gouv.fr`
@@ -56,8 +56,8 @@ server.get('/suivi', (req, res) => {
 server.get('/emplois', getJobs)
 server.get('/emploi/:slug', getJob)
 server.get('/jobs/search', searchJobs)
-server.get('/institutions', getMinistries)
-server.get('/institution/:slug', getMinistry)
+server.get('/institutions', getInstitutions)
+server.get('/institution/:slug', getInstitution)
 
 server.get('/annonces/:slug', (req, res) => {
   res.redirect(301, `/emploi/${req.params.slug}`)
