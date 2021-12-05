@@ -11,8 +11,8 @@ async function generateSitemap() {
   ß.info('[scripts/generateSitemap.js] Fetching jobs…')
   const jobs = await data.getJobs()
 
-  ß.info('[scripts/generateSitemap.js] Fetching ministries…')
-  const ministries = await data.getMinistries()
+  ß.info('[scripts/generateSitemap.js] Fetching institutions…')
+  const institutions = await data.getInstitutions()
 
   const sitemap = new SitemapStream({
     hostname: 'https://metiers.numerique.gouv.fr',
@@ -35,8 +35,8 @@ async function generateSitemap() {
     })
   })
 
-  ß.info('[scripts/generateSitemap.js] Mapping ministries…')
-  ministries.forEach(({ slug }) => {
+  ß.info('[scripts/generateSitemap.js] Mapping institutions…')
+  institutions.forEach(({ slug }) => {
     sitemap.write({
       url: `/institution/${slug}`,
     })

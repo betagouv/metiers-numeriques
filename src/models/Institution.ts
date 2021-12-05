@@ -1,6 +1,6 @@
 import { NotionDatabaseItemPropertyAsFiles } from '../types/Notion'
 
-type MinistryProps = {
+type InstitutionProps = {
   address?: string
   addressFiles: NotionDatabaseItemPropertyAsFiles['files']
   challenges?: string
@@ -36,7 +36,7 @@ type MinistryProps = {
   websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
 }
 
-class Ministry implements MinistryProps {
+export default class Institution implements InstitutionProps {
   public id: string
   public fullName: string
   public slug: string
@@ -104,7 +104,7 @@ class Ministry implements MinistryProps {
     value,
     valueFiles,
     websiteFiles,
-  }: MinistryProps) {
+  }: InstitutionProps) {
     this.id = id
     this.fullName = fullName
     this.slug = slug
@@ -140,5 +140,3 @@ class Ministry implements MinistryProps {
     this.websiteFiles = websiteFiles
   }
 }
-
-export default Ministry

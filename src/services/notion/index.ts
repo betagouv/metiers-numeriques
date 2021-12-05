@@ -2,8 +2,8 @@
 
 import axios from 'axios'
 
+import { NotionInstitution } from '../../types/NotionInstitution'
 import { NotionJob } from '../../types/NotionJob'
-import { NotionMinistry } from '../../types/NotionMinistry'
 import { NotionPepJob } from '../../types/NotionPepJob'
 import { NotionSkbJob } from '../../types/NotionSkbJob'
 import { SeekubeJobNormalized } from '../../types/Seekube'
@@ -68,8 +68,13 @@ class Notion {
     })
   }
 
-  async findManyMinistries(): Promise<NotionMinistry[]> {
-    return this.database.findMany(NOTION_MINISTRIES_DATABASE_ID)
+  async findManyInstitutions(): Promise<NotionInstitution[]> {
+    return this.database.findMany(NOTION_MINISTRIES_DATABASE_ID, {
+      checkbox: {
+        equals: true,
+      },
+      property: 'EstPublie',
+    })
   }
 
   async findManyPepJobs(): Promise<NotionPepJob[]> {

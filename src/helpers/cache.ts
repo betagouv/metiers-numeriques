@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import * as R from 'ramda'
 import { createClient } from 'redis'
 
+import { CACHE_KEY } from '../constants'
 import handleError from './handleError'
 
 const { REDIS_URL } = process.env
@@ -82,6 +83,23 @@ class Cache {
       this.inProgressCachingKeys = R.without([key])(this.inProgressCachingKeys)
     } catch (err) {
       return handleError(err, 'helpers/Cache.set()')
+    }
+  }
+
+  public async purge(): Promise<void> {
+    try {
+      const protectedKeys = Object.values(CACHE_KEY)
+
+      if (!this.redisClient.isOpen) {
+        await this.redisClient.connect()
+      }
+      const redisKeys = await this.redisClient.keys('*')
+
+      const extraneousKeys = R.without(protectedKeys, redisKeys)
+
+      await Promise.all(extraneousKeys.map(extraneousKey => this.redisClient.del(extraneousKey)))
+    } catch (err) {
+      return handleError(err, 'helpers/Cache.purge()')
     }
   }
 

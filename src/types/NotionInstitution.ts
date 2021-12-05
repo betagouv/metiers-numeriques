@@ -8,7 +8,7 @@ import {
   NotionDatabaseItemPropertyAsTitle,
 } from './Notion'
 
-export type NotionMinistry = NotionDatabaseItem<{
+export type NotionInstitution = NotionDatabaseItem<{
   Adresse: NotionDatabaseItemPropertyAsRichText
   'Adresse bis': NotionDatabaseItemPropertyAsFiles
   Agenda: NotionDatabaseItemPropertyAsRichText

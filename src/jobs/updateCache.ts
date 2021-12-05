@@ -5,6 +5,20 @@ import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
 import data from '../services/data'
 
+async function updateInstitutions(): Promise<void> {
+  try {
+    if (!(await cache.shouldUpdate(CACHE_KEY.INSTITUTIONS))) {
+      return
+    }
+
+    ß.info(`[jobs/updateCache.js] Caching institutions…`)
+    const institutions = await data.getInstitutions()
+    await cache.set(CACHE_KEY.INSTITUTIONS, institutions)
+  } catch (err) {
+    handleError(err, 'jobs/updateCache#updateInstitutions()')
+  }
+}
+
 async function updateJobs(): Promise<void> {
   try {
     if (!(await cache.shouldUpdate(CACHE_KEY.JOBS))) {
@@ -19,24 +33,10 @@ async function updateJobs(): Promise<void> {
   }
 }
 
-async function updateMinistries(): Promise<void> {
-  try {
-    if (!(await cache.shouldUpdate(CACHE_KEY.MINISTRIES))) {
-      return
-    }
-
-    ß.info(`[jobs/updateCache.js] Caching ministries…`)
-    const ministries = await data.getMinistries()
-    await cache.set(CACHE_KEY.MINISTRIES, ministries)
-  } catch (err) {
-    handleError(err, 'jobs/updateCache#updateMinistries()')
-  }
-}
-
 export default async function updateCache(): Promise<void> {
   try {
+    await updateInstitutions()
     await updateJobs()
-    await updateMinistries()
   } catch (err) {
     handleError(err, 'jobs/updateCache()')
   }

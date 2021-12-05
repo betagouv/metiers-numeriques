@@ -1,18 +1,27 @@
 import * as R from 'ramda'
 
+import generateInstitutionFromNotionInstitution from '../helpers/generateInstitutionFromNotionInstitution'
 import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
 import generateJobFromNotionPepJob from '../helpers/generateJobFromNotionPepJob'
 import generateJobFromNotionSkbJob from '../helpers/generateJobFromNotionSkbJob'
-import generateMinistryFromNotionMinistry from '../helpers/generateMinistryFromNotionMinistry'
 import sortJobsByQuality from '../helpers/sortJobsByQuality'
+import Institution from '../models/Institution'
 import Job from '../models/Job'
-import Ministry from '../models/Ministry'
 import notion from './notion'
 
 const sortByUpdatedAtDesc: (jobs: Job[]) => Job[] = R.sort(R.descend(R.prop('updatedAt')))
-const sortByTitleAsc: (ministries: Ministry[]) => Ministry[] = R.sort(R.ascend(R.prop('title')))
+const sortByTitleAsc: (institutions: Institution[]) => Institution[] = R.sort(R.ascend(R.prop('title')))
 
 class Data {
+  public async getInstitutions(): Promise<Institution[]> {
+    const notionInstitutions = await notion.findManyInstitutions()
+    const institutions = notionInstitutions.map(generateInstitutionFromNotionInstitution)
+
+    const institutionsSorted = sortByTitleAsc(institutions)
+
+    return institutionsSorted
+  }
+
   public async getJobs(): Promise<Job[]> {
     const notionJobs = await notion.findManyJobs()
     const notionPepJobs = await notion.findManyPepJobs()
@@ -26,15 +35,6 @@ class Data {
     const allJobsSortedByQuality = sortJobsByQuality(allJobsSortedByUpdatedAtDesc)
 
     return allJobsSortedByQuality
-  }
-
-  public async getMinistries(): Promise<Ministry[]> {
-    const notionMinistries = await notion.findManyMinistries()
-    const ministries = notionMinistries.map(generateMinistryFromNotionMinistry)
-
-    const ministriesSorted = sortByTitleAsc(ministries)
-
-    return ministriesSorted
   }
 }
 

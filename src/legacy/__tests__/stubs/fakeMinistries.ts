@@ -1,11 +1,11 @@
-import Ministry from '../../../models/Ministry'
+import Institution from '../../../models/Institution'
 
 export const fakeMinistries = [
-  new Ministry({
+  new Institution({
     description: '<html>1</html>',
     id: 'id2',
   } as any),
-  new Ministry({
+  new Institution({
     description: '<html>2</html>',
     id: 'id2',
   } as any),
