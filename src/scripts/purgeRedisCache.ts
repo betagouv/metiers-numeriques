@@ -1,6 +1,6 @@
-import cache from '../helpers/cache'
+import ß from 'bhala'
 
-const ß = require('bhala')
+import cache from '../helpers/cache'
 
 async function purgeRedisCache() {
   try {

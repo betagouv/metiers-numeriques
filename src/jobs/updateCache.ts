@@ -11,7 +11,7 @@ async function updateInstitutions(): Promise<void> {
       return
     }
 
-    ß.info(`[jobs/updateCache.js] Caching institutions…`)
+    ß.debug(`[jobs/updateCache.js] Caching institutions…`)
     const institutions = await data.getInstitutions()
     await cache.set(CACHE_KEY.INSTITUTIONS, institutions)
   } catch (err) {
@@ -25,7 +25,7 @@ async function updateServices(): Promise<void> {
       return
     }
 
-    ß.info(`[jobs/updateCache.js] Caching services…`)
+    ß.debug(`[jobs/updateCache.js] Caching services…`)
     const services = await data.getServices()
     await cache.set(CACHE_KEY.SERVICES, services)
   } catch (err) {
@@ -39,7 +39,7 @@ async function updateJobs(): Promise<void> {
       return
     }
 
-    ß.info(`[jobs/updateCache.js] Caching jobs…`)
+    ß.debug(`[jobs/updateCache.js] Caching jobs…`)
     const jobs = await data.getJobs()
     await cache.set(CACHE_KEY.JOBS, jobs)
   } catch (err) {
