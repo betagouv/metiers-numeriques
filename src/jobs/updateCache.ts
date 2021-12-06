@@ -7,7 +7,7 @@ import data from '../services/data'
 
 async function updateInstitutions(isForced: boolean): Promise<void> {
   try {
-    if (isForced || !(await cache.shouldUpdate(CACHE_KEY.INSTITUTIONS))) {
+    if (!isForced && !(await cache.shouldUpdate(CACHE_KEY.INSTITUTIONS))) {
       return
     }
 
@@ -21,7 +21,7 @@ async function updateInstitutions(isForced: boolean): Promise<void> {
 
 async function updateServices(isForced: boolean): Promise<void> {
   try {
-    if (isForced || !(await cache.shouldUpdate(CACHE_KEY.SERVICES))) {
+    if (!isForced && !(await cache.shouldUpdate(CACHE_KEY.SERVICES))) {
       return
     }
 
@@ -35,7 +35,7 @@ async function updateServices(isForced: boolean): Promise<void> {
 
 async function updateJobs(isForced: boolean): Promise<void> {
   try {
-    if (isForced || !(await cache.shouldUpdate(CACHE_KEY.JOBS))) {
+    if (!isForced && !(await cache.shouldUpdate(CACHE_KEY.JOBS))) {
       return
     }
 
