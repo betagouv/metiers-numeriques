@@ -71,7 +71,7 @@
     "@types/markdown-it": "12.2.3",
     "@types/node": "16.11.11",
     "@types/object-hash": "2.2.1",
-    "@types/ramda": "0.27.58",
+    "@types/ramda": "0.27.59",
     "concurrently": "6.4.0",
     "husky": "7.0.4",
     "jest": "27.4.0",
