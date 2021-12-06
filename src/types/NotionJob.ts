@@ -1,39 +1,41 @@
 import {
   NotionDatabaseItem,
-  NotionDatabaseItemPropertyAsCreatedTime,
-  NotionDatabaseItemPropertyAsDate,
-  NotionDatabaseItemPropertyAsLastEditedTime,
-  NotionDatabaseItemPropertyAsMultiSelect,
-  NotionDatabaseItemPropertyAsRichText,
-  NotionDatabaseItemPropertyAsSelect,
-  NotionDatabaseItemPropertyAsTitle,
+  NotionPropertyAsCreatedTime,
+  NotionPropertyAsDate,
+  NotionPropertyAsLastEditedTime,
+  NotionPropertyAsMultiSelect,
+  NotionPropertyAsRelation,
+  NotionPropertyAsRichText,
+  NotionPropertyAsSelect,
+  NotionPropertyAsTitle,
 } from './Notion'
 
 export type NotionJob = NotionDatabaseItem<{
-  'Ce que vous ferez': NotionDatabaseItemPropertyAsRichText
-  'Conditions particulières du poste': NotionDatabaseItemPropertyAsRichText
-  Contact: NotionDatabaseItemPropertyAsRichText
+  'Ce que vous ferez': NotionPropertyAsRichText
+  'Conditions particulières du poste': NotionPropertyAsRichText
+  Contact: NotionPropertyAsRichText
   /** Automatically filled by Notion */
-  CreeLe: NotionDatabaseItemPropertyAsCreatedTime
-  'Date de saisie': NotionDatabaseItemPropertyAsDate
-  'Date limite': NotionDatabaseItemPropertyAsDate
-  'Entité recruteuse': NotionDatabaseItemPropertyAsSelect
-  Expérience: NotionDatabaseItemPropertyAsMultiSelect
-  'Les plus du poste': NotionDatabaseItemPropertyAsRichText
-  Localisation: NotionDatabaseItemPropertyAsMultiSelect
-  Ministère: NotionDatabaseItemPropertyAsMultiSelect
+  CreeLe: NotionPropertyAsCreatedTime
+  'Date de saisie': NotionPropertyAsDate
+  'Date limite': NotionPropertyAsDate
+  'Entité recruteuse': NotionPropertyAsSelect
+  Expérience: NotionPropertyAsMultiSelect
+  'Les plus du poste': NotionPropertyAsRichText
+  Localisation: NotionPropertyAsMultiSelect
+  Ministère: NotionPropertyAsMultiSelect
   /** Automatically filled by Notion */
-  MisAJourLe: NotionDatabaseItemPropertyAsLastEditedTime
-  Mission: NotionDatabaseItemPropertyAsRichText
-  Name: NotionDatabaseItemPropertyAsTitle
-  'Poste ouvert aux': NotionDatabaseItemPropertyAsMultiSelect
-  'Poste à pourvoir': NotionDatabaseItemPropertyAsRichText
-  'Pour candidater': NotionDatabaseItemPropertyAsRichText
-  'Pour en savoir plus': NotionDatabaseItemPropertyAsRichText
-  'Processus de recrutement': NotionDatabaseItemPropertyAsRichText
-  Rémunération: NotionDatabaseItemPropertyAsRichText
-  'Si vous avez des questions': NotionDatabaseItemPropertyAsRichText
-  'Votre profil': NotionDatabaseItemPropertyAsRichText
-  redaction_status: NotionDatabaseItemPropertyAsSelect
-  Équipe: NotionDatabaseItemPropertyAsRichText
+  MisAJourLe: NotionPropertyAsLastEditedTime
+  Mission: NotionPropertyAsRichText
+  Name: NotionPropertyAsTitle
+  'Poste ouvert aux': NotionPropertyAsMultiSelect
+  'Poste à pourvoir': NotionPropertyAsRichText
+  'Pour candidater': NotionPropertyAsRichText
+  'Pour en savoir plus': NotionPropertyAsRichText
+  'Processus de recrutement': NotionPropertyAsRichText
+  Rémunération: NotionPropertyAsRichText
+  Service: NotionPropertyAsRelation
+  'Si vous avez des questions': NotionPropertyAsRichText
+  'Votre profil': NotionPropertyAsRichText
+  redaction_status: NotionPropertyAsSelect
+  Équipe: NotionPropertyAsRichText
 }>

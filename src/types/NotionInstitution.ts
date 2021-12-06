@@ -1,46 +1,46 @@
 import {
   NotionDatabaseItem,
-  NotionDatabaseItemPropertyAsDate,
-  NotionDatabaseItemPropertyAsFiles,
-  NotionDatabaseItemPropertyAsRichText,
-  NotionDatabaseItemPropertyAsSelect,
-  NotionDatabaseItemPropertyAsPeople,
-  NotionDatabaseItemPropertyAsTitle,
+  NotionPropertyAsDate,
+  NotionPropertyAsFiles,
+  NotionPropertyAsRichText,
+  NotionPropertyAsSelect,
+  NotionPropertyAsPeople,
+  NotionPropertyAsTitle,
 } from './Notion'
 
 export type NotionInstitution = NotionDatabaseItem<{
-  Adresse: NotionDatabaseItemPropertyAsRichText
-  'Adresse bis': NotionDatabaseItemPropertyAsFiles
-  Agenda: NotionDatabaseItemPropertyAsRichText
-  Assign: NotionDatabaseItemPropertyAsPeople
-  Banniere: NotionDatabaseItemPropertyAsFiles
-  'Bloc marque': NotionDatabaseItemPropertyAsFiles
-  Date: NotionDatabaseItemPropertyAsDate
-  'Les chiffres clés': NotionDatabaseItemPropertyAsRichText
-  'Les chiffres clés - liens': NotionDatabaseItemPropertyAsFiles
-  'Les projets ou rélisations': NotionDatabaseItemPropertyAsRichText
-  'Liens Nos agents en parlent': NotionDatabaseItemPropertyAsFiles
-  'Nom complet': NotionDatabaseItemPropertyAsRichText
-  'Nos agents en parlent': NotionDatabaseItemPropertyAsRichText
-  'Nos enjeux': NotionDatabaseItemPropertyAsRichText
-  'Nos missions': NotionDatabaseItemPropertyAsRichText
-  'Notre organisation': NotionDatabaseItemPropertyAsRichText
-  'Notre organisation compléments': NotionDatabaseItemPropertyAsFiles
-  'Nous rejoindre - Infos': NotionDatabaseItemPropertyAsFiles
-  'Nous rejoindre - Pourquoi?': NotionDatabaseItemPropertyAsRichText
-  'Processus de recrutement': NotionDatabaseItemPropertyAsRichText
-  'Projets ou réalisations compléments': NotionDatabaseItemPropertyAsFiles
-  'Projets visuels': NotionDatabaseItemPropertyAsFiles
-  "Raison d'être": NotionDatabaseItemPropertyAsRichText
-  "Raison d'être complément": NotionDatabaseItemPropertyAsFiles
-  'Réseaux sociaux': NotionDatabaseItemPropertyAsFiles
-  'Site(s) institutionel(s)': NotionDatabaseItemPropertyAsFiles
-  Status: NotionDatabaseItemPropertyAsSelect
-  Titre: NotionDatabaseItemPropertyAsTitle
-  'Ton profil': NotionDatabaseItemPropertyAsRichText
-  'Toutes les offres disponibles': NotionDatabaseItemPropertyAsFiles
-  Valeurs: NotionDatabaseItemPropertyAsRichText
-  'Valeurs complément': NotionDatabaseItemPropertyAsFiles
-  Vignette: NotionDatabaseItemPropertyAsFiles
-  'Vignette temporaire': NotionDatabaseItemPropertyAsFiles
+  Adresse: NotionPropertyAsRichText
+  'Adresse bis': NotionPropertyAsFiles
+  Agenda: NotionPropertyAsRichText
+  Assign: NotionPropertyAsPeople
+  Banniere: NotionPropertyAsFiles
+  'Bloc marque': NotionPropertyAsFiles
+  Date: NotionPropertyAsDate
+  'Les chiffres clés': NotionPropertyAsRichText
+  'Les chiffres clés - liens': NotionPropertyAsFiles
+  'Les projets ou rélisations': NotionPropertyAsRichText
+  'Liens Nos agents en parlent': NotionPropertyAsFiles
+  'Nom complet': NotionPropertyAsRichText
+  'Nos agents en parlent': NotionPropertyAsRichText
+  'Nos enjeux': NotionPropertyAsRichText
+  'Nos missions': NotionPropertyAsRichText
+  'Notre organisation': NotionPropertyAsRichText
+  'Notre organisation compléments': NotionPropertyAsFiles
+  'Nous rejoindre - Infos': NotionPropertyAsFiles
+  'Nous rejoindre - Pourquoi?': NotionPropertyAsRichText
+  'Processus de recrutement': NotionPropertyAsRichText
+  'Projets ou réalisations compléments': NotionPropertyAsFiles
+  'Projets visuels': NotionPropertyAsFiles
+  "Raison d'être": NotionPropertyAsRichText
+  "Raison d'être complément": NotionPropertyAsFiles
+  'Réseaux sociaux': NotionPropertyAsFiles
+  'Site(s) institutionel(s)': NotionPropertyAsFiles
+  Status: NotionPropertyAsSelect
+  Titre: NotionPropertyAsTitle
+  'Ton profil': NotionPropertyAsRichText
+  'Toutes les offres disponibles': NotionPropertyAsFiles
+  Valeurs: NotionPropertyAsRichText
+  'Valeurs complément': NotionPropertyAsFiles
+  Vignette: NotionPropertyAsFiles
+  'Vignette temporaire': NotionPropertyAsFiles
 }>

@@ -19,6 +19,20 @@ async function updateInstitutions(): Promise<void> {
   }
 }
 
+async function updateServices(): Promise<void> {
+  try {
+    if (!(await cache.shouldUpdate(CACHE_KEY.SERVICES))) {
+      return
+    }
+
+    ß.info(`[jobs/updateCache.js] Caching services…`)
+    const services = await data.getServices()
+    await cache.set(CACHE_KEY.SERVICES, services)
+  } catch (err) {
+    handleError(err, 'jobs/updateCache#updateServices()')
+  }
+}
+
 async function updateJobs(): Promise<void> {
   try {
     if (!(await cache.shouldUpdate(CACHE_KEY.JOBS))) {
@@ -36,6 +50,7 @@ async function updateJobs(): Promise<void> {
 export default async function updateCache(): Promise<void> {
   try {
     await updateInstitutions()
+    await updateServices()
     await updateJobs()
   } catch (err) {
     handleError(err, 'jobs/updateCache()')

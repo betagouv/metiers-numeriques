@@ -14,7 +14,7 @@ export type NotionResponseList<T> = {
 
 export type NotionDatabaseItem<
   T = {
-    [key: string]: NotionDatabaseItemProperty
+    [key: string]: NotionProperty
   },
 > = {
   archived: boolean
@@ -36,35 +36,36 @@ export type NotionDatabaseItem<
   url: string
 }
 
-export type NotionDatabaseItemProperty =
-  | NotionDatabaseItemPropertyAsCheckbox
-  | NotionDatabaseItemPropertyAsCreatedTime
-  | NotionDatabaseItemPropertyAsDate
-  | NotionDatabaseItemPropertyAsEmail
-  | NotionDatabaseItemPropertyAsFiles
-  | NotionDatabaseItemPropertyAsLastEditedTime
-  | NotionDatabaseItemPropertyAsMultiSelect
-  | NotionDatabaseItemPropertyAsNumber
-  | NotionDatabaseItemPropertyAsPeople
-  | NotionDatabaseItemPropertyAsRichText
-  | NotionDatabaseItemPropertyAsSelect
-  | NotionDatabaseItemPropertyAsTitle
-  | NotionDatabaseItemPropertyAsUrl
+export type NotionProperty =
+  | NotionPropertyAsCheckbox
+  | NotionPropertyAsCreatedTime
+  | NotionPropertyAsDate
+  | NotionPropertyAsEmail
+  | NotionPropertyAsFiles
+  | NotionPropertyAsLastEditedTime
+  | NotionPropertyAsMultiSelect
+  | NotionPropertyAsNumber
+  | NotionPropertyAsPeople
+  | NotionPropertyAsRelation
+  | NotionPropertyAsRichText
+  | NotionPropertyAsSelect
+  | NotionPropertyAsTitle
+  | NotionPropertyAsUrl
 
-export type NotionDatabaseItemPropertyAsCheckbox = {
+export type NotionPropertyAsCheckbox = {
   checkbox: boolean
   id: string
   type: 'checkbox'
 }
 
-export type NotionDatabaseItemPropertyAsCreatedTime = {
+export type NotionPropertyAsCreatedTime = {
   /** ISO date string */
   created_time: string
   id: string
   type: 'created_time'
 }
 
-export type NotionDatabaseItemPropertyAsDate = {
+export type NotionPropertyAsDate = {
   date: {
     /** ISO date string */
     end: string | null
@@ -75,13 +76,13 @@ export type NotionDatabaseItemPropertyAsDate = {
   type: 'date'
 }
 
-export type NotionDatabaseItemPropertyAsEmail = {
+export type NotionPropertyAsEmail = {
   email: string | null
   id: string
   type: 'email'
 }
 
-export type NotionDatabaseItemPropertyAsFiles = {
+export type NotionPropertyAsFiles = {
   files: Array<
     | {
         external: {
@@ -105,14 +106,14 @@ export type NotionDatabaseItemPropertyAsFiles = {
   type: 'files'
 }
 
-export type NotionDatabaseItemPropertyAsLastEditedTime = {
+export type NotionPropertyAsLastEditedTime = {
   id: string
   /** ISO date string */
   last_edited_time: string
   type: 'last_edited_time'
 }
 
-export type NotionDatabaseItemPropertyAsMultiSelect = {
+export type NotionPropertyAsMultiSelect = {
   id: string
   multi_select: Array<{
     color: string
@@ -123,13 +124,13 @@ export type NotionDatabaseItemPropertyAsMultiSelect = {
   type: 'multi_select'
 }
 
-export type NotionDatabaseItemPropertyAsNumber = {
+export type NotionPropertyAsNumber = {
   id: string
   number: number | null
   type: 'number'
 }
 
-export type NotionDatabaseItemPropertyAsPeople = {
+export type NotionPropertyAsPeople = {
   id: string
   people: Array<{
     /** UUID v4 */
@@ -139,7 +140,16 @@ export type NotionDatabaseItemPropertyAsPeople = {
   type: 'people'
 }
 
-export type NotionDatabaseItemPropertyAsRichText = {
+export type NotionPropertyAsRelation = {
+  id: string
+  relation: Array<{
+    /** UUID v4 */
+    id: string
+  }>
+  type: 'relation'
+}
+
+export type NotionPropertyAsRichText = {
   id: string
   rich_text: Array<{
     annotations: {
@@ -161,7 +171,7 @@ export type NotionDatabaseItemPropertyAsRichText = {
   type: 'rich_text'
 }
 
-export type NotionDatabaseItemPropertyAsSelect = {
+export type NotionPropertyAsSelect = {
   id: string
   select: {
     color: string
@@ -172,7 +182,7 @@ export type NotionDatabaseItemPropertyAsSelect = {
   type: 'select'
 }
 
-export type NotionDatabaseItemPropertyAsTitle = {
+export type NotionPropertyAsTitle = {
   id: string
   title: Array<{
     annotations: {
@@ -194,8 +204,8 @@ export type NotionDatabaseItemPropertyAsTitle = {
   type: 'title'
 }
 
-export type NotionDatabaseItemPropertyAsUrl = {
+export type NotionPropertyAsUrl = {
   id: string
   type: 'url'
-  url: string
+  url: string | null
 }

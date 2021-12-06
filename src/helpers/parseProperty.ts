@@ -1,8 +1,8 @@
 import { toDate } from 'date-fns-tz'
 
-import { NotionDatabaseItemProperty } from '../types/Notion'
+import { NotionProperty } from '../types/Notion'
 
-function parseProperty(item: NotionDatabaseItemProperty) {
+function parseProperty(item: NotionProperty) {
   if (!item) {
     return undefined
   }

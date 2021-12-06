@@ -1,6 +1,7 @@
 import { startOfDay, subDays } from 'date-fns'
 import MarkdownIt from 'markdown-it'
 
+import convertNotionNodeToString from '../../helpers/convertNotionNodeToString'
 import parseProperty from '../../helpers/parseProperty'
 import Job from '../../models/Job'
 import { NotionJob } from '../../types/NotionJob'
@@ -68,6 +69,7 @@ export const mapToJob = (rawJob: NotionJob) => {
     title,
     toApply: md.renderInline(parseProperty(rawJob.properties['Pour candidater'])),
     updatedAt: rawJob.properties.MisAJourLe.last_edited_time,
+    updatedDate: convertNotionNodeToString(rawJob.properties.MisAJourLe),
   })
 }
 
@@ -103,5 +105,6 @@ export const formatDetailFromPep = (job: NotionPepJob) => {
     title,
     toApply: parseProperty(item.Origin_CustomFieldsTranslation_ShortText1_),
     updatedAt: job.properties.MisAJourLe.last_edited_time,
+    updatedDate: convertNotionNodeToString(job.properties.MisAJourLe),
   })
 }

@@ -2,6 +2,7 @@ import Job from '../models/Job'
 import { NotionSkbJob } from '../types/NotionSkbJob'
 import capitalize from './capitalize'
 import convertNotionNodeToHtml from './convertNotionNodeToHtml'
+import convertNotionNodeToString from './convertNotionNodeToString'
 import convertNotionNodeToStrings from './convertNotionNodeToStrings'
 import handleError from './handleError'
 import slugify from './slugify'
@@ -27,6 +28,7 @@ export default function generateJobFromNotionSkbJob(notionSkbJob: NotionSkbJob) 
       slug: slugify(title, id),
       title: capitalize(title),
       updatedAt: notionSkbJob.properties.MisAJourLe.last_edited_time,
+      updatedDate: convertNotionNodeToString(notionSkbJob.properties.MisAJourLe),
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionSkbJob()')

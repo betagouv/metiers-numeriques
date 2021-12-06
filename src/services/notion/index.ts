@@ -5,15 +5,17 @@ import axios from 'axios'
 import { NotionInstitution } from '../../types/NotionInstitution'
 import { NotionJob } from '../../types/NotionJob'
 import { NotionPepJob } from '../../types/NotionPepJob'
+import { NotionService } from '../../types/NotionService'
 import { NotionSkbJob } from '../../types/NotionSkbJob'
 import { SeekubeJobNormalized } from '../../types/Seekube'
 import NotionDatabase from './NotionDatabase'
 import NotionPage from './NotionPage'
 
 const {
+  NOTION_INSTITUTIONS_DATABASE_ID,
   NOTION_JOBS_DATABASE_ID,
-  NOTION_MINISTRIES_DATABASE_ID,
   NOTION_PEP_JOBS_DATABASE_ID,
+  NOTION_SERVICES_DATABASE_ID,
   NOTION_SKB_JOBS_DATABASE_ID,
   NOTION_TOKEN,
 } = process.env as {
@@ -69,7 +71,7 @@ class Notion {
   }
 
   async findManyInstitutions(): Promise<NotionInstitution[]> {
-    return this.database.findMany(NOTION_MINISTRIES_DATABASE_ID, {
+    return this.database.findMany(NOTION_INSTITUTIONS_DATABASE_ID, {
       checkbox: {
         equals: true,
       },
@@ -93,6 +95,10 @@ class Notion {
       },
       property: 'EstPublie',
     })
+  }
+
+  async findManyServices(): Promise<NotionService[]> {
+    return this.database.findMany(NOTION_SERVICES_DATABASE_ID)
   }
 
   async hasPepJob(id: string): Promise<boolean> {
