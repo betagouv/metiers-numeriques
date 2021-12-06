@@ -8,11 +8,10 @@
     "npm": "7"
   },
   "scripts": {
-    "build": "yarn build:assets && yarn build:server && yarn build:sitemap",
+    "build": "yarn build:assets && yarn build:server && yarn cache:purge && yarn cache:update && yarn build:sitemap",
     "build:assets": "rm -Rf ./static/assets && rollup -c && rm -f ./static/index.js",
     "build:server": "rm -Rf ./build && tsc",
     "build:sitemap": "node -r dotenv/config -r ts-node/register ./src/scripts/generateSitemap.ts",
-    "postbuild": "yarn cache:purge && yarn cache:update",
     "checkHTML": "site-validator --verbose --url",
     "checkHTMLLocal": "site-validator --verbose --local --url http://localhost:8080",
     "cache:purge": "node -r dotenv/config ./build/scripts/purgeRedisCache.js",
