@@ -259,16 +259,14 @@
         </div>
       <% } %>
 
-      <% if (job.reference) { %>
-        <div class="fr-grid-row fr-grid-row--gutters">
-          <div class="fr-col-md-3 fr-col-sm-12">
-            <p>Référence interne</p>
-          </div>
-          <div class="fr-col-md-9 fr-col-sm-12">
-            <p><code><%= job.reference %></code></p>
-          </div>
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-md-3 fr-col-sm-12">
+          <p>Référence interne</p>
         </div>
-      <% } %>
+        <div class="fr-col-md-9 fr-col-sm-12">
+          <p><code><%= job.reference %></code></p>
+        </div>
+      </div>
     </div>
 
     <%- include('partials/footer') -%>

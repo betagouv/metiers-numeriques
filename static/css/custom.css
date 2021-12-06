@@ -267,3 +267,20 @@ span.tofill::before {
 #LoadMoreSection {
   text-align: center;
 }
+
+.hidden-md {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .hidden-md {
+    display: block;
+  }
+}
+.hidden-md-flex {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .hidden-md-flex {
+    display: flex;
+  }
+}
