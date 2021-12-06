@@ -12,13 +12,13 @@
 
       <div id="job-detail-header" class="fr-callout fr-px-0 fr-my-2w">
         <div class="fr-callout__text fr-text--lg">
-          <% if (job.publicationDate) { %>
+          <% if (job.updatedDate) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                Publié le
+                Mis à jour le
               </div>
               <div class="fr-col-md-9 fr-col-sm-12">
-                <p><%= job.publicationDate %></p>
+                <p><%= job.updatedDate %></p>
               </div>
             </div>
           <% } %>

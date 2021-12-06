@@ -1,33 +1,33 @@
 import {
   NotionDatabaseItem,
-  NotionDatabaseItemPropertyAsCreatedTime,
-  NotionDatabaseItemPropertyAsDate,
-  NotionDatabaseItemPropertyAsCheckbox,
-  NotionDatabaseItemPropertyAsEmail,
-  NotionDatabaseItemPropertyAsLastEditedTime,
-  NotionDatabaseItemPropertyAsNumber,
-  NotionDatabaseItemPropertyAsRichText,
-  NotionDatabaseItemPropertyAsTitle,
+  NotionPropertyAsCreatedTime,
+  NotionPropertyAsDate,
+  NotionPropertyAsCheckbox,
+  NotionPropertyAsEmail,
+  NotionPropertyAsLastEditedTime,
+  NotionPropertyAsNumber,
+  NotionPropertyAsRichText,
+  NotionPropertyAsTitle,
 } from './Notion'
 
 export type NotionSkbJob = NotionDatabaseItem<{
   /** Automatically filled by Notion */
-  CreeLe: NotionDatabaseItemPropertyAsCreatedTime
-  DateDeDebut: NotionDatabaseItemPropertyAsDate
-  DegreDeMobilite: NotionDatabaseItemPropertyAsRichText
-  Description: NotionDatabaseItemPropertyAsRichText
-  Email: NotionDatabaseItemPropertyAsEmail
-  Entreprise: NotionDatabaseItemPropertyAsRichText
-  EstPublie: NotionDatabaseItemPropertyAsCheckbox
+  CreeLe: NotionPropertyAsCreatedTime
+  DateDeDebut: NotionPropertyAsDate
+  DegreDeMobilite: NotionPropertyAsRichText
+  Description: NotionPropertyAsRichText
+  Email: NotionPropertyAsEmail
+  Entreprise: NotionPropertyAsRichText
+  EstPublie: NotionPropertyAsCheckbox
   /** Internally generated ID */
-  ID: NotionDatabaseItemPropertyAsRichText
-  Localisation: NotionDatabaseItemPropertyAsRichText
+  ID: NotionPropertyAsRichText
+  Localisation: NotionPropertyAsRichText
   /** Automatically filled by Notion */
-  MisAJourLe: NotionDatabaseItemPropertyAsLastEditedTime
-  Nom: NotionDatabaseItemPropertyAsRichText
-  NombreDeCandidatures: NotionDatabaseItemPropertyAsNumber
-  NombreDeCreneauxDisponibles: NotionDatabaseItemPropertyAsNumber
-  Prenom: NotionDatabaseItemPropertyAsRichText
-  SituationProfessionnelle: NotionDatabaseItemPropertyAsRichText
-  Titre: NotionDatabaseItemPropertyAsTitle
+  MisAJourLe: NotionPropertyAsLastEditedTime
+  Nom: NotionPropertyAsRichText
+  NombreDeCandidatures: NotionPropertyAsNumber
+  NombreDeCreneauxDisponibles: NotionPropertyAsNumber
+  Prenom: NotionPropertyAsRichText
+  SituationProfessionnelle: NotionPropertyAsRichText
+  Titre: NotionPropertyAsTitle
 }>

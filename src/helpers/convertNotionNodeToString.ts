@@ -1,24 +1,26 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
 import {
-  NotionDatabaseItemPropertyAsDate,
-  NotionDatabaseItemPropertyAsFiles,
-  NotionDatabaseItemPropertyAsLastEditedTime,
-  NotionDatabaseItemPropertyAsRichText,
-  NotionDatabaseItemPropertyAsSelect,
-  NotionDatabaseItemPropertyAsTitle,
+  NotionPropertyAsDate,
+  NotionPropertyAsFiles,
+  NotionPropertyAsLastEditedTime,
+  NotionPropertyAsRichText,
+  NotionPropertyAsSelect,
+  NotionPropertyAsTitle,
+  NotionPropertyAsUrl,
 } from '../types/Notion'
 import handleError from './handleError'
 import humanizeDate from './humanizeDate'
 
 export default function convertNotionNodeToString(
   value:
-    | NotionDatabaseItemPropertyAsDate
-    | NotionDatabaseItemPropertyAsFiles
-    | NotionDatabaseItemPropertyAsLastEditedTime
-    | NotionDatabaseItemPropertyAsRichText
-    | NotionDatabaseItemPropertyAsSelect
-    | NotionDatabaseItemPropertyAsTitle,
+    | NotionPropertyAsDate
+    | NotionPropertyAsFiles
+    | NotionPropertyAsLastEditedTime
+    | NotionPropertyAsRichText
+    | NotionPropertyAsSelect
+    | NotionPropertyAsTitle
+    | NotionPropertyAsUrl,
 ): string {
   try {
     switch (value.type) {
@@ -40,6 +42,9 @@ export default function convertNotionNodeToString(
       case 'title':
         return fromTitle(value)
 
+      case 'url':
+        return fromUrl(value)
+
       default:
         return ''
     }
@@ -48,7 +53,7 @@ export default function convertNotionNodeToString(
   }
 }
 
-function fromDate(value: NotionDatabaseItemPropertyAsDate): string {
+function fromDate(value: NotionPropertyAsDate): string {
   if (value.date === null || value.date.start === null) {
     return ''
   }
@@ -56,7 +61,7 @@ function fromDate(value: NotionDatabaseItemPropertyAsDate): string {
   return humanizeDate(value.date.start)
 }
 
-function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string {
+function fromFiles(value: NotionPropertyAsFiles): string {
   if (value.files.length === 0) {
     return ''
   }
@@ -70,15 +75,15 @@ function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string {
   return firstFile.file.url
 }
 
-function fromLastEditedTime(value: NotionDatabaseItemPropertyAsLastEditedTime): string {
+function fromLastEditedTime(value: NotionPropertyAsLastEditedTime): string {
   return humanizeDate(value.last_edited_time)
 }
 
-function fromRichText(value: NotionDatabaseItemPropertyAsRichText): string {
+function fromRichText(value: NotionPropertyAsRichText): string {
   return value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
 }
 
-function fromSelect(value: NotionDatabaseItemPropertyAsSelect): string {
+function fromSelect(value: NotionPropertyAsSelect): string {
   if (value.select === null) {
     return ''
   }
@@ -86,6 +91,14 @@ function fromSelect(value: NotionDatabaseItemPropertyAsSelect): string {
   return value.select.name
 }
 
-function fromTitle(value: NotionDatabaseItemPropertyAsTitle): string {
+function fromTitle(value: NotionPropertyAsTitle): string {
   return value.title.map(titleChild => titleChild.plain_text).join('')
+}
+
+function fromUrl(value: NotionPropertyAsUrl): string {
+  if (value.url === null) {
+    return ''
+  }
+
+  return value.url
 }

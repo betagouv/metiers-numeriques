@@ -3,6 +3,7 @@ import { NotionPepJob } from '../types/NotionPepJob'
 import capitalize from './capitalize'
 import convertMarkdownToHtml from './convertMarkdownToHtml'
 import convertNotionNodeToHtml from './convertNotionNodeToHtml'
+import convertNotionNodeToString from './convertNotionNodeToString'
 import convertNotionNodeToStrings from './convertNotionNodeToStrings'
 import handleError from './handleError'
 import humanizePepDate from './humanizePepDate'
@@ -47,6 +48,7 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
       title: capitalize(title),
       toApply: convertNotionNodeToHtml(notionPepJob.properties.Origin_CustomFieldsTranslation_ShortText1_),
       updatedAt: notionPepJob.properties.MisAJourLe.last_edited_time,
+      updatedDate: convertNotionNodeToString(notionPepJob.properties.MisAJourLe),
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionPepJob()')

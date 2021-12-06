@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
 import {
-  NotionDatabaseItemPropertyAsDate,
-  NotionDatabaseItemPropertyAsFiles,
-  NotionDatabaseItemPropertyAsLastEditedTime,
-  NotionDatabaseItemPropertyAsRichText,
-  NotionDatabaseItemPropertyAsSelect,
-  NotionDatabaseItemPropertyAsTitle,
+  NotionPropertyAsDate,
+  NotionPropertyAsFiles,
+  NotionPropertyAsLastEditedTime,
+  NotionPropertyAsRichText,
+  NotionPropertyAsSelect,
+  NotionPropertyAsTitle,
 } from '../types/Notion'
 import convertMarkdownToHtml from './convertMarkdownToHtml'
 import convertMarkdownToInlineHtml from './convertMarkdownToInlineHtml'
@@ -15,12 +15,12 @@ import humanizeDate from './humanizeDate'
 
 export default function convertNotionNodeToHtml(
   value:
-    | NotionDatabaseItemPropertyAsDate
-    | NotionDatabaseItemPropertyAsFiles
-    | NotionDatabaseItemPropertyAsLastEditedTime
-    | NotionDatabaseItemPropertyAsRichText
-    | NotionDatabaseItemPropertyAsSelect
-    | NotionDatabaseItemPropertyAsTitle,
+    | NotionPropertyAsDate
+    | NotionPropertyAsFiles
+    | NotionPropertyAsLastEditedTime
+    | NotionPropertyAsRichText
+    | NotionPropertyAsSelect
+    | NotionPropertyAsTitle,
   isInline: boolean = false,
 ): string | undefined {
   try {
@@ -51,7 +51,7 @@ export default function convertNotionNodeToHtml(
   }
 }
 
-function fromDate(value: NotionDatabaseItemPropertyAsDate): string | undefined {
+function fromDate(value: NotionPropertyAsDate): string | undefined {
   if (value.date === null || value.date.start === null) {
     return undefined
   }
@@ -59,7 +59,7 @@ function fromDate(value: NotionDatabaseItemPropertyAsDate): string | undefined {
   return humanizeDate(value.date.start)
 }
 
-function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string | undefined {
+function fromFiles(value: NotionPropertyAsFiles): string | undefined {
   if (value.files.length === 0) {
     return undefined
   }
@@ -73,11 +73,11 @@ function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string | undefined
   return firstFile.file.url
 }
 
-function fromLastEditedTime(value: NotionDatabaseItemPropertyAsLastEditedTime): string | undefined {
+function fromLastEditedTime(value: NotionPropertyAsLastEditedTime): string | undefined {
   return humanizeDate(value.last_edited_time)
 }
 
-function fromRichText(value: NotionDatabaseItemPropertyAsRichText, isInline: boolean): string {
+function fromRichText(value: NotionPropertyAsRichText, isInline: boolean): string {
   const markdownSource = value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
 
   if (isInline) {
@@ -87,7 +87,7 @@ function fromRichText(value: NotionDatabaseItemPropertyAsRichText, isInline: boo
   return convertMarkdownToHtml(markdownSource)
 }
 
-function fromSelect(value: NotionDatabaseItemPropertyAsSelect, isInline): string | undefined {
+function fromSelect(value: NotionPropertyAsSelect, isInline): string | undefined {
   if (value.select === null) {
     return undefined
   }
@@ -101,7 +101,7 @@ function fromSelect(value: NotionDatabaseItemPropertyAsSelect, isInline): string
   return convertMarkdownToHtml(markdownSource)
 }
 
-function fromTitle(value: NotionDatabaseItemPropertyAsTitle, isInline: boolean): string {
+function fromTitle(value: NotionPropertyAsTitle, isInline: boolean): string {
   const markdownSource = value.title.map(titleChild => titleChild.plain_text).join('')
 
   if (isInline) {

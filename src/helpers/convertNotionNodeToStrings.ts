@@ -1,18 +1,11 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
-import {
-  NotionDatabaseItemPropertyAsFiles,
-  NotionDatabaseItemPropertyAsMultiSelect,
-  NotionDatabaseItemPropertyAsRichText,
-} from '../types/Notion'
+import { NotionPropertyAsFiles, NotionPropertyAsMultiSelect, NotionPropertyAsRichText } from '../types/Notion'
 import convertMarkdownToInlineHtml from './convertMarkdownToInlineHtml'
 import handleError from './handleError'
 
 export default function convertNotionNodeToStrings(
-  value:
-    | NotionDatabaseItemPropertyAsFiles
-    | NotionDatabaseItemPropertyAsMultiSelect
-    | NotionDatabaseItemPropertyAsRichText,
+  value: NotionPropertyAsFiles | NotionPropertyAsMultiSelect | NotionPropertyAsRichText,
 ): string[] {
   try {
     switch (value.type) {
@@ -33,7 +26,7 @@ export default function convertNotionNodeToStrings(
   }
 }
 
-function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string[] {
+function fromFiles(value: NotionPropertyAsFiles): string[] {
   return value.files.map(file => {
     if (file.type === 'external') {
       return file.external.url
@@ -43,11 +36,11 @@ function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string[] {
   })
 }
 
-function fromMultiSelect(value: NotionDatabaseItemPropertyAsMultiSelect): string[] {
+function fromMultiSelect(value: NotionPropertyAsMultiSelect): string[] {
   return value.multi_select.map(selectChild => convertMarkdownToInlineHtml(selectChild.name))
 }
 
-function fromRichText(value: NotionDatabaseItemPropertyAsRichText): string[] {
+function fromRichText(value: NotionPropertyAsRichText): string[] {
   const markdownSource = value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
   const htmlSource = convertMarkdownToInlineHtml(markdownSource)
 

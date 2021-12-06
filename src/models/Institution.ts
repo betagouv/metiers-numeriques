@@ -1,8 +1,8 @@
-import { NotionDatabaseItemPropertyAsFiles } from '../types/Notion'
+import { NotionPropertyAsFiles } from '../types/Notion'
 
 type InstitutionProps = {
   address?: string
-  addressFiles: NotionDatabaseItemPropertyAsFiles['files']
+  addressFiles: NotionPropertyAsFiles['files']
   challenges?: string
   description?: string
   fullName: string
@@ -33,7 +33,7 @@ type InstitutionProps = {
   value?: string
   valueFiles: string[]
   visualBanner?: string
-  websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
+  websiteFiles: NotionPropertyAsFiles['files']
 }
 
 export default class Institution implements InstitutionProps {
@@ -44,7 +44,7 @@ export default class Institution implements InstitutionProps {
   public title: string
 
   public address?: string
-  public addressFiles: NotionDatabaseItemPropertyAsFiles['files']
+  public addressFiles: NotionPropertyAsFiles['files']
   public challenges?: string
   public description?: string
   public hiringProcess?: string
@@ -69,7 +69,7 @@ export default class Institution implements InstitutionProps {
   public testimonialFiles: string[]
   public value?: string
   public valueFiles: string[]
-  public websiteFiles: NotionDatabaseItemPropertyAsFiles['files']
+  public websiteFiles: NotionPropertyAsFiles['files']
 
   constructor({
     address,

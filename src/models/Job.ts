@@ -1,9 +1,10 @@
+import Service from './Service'
+
 interface JobProps {
   advantages?: string
   conditions?: string
   /** ISO Date */
   createdAt: string
-
   department?: string[]
   entity?: string
   experiences?: string[]
@@ -19,6 +20,7 @@ interface JobProps {
   /** Used as an internal reference for debugging purposes */
   reference: string
   salary?: string
+  service?: Service
   slug: string
   tasks?: string
   team?: string
@@ -27,19 +29,20 @@ interface JobProps {
   toApply?: string
   /** ISO Date */
   updatedAt: string
+  /** Humanized date (i.e.: "Il y a 7 jours") */
+  updatedDate: string
 }
 
-class Job implements JobProps {
+export default class Job implements JobProps {
   /** ISO Date */
   public createdAt: string
+  public id: string
   /** Used as an internal reference for debugging purposes */
   public reference: string
-  /** ISO Date */
-  public updatedAt: string
-
-  public id: string
   public slug: string
   public title: string
+  /** ISO Date */
+  public updatedAt: string
 
   public advantages?: string
   public conditions?: string
@@ -55,10 +58,13 @@ class Job implements JobProps {
   public profile?: string
   public publicationDate?: string
   public salary?: string
+  public service?: Service
   public tasks?: string
   public team?: string
   public teamInfo?: string
   public toApply?: string
+  /** Humanized date (i.e.: "Il y a 7 jours") */
+  public updatedDate: string
 
   constructor({
     advantages,
@@ -78,6 +84,7 @@ class Job implements JobProps {
     publicationDate,
     reference,
     salary,
+    service,
     slug,
     tasks,
     team,
@@ -85,13 +92,11 @@ class Job implements JobProps {
     title,
     toApply,
     updatedAt,
+    updatedDate,
   }: JobProps) {
-    this.createdAt = createdAt
-    this.reference = reference
-    this.updatedAt = updatedAt
-
     this.advantages = advantages
     this.conditions = conditions
+    this.createdAt = createdAt
     this.department = department || []
     this.entity = entity
     this.experiences = experiences || []
@@ -104,14 +109,16 @@ class Job implements JobProps {
     this.openedToContractTypes = openedToContractTypes || []
     this.profile = profile
     this.publicationDate = publicationDate
+    this.reference = reference
     this.salary = salary
+    this.service = service
     this.slug = slug
     this.tasks = tasks
     this.team = team
     this.teamInfo = teamInfo
     this.title = title
     this.toApply = toApply
+    this.updatedAt = updatedAt
+    this.updatedDate = updatedDate
   }
 }
-
-export default Job

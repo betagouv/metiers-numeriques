@@ -1,9 +1,9 @@
 /* eslint-disable no-case-declarations, @typescript-eslint/no-use-before-define */
 
-import { NotionDatabaseItemPropertyAsFiles } from '../types/Notion'
+import { NotionPropertyAsFiles } from '../types/Notion'
 import handleError from './handleError'
 
-export default function convertNotionNodeToHtmls(value: NotionDatabaseItemPropertyAsFiles): string[] {
+export default function convertNotionNodeToHtmls(value: NotionPropertyAsFiles): string[] {
   try {
     switch (value.type) {
       case 'files':
@@ -76,7 +76,7 @@ const embedYoutube = (url: string, name: string): string => {
   `.trim()
 }
 
-function fromFiles(value: NotionDatabaseItemPropertyAsFiles): string[] {
+function fromFiles(value: NotionPropertyAsFiles): string[] {
   return value.files.reduce((htmlSources: string[], file): string[] => {
     const { name } = file
     const isExternal = file.type === 'external'
