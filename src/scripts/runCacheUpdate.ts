@@ -6,7 +6,7 @@ async function runCacheUpdate() {
   try {
     ß.info('[scripts/runCacheUpdate.js]', 'Updating Redis cache…')
 
-    await updateCache()
+    await updateCache(true)
 
     ß.success('[scripts/runCacheUpdate.js]', 'Redis cache updated.')
     process.exit()
