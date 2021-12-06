@@ -1,5 +1,6 @@
 import Institution from '../models/Institution'
 import { NotionInstitution } from '../types/NotionInstitution'
+import convertNotionNodeToBoolean from './convertNotionNodeToBoolean'
 import convertNotionNodeToHtml from './convertNotionNodeToHtml'
 import convertNotionNodeToHtmls from './convertNotionNodeToHtmls'
 import convertNotionNodeToString from './convertNotionNodeToString'
@@ -23,6 +24,7 @@ export default function generateInstitutionFromNotionInstitution(notionInstituti
       hiringProcess: convertNotionNodeToHtml(notionInstitution.properties['Processus de recrutement']),
       id,
       // jobsLink: convertNotionNodeToStrings(notionInstitution.properties['Toutes les offres disponibles']),
+      isPublished: convertNotionNodeToBoolean(notionInstitution.properties.EstPublie),
       joinTeam: convertNotionNodeToHtml(notionInstitution.properties['Nous rejoindre - Pourquoi?']),
       joinTeamFiles: convertNotionNodeToHtmls(notionInstitution.properties['Nous rejoindre - Infos']),
       keyNumbers: convertNotionNodeToHtml(notionInstitution.properties['Les chiffres clés']),

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
 import { NotionPropertyAsFiles, NotionPropertyAsMultiSelect, NotionPropertyAsRichText } from '../types/Notion'
-import convertMarkdownToInlineHtml from './convertMarkdownToInlineHtml'
 import handleError from './handleError'
+import stripHtmlTags from './stripHtmlTags'
 
 export default function convertNotionNodeToStrings(
   value: NotionPropertyAsFiles | NotionPropertyAsMultiSelect | NotionPropertyAsRichText,
@@ -37,16 +37,11 @@ function fromFiles(value: NotionPropertyAsFiles): string[] {
 }
 
 function fromMultiSelect(value: NotionPropertyAsMultiSelect): string[] {
-  return value.multi_select.map(selectChild => convertMarkdownToInlineHtml(selectChild.name))
+  return value.multi_select.map(selectChild => stripHtmlTags(selectChild.name))
 }
 
 function fromRichText(value: NotionPropertyAsRichText): string[] {
-  const markdownSource = value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
-  const htmlSource = convertMarkdownToInlineHtml(markdownSource)
-
-  if (htmlSource.length === 0) {
-    return []
-  }
-
-  return [convertMarkdownToInlineHtml(markdownSource)]
+  return stripHtmlTags(value.rich_text.map(richTextChild => richTextChild.plain_text).join(''))
+    .split(/,|;|\n/)
+    .map(row => row.replace(/^-\s+/g, '').trim())
 }

@@ -11,6 +11,7 @@ import {
 } from '../types/Notion'
 import handleError from './handleError'
 import humanizeDate from './humanizeDate'
+import stripHtmlTags from './stripHtmlTags'
 
 export default function convertNotionNodeToString(
   value:
@@ -80,7 +81,7 @@ function fromLastEditedTime(value: NotionPropertyAsLastEditedTime): string {
 }
 
 function fromRichText(value: NotionPropertyAsRichText): string {
-  return value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
+  return stripHtmlTags(value.rich_text.map(richTextChild => richTextChild.plain_text).join(''))
 }
 
 function fromSelect(value: NotionPropertyAsSelect): string {
@@ -88,11 +89,11 @@ function fromSelect(value: NotionPropertyAsSelect): string {
     return ''
   }
 
-  return value.select.name
+  return stripHtmlTags(value.select.name)
 }
 
 function fromTitle(value: NotionPropertyAsTitle): string {
-  return value.title.map(titleChild => titleChild.plain_text).join('')
+  return stripHtmlTags(value.title.map(titleChild => titleChild.plain_text).join(''))
 }
 
 function fromUrl(value: NotionPropertyAsUrl): string {

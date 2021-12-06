@@ -71,12 +71,7 @@ class Notion {
   }
 
   async findManyInstitutions(): Promise<NotionInstitution[]> {
-    return this.database.findMany(NOTION_INSTITUTIONS_DATABASE_ID, {
-      checkbox: {
-        equals: true,
-      },
-      property: 'EstPublie',
-    })
+    return this.database.findMany(NOTION_INSTITUTIONS_DATABASE_ID)
   }
 
   async findManyPepJobs(): Promise<NotionPepJob[]> {

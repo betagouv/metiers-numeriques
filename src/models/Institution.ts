@@ -5,9 +5,10 @@ type InstitutionProps = {
   addressFiles: NotionPropertyAsFiles['files']
   challenges?: string
   description?: string
-  fullName: string
+  fullName?: string
   hiringProcess?: string
   id: string
+  isPublished: boolean
   // jobsLink: string[]
   joinTeam?: string
   joinTeamFiles: string[]
@@ -38,7 +39,6 @@ type InstitutionProps = {
 
 export default class Institution implements InstitutionProps {
   public id: string
-  public fullName: string
   public slug: string
   public thumbnailUrl: string
   public title: string
@@ -47,7 +47,9 @@ export default class Institution implements InstitutionProps {
   public addressFiles: NotionPropertyAsFiles['files']
   public challenges?: string
   public description?: string
+  public fullName?: string
   public hiringProcess?: string
+  public isPublished: boolean
   // public jobsLink: string[]
   public joinTeam?: string
   public joinTeamFiles: string[]
@@ -79,6 +81,7 @@ export default class Institution implements InstitutionProps {
     fullName,
     hiringProcess,
     id,
+    isPublished,
     // jobsLink,
     joinTeam,
     joinTeamFiles,
@@ -116,6 +119,7 @@ export default class Institution implements InstitutionProps {
     this.challenges = challenges
     this.description = description
     this.hiringProcess = hiringProcess
+    this.isPublished = isPublished
     // this.jobsLink = jobsLink
     this.joinTeam = joinTeam
     this.joinTeamFiles = joinTeamFiles
