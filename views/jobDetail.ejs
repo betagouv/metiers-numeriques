@@ -23,18 +23,58 @@
             </div>
           <% } %>
 
-          <% if (job.department.length) { %>
+          <% if (job.service && job.service.institution) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                Ministère
+                Institution
               </div>
               <div class="fr-col-md-9 fr-col-sm-12">
-                <p><%- job.department.join(', '); %></p>
+                <p>
+                  <% if (job.service.institution.fullName) { %>
+                    <%= job.service.institution.fullName %> (<%= job.service.institution.title %>)
+                  <% } else { %>
+                    <%= job.service.institution.title %>
+                  <% } %>
+                </p>
+              </div>
+            </div>
+          <% } else if (job.department.length) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Institution
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <p><%= job.department.join(', '); %></p>
               </div>
             </div>
           <% } %>
 
-          <% if (job.entity) { %>
+          <% if (job.service) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Service
+              </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <p>
+                  <% if (job.service.url) { %>
+                    <a href="<%= job.service.url %>" rel="noopnoopener" target="_blank">
+                      <% if (job.service.fullName) { %>
+                        <%= job.service.fullName %> (<%= job.service.name %>)
+                      <% } else { %>
+                        <%= job.service.name %>
+                      <% } %>
+                    </a>
+                  <% } else { %>
+                    <% if (job.service.fullName) { %>
+                      <%= job.service.fullName %> (<%= job.service.name %>)
+                    <% } else { %>
+                      <%= job.service.name %>
+                    <% } %>
+                  <% } %>
+                </p>
+              </div>
+            </div>
+          <% } else if (job.entity) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
                 Entité recruteuse
@@ -57,14 +97,14 @@
           <% } %>
 
           <% if (job.openedToContractTypes.length) { %>
-              <div class="fr-grid-row fr-grid-row--gutters">
-                  <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                      Ouvert aux
-                  </div>
-                  <div class="fr-col-md-9 fr-col-sm-12">
-                      <p><%= job.openedToContractTypes.join(', '); %></p>
-                  </div>
+            <div class="fr-grid-row fr-grid-row--gutters">
+              <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
+                Ouvert aux
               </div>
+              <div class="fr-col-md-9 fr-col-sm-12">
+                <p><%= job.openedToContractTypes.join(', '); %></p>
+              </div>
+            </div>
           <% } %>
 
           <% if (job.salary) { %>

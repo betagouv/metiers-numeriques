@@ -6,6 +6,7 @@ import {
   NotionPropertyAsSelect,
   NotionPropertyAsPeople,
   NotionPropertyAsTitle,
+  NotionPropertyAsCheckbox,
 } from './Notion'
 
 export type NotionInstitution = NotionDatabaseItem<{
@@ -16,6 +17,7 @@ export type NotionInstitution = NotionDatabaseItem<{
   Banniere: NotionPropertyAsFiles
   'Bloc marque': NotionPropertyAsFiles
   Date: NotionPropertyAsDate
+  EstPublie: NotionPropertyAsCheckbox
   'Les chiffres clés': NotionPropertyAsRichText
   'Les chiffres clés - liens': NotionPropertyAsFiles
   'Les projets ou rélisations': NotionPropertyAsRichText

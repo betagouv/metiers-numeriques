@@ -48,8 +48,14 @@ class Data {
   }
 
   public async getServices(): Promise<Service[]> {
+    const institutions = await cache.getOrCacheWith(CACHE_KEY.INSTITUTIONS, this.getInstitutions)
+
     const notionServices = await notion.findManyServices()
-    const services = notionServices.map(generateServiceFromNotionService)
+    const services = notionServices.map(notionJob =>
+      generateServiceFromNotionService(notionJob, {
+        institutions,
+      }),
+    )
 
     return services
   }
