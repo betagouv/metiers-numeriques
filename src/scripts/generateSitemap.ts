@@ -3,16 +3,18 @@ import { createWriteStream } from 'fs'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SitemapStream } from 'sitemap'
 
+import { CACHE_KEY } from '../constants'
+import cache from '../helpers/cache'
 import data from '../services/data'
 
 const MAIN_PATHS = ['/', '/emplois', '/institutions', '/mentions-legales']
 
 async function generateSitemap() {
   ß.info('[scripts/generateSitemap.js] Fetching jobs…')
-  const jobs = await data.getJobs()
+  const jobs = await cache.getOrCacheWith(CACHE_KEY.JOBS, data.getJobs)
 
   ß.info('[scripts/generateSitemap.js] Fetching institutions…')
-  const institutions = await data.getInstitutions()
+  const institutions = await cache.getOrCacheWith(CACHE_KEY.INSTITUTIONS, data.getInstitutions)
 
   const sitemap = new SitemapStream({
     hostname: 'https://metiers.numerique.gouv.fr',
@@ -43,6 +45,7 @@ async function generateSitemap() {
   })
 
   sitemap.end()
+  process.exit()
 }
 
 generateSitemap()
