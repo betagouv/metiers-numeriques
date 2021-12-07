@@ -2,12 +2,14 @@ import * as R from 'ramda'
 
 import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
+import generateEntityFromNotionEntity from '../helpers/generateEntityFromNotionEntity'
 import generateInstitutionFromNotionInstitution from '../helpers/generateInstitutionFromNotionInstitution'
 import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
 import generateJobFromNotionPepJob from '../helpers/generateJobFromNotionPepJob'
 import generateJobFromNotionSkbJob from '../helpers/generateJobFromNotionSkbJob'
 import generateServiceFromNotionService from '../helpers/generateServiceFromNotionService'
 import sortJobsByQuality from '../helpers/sortJobsByQuality'
+import Entity from '../models/Entity'
 import Institution from '../models/Institution'
 import Job from '../models/Job'
 import Service from '../models/Service'
@@ -17,6 +19,13 @@ const sortByUpdatedAtDesc: (jobs: Job[]) => Job[] = R.sort(R.descend(R.prop('upd
 const sortByTitleAsc: (institutions: Institution[]) => Institution[] = R.sort(R.ascend(R.prop('title')))
 
 class Data {
+  public async getEntities(): Promise<Entity[]> {
+    const notionEntities = await notion.findManyEntities()
+    const entities = notionEntities.map(generateEntityFromNotionEntity)
+
+    return entities
+  }
+
   public async getInstitutions(): Promise<Institution[]> {
     const notionInstitutions = await notion.findManyInstitutions()
     const institutions = notionInstitutions.map(generateInstitutionFromNotionInstitution)
@@ -48,12 +57,12 @@ class Data {
   }
 
   public async getServices(): Promise<Service[]> {
-    const institutions = await cache.getOrCacheWith(CACHE_KEY.INSTITUTIONS, this.getInstitutions)
+    const entities = await cache.getOrCacheWith(CACHE_KEY.ENTITIES, this.getEntities)
 
     const notionServices = await notion.findManyServices()
     const services = notionServices.map(notionJob =>
       generateServiceFromNotionService(notionJob, {
-        institutions,
+        entities,
       }),
     )
 

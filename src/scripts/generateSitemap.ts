@@ -45,7 +45,7 @@ async function generateSitemap() {
   })
 
   sitemap.end()
-  process.exit()
+  setInterval(process.exit, 2000)
 }
 
 generateSitemap()

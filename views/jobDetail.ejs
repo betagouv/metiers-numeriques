@@ -23,18 +23,14 @@
             </div>
           <% } %>
 
-          <% if (job.service && job.service.institution) { %>
+          <% if (job.service && job.service.entity) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                Institution
+                Entité parente
               </div>
               <div class="fr-col-md-9 fr-col-sm-12">
                 <p>
-                  <% if (job.service.institution.fullName) { %>
-                    <%= job.service.institution.fullName %> (<%= job.service.institution.title %>)
-                  <% } else { %>
-                    <%= job.service.institution.title %>
-                  <% } %>
+                  <%= job.service.entity.fullName || job.service.entity.name %>
                 </p>
               </div>
             </div>
@@ -52,24 +48,16 @@
           <% if (job.service) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-md-3 fr-col-sm-12 fr-pl-8w">
-                Service
+                Entité recruteuse
               </div>
               <div class="fr-col-md-9 fr-col-sm-12">
                 <p>
                   <% if (job.service.url) { %>
                     <a href="<%= job.service.url %>" rel="noopener" target="_blank">
-                      <% if (job.service.fullName) { %>
-                        <%= job.service.fullName %> (<%= job.service.name %>)
-                      <% } else { %>
-                        <%= job.service.name %>
-                      <% } %>
+                      <%= job.service.fullName || job.service.name %>
                     </a>
                   <% } else { %>
-                    <% if (job.service.fullName) { %>
-                      <%= job.service.fullName %> (<%= job.service.name %>)
-                    <% } else { %>
-                      <%= job.service.name %>
-                    <% } %>
+                    <%= job.service.fullName || job.service.name %>
                   <% } %>
                 </p>
               </div>

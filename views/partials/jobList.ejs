@@ -15,10 +15,18 @@
                 <i class="ri-building-fill fr-mr-2w"></i>
                 <% if (jobs[i].service.url) { %>
                   <a href="<%= jobs[i].service.url %>" rel="noopener" target="_blank">
-                    <%= jobs[i].service.name %>
+                    <% if (jobs[i].service.fullName) { %>
+                      <acronym title="<%= jobs[i].service.fullName %>"><%= jobs[i].service.name %></acronym>
+                    <% } else { %>
+                      <%= jobs[i].service.name %>
+                    <% } %>
                   </a>
                 <% } else { %>
-                  <%= jobs[i].service.name %>
+                  <% if (jobs[i].service.fullName) { %>
+                    <acronym title="<%= jobs[i].service.fullName %>"><%= jobs[i].service.name %></acronym>
+                  <% } else { %>
+                    <%= jobs[i].service.name %>
+                  <% } %>
                 <% } %>
                 </p>
             <% } %>

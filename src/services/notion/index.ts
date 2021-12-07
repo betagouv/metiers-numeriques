@@ -2,6 +2,7 @@
 
 import axios from 'axios'
 
+import { NotionEntity } from '../../types/NotionEntity'
 import { NotionInstitution } from '../../types/NotionInstitution'
 import { NotionJob } from '../../types/NotionJob'
 import { NotionPepJob } from '../../types/NotionPepJob'
@@ -12,6 +13,7 @@ import NotionDatabase from './NotionDatabase'
 import NotionPage from './NotionPage'
 
 const {
+  NOTION_ENTITY_DATABASE_ID,
   NOTION_INSTITUTIONS_DATABASE_ID,
   NOTION_JOBS_DATABASE_ID,
   NOTION_PEP_JOBS_DATABASE_ID,
@@ -61,6 +63,14 @@ class Notion {
     })
   }
 
+  async findManyEntities(): Promise<NotionEntity[]> {
+    return this.database.findMany(NOTION_ENTITY_DATABASE_ID)
+  }
+
+  async findManyInstitutions(): Promise<NotionInstitution[]> {
+    return this.database.findMany(NOTION_INSTITUTIONS_DATABASE_ID)
+  }
+
   async findManyJobs(): Promise<NotionJob[]> {
     return this.database.findMany(NOTION_JOBS_DATABASE_ID, {
       property: 'redaction_status',
@@ -68,10 +78,6 @@ class Notion {
         equals: 'published',
       },
     })
-  }
-
-  async findManyInstitutions(): Promise<NotionInstitution[]> {
-    return this.database.findMany(NOTION_INSTITUTIONS_DATABASE_ID)
   }
 
   async findManyPepJobs(): Promise<NotionPepJob[]> {

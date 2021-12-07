@@ -1,37 +1,37 @@
 import * as R from 'ramda'
 
-import Institution from '../models/Institution'
+import Entity from '../models/Entity'
 import Service from '../models/Service'
 import { NotionPropertyAsRelation } from '../types/Notion'
 import { NotionService } from '../types/NotionService'
 import convertNotionNodeToString from './convertNotionNodeToString'
 import handleError from './handleError'
 
-const getInstitution = (relation: NotionPropertyAsRelation, institutions: Institution[]): Institution | undefined => {
+const getEntity = (relation: NotionPropertyAsRelation, entities: Entity[]): Entity | undefined => {
   if (relation.relation.length === 0) {
     return undefined
   }
 
-  const maybeInstitution = R.find(R.propEq('id', relation.relation[0].id), institutions)
+  const maybeEntity = R.find(R.propEq('id', relation.relation[0].id), entities)
 
-  return maybeInstitution
+  return maybeEntity
 }
 
 export default function generateServiceFromNotionService(
   notionService: NotionService,
   {
-    institutions,
+    entities,
   }: {
-    institutions: Institution[]
+    entities: Entity[]
   },
 ) {
   try {
-    const institution = getInstitution(notionService.properties.Institution, institutions)
+    const entity = getEntity(notionService.properties.Entite, entities)
 
     return new Service({
+      entity,
       fullName: convertNotionNodeToString(notionService.properties.NomComplet),
       id: notionService.id,
-      institution,
       name: convertNotionNodeToString(notionService.properties.Nom),
       region: convertNotionNodeToString(notionService.properties.Region),
       url: convertNotionNodeToString(notionService.properties.Lien),

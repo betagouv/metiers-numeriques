@@ -5,6 +5,20 @@ import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
 import data from '../services/data'
 
+async function updateEntities(isForced: boolean): Promise<void> {
+  try {
+    if (!isForced && !(await cache.shouldUpdate(CACHE_KEY.ENTITIES))) {
+      return
+    }
+
+    ß.debug(`[jobs/updateCache.js] Caching entities…`)
+    const entities = await data.getEntities()
+    await cache.set(CACHE_KEY.ENTITIES, entities)
+  } catch (err) {
+    handleError(err, 'jobs/updateCache#updateEntities()')
+  }
+}
+
 async function updateInstitutions(isForced: boolean): Promise<void> {
   try {
     if (!isForced && !(await cache.shouldUpdate(CACHE_KEY.INSTITUTIONS))) {
@@ -50,6 +64,8 @@ async function updateJobs(isForced: boolean): Promise<void> {
 export default async function updateCache(isForced: boolean = false): Promise<void> {
   try {
     await updateInstitutions(isForced)
+
+    await updateEntities(isForced)
     await updateServices(isForced)
     await updateJobs(isForced)
   } catch (err) {
