@@ -18,20 +18,14 @@ const REGEXP = {
   DEFAULT: /(\d+[a-z]*)[\s,]+([^,-]+)[\s,-]+([\d\s]+)[\s,-]+(.*)/i,
 }
 
-export default function normalizePlace(addressString: string): StructuredDataPlace {
+export default function normalizePlace(addressString: string): StructuredDataPlace | undefined {
   const defaultResult = matchDefault(addressString)
 
   if (defaultResult !== undefined) {
     return defaultResult
   }
 
-  return {
-    '@type': 'Place',
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'FR',
-    },
-  }
+  return undefined
 }
 
 const matchDefault = (addressString: string): StructuredDataPlace | undefined => {

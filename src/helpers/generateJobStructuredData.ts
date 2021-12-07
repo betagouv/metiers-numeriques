@@ -48,6 +48,11 @@ export default function generateJobStructuredData(job: Job): string {
     return JSON.stringify({})
   }
 
+  const maybeJobLocation = structuredData.normalizePlace(String(job.locations[0]))
+  if (maybeJobLocation === undefined) {
+    return JSON.stringify({})
+  }
+
   const maybeOrganizationData = getOrganizationData(job)
   if (maybeOrganizationData === undefined) {
     return JSON.stringify({})
@@ -67,10 +72,7 @@ export default function generateJobStructuredData(job: Job): string {
     datePosted: job.updatedAt,
     description: maybeDescription,
     hiringOrganization: structuredData.normalizeOrganization(maybeOrganizationData),
-    jobLocation: {
-      '@type': 'Place',
-      address: structuredData.normalizePlace(String(job.locations[0])),
-    },
+    jobLocation: maybeJobLocation,
     title: job.title,
   }
 

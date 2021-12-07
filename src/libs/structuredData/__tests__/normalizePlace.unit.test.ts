@@ -57,12 +57,6 @@ describe('libs/structuredData.normalizePlace()', () => {
 
     const result = structuredData.normalizePlace(addressString)
 
-    expect(result).toStrictEqual({
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        addressCountry: 'FR',
-      },
-    })
+    expect(result).toBeUndefined()
   })
 })
