@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@gouvfr/dsfr": "1.0.0-rc1.0",
-    "axios": "0.21.4",
+    "axios": "0.24.0",
     "bhala": "1.0.2",
     "cron": "1.8.2",
     "csvtojson": "2.0.10",
