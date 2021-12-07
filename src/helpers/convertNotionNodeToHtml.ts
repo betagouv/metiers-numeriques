@@ -75,8 +75,15 @@ function fromLastEditedTime(value: NotionPropertyAsLastEditedTime): string | und
   return humanizeDate(value.last_edited_time)
 }
 
-function fromRichText(value: NotionPropertyAsRichText): string {
-  const markdownSource = value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
+function fromRichText(value: NotionPropertyAsRichText): string | undefined {
+  const markdownSource = value.rich_text
+    .map(richTextChild => richTextChild.plain_text)
+    .join('')
+    .trim()
+
+  if (markdownSource.length === 0) {
+    return undefined
+  }
 
   return convertMarkdownToHtml(markdownSource)
 }
