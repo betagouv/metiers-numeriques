@@ -1,9 +1,9 @@
-import Institution from './Institution'
+import Entity from './Entity'
 
 interface ServiceProps {
+  entity?: Entity
   fullName?: string
   id: string
-  institution?: Institution
   name: string
   region: string
   url?: string
@@ -12,15 +12,15 @@ interface ServiceProps {
 export default class Service implements ServiceProps {
   public fullName?: string
   public id: string
-  public institution?: Institution
+  public entity?: Entity
   public name: string
   public region: string
   public url?: string
 
-  constructor({ fullName, id, institution, name, region, url }: ServiceProps) {
+  constructor({ entity, fullName, id, name, region, url }: ServiceProps) {
     this.fullName = fullName
     this.id = id
-    this.institution = institution
+    this.entity = entity
     this.name = name
     this.region = region
     this.url = url
