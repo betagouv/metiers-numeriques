@@ -27,13 +27,12 @@
     "start:dev": "node -r dotenv/config -r ts-node/register ./src/index.ts",
     "start:worker:cache": "node -r dotenv/config ./build/workers/cacheUpdater.js",
     "start:worker:data": "node -r dotenv/config ./build/workers/dataUpdater.js",
-    "test": "yarn test:unit && yarn test:integration",
+    "test": "yarn test:lint && yarn test:build && yarn test:unit",
     "test:build": "yarn build:assets && yarn build:server",
     "test:lint": "eslint --ext js,ts .",
     "test:e2e": "jest --config=./config/jest.e2e.config.js",
-    "test:integration": "jest --config=./config/jest.integration.config.js",
-    "test:unit": "jest --config=./config/jest.config.js",
-    "test:unit:watch": "jest --watchAll --config=./config/jest.config.js"
+    "test:unit": "jest --config=./config/jest.unit.config.js",
+    "test:unit:watch": "yarn test:unit --watch"
   },
   "dependencies": {
     "@gouvfr/dsfr": "1.0.0-rc1.0",

@@ -12,5 +12,6 @@ export type NotionService = NotionDatabaseItem<{
   Lien: NotionPropertyAsUrl
   Nom: NotionPropertyAsTitle
   NomComplet: NotionPropertyAsRichText
+  NomCourt: NotionPropertyAsRichText
   Region: NotionPropertyAsSelect
 }>

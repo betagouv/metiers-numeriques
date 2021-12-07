@@ -32,8 +32,9 @@ export default function generateServiceFromNotionService(
       entity,
       fullName: convertNotionNodeToString(notionService.properties.NomComplet),
       id: notionService.id,
-      name: convertNotionNodeToString(notionService.properties.Nom),
-      region: convertNotionNodeToString(notionService.properties.Region),
+      name: convertNotionNodeToString(notionService.properties.Nom) || '⚠️ {Nom} manquant',
+      region: convertNotionNodeToString(notionService.properties.Region) || '⚠️ {Region} manquante',
+      shortName: convertNotionNodeToString(notionService.properties.NomCourt),
       url: convertNotionNodeToString(notionService.properties.Lien),
     })
   } catch (err) {

@@ -12,12 +12,9 @@ import slugify from './slugify'
 export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) {
   try {
     const { id } = notionPepJob
-    const title = convertNotionNodeToHtml(notionPepJob.properties.Name, true)
-    if (title === undefined) {
-      throw new Error(`Notion PEP job #${id} has an undefined title.`)
-    }
+    const title = convertNotionNodeToString(notionPepJob.properties.Name) || '⚠️ {Name} manquant'
 
-    const offerReference = convertNotionNodeToHtml(notionPepJob.properties.Offer_Reference_, true)
+    const offerReference = convertNotionNodeToString(notionPepJob.properties.Offer_Reference_)
     const pepUrl = `https://place-emploi-public.gouv.fr/offre-emploi/${offerReference}/`
     const more = convertMarkdownToHtml(`[${pepUrl}](${pepUrl})`)
     const publicationDate =
@@ -48,7 +45,7 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
       title: capitalize(title),
       toApply: convertNotionNodeToHtml(notionPepJob.properties.Origin_CustomFieldsTranslation_ShortText1_),
       updatedAt: notionPepJob.properties.MisAJourLe.last_edited_time,
-      updatedDate: convertNotionNodeToString(notionPepJob.properties.MisAJourLe),
+      updatedDate: convertNotionNodeToString(notionPepJob.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionPepJob()')

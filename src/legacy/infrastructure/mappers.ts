@@ -69,7 +69,7 @@ export const mapToJob = (rawJob: NotionJob) => {
     title,
     toApply: md.renderInline(parseProperty(rawJob.properties['Pour candidater'])),
     updatedAt: rawJob.properties.MisAJourLe.last_edited_time,
-    updatedDate: convertNotionNodeToString(rawJob.properties.MisAJourLe),
+    updatedDate: convertNotionNodeToString(rawJob.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
   })
 }
 
@@ -105,6 +105,6 @@ export const formatDetailFromPep = (job: NotionPepJob) => {
     title,
     toApply: parseProperty(item.Origin_CustomFieldsTranslation_ShortText1_),
     updatedAt: job.properties.MisAJourLe.last_edited_time,
-    updatedDate: convertNotionNodeToString(job.properties.MisAJourLe),
+    updatedDate: convertNotionNodeToString(job.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
   })
 }

@@ -3,6 +3,7 @@ import * as R from 'ramda'
 
 import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
+import generateJobStructuredData from '../helpers/generateJobStructuredData'
 import handleError from '../helpers/handleError'
 import data from '../services/data'
 
@@ -17,11 +18,14 @@ export default async function getJob(req: Request, res: Response) {
       return
     }
 
+    const structuredData = generateJobStructuredData(maybeJob)
+
     res.render('jobDetail', {
       job: maybeJob,
       pageDescription: maybeJob.mission || '',
       pageTitle: maybeJob.title,
       selectedMenu: 'jobs',
+      structuredData,
     })
   } catch (err) {
     handleError(err, 'controllers/getJob()', res)

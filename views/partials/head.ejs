@@ -14,7 +14,7 @@
   <meta property="og:image" content="/static/images/main-illu.png">
 
   <% if (typeof pageTitle !== "undefined") { %>
-    <title><%= pageTitle %> | <%= appName %></title>
+    <title><%= pageTitle %> — <%= appName %></title>
   <% } else { %>
     <title><%= appName %></title>
   <% } %>
@@ -23,4 +23,10 @@
   <link rel="icon" href="/static/favicons/favicon.svg" type="image/svg+xml">
   <link rel="shortcut icon" href="/static/favicons/favicon.ico" type="image/x-icon"><!-- 32×32 -->
   <link rel="stylesheet" href="/static/css/index.bundle.css">
+
+  <% if (typeof structuredData !== "undefined") { %>
+    <script type="application/ld+json">
+      <%- structuredData %>
+    </script>
+  <% } %>
 </head>

@@ -10,10 +10,7 @@ import slugify from './slugify'
 export default function generateJobFromNotionSkbJob(notionSkbJob: NotionSkbJob) {
   try {
     const { id } = notionSkbJob
-    const title = convertNotionNodeToHtml(notionSkbJob.properties.Titre, true)
-    if (title === undefined) {
-      throw new Error(`Notion Seekube job #${id} has an undefined title.`)
-    }
+    const title = convertNotionNodeToString(notionSkbJob.properties.Titre) || '⚠️ {Titre} manquant'
 
     return new Job({
       advantages: undefined,
@@ -28,7 +25,7 @@ export default function generateJobFromNotionSkbJob(notionSkbJob: NotionSkbJob) 
       slug: slugify(title, id),
       title: capitalize(title),
       updatedAt: notionSkbJob.properties.MisAJourLe.last_edited_time,
-      updatedDate: convertNotionNodeToString(notionSkbJob.properties.MisAJourLe),
+      updatedDate: convertNotionNodeToString(notionSkbJob.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionSkbJob()')
