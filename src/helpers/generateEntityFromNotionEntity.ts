@@ -8,7 +8,8 @@ export default function generateEntityFromNotionEntity(notionEntity: NotionEntit
     return new Entity({
       fullName: convertNotionNodeToString(notionEntity.properties.NomComplet),
       id: notionEntity.id,
-      name: convertNotionNodeToString(notionEntity.properties.Nom),
+      logoUrl: convertNotionNodeToString(notionEntity.properties.Logo),
+      name: convertNotionNodeToString(notionEntity.properties.Nom) || '⚠️ {Nom} manquant',
     })
   } catch (err) {
     handleError(err, 'helpers/generateServiceFromNotionService()')

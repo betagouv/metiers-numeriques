@@ -22,7 +22,7 @@ export default function convertNotionNodeToString(
     | NotionPropertyAsSelect
     | NotionPropertyAsTitle
     | NotionPropertyAsUrl,
-): string {
+): string | undefined {
   try {
     switch (value.type) {
       case 'date':
@@ -54,17 +54,17 @@ export default function convertNotionNodeToString(
   }
 }
 
-function fromDate(value: NotionPropertyAsDate): string {
+function fromDate(value: NotionPropertyAsDate): string | undefined {
   if (value.date === null || value.date.start === null) {
-    return ''
+    return undefined
   }
 
   return humanizeDate(value.date.start)
 }
 
-function fromFiles(value: NotionPropertyAsFiles): string {
+function fromFiles(value: NotionPropertyAsFiles): string | undefined {
   if (value.files.length === 0) {
-    return ''
+    return undefined
   }
 
   const firstFile = value.files[0]
@@ -80,25 +80,37 @@ function fromLastEditedTime(value: NotionPropertyAsLastEditedTime): string {
   return humanizeDate(value.last_edited_time)
 }
 
-function fromRichText(value: NotionPropertyAsRichText): string {
-  return stripHtmlTags(value.rich_text.map(richTextChild => richTextChild.plain_text).join(''))
+function fromRichText(value: NotionPropertyAsRichText): string | undefined {
+  const plainTextSource = stripHtmlTags(value.rich_text.map(richTextChild => richTextChild.plain_text).join('')).trim()
+
+  if (plainTextSource.length === 0) {
+    return undefined
+  }
+
+  return plainTextSource
 }
 
-function fromSelect(value: NotionPropertyAsSelect): string {
+function fromSelect(value: NotionPropertyAsSelect): string | undefined {
   if (value.select === null) {
-    return ''
+    return undefined
   }
 
   return stripHtmlTags(value.select.name)
 }
 
-function fromTitle(value: NotionPropertyAsTitle): string {
-  return stripHtmlTags(value.title.map(titleChild => titleChild.plain_text).join(''))
+function fromTitle(value: NotionPropertyAsTitle): string | undefined {
+  const plainTextSource = stripHtmlTags(value.title.map(titleChild => titleChild.plain_text).join('')).trim()
+
+  if (plainTextSource.length === 0) {
+    return undefined
+  }
+
+  return plainTextSource
 }
 
-function fromUrl(value: NotionPropertyAsUrl): string {
+function fromUrl(value: NotionPropertyAsUrl): string | undefined {
   if (value.url === null) {
-    return ''
+    return undefined
   }
 
   return value.url

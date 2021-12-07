@@ -9,7 +9,6 @@ import {
   NotionPropertyAsTitle,
 } from '../types/Notion'
 import convertMarkdownToHtml from './convertMarkdownToHtml'
-import convertMarkdownToInlineHtml from './convertMarkdownToInlineHtml'
 import handleError from './handleError'
 import humanizeDate from './humanizeDate'
 
@@ -21,7 +20,6 @@ export default function convertNotionNodeToHtml(
     | NotionPropertyAsRichText
     | NotionPropertyAsSelect
     | NotionPropertyAsTitle,
-  isInline: boolean = false,
 ): string | undefined {
   try {
     switch (value.type) {
@@ -35,13 +33,13 @@ export default function convertNotionNodeToHtml(
         return fromLastEditedTime(value)
 
       case 'rich_text':
-        return fromRichText(value, isInline)
+        return fromRichText(value)
 
       case 'select':
-        return fromSelect(value, isInline)
+        return fromSelect(value)
 
       case 'title':
-        return fromTitle(value, isInline)
+        return fromTitle(value)
 
       default:
         return undefined
@@ -77,36 +75,24 @@ function fromLastEditedTime(value: NotionPropertyAsLastEditedTime): string | und
   return humanizeDate(value.last_edited_time)
 }
 
-function fromRichText(value: NotionPropertyAsRichText, isInline: boolean): string {
+function fromRichText(value: NotionPropertyAsRichText): string {
   const markdownSource = value.rich_text.map(richTextChild => richTextChild.plain_text).join('')
-
-  if (isInline) {
-    return convertMarkdownToInlineHtml(markdownSource)
-  }
 
   return convertMarkdownToHtml(markdownSource)
 }
 
-function fromSelect(value: NotionPropertyAsSelect, isInline): string | undefined {
+function fromSelect(value: NotionPropertyAsSelect): string | undefined {
   if (value.select === null) {
     return undefined
   }
 
   const markdownSource = value.select.name
 
-  if (isInline) {
-    return convertMarkdownToInlineHtml(markdownSource)
-  }
-
   return convertMarkdownToHtml(markdownSource)
 }
 
-function fromTitle(value: NotionPropertyAsTitle, isInline: boolean): string {
+function fromTitle(value: NotionPropertyAsTitle): string {
   const markdownSource = value.title.map(titleChild => titleChild.plain_text).join('')
-
-  if (isInline) {
-    return convertMarkdownToInlineHtml(markdownSource)
-  }
 
   return convertMarkdownToHtml(markdownSource)
 }

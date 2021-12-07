@@ -11,10 +11,7 @@ import slugify from './slugify'
 export default function generateInstitutionFromNotionInstitution(notionInstitution: NotionInstitution) {
   try {
     const { id } = notionInstitution
-    const title = convertNotionNodeToHtml(notionInstitution.properties.Titre, true)
-    if (title === undefined) {
-      throw new Error(`Notion institution #${id} has an undefined title.`)
-    }
+    const title = convertNotionNodeToString(notionInstitution.properties.Titre) || '⚠️ {Titre} manquant'
 
     return new Institution({
       address: convertNotionNodeToHtml(notionInstitution.properties.Adresse),
@@ -43,7 +40,9 @@ export default function generateInstitutionFromNotionInstitution(notionInstituti
       socialNetworkUrls: convertNotionNodeToStrings(notionInstitution.properties['Réseaux sociaux']),
       testimonial: convertNotionNodeToHtml(notionInstitution.properties['Nos agents en parlent']),
       testimonialFiles: convertNotionNodeToHtmls(notionInstitution.properties['Liens Nos agents en parlent']),
-      thumbnailUrl: convertNotionNodeToString(notionInstitution.properties['Vignette temporaire']),
+      thumbnailUrl:
+        convertNotionNodeToString(notionInstitution.properties['Vignette temporaire']) ||
+        'https://place-hold.it/320x180',
       title,
       value: convertNotionNodeToHtml(notionInstitution.properties.Valeurs),
       valueFiles: convertNotionNodeToHtmls(notionInstitution.properties['Valeurs complément']),

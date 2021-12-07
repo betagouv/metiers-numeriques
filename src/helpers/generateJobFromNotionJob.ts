@@ -30,10 +30,7 @@ export default function generateJobFromNotionJob(
 ) {
   try {
     const { id } = notionJob
-    const title = convertNotionNodeToHtml(notionJob.properties.Name, true)
-    if (title === undefined) {
-      throw new Error(`Notion job #${id} has an undefined title.`)
-    }
+    const title = convertNotionNodeToString(notionJob.properties.Name) || '⚠️ {Name} manquant'
 
     const service = getService(notionJob.properties.Service, services)
 
@@ -46,7 +43,7 @@ export default function generateJobFromNotionJob(
       experiences: convertNotionNodeToStrings(notionJob.properties['Expérience']),
       hiringProcess: convertNotionNodeToHtml(notionJob.properties['Processus de recrutement']),
       id: notionJob.id,
-      limitDate: convertNotionNodeToHtml(notionJob.properties['Date limite'], true),
+      limitDate: convertNotionNodeToString(notionJob.properties['Date limite']),
       locations: convertNotionNodeToStrings(notionJob.properties.Localisation),
       mission: convertNotionNodeToHtml(notionJob.properties.Mission),
       more: convertNotionNodeToHtml(notionJob.properties['Pour en savoir plus']),
@@ -63,7 +60,7 @@ export default function generateJobFromNotionJob(
       title,
       toApply: convertNotionNodeToHtml(notionJob.properties['Pour candidater']),
       updatedAt: notionJob.properties.MisAJourLe.last_edited_time,
-      updatedDate: convertNotionNodeToString(notionJob.properties.MisAJourLe),
+      updatedDate: convertNotionNodeToString(notionJob.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionJob()')
