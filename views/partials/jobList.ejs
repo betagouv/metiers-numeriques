@@ -47,11 +47,11 @@
 
             <p class="fr-card__desc excerpt">
               <% if (jobs[i].mission) { %>
-                <%= helper.stripHtmlTags(jobs[i].mission) %>
+                <%= helper.normalizeJobDescription(jobs[i].mission) %>
               <% } else if (jobs[i].tasks.length) { %>
-                <%= helper.stripHtmlTags(jobs[i].tasks[0]) %>
+                <%= helper.normalizeJobDescription(jobs[i].tasks[0]) %>
               <% } else if (jobs[i].team) { %>
-                <%= helper.stripHtmlTags(jobs[i].team) %>
+                <%= helper.normalizeJobDescription(jobs[i].team) %>
               <% } else { %>
                 Description manquante 😟 ! Aidez-nous en nous le signalant par email à :
                 <a href="mailto:contact@metiers.numerique.gouv.fr?subject=<%= encodeURI(`[BUG] [JOB-DESC] #${jobs[i].reference}`) %>" rel="noopener" target="_blank">
