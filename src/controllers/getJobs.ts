@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
-import stripHtmlTags from '../helpers/stripHtmlTags'
+import normalizeJobDescription from '../helpers/normalizeJobDescription'
 import data from '../services/data'
 
 export default async function getJobs(req: Request, res: Response) {
@@ -16,7 +16,7 @@ export default async function getJobs(req: Request, res: Response) {
 
     res.render(view, {
       helper: {
-        stripHtmlTags,
+        normalizeJobDescription,
       },
       jobs: someJobs,
       pageDescription:

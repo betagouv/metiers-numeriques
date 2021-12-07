@@ -4,7 +4,7 @@ import Fuse from 'fuse.js'
 import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
-import stripHtmlTags from '../helpers/stripHtmlTags'
+import normalizeJobDescription from '../helpers/normalizeJobDescription'
 import Job from '../models/Job'
 import data from '../services/data'
 
@@ -41,7 +41,7 @@ export default async function searchJobs(req: Request, res: Response) {
     if (typeof query !== 'string' || typeof region !== 'string') {
       res.render('partials/jobList', {
         helper: {
-          stripHtmlTags,
+          normalizeJobDescription,
         },
         jobs: [],
       })
@@ -58,7 +58,7 @@ export default async function searchJobs(req: Request, res: Response) {
 
     res.render('partials/jobList', {
       helper: {
-        stripHtmlTags,
+        normalizeJobDescription,
       },
       jobs: someJobs,
     })
