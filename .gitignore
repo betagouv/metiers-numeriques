@@ -107,8 +107,8 @@ dist
 # Custom
 
 /build
-/static/assets/*
-/static/css/index.bundle.css
-/static/scripts/index.bundle.js
-/static/index.js
-/static/sitemap.xml
+/public/assets/*
+/public/index.bundle.css
+/public/index.bundle.js
+/public/index.js
+/public/sitemap.xml

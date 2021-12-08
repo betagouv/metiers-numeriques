@@ -15,7 +15,7 @@ const getService = (relation: NotionPropertyAsRelation, services: Service[]): Se
     return undefined
   }
 
-  const maybeService = R.find(R.propEq('id', relation.relation[0].id), services)
+  const maybeService = R.find<Service>(R.propEq('id', relation.relation[0].id), services)
 
   return maybeService
 }

@@ -5,13 +5,14 @@ import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
 import generateJobStructuredData from '../helpers/generateJobStructuredData'
 import handleError from '../helpers/handleError'
+import Job from '../models/Job'
 import data from '../services/data'
 
 export default async function getJob(req: Request, res: Response) {
   try {
     const jobs = await cache.getOrCacheWith(CACHE_KEY.JOBS, data.getJobs)
 
-    const maybeJob = R.find(R.propEq('slug', req.params.slug), jobs)
+    const maybeJob = R.find<Job>(R.propEq('slug', req.params.slug), jobs)
     if (maybeJob === undefined) {
       res.status(404).render('job404')
 

@@ -12,7 +12,7 @@ const getEntity = (relation: NotionPropertyAsRelation, entities: Entity[]): Enti
     return undefined
   }
 
-  const maybeEntity = R.find(R.propEq('id', relation.relation[0].id), entities)
+  const maybeEntity = R.find<Entity>(R.propEq('id', relation.relation[0].id), entities)
 
   return maybeEntity
 }
