@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =========================================================
+// Constants
+
+enum UserRole {
+  ADMINISTRATOR
+  MANAGER
+  VIEWER
+}
+
+// =========================================================
+// Models
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  ip        String
+  value     String   @unique
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model User {
+  id        String   @id @default(cuid())
+  role      UserRole @default(VIEWER)
+  email     String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refreshTokens RefreshToken[]
+}

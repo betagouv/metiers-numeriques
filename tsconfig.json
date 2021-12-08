@@ -1,11 +1,32 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
     "noImplicitAny": false,
     "outDir": "./build",
-    "rootDir": "./src"
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "target": "es5"
   },
-  "include": ["./src/**/*.js", "./src/**/*.ts"],
-  "exclude": ["**/__tests__/*"]
+  "include": [
+    "./api/**/*.ts",
+    "./app/**/*.ts",
+    "./app/**/*.tsx",
+    "./src/**/*.js",
+    "./src/**/*.ts",
+    "./pages/**/*.ts",
+    "./pages/**/*.tsx",
+    "next-env.d.ts"
+  ],
+  "exclude": ["./node_modules/*", "**/__tests__/*"]
 }

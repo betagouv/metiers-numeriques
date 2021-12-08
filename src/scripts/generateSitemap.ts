@@ -7,7 +7,7 @@ import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
 import data from '../services/data'
 
-const MAIN_PATHS = ['/', '/emplois', '/institutions', '/mentions-legales']
+const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', '/emplois', '/institutions', '/mentions-legales']
 
 async function generateSitemap() {
   ß.info('[scripts/generateSitemap.js] Fetching jobs…')
@@ -20,7 +20,7 @@ async function generateSitemap() {
     hostname: 'https://metiers.numerique.gouv.fr',
   })
 
-  const writeStream = createWriteStream('./static/sitemap.xml')
+  const writeStream = createWriteStream('./public/sitemap.xml')
   sitemap.pipe(writeStream)
 
   ß.info('[scripts/generateSitemap.js] Mapping main pages…')

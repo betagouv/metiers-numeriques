@@ -2,7 +2,21 @@ version: "3.9"
 
 services:
   cache:
-    container_name: cache
+    container_name: metiers_numeriques_cache
     image: redis:6
     ports:
       - 6379:6379
+
+  db:
+    container_name: metiers_numeriques_db
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRE_DATABASE}
+      POSTGRES_USER: ${POSTGRE_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRE_PASSWORD}
+    volumes:
+      - postgre-data:/var/lib/postgresql/data
+
+volumes:
+  postgre-data:

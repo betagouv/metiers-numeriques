@@ -5,27 +5,23 @@ import styles from 'rollup-plugin-styles'
 
 export default [
   {
-    input: './static/scripts/index.js',
+    input: './public/js/index.js',
 
     output: [
       {
-        file: './static/scripts/index.bundle.js',
+        file: './public/index.bundle.js',
         format: 'iife',
       },
     ],
 
     plugins: [nodeResolve()],
-
-    watch: {
-      include: './static/scripts/**',
-    },
   },
   {
-    input: './static/css/index.css',
+    input: './public/css/index.css',
 
     output: [
       {
-        dir: './static',
+        dir: './public',
       },
     ],
 
@@ -36,16 +32,12 @@ export default [
       replace({
         delimiters: ['', ''],
         preventAssignment: false,
-        'url("./': 'url("/static/assets/',
-        "url('./": "url('/static/assets/",
+        'url("./': 'url("/assets/',
+        "url('./": "url('/assets/",
       }),
       postcss({
-        extract: 'css/index.bundle.css',
+        extract: 'index.bundle.css',
       }),
     ],
-
-    watch: {
-      include: './static/css/**',
-    },
   },
 ]

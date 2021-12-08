@@ -5,13 +5,14 @@ import { CACHE_KEY } from '../constants'
 import cache from '../helpers/cache'
 import handleError from '../helpers/handleError'
 import uncapitalizeFirstLetter from '../helpers/uncapitalizeFirstLetter'
+import Institution from '../models/Institution'
 import data from '../services/data'
 
 export default async function getInstitution(req: Request, res: Response) {
   try {
     const institutions = await cache.getOrCacheWith(CACHE_KEY.INSTITUTIONS, data.getInstitutions)
 
-    const maybeInstitution = R.find(R.propEq('slug', req.params.slug), institutions)
+    const maybeInstitution = R.find<Institution>(R.propEq('slug', req.params.slug), institutions)
     if (maybeInstitution === undefined) {
       res.status(404).render('404')
 
