@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@ivangabriele/commitlint-config": "1.0.2",
-    "@ivangabriele/eslint-config-base": "2.0.0",
+    "@ivangabriele/eslint-config-base": "2.1.1",
     "@ivangabriele/eslint-config-typescript-base": "2.1.4",
     "@ivangabriele/eslint-config-typescript-react": "2.1.4",
     "@ivangabriele/prettier-config": "2.0.1",

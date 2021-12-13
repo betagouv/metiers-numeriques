@@ -586,15 +586,16 @@
     "@commitlint/cli" "14.1.0"
     "@commitlint/config-conventional" "14.1.0"
 
-"@ivangabriele/eslint-config-base@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@ivangabriele/eslint-config-base/-/eslint-config-base-2.0.0.tgz#0cbe29744d15a6c36ee6eaaa2fdaaa9969803841"
-  integrity sha512-vbdzhrDujA11/YJiQNpBQsKLeCGwfHx8euVaoa/xt/GLNzJq5Ptt07Mc033Y/WGFgFgF5BP8W3lnjpEN+ymV4g==
+"@ivangabriele/eslint-config-base@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@ivangabriele/eslint-config-base/-/eslint-config-base-2.1.1.tgz#969b46a89b1f2c617a15ead0afac2365e2ce7c6d"
+  integrity sha512-gb4jBVFklP/JB6Tm869Fv1WhkpMbkH+RJDhykkqCYSjI4QG3RumtWDQpDhFnsJIqCMpftHK7qsFoFJC87YNMaQ==
   dependencies:
     eslint "7.32.0"
     eslint-config-airbnb-base "15.0.0"
     eslint-config-prettier "8.3.0"
     eslint-plugin-import "2.25.3"
+    eslint-plugin-jest "25.2.4"
     eslint-plugin-prettier "4.0.0"
     eslint-plugin-sort-destructure-keys "1.4.0"
     eslint-plugin-sort-keys-fix "1.1.2"
@@ -3516,6 +3517,13 @@ eslint-plugin-import@2.25.3:
     object.values "^1.1.5"
     resolve "^1.20.0"
     tsconfig-paths "^3.11.0"
+
+eslint-plugin-jest@25.2.4:
+  version "25.2.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-25.2.4.tgz#bb9f6a0bd1fd524ffb0b8b7a159cd70a58a1a793"
+  integrity sha512-HRyinpgmEdkVr7pNPaYPHCoGqEzpgk79X8pg/xCeoAdurbyQjntJQ4pTzHl7BiVEBlam/F1Qsn+Dk0HtJO7Aaw==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "^5.0.0"
 
 eslint-plugin-jest@25.3.0:
   version "25.3.0"
