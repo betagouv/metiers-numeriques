@@ -10,7 +10,7 @@ import getJobs from './controllers/getJobs'
 import searchJobs from './controllers/searchJobs'
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
-const PORT = process.env.APP_PORT || process.env.PORT || 8080
+const PORT = process.env.PORT || 8080
 
 const appName = `metiers.numerique.gouv.fr`
 const appDescription = 'Tout savoir sur les métiers du numérique au sein de l’État.'
