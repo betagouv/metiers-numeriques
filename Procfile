@@ -1,7 +1,7 @@
-web: (bin/run &) && yarn start
+web: npm run start
 
 # Cache Updater Worker
-cache: yarn start:worker:cache
+cache: npm run start:worker:cache
 
 # Data Updater Worker
-data: yarn start:worker:data
+data: npm run start:worker:data
