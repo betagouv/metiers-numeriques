@@ -1,70 +1,64 @@
-import Service from './Service'
-
 interface JobProps {
-  advantages?: string
-  conditions?: string
-  /** ISO Date */
-  createdAt: string
-  department?: string[]
-  entity?: string
-  experiences?: string[]
-  hiringProcess?: string
+  advantages: string | null
+  conditions: string | null
+  createdAt: Date
+  department: string[]
+  entity: string | null
+  experiences: string[]
+  hiringProcess: string | null
   id: string
-  limitDate?: string
-  locations?: string[]
-  mission?: string
-  more?: string
-  openedToContractTypes?: string[]
-  profile?: string
-  publicationDate?: string
+  legacyServiceId: string | null
+  limitDate: Date | null
+  locations: string[]
+  mission: string | null
+  more: string | null
+  openedToContractTypes: string[]
+  profile: string | null
+  publicationDate: Date | null
   /** Used as an internal reference for debugging purposes */
   reference: string
-  salary?: string
-  service?: Service
+  salary: string | null
   slug: string
-  tasks?: string
-  team?: string
-  teamInfo?: string
+  tasks: string | null
+  team: string | null
+  teamInfo: string | null
   title: string
-  toApply?: string
-  /** ISO Date */
-  updatedAt: string
+  toApply: string | null
+  updatedAt: Date
   /** Humanized date (i.e.: "Il y a 7 jours") */
-  updatedDate: string
+  // updatedDate: string
 }
 
 export default class Job implements JobProps {
-  /** ISO Date */
-  public createdAt: string
+  public createdAt: Date
   public id: string
   /** Used as an internal reference for debugging purposes */
   public reference: string
   public slug: string
   public title: string
-  /** ISO Date */
-  public updatedAt: string
+  public updatedAt: Date
 
-  public advantages?: string
-  public conditions?: string
-  public department: string[] = []
-  public entity?: string
-  public experiences: string[] = []
-  public hiringProcess?: string
-  public limitDate?: string
-  public locations: string[] = []
-  public mission?: string
-  public more?: string
+  public advantages: string | null
+  public conditions: string | null
+  public department: string[]
+  public entity: string | null
+  public experiences: string[]
+  public hiringProcess: string | null
+  public legacyServiceId: string | null
+  public limitDate: Date | null
+  public locations: string[]
+  public mission: string | null
+  public more: string | null
   public openedToContractTypes: string[]
-  public profile?: string
-  public publicationDate?: string
-  public salary?: string
-  public service?: Service
-  public tasks?: string
-  public team?: string
-  public teamInfo?: string
-  public toApply?: string
+  public profile: string | null
+  public publicationDate: Date | null
+  public salary: string | null
+  public tasks: string | null
+  public team: string | null
+  public teamInfo: string | null
+  public toApply: string | null
   /** Humanized date (i.e.: "Il y a 7 jours") */
-  public updatedDate: string
+  // public updatedDate: string
 
   constructor({
     advantages,
@@ -75,6 +69,7 @@ export default class Job implements JobProps {
     experiences,
     hiringProcess,
     id,
+    legacyServiceId,
     limitDate,
     locations,
     mission,
@@ -84,7 +79,6 @@ export default class Job implements JobProps {
     publicationDate,
     reference,
     salary,
-    service,
     slug,
     tasks,
     team,
@@ -92,7 +86,6 @@ export default class Job implements JobProps {
     title,
     toApply,
     updatedAt,
-    updatedDate,
   }: JobProps) {
     this.advantages = advantages
     this.conditions = conditions
@@ -102,6 +95,7 @@ export default class Job implements JobProps {
     this.experiences = experiences || []
     this.hiringProcess = hiringProcess
     this.id = id
+    this.legacyServiceId = legacyServiceId
     this.limitDate = limitDate
     this.locations = locations || []
     this.mission = mission
@@ -111,7 +105,6 @@ export default class Job implements JobProps {
     this.publicationDate = publicationDate
     this.reference = reference
     this.salary = salary
-    this.service = service
     this.slug = slug
     this.tasks = tasks
     this.team = team
@@ -119,6 +112,6 @@ export default class Job implements JobProps {
     this.title = title
     this.toApply = toApply
     this.updatedAt = updatedAt
-    this.updatedDate = updatedDate
+    // this.updatedDate = updatedDate
   }
 }

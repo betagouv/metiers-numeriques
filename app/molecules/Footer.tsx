@@ -1,3 +1,6 @@
+import LinkText from '@app/atoms/LinkText'
+import Link from 'next/link'
+
 export default function Footer() {
   return (
     <footer className="fr-footer" id="footer" role="contentinfo">
@@ -61,14 +64,14 @@ export default function Footer() {
         <div className="fr-footer__bottom">
           <ul className="fr-footer__bottom-list">
             <li className="fr-footer__bottom-item">
-              <a className="fr-footer__bottom-link" href="/mentions-legales">
-                Mentions légales
-              </a>
+              <Link href="/mentions-legales">
+                <LinkText className="fr-footer__bottom-link">Mentions légales</LinkText>
+              </Link>
             </li>
             <li className="fr-footer__bottom-item">
-              <a className="fr-footer__bottom-link" href="/donnees-personnelles-et-cookies">
-                Données personnelles et cookies
-              </a>
+              <Link href="/donnees-personnelles-et-cookies">
+                <LinkText className="fr-footer__bottom-link">Données personnelles et cookies</LinkText>
+              </Link>
             </li>
             <li className="fr-footer__bottom-item">
               <a

@@ -1,3 +1,5 @@
-export default function AdminPage() {
-  return <h1>Admin</h1>
+import Title from '@app/atoms/Title'
+
+export default function AdminDashboardPage() {
+  return <Title>Tableau de bord</Title>
 }

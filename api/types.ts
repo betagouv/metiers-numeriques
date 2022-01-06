@@ -5,6 +5,10 @@ export type HandlerWithAuth<T = any> = (req: RequestWithAuth, res: NextApiRespon
 
 export type HandlerWithPrisma<T = any> = (req: RequestWithPrisma, res: NextApiResponse<T>) => void | Promise<void>
 
+export type JwtPayload = {
+  id: string
+}
+
 export type RequestMe = {
   id: string
 }

@@ -2,7 +2,7 @@
 
 - [Get Started](#get-started)
   - [Requirements](#requirements)
-  - [Setup](#setup)
+  - [First Setup](#first-setup)
   - [Local development](#local-development)
   - [Main directories](#main-directories)
   - [Stack](#stack)
@@ -22,7 +22,7 @@
 - [Yarn](https://yarnpkg.com/getting-started/install)
 - [Docker](https://www.docker.com/get-started)
 
-### Setup
+### First Setup
 
 > ⚠️ **Important**  
 > If you're under **Windows**, please run all the CLI commands within a Linux shell-like terminal (i.e.: Git Bash).
@@ -33,8 +33,10 @@ Then run:
 git clone https://github.com/betagouv/tell-me.git
 cd tell-me
 yarn
+yarn setup
 yarn dev:docker
 yarn db:migrate
+npx nexauth init
 ```
 
 > 📋 **Note**  

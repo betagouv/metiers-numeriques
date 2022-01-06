@@ -1,11 +1,12 @@
 module.exports = {
+  clearMocks: true,
   coverageProvider: 'v8',
   globals: {
     'ts-jest': {
-      tsconfig: './tsconfig.test.json',
+      tsconfig: './tsconfig.json',
     },
   },
   preset: 'ts-jest',
   rootDir: '..',
-  testMatch: ['**/*.test.[tj]s?(x)', '!**/*.integration.test.[tj]s?(x)', '!**/*.e2e.test.[tj]s?(x)'],
+  testMatch: ['!**/*.e2e.[tj]s?(x)', '!**/*.inte.test.[tj]s?(x)', '**/*.unit.test.[tj]s?(x)'],
 }

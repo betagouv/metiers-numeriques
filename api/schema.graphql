@@ -1,0 +1,222 @@
+scalar DateTime
+scalar JSONObject
+
+type Query {
+  getFile(id: String!): File
+  getFiles(fromId: String, query: String, pageLength: Int): [File!]!
+  getLegacyEntities(fromId: String, query: String, pageLength: Int): [LegacyEntity!]!
+  getLegacyEntity(id: String!): LegacyEntity
+  getLegacyInstitution(id: String, slug: String): LegacyInstitution
+  getLegacyInstitutions(fromId: String, query: String, pageLength: Int): [LegacyInstitution!]!
+  getLegacyJob(id: String, slug: String): LegacyJob
+  getLegacyJobs(fromId: String, query: String, pageLength: Int): [LegacyJob!]!
+  getLegacyService(id: String!): LegacyService
+  getLegacyServices(fromId: String, query: String, pageLength: Int): [LegacyService!]!
+  getUser(id: String!): User
+  getUsers(fromId: String, query: String, pageLength: Int): [User!]!
+}
+
+type Mutation {
+  createFile(input: FileInput!): File
+  createLegacyEntity(input: LegacyEntityInput!): LegacyEntity
+  createLegacyInstitution(input: LegacyInstitutionInput!): LegacyInstitution
+  createLegacyJob(input: LegacyJobInput!): LegacyJob
+  createLegacyService(input: LegacyServiceInput!): LegacyService
+  deleteFile(id: String!): File
+  deleteLegacyEntity(id: String!): LegacyEntity
+  deleteLegacyInstitution(id: String!): LegacyInstitution
+  deleteLegacyJob(id: String!): LegacyJob
+  deleteLegacyService(id: String!): LegacyService
+  deleteUser(id: String!): User
+  updateFile(id: String!, input: FileInput!): File
+  updateLegacyEntity(id: String!, input: LegacyEntityInput!): LegacyEntity
+  updateLegacyInstitution(id: String!, input: LegacyInstitutionInput!): LegacyInstitution
+  updateLegacyJob(id: String!, input: LegacyJobInput!): LegacyJob
+  updateLegacyService(id: String!, input: LegacyServiceInput!): LegacyService
+  updateUser(id: String!, input: UserInput!): User
+}
+
+type File {
+  id: ID!
+
+  createdAt: DateTime!
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  url: String!
+}
+
+input FileInput {
+  title: String!
+  type: String!
+  url: String!
+}
+
+type LegacyEntity {
+  id: ID!
+
+  fullName: String
+  logoUrl: String
+  name: String
+}
+
+input LegacyEntityInput {
+  fullName: String
+  logoUrl: String
+  name: String
+}
+
+type LegacyInstitution {
+  id: ID!
+
+  address: String
+  challenges: String
+  fullName: String
+  hiringProcess: String
+  isPublished: Boolean
+  joinTeam: String
+  keyNumbers: String
+  logoFile: File
+  missions: String
+  motivation: String
+  organization: String
+  profile: String
+  project: String
+  schedule: String
+  slug: String!
+  socialNetworkUrls: [String]
+  testimonial: String
+  thumbnailFile: File
+  title: String
+  value: String
+  websiteUrls: [String]
+
+  files: [File]
+}
+
+input LegacyInstitutionInput {
+  id: ID
+
+  address: String
+  challenges: String
+  fullName: String
+  hiringProcess: String
+  isPublished: Boolean
+  joinTeam: String
+  keyNumbers: String
+  logoFileId: ID
+  missions: String
+  motivation: String
+  organization: String
+  profile: String
+  project: String
+  schedule: String
+  slug: String
+  socialNetworkUrls: [String]
+  testimonial: String
+  thumbnailFileId: ID
+  title: String
+  value: String
+  websiteUrls: [String]
+
+  fileIds: [String]
+}
+
+type LegacyJob {
+  id: ID
+
+  advantages: String
+  conditions: String
+  createdAt: DateTime
+  department: [String]
+  entity: String
+  experiences: [String]
+  hiringProcess: String
+  limitDate: DateTime
+  locations: [String]
+  mission: String
+  more: String
+  openedToContractTypes: [String]
+  profile: String
+  publicationDate: DateTime
+  reference: String
+  salary: String
+  slug: String!
+  source: String!
+  tasks: String
+  team: String
+  teamInfo: String
+  title: String!
+  toApply: String
+  updatedAt: DateTime
+
+  legacyService: LegacyService
+}
+
+input LegacyJobInput {
+  id: String
+
+  advantages: String
+  conditions: String
+  department: [String]
+  entity: String
+  experiences: [String]
+  hiringProcess: String
+  limitDate: DateTime
+  locations: [String]
+  mission: String
+  more: String
+  openedToContractTypes: [String]
+  profile: String
+  publicationDate: DateTime
+  salary: String
+  slug: String
+  source: String
+  tasks: String
+  team: String
+  teamInfo: String
+  title: String
+  toApply: String
+
+  legacyServiceId: String
+}
+
+type LegacyService {
+  id: ID!
+
+  fullName: String
+  name: String
+  region: String
+  shortName: String
+  url: String
+
+  legacyEntity: LegacyEntity
+}
+
+input LegacyServiceInput {
+  fullName: String
+  name: String
+  region: String
+  shortName: String
+  url: String
+
+  legacyEntityId: String
+}
+
+type User {
+  id: ID!
+
+  email: String!
+  firstName: String!
+  isActive: Boolean!
+  lastName: String!
+  role: String!
+}
+
+input UserInput {
+  email: String!
+  firstName: String!
+  isActive: Boolean!
+  lastName: String!
+  role: String!
+}

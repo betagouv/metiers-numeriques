@@ -1,93 +1,82 @@
-import { NotionPropertyAsFiles } from '../types/Notion'
-
 type InstitutionProps = {
-  address?: string
-  addressFiles: NotionPropertyAsFiles['files']
-  challenges?: string
-  description?: string
-  fullName?: string
-  hiringProcess?: string
+  address: string | null
+  addressFiles: Common.Data.File[]
+  challenges: string | null
+  fullName: string | null
+  hiringProcess: string | null
   id: string
   isPublished: boolean
-  // jobsLink: string[]
-  joinTeam?: string
-  joinTeamFiles: string[]
-  keyNumbers?: string
-  keyNumbersMedia: string[]
-  logoUrl?: string
-  missions?: string
-  motivation?: string
-  motivationFiles: string[]
-  organization?: string
-  organizationFiles: string[]
-  profile?: string
-  project?: string
-  projectFiles: string[]
-  publicationDate?: Date
-  schedule?: string
+  joinTeam: string | null
+  joinTeamFiles: Common.Data.File[]
+  keyNumbers: string | null
+  keyNumbersFiles: Common.Data.File[]
+  logoFile: Common.Data.File | null
+  missions: string | null
+  motivation: string | null
+  motivationFiles: Common.Data.File[]
+  organization: string | null
+  organizationFiles: Common.Data.File[]
+  profile: string | null
+  project: string | null
+  projectFiles: Common.Data.File[]
+  schedule: string | null
   slug: string
   socialNetworkUrls: string[]
-  testimonial?: string
-  testimonialFiles: string[]
-  thumbnailUrl: string
+  testimonial: string | null
+  testimonialFiles: Common.Data.File[]
+  thumbnailFile: Common.Data.File | null
   title: string
-  value?: string
-  valueFiles: string[]
-  visualBanner?: string
-  websiteFiles: NotionPropertyAsFiles['files']
+  value: string | null
+  valueFiles: Common.Data.File[]
+  websiteUrls: string[]
 }
 
 export default class Institution implements InstitutionProps {
   public id: string
-  public slug: string
-  public thumbnailUrl: string
-  public title: string
 
-  public address?: string
-  public addressFiles: NotionPropertyAsFiles['files']
-  public challenges?: string
-  public description?: string
-  public fullName?: string
-  public hiringProcess?: string
+  public address: string | null = null
+  public addressFiles: Common.Data.File[]
+  public challenges: string | null
+  public fullName: string | null
+  public hiringProcess: string | null
   public isPublished: boolean
-  // public jobsLink: string[]
-  public joinTeam?: string
-  public joinTeamFiles: string[]
-  public keyNumbers?: string
-  public keyNumbersMedia: string[]
-  public logoUrl?: string
-  public missions?: string
-  public motivation?: string
-  public motivationFiles: string[]
-  public organization?: string
-  public organizationFiles: string[]
-  public profile?: string
-  public project?: string
-  public projectFiles: string[]
-  public publicationDate?: Date
-  public schedule?: string
+  public joinTeam: string | null
+  public joinTeamFiles: Common.Data.File[]
+  public keyNumbers: string | null
+  public keyNumbersFiles: Common.Data.File[]
+  public logoFile: Common.Data.File | null
+  public missions: string | null
+  public motivation: string | null
+  public motivationFiles: Common.Data.File[]
+  public organization: string | null
+  public organizationFiles: Common.Data.File[]
+  public profile: string | null
+  public project: string | null
+  public projectFiles: Common.Data.File[]
+  public schedule: string | null
+  public slug: string
   public socialNetworkUrls: string[]
-  public testimonial?: string
-  public testimonialFiles: string[]
-  public value?: string
-  public valueFiles: string[]
-  public websiteFiles: NotionPropertyAsFiles['files']
+  public testimonial: string | null
+  public testimonialFiles: Common.Data.File[]
+  public thumbnailFile: Common.Data.File | null
+  public title: string
+  public value: string | null
+  public valueFiles: Common.Data.File[]
+  public websiteUrls: string[]
 
   constructor({
     address,
     addressFiles,
     challenges,
-    description,
     fullName,
     hiringProcess,
     id,
     isPublished,
-    // jobsLink,
     joinTeam,
     joinTeamFiles,
     keyNumbers,
-    keyNumbersMedia,
-    logoUrl,
+    keyNumbersFiles,
+    logoFile,
     missions,
     motivation,
     motivationFiles,
@@ -96,36 +85,30 @@ export default class Institution implements InstitutionProps {
     profile,
     project,
     projectFiles,
-    publicationDate,
     schedule,
     slug,
     socialNetworkUrls,
     testimonial,
     testimonialFiles,
-    thumbnailUrl,
+    thumbnailFile,
     title,
     value,
     valueFiles,
-    websiteFiles,
+    websiteUrls,
   }: InstitutionProps) {
     this.id = id
-    this.fullName = fullName
-    this.slug = slug
-    this.title = title
-    this.thumbnailUrl = thumbnailUrl
 
     this.address = address
     this.addressFiles = addressFiles
     this.challenges = challenges
-    this.description = description
+    this.fullName = fullName
     this.hiringProcess = hiringProcess
     this.isPublished = isPublished
-    // this.jobsLink = jobsLink
     this.joinTeam = joinTeam
     this.joinTeamFiles = joinTeamFiles
     this.keyNumbers = keyNumbers
-    this.keyNumbersMedia = keyNumbersMedia
-    this.logoUrl = logoUrl
+    this.keyNumbersFiles = keyNumbersFiles
+    this.logoFile = logoFile
     this.missions = missions
     this.motivation = motivation
     this.motivationFiles = motivationFiles
@@ -134,13 +117,15 @@ export default class Institution implements InstitutionProps {
     this.profile = profile
     this.project = project
     this.projectFiles = projectFiles
-    this.publicationDate = publicationDate
     this.schedule = schedule
+    this.slug = slug
     this.socialNetworkUrls = socialNetworkUrls
     this.testimonial = testimonial
     this.testimonialFiles = testimonialFiles
+    this.thumbnailFile = thumbnailFile
+    this.title = title
     this.value = value
     this.valueFiles = valueFiles
-    this.websiteFiles = websiteFiles
+    this.websiteUrls = websiteUrls
   }
 }

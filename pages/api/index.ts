@@ -1,9 +1,8 @@
+import handleError from '@common/helpers/handleError'
 import { NextApiResponse } from 'next'
 
-import handleError from '../../api/helpers/handleError'
 import isReady from '../../api/helpers/isReady'
 import ApiError from '../../api/libs/ApiError'
-import withPrisma from '../../api/middlewares/withPrisma'
 import { RequestWithPrisma } from '../../api/types'
 
 const { npm_package_version: VERSION } = process.env
@@ -12,8 +11,6 @@ const ERROR_PATH = 'pages/api/auth/IndexController()'
 async function IndexController(req: RequestWithPrisma, res: NextApiResponse) {
   if (req.method !== 'GET') {
     handleError(new ApiError('Method not allowed.', 405, true), ERROR_PATH, res)
-
-    return
   }
 
   const data: any = {
@@ -27,4 +24,4 @@ async function IndexController(req: RequestWithPrisma, res: NextApiResponse) {
   return undefined
 }
 
-export default withPrisma(IndexController)
+export default IndexController
