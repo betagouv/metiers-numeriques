@@ -69,11 +69,6 @@ async function makeFileConnections(
 
 export default async function importInstitutions(prisma: PrismaClient) {
   try {
-    const importedInstitutionsCount = await prisma.legacyInstitution.count()
-    if (importedInstitutionsCount > 0) {
-      return
-    }
-
     ß.info('Fetching Notion institutions…')
     const rawInstitutions = await data.getInstitutions()
     const importedInstitutionIds = (await prisma.legacyInstitution.findMany()).map(({ id }) => id)

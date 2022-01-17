@@ -7,11 +7,6 @@ import type { PrismaClient } from '@prisma/client'
 
 export default async function importEntities(prisma: PrismaClient) {
   try {
-    const importedEntitiesCount = await prisma.legacyEntity.count()
-    if (importedEntitiesCount > 0) {
-      return
-    }
-
     ß.info('Fetching Notion entities…')
     const entities = await data.getEntities()
 

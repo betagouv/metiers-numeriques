@@ -7,11 +7,6 @@ import type { PrismaClient } from '@prisma/client'
 
 export default async function importServices(prisma: PrismaClient) {
   try {
-    const importedServicesCount = await prisma.legacyService.count()
-    if (importedServicesCount > 0) {
-      return
-    }
-
     ß.info('Fetching Notion services…')
     const services = await data.getServices()
 

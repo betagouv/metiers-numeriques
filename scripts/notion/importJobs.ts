@@ -7,11 +7,6 @@ import type { JobSource, PrismaClient } from '@prisma/client'
 
 export default async function importJobs(prisma: PrismaClient) {
   try {
-    const importedJobsCount = await prisma.legacyJob.count()
-    if (importedJobsCount > 0) {
-      return
-    }
-
     ß.info('Fetching Notion jobs…')
     const jobs = await data.getJobs()
 
