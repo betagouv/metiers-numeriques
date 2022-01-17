@@ -105,7 +105,7 @@
     "@types/markdown-it": "12.2.3",
     "@types/node": "16.11.11",
     "@types/object-hash": "2.2.1",
-    "@types/ramda": "0.27.62",
+    "@types/ramda": "0.27.64",
     "@types/react": "17.0.37",
     "@types/sha1": "1.1.3",
     "@types/styled-components": "5.1.18",
