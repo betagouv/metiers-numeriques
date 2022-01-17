@@ -1,14 +1,14 @@
 interface EntityProps {
-  fullName?: string
+  fullName: string | null
   id: string
-  logoUrl?: string
+  logoUrl: string | null
   name: string
 }
 
 export default class Entity implements EntityProps {
-  public fullName?: string
+  public fullName: string | null
   public id: string
-  public logoUrl?: string
+  public logoUrl: string | null
   public name: string
 
   constructor({ fullName, id, logoUrl, name }: EntityProps) {

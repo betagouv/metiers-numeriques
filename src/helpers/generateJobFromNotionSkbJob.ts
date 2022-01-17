@@ -1,7 +1,7 @@
 import Job from '../models/Job'
 import { NotionSkbJob } from '../types/NotionSkbJob'
 import capitalize from './capitalize'
-import convertNotionNodeToHtml from './convertNotionNodeToHtml'
+import convertNotionNodeToPrismaValue from './convertNotionNodeToPrismaValue'
 import convertNotionNodeToString from './convertNotionNodeToString'
 import convertNotionNodeToStrings from './convertNotionNodeToStrings'
 import handleError from './handleError'
@@ -13,19 +13,31 @@ export default function generateJobFromNotionSkbJob(notionSkbJob: NotionSkbJob) 
     const title = convertNotionNodeToString(notionSkbJob.properties.Titre) || '⚠️ {Titre} manquant'
 
     return new Job({
-      advantages: undefined,
-      conditions: undefined,
-      createdAt: notionSkbJob.properties.CreeLe.created_time,
+      advantages: null,
+      conditions: null,
+      createdAt: convertNotionNodeToPrismaValue(notionSkbJob.properties.CreeLe),
       department: convertNotionNodeToStrings(notionSkbJob.properties.Entreprise),
+      entity: null,
+      experiences: [],
+      hiringProcess: null,
       id,
-      limitDate: undefined,
+      legacyServiceId: null,
+      limitDate: null,
       locations: convertNotionNodeToStrings(notionSkbJob.properties.Localisation),
-      mission: convertNotionNodeToHtml(notionSkbJob.properties.Description),
+      mission: convertNotionNodeToPrismaValue(notionSkbJob.properties.Description),
+      more: null,
+      openedToContractTypes: [],
+      profile: null,
+      publicationDate: null,
       reference: `SKB-${id}`,
+      salary: null,
       slug: slugify(title, id),
+      tasks: null,
+      team: null,
+      teamInfo: null,
       title: capitalize(title),
-      updatedAt: notionSkbJob.properties.MisAJourLe.last_edited_time,
-      updatedDate: convertNotionNodeToString(notionSkbJob.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
+      toApply: null,
+      updatedAt: convertNotionNodeToPrismaValue(notionSkbJob.properties.MisAJourLe),
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionSkbJob()')

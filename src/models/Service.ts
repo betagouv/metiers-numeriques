@@ -1,28 +1,27 @@
-import Entity from './Entity'
-
 interface ServiceProps {
-  entity?: Entity
-  fullName?: string
+  fullName: string | null
   id: string
+  legacyEntityId: string | null
   name: string
   region: string
-  shortName?: string
-  url?: string
+  shortName: string | null
+  url: string | null
 }
 
 export default class Service implements ServiceProps {
-  public fullName?: string
   public id: string
-  public entity?: Entity
+
+  public fullName: string | null
+  public legacyEntityId: string | null
   public name: string
   public region: string
-  public shortName?: string
-  public url?: string
+  public shortName: string | null
+  public url: string | null
 
-  constructor({ entity, fullName, id, name, region, shortName, url }: ServiceProps) {
+  constructor({ fullName, id, legacyEntityId, name, region, shortName, url }: ServiceProps) {
     this.fullName = fullName
     this.id = id
-    this.entity = entity
+    this.legacyEntityId = legacyEntityId
     this.name = name
     this.region = region
     this.shortName = shortName

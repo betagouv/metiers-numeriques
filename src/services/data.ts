@@ -1,7 +1,5 @@
 import * as R from 'ramda'
 
-import { CACHE_KEY } from '../constants'
-import cache from '../helpers/cache'
 import generateEntityFromNotionEntity from '../helpers/generateEntityFromNotionEntity'
 import generateInstitutionFromNotionInstitution from '../helpers/generateInstitutionFromNotionInstitution'
 import generateJobFromNotionJob from '../helpers/generateJobFromNotionJob'
@@ -19,6 +17,13 @@ const sortByUpdatedAtDesc: (jobs: Job[]) => Job[] = R.sort(R.descend(R.prop('upd
 const sortByTitleAsc: (institutions: Institution[]) => Institution[] = R.sort(R.ascend(R.prop('title')))
 
 class Data {
+  constructor() {
+    this.getEntities = this.getEntities.bind(this)
+    this.getInstitutions = this.getInstitutions.bind(this)
+    this.getJobs = this.getJobs.bind(this)
+    this.getServices = this.getServices.bind(this)
+  }
+
   public async getEntities(): Promise<Entity[]> {
     const notionEntities = await notion.findManyEntities()
     const entities = notionEntities.map(generateEntityFromNotionEntity)
@@ -36,7 +41,7 @@ class Data {
   }
 
   public async getJobs(): Promise<Job[]> {
-    const services = await cache.getOrCacheWith(CACHE_KEY.SERVICES, this.getServices)
+    const services = await this.getServices()
 
     const notionJobs = await notion.findManyJobs()
     const notionPepJobs = await notion.findManyPepJobs()
@@ -57,7 +62,7 @@ class Data {
   }
 
   public async getServices(): Promise<Service[]> {
-    const entities = await cache.getOrCacheWith(CACHE_KEY.ENTITIES, this.getEntities)
+    const entities = await this.getEntities()
 
     const notionServices = await notion.findManyServices()
     const services = notionServices.map(notionJob =>

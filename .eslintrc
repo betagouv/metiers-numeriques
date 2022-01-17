@@ -22,8 +22,11 @@
         "./api/**/*.ts",
         "./app/**/*.ts",
         "./app/**/*.tsx",
+        "./common/**/*.ts",
         "./pages/**/*.ts",
         "./pages/**/*.tsx",
+        "./scripts/**/*.js",
+        "./scripts/**/*.ts",
         "./src/**/*.ts"
       ],
       "extends": "@ivangabriele/eslint-config-typescript-react",
@@ -34,12 +37,21 @@
       "rules": {
         "class-methods-use-this": "off",
         "consistent-return": "off",
+        "import/prefer-default-export": "off",
         "no-new": "off",
         "no-plusplus": "off",
         "no-restricted-syntax": "off",
         "no-underscore-dangle": "off",
 
+        "jsx-a11y/label-has-associated-control": [
+          "error",
+          {
+            "assert": "either"
+          }
+        ],
+
         "react/function-component-definition": "off",
+        "react/jsx-props-no-spreading": "off",
         "react/prop-types": [
           "error",
           {
@@ -47,9 +59,25 @@
           }
         ],
         "react/react-in-jsx-scope": "off",
+        "react/require-default-props": "off",
 
         "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-        "@typescript-eslint/no-shadow": "off"
+        "@typescript-eslint/no-shadow": "off",
+        "@typescript-eslint/no-use-before-define": "off"
+      }
+    },
+    {
+      "files": ["./app/**/*.ts", "./app/**/*.tsx", "./common/**/*.ts", "./pages/**/*.tsx"],
+      "env": {
+        "browser": true,
+        "node": true
+      }
+    },
+    {
+      "files": ["./api/**/*.ts", "./pages/**/*.ts"],
+      "env": {
+        "browser": false,
+        "node": true
       }
     },
     {
@@ -60,15 +88,15 @@
       }
     },
     {
-      "files": ["**/*.test.js", "**/*.test.ts", "jest.setup.js"],
-      "env": {
-        "jest": true
+      "files": ["./pages/**/*.tsx"],
+      "rules": {
+        "react/prop-types": "off"
       }
     },
     {
-      "files": ["**/__tests__/**/*.ts"],
-      "parserOptions": {
-        "project": "./tsconfig.test.json"
+      "files": ["**/*.test.js", "**/*.test.ts", "jest.setup.js"],
+      "env": {
+        "jest": true
       }
     }
   ]

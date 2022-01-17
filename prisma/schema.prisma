@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
@@ -14,17 +11,165 @@ datasource db {
 // =========================================================
 // Constants
 
+enum FileType {
+  EXTERNAL
+
+  DOC
+  DOCX
+  JPG
+  PDF
+  PNG
+  PPT
+  PPTX
+  SVG
+}
+
+enum JobSource {
+  MNB
+  MNN
+  PEP
+  SKB
+}
+
+enum LegacyInstitutionSection {
+  address
+  joinTeam
+  keyNumbers
+  motivation
+  organization
+  project
+  testimonial
+  value
+}
+
 enum UserRole {
   ADMINISTRATOR
-  MANAGER
-  VIEWER
+  ENTITY_MANAGER
+  SERVICE_MANAGER
 }
 
 // =========================================================
 // Models
 
+model File {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  type      FileType
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  filesOnLegacyInstitutions              FilesOnLegacyInstitutions[]
+  relatedLogoFileLegacyInstitutions      LegacyInstitution[]         @relation("legacyInstitutionLogoFile")
+  relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
+}
+
+model FilesOnLegacyInstitutions {
+  legacyInstitution   LegacyInstitution        @relation(fields: [legacyInstitutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  legacyInstitutionId String
+  file                File                     @relation(fields: [fileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  fileId              String
+  section             LegacyInstitutionSection
+  assignedAt          DateTime                 @default(now())
+
+  @@id([legacyInstitutionId, fileId])
+}
+
+model LegacyEntity {
+  // Notion ID
+  id String @id @default(uuid())
+
+  fullName String?
+  logoUrl  String?
+  name     String?
+
+  services LegacyService[]
+}
+
+model LegacyInstitution {
+  // Notion ID
+  id String @id @default(uuid())
+
+  address           String?
+  challenges        String?
+  fullName          String?
+  hiringProcess     String?
+  isPublished       Boolean  @default(false)
+  joinTeam          String?
+  keyNumbers        String?
+  logoFile          File?    @relation(name: "legacyInstitutionLogoFile", fields: [logoFileId], references: [id])
+  logoFileId        String?
+  missions          String?
+  motivation        String?
+  organization      String?
+  profile           String?
+  project           String?
+  schedule          String?
+  slug              String   @unique
+  socialNetworkUrls String[]
+  testimonial       String?
+  thumbnailFile     File?    @relation(name: "legacyInstitutionThumbnailFile", fields: [thumbnailFileId], references: [id])
+  thumbnailFileId   String?
+  title             String?
+  value             String?
+  websiteUrls       String[]
+
+  files FilesOnLegacyInstitutions[]
+}
+
+model LegacyJob {
+  // Notion ID
+  id String @id @default(uuid())
+
+  advantages            String?
+  conditions            String?
+  createdAt             DateTime  @default(now())
+  department            String[]
+  entity                String?
+  experiences           String[]
+  hiringProcess         String?
+  limitDate             DateTime?
+  locations             String[]
+  mission               String?
+  more                  String?
+  openedToContractTypes String[]
+  profile               String?
+  publicationDate       DateTime?
+  // Used as an internal reference for debugging purposes
+  reference             String
+  salary                String?
+  slug                  String    @unique
+  source                JobSource
+  tasks                 String?
+  team                  String?
+  teamInfo              String?
+  title                 String
+  toApply               String?
+  updatedAt             DateTime  @updatedAt
+
+  legacyService   LegacyService? @relation(fields: [legacyServiceId], references: [id])
+  legacyServiceId String?
+}
+
+model LegacyService {
+  // Notion ID
+  id String @id @default(uuid())
+
+  fullName  String?
+  name      String?
+  region    String?
+  shortName String?
+  url       String?
+
+  legacyJobs     LegacyJob[]
+  legacyEntity   LegacyEntity? @relation(fields: [legacyEntityId], references: [id])
+  legacyEntityId String?
+}
+
+// https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model RefreshToken {
   id        String   @id @default(cuid())
+  familyId  String
   ip        String
   value     String   @unique
   createdAt DateTime @default(now())
@@ -34,13 +179,14 @@ model RefreshToken {
   userId String
 }
 
+// https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model User {
   id        String   @id @default(cuid())
-  role      UserRole @default(VIEWER)
+  role      UserRole @default(SERVICE_MANAGER)
   email     String   @unique
   password  String
-  firstName String?
-  lastName  String?
+  firstName String
+  lastName  String
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

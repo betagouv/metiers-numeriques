@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
@@ -11,22 +12,37 @@
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": false,
-    "outDir": "./build",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@app/*": ["app/*"],
+      "@common/*": ["common/*"],
+      "@legacy/*": ["src/*"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
     "strictNullChecks": true,
     "target": "es5"
   },
-  "exclude": ["./scripts/*", "./node_modules/*", "**/__tests__/*"],
+  "exclude": ["./node_modules/*"],
   "include": [
     "./api/**/*.ts",
     "./app/**/*.ts",
     "./app/**/*.tsx",
+    "./common/**/*.ts",
     "./src/**/*.js",
     "./src/**/*.ts",
     "./pages/**/*.ts",
     "./pages/**/*.tsx",
+    "./scripts/**/*.js",
+    "./scripts/**/*.ts",
     "next-env.d.ts"
-  ]
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    },
+    "transpiler": "ts-node/transpilers/swc-experimental",
+    "transpileOnly": true
+  }
 }

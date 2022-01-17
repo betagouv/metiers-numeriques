@@ -14,4 +14,5 @@ module.exports = {
       source: '/:any*',
     },
   ],
+  reactStrictMode: true,
 }

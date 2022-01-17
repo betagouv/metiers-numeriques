@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
         with:
           cache: yarn
           node-version: 16
@@ -19,30 +19,64 @@ jobs:
       - name: Lint
         run: yarn test:lint --ignore-pattern '/__tests__/*'
 
-  test:
+  type:
+    name: Type
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.5.1
+        with:
+          cache: yarn
+          node-version: 16
+      - name: Install
+        run: yarn
+      - name: Lint
+        run: yarn test:type
+
+  test_unit:
     name: Unit Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
         with:
           cache: yarn
           node-version: 16
       - name: Install
         run: yarn
-      - name: Test (Unit)
-        run: yarn test:unit
+      - name: Test
+        run: yarn test:unit --coverage --maxWorkers="50%"
+      - name: Upload coverage
+        run: yarn codecov
 
-  # e2e:
+  # build:
+  #   name: Build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v2.5.1
+  #       with:
+  #         cache: yarn
+  #         node-version: 16
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn build
+
+  # test_e2e:
   #   name: E2E Test
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v2
   #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2.5.0
+  #       uses: actions/setup-node@v2.5.1
   #       with:
   #         cache: yarn
   #         node-version: 16
@@ -64,19 +98,3 @@ jobs:
   #         NOTION_JOBS_DATABASE_ID: fakedatabaseid
   #         NOTION_PEP_JOBS_DATABASE_ID: fakepepdatabaseid
   #         PEP_ENDPOINT: fakepependpoint
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2.5.0
-        with:
-          cache: yarn
-          node-version: 16
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn test:build

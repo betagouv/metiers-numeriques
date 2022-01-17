@@ -2,11 +2,11 @@ import Job from '../models/Job'
 import { NotionPepJob } from '../types/NotionPepJob'
 import capitalize from './capitalize'
 import convertMarkdownToHtml from './convertMarkdownToHtml'
-import convertNotionNodeToHtml from './convertNotionNodeToHtml'
+import convertNotionNodeToPrismaValue from './convertNotionNodeToPrismaValue'
 import convertNotionNodeToString from './convertNotionNodeToString'
 import convertNotionNodeToStrings from './convertNotionNodeToStrings'
 import handleError from './handleError'
-import humanizePepDate from './humanizePepDate'
+import normalizePepDate from './normalizePepDate'
 import slugify from './slugify'
 
 export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) {
@@ -19,33 +19,35 @@ export default function generateJobFromNotionPepJob(notionPepJob: NotionPepJob) 
     const more = convertMarkdownToHtml(`[${pepUrl}](${pepUrl})`)
     const publicationDate =
       notionPepJob.properties.FirstPublicationDate.rich_text.length > 0
-        ? humanizePepDate(notionPepJob.properties.FirstPublicationDate.rich_text[0].plain_text)
-        : undefined
+        ? normalizePepDate(notionPepJob.properties.FirstPublicationDate.rich_text[0].plain_text)
+        : null
 
     return new Job({
-      advantages: undefined,
-      conditions: undefined,
-      createdAt: notionPepJob.properties.CreeLe.created_time,
+      advantages: null,
+      conditions: null,
+      createdAt: convertNotionNodeToPrismaValue(notionPepJob.properties.CreeLe),
       department: convertNotionNodeToStrings(notionPepJob.properties.Origin_Entity_),
+      entity: null,
       experiences: convertNotionNodeToStrings(notionPepJob.properties.ApplicantCriteria_EducationLevel_),
+      hiringProcess: null,
       id,
-      limitDate: undefined,
+      legacyServiceId: null,
+      limitDate: null,
       locations: convertNotionNodeToStrings(notionPepJob.properties.Location_JobLocation_),
-      mission: convertNotionNodeToHtml(notionPepJob.properties.JobDescriptionTranslation_Description1_),
+      mission: convertNotionNodeToPrismaValue(notionPepJob.properties.JobDescriptionTranslation_Description1_),
       more,
       openedToContractTypes: convertNotionNodeToStrings(notionPepJob.properties.JobDescription_Contract_),
-      profile: convertNotionNodeToHtml(notionPepJob.properties.JobDescriptionTranslation_Description2_),
+      profile: convertNotionNodeToPrismaValue(notionPepJob.properties.JobDescriptionTranslation_Description2_),
       publicationDate,
       reference: `PEP-${id}`,
-      salary: undefined,
+      salary: null,
       slug: slugify(title, id),
-      tasks: undefined,
-      team: undefined,
-      teamInfo: undefined,
+      tasks: null,
+      team: null,
+      teamInfo: null,
       title: capitalize(title),
-      toApply: convertNotionNodeToHtml(notionPepJob.properties.Origin_CustomFieldsTranslation_ShortText1_),
-      updatedAt: notionPepJob.properties.MisAJourLe.last_edited_time,
-      updatedDate: convertNotionNodeToString(notionPepJob.properties.MisAJourLe) || '⚠️ {MisAJourLe} manquant',
+      toApply: convertNotionNodeToPrismaValue(notionPepJob.properties.Origin_CustomFieldsTranslation_ShortText1_),
+      updatedAt: convertNotionNodeToPrismaValue(notionPepJob.properties.MisAJourLe),
     })
   } catch (err) {
     handleError(err, 'helpers/generateJobFromNotionPepJob()')

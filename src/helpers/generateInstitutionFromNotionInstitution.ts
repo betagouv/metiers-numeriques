@@ -1,10 +1,10 @@
 import Institution from '../models/Institution'
 import { NotionInstitution } from '../types/NotionInstitution'
-import convertNotionNodeToBoolean from './convertNotionNodeToBoolean'
-import convertNotionNodeToHtml from './convertNotionNodeToHtml'
-import convertNotionNodeToHtmls from './convertNotionNodeToHtmls'
+import convertNotionFilesNodeToFile from './convertNotionFilesNodeToFile'
+import convertNotionFilesNodeToFiles from './convertNotionFilesNodeToFiles'
+import convertNotionFilesNodeToUrls from './convertNotionFilesNodeToUrls'
+import convertNotionNodeToPrismaValue from './convertNotionNodeToPrismaValue'
 import convertNotionNodeToString from './convertNotionNodeToString'
-import convertNotionNodeToStrings from './convertNotionNodeToStrings'
 import handleError from './handleError'
 import slugify from './slugify'
 
@@ -14,39 +14,36 @@ export default function generateInstitutionFromNotionInstitution(notionInstituti
     const title = convertNotionNodeToString(notionInstitution.properties.Titre) || '⚠️ {Titre} manquant'
 
     return new Institution({
-      address: convertNotionNodeToHtml(notionInstitution.properties.Adresse),
-      addressFiles: notionInstitution.properties['Adresse bis'].files,
-      challenges: convertNotionNodeToHtml(notionInstitution.properties['Nos enjeux']),
+      address: convertNotionNodeToPrismaValue(notionInstitution.properties.Adresse),
+      addressFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Adresse bis']),
+      challenges: convertNotionNodeToPrismaValue(notionInstitution.properties['Nos enjeux']),
       fullName: convertNotionNodeToString(notionInstitution.properties['Nom complet']),
-      hiringProcess: convertNotionNodeToHtml(notionInstitution.properties['Processus de recrutement']),
+      hiringProcess: convertNotionNodeToPrismaValue(notionInstitution.properties['Processus de recrutement']),
       id,
-      // jobsLink: convertNotionNodeToStrings(notionInstitution.properties['Toutes les offres disponibles']),
-      isPublished: convertNotionNodeToBoolean(notionInstitution.properties.EstPublie),
-      joinTeam: convertNotionNodeToHtml(notionInstitution.properties['Nous rejoindre - Pourquoi?']),
-      joinTeamFiles: convertNotionNodeToHtmls(notionInstitution.properties['Nous rejoindre - Infos']),
-      keyNumbers: convertNotionNodeToHtml(notionInstitution.properties['Les chiffres clés']),
-      keyNumbersMedia: convertNotionNodeToStrings(notionInstitution.properties['Les chiffres clés - liens']),
-      logoUrl: convertNotionNodeToString(notionInstitution.properties['Bloc marque']),
-      missions: convertNotionNodeToHtml(notionInstitution.properties['Nos missions']),
-      motivation: convertNotionNodeToHtml(notionInstitution.properties["Raison d'être"]),
-      motivationFiles: convertNotionNodeToHtmls(notionInstitution.properties["Raison d'être complément"]),
-      organization: convertNotionNodeToHtml(notionInstitution.properties['Notre organisation']),
-      organizationFiles: convertNotionNodeToHtmls(notionInstitution.properties['Notre organisation compléments']),
-      profile: convertNotionNodeToHtml(notionInstitution.properties['Ton profil']),
-      project: convertNotionNodeToHtml(notionInstitution.properties['Les projets ou rélisations']),
-      projectFiles: convertNotionNodeToHtmls(notionInstitution.properties['Projets ou réalisations compléments']),
-      schedule: convertNotionNodeToHtml(notionInstitution.properties.Agenda),
+      isPublished: convertNotionNodeToPrismaValue(notionInstitution.properties.EstPublie),
+      joinTeam: convertNotionNodeToPrismaValue(notionInstitution.properties['Nous rejoindre - Pourquoi?']),
+      joinTeamFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Nous rejoindre - Infos']),
+      keyNumbers: convertNotionNodeToPrismaValue(notionInstitution.properties['Les chiffres clés']),
+      keyNumbersFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Les chiffres clés - liens']),
+      logoFile: convertNotionFilesNodeToFile(notionInstitution.properties['Bloc marque']),
+      missions: convertNotionNodeToPrismaValue(notionInstitution.properties['Nos missions']),
+      motivation: convertNotionNodeToPrismaValue(notionInstitution.properties["Raison d'être"]),
+      motivationFiles: convertNotionFilesNodeToFiles(notionInstitution.properties["Raison d'être complément"]),
+      organization: convertNotionNodeToPrismaValue(notionInstitution.properties['Notre organisation']),
+      organizationFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Notre organisation compléments']),
+      profile: convertNotionNodeToPrismaValue(notionInstitution.properties['Ton profil']),
+      project: convertNotionNodeToPrismaValue(notionInstitution.properties['Les projets ou rélisations']),
+      projectFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Projets ou réalisations compléments']),
+      schedule: convertNotionNodeToPrismaValue(notionInstitution.properties.Agenda),
       slug: slugify(title, id),
-      socialNetworkUrls: convertNotionNodeToStrings(notionInstitution.properties['Réseaux sociaux']),
-      testimonial: convertNotionNodeToHtml(notionInstitution.properties['Nos agents en parlent']),
-      testimonialFiles: convertNotionNodeToHtmls(notionInstitution.properties['Liens Nos agents en parlent']),
-      thumbnailUrl:
-        convertNotionNodeToString(notionInstitution.properties['Vignette temporaire']) ||
-        'https://place-hold.it/320x180',
+      socialNetworkUrls: convertNotionFilesNodeToUrls(notionInstitution.properties['Réseaux sociaux']),
+      testimonial: convertNotionNodeToPrismaValue(notionInstitution.properties['Nos agents en parlent']),
+      testimonialFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Liens Nos agents en parlent']),
+      thumbnailFile: convertNotionFilesNodeToFile(notionInstitution.properties['Vignette temporaire']),
       title,
-      value: convertNotionNodeToHtml(notionInstitution.properties.Valeurs),
-      valueFiles: convertNotionNodeToHtmls(notionInstitution.properties['Valeurs complément']),
-      websiteFiles: notionInstitution.properties['Site(s) institutionel(s)'].files,
+      value: convertNotionNodeToPrismaValue(notionInstitution.properties.Valeurs),
+      valueFiles: convertNotionFilesNodeToFiles(notionInstitution.properties['Valeurs complément']),
+      websiteUrls: convertNotionFilesNodeToUrls(notionInstitution.properties['Site(s) institutionel(s)']),
     })
   } catch (err) {
     handleError(err, 'helpers/generateInstitutionFromNotionInstitution()')
