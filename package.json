@@ -47,7 +47,7 @@
     "aws-sdk": "2.1054.0",
     "axios": "0.24.0",
     "better-prop-types": "1.0.0",
-    "bhala": "1.0.2",
+    "bhala": "2.1.0",
     "cuid": "2.1.8",
     "dayjs": "1.10.7",
     "dotenv": "10.0.0",
