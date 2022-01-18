@@ -275,7 +275,9 @@ export async function getStaticProps({ params: { slug } }) {
   })
 
   if (job === null) {
-    return false
+    return {
+      notFound: true,
+    }
   }
 
   return {
