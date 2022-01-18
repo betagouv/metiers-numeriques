@@ -6,6 +6,7 @@ import { JOB_SOURCE } from '@common/constants'
 import handleError from '@common/helpers/handleError'
 import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
+import Head from 'next/head'
 import * as R from 'ramda'
 import { useCallback, useRef, useState } from 'react'
 
@@ -118,55 +119,69 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
     setIsLoading(false)
   }, 500)
 
-  return (
-    <div className="fr-container fr-mt-6w fr-mb-2w" id="offres-de-mission">
-      <h1
-        style={{
-          alignItems: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        Découvrez les offres d’emploi
-      </h1>
+  const pageTitle = 'Liste des offres d’emploi numériques de l’État | metiers.numerique.gouv.fr'
+  const pageDescription =
+    'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
+    'et les administrations territoriales.'
 
-      <div
-        className="hidden-md-flex"
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <h2>Vous ne trouvez pas ?</h2>
-        <a
-          className="fr-btn"
-          href="https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee"
+  return (
+    <>
+      <Head>
+        <title>{pageTitle}</title>
+
+        <meta content={pageDescription} name="description" />
+        <meta content={pageTitle} property="og:title" />
+        <meta content={pageDescription} property="og:description" />
+      </Head>
+
+      <div className="fr-container fr-mt-6w fr-mb-2w" id="offres-de-mission">
+        <h1
           style={{
-            marginBottom: '.5rem',
-            marginLeft: '2rem',
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
-          Déposez une candidature spontanée
-          <i
-            className="ri-file-add-line"
-            style={{
-              marginLeft: '0.5rem',
-            }}
-          />
-        </a>
-      </div>
+          Découvrez les offres d’emploi
+        </h1>
 
-      <div className="fr-grid-row fr-py-2w">
-        <div className="fr-col-12 fr-col-md-12">
-          <label className="fr-label" htmlFor="JobsSearchInput">
-            Métier
-          </label>
-          <div className="fr-input-wrap fr-mt-1w fr-fi-search-line">
-            <input ref={$searchInput} className="fr-input" id="JobsSearchInput" onInput={searchJobs} type="text" />
-          </div>
+        <div
+          className="hidden-md-flex"
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <h2>Vous ne trouvez pas ?</h2>
+          <a
+            className="fr-btn"
+            href="https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee"
+            style={{
+              marginBottom: '.5rem',
+              marginLeft: '2rem',
+            }}
+          >
+            Déposez une candidature spontanée
+            <i
+              className="ri-file-add-line"
+              style={{
+                marginLeft: '0.5rem',
+              }}
+            />
+          </a>
         </div>
 
-        {/* <div className="fr-col-12 fr-mt-2w fr-col-md-5 fr-mt-md-0 fr-pl-md-4w">
+        <div className="fr-grid-row fr-py-2w">
+          <div className="fr-col-12 fr-col-md-12">
+            <label className="fr-label" htmlFor="JobsSearchInput">
+              Métier
+            </label>
+            <div className="fr-input-wrap fr-mt-1w fr-fi-search-line">
+              <input ref={$searchInput} className="fr-input" id="JobsSearchInput" onInput={searchJobs} type="text" />
+            </div>
+          </div>
+
+          {/* <div className="fr-col-12 fr-mt-2w fr-col-md-5 fr-mt-md-0 fr-pl-md-4w">
           <label className="fr-label" htmlFor="JobsRegionSelect">
             Région
           </label>
@@ -194,38 +209,39 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
             </select>
           </div>
         </div> */}
-      </div>
+        </div>
 
-      <div className="fr-grid-row">
-        {jobs.map(job => (
-          <JobCard key={job.id} job={job} />
-        ))}
+        <div className="fr-grid-row">
+          {jobs.map(job => (
+            <JobCard key={job.id} job={job} />
+          ))}
 
-        {isLoading && (
-          <div
-            className="fr-my-4w"
-            style={{
-              textAlign: 'center',
-              width: '100%',
-            }}
-          >
-            <i
-              className="ri-loader-4-fill rotating"
+          {isLoading && (
+            <div
+              className="fr-my-4w"
               style={{
-                display: 'inline-block',
-                fontSize: '2em',
+                textAlign: 'center',
+                width: '100%',
               }}
-            />
-          </div>
-        )}
-      </div>
+            >
+              <i
+                className="ri-loader-4-fill rotating"
+                style={{
+                  display: 'inline-block',
+                  fontSize: '2em',
+                }}
+              />
+            </div>
+          )}
+        </div>
 
-      <div className="fr-py-4w" id="LoadMoreSection">
-        <button className="fr-btn" disabled={isLoading} onClick={() => loadMoreJobs()} type="button">
-          Afficher plus de résultats
-        </button>
+        <div className="fr-py-4w" id="LoadMoreSection">
+          <button className="fr-btn" disabled={isLoading} onClick={() => loadMoreJobs()} type="button">
+            Afficher plus de résultats
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
