@@ -171,7 +171,9 @@ export async function getStaticProps({ params: { slug } }) {
   })
 
   if (institution === null) {
-    return false
+    return {
+      notFound: true,
+    }
   }
 
   return {
