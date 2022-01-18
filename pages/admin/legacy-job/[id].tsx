@@ -129,13 +129,19 @@ export default function LegacyJobEditorPage() {
       input.source = JOB_SOURCE.MNN
     }
 
-    input.experiences = values.experiencesAsJson ? JSON.parse(values.experiencesAsJson) : []
-    input.legacyServiceId = values.legacyServiceAsOption ? values.legacyServiceAsOption.value : undefined
+    if (values.experiencesAsJson) {
+      input.experiences = JSON.parse(values.experiencesAsJson)
+    }
+    if (values.legacyServiceAsOption) {
+      input.legacyServiceId = values.legacyServiceAsOption.value
+    }
     input.limitDate = dayjs(values.limitDate).toDate()
-    input.locations = values.locationsAsJson ? JSON.parse(values.locationsAsJson) : []
-    input.openedToContractTypes = values.openedToContractTypesAsJson
-      ? JSON.parse(values.openedToContractTypesAsJson)
-      : []
+    if (values.locations) {
+      input.locations = JSON.parse(values.locationsAsJson)
+    }
+    if (values.openedToContractTypes) {
+      input.openedToContractTypes = JSON.parse(values.openedToContractTypesAsJson)
+    }
 
     const options: MutationFunctionOptions = {
       variables: {

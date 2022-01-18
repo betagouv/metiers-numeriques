@@ -18,6 +18,23 @@ describe('libs/structuredData.normalizePlace()', () => {
     })
   })
 
+  test(`with "39-43 quai André Citroën 75015 Paris "`, () => {
+    const addressString = `39-43 quai André Citroën 75015 Paris`
+
+    const result = structuredData.normalizePlace(addressString)
+
+    expect(result).toStrictEqual({
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'FR',
+        addressLocality: 'Paris',
+        postalCode: '75015',
+        streetAddress: '43 quai André Citroën',
+      },
+    })
+  })
+
   test(`with "1 Av. du Marechal Foch 06000 Nice`, () => {
     const addressString = `1 Av. du Marechal Foch 06000 Nice`
 
