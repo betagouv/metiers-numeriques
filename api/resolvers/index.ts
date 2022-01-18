@@ -1,13 +1,13 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaSearchFilter from '@api/helpers/buildPrismaSearchFilter'
 import getPrisma from '@api/helpers/getPrisma'
-import { JOB_SOURCE } from '@common/constants'
 import handleError from '@common/helpers/handleError'
 import { GraphQLDateTime } from 'graphql-iso-date'
 import { GraphQLJSONObject } from 'graphql-type-json'
-import * as R from 'ramda'
 
-import type { File, LegacyEntity, LegacyInstitution, LegacyJob, LegacyService, User } from '@prisma/client'
+import * as legacyJobs from './legacy-jobs'
+
+import type { File, LegacyEntity, LegacyInstitution, LegacyService, User } from '@prisma/client'
 
 type GetAllArgs = {
   fromId?: string
@@ -19,19 +19,17 @@ export default {
   DateTime: GraphQLDateTime,
   JSONObject: GraphQLJSONObject,
   Mutation: {
-    createFile(obj, { input }: { input: File }) {
-      return getPrisma().file.create({
+    createFile: (obj, { input }: { input: File }) =>
+      getPrisma().file.create({
         data: input,
-      })
-    },
+      }),
 
-    createLegacyEntity(obj, { input }: { input: LegacyEntity }) {
-      return getPrisma().legacyEntity.create({
+    createLegacyEntity: (obj, { input }: { input: LegacyEntity }) =>
+      getPrisma().legacyEntity.create({
         data: input,
-      })
-    },
+      }),
 
-    createLegacyInstitution(obj, { input }: { input: LegacyInstitution }) {
+    createLegacyInstitution: (obj, { input }: { input: LegacyInstitution }) => {
       try {
         return getPrisma().legacyInstitution.create({
           data: input,
@@ -41,156 +39,116 @@ export default {
       }
     },
 
-    createLegacyJob(obj, { input }: { input: LegacyJob }) {
-      try {
-        return getPrisma().legacyJob.create({
-          data: input,
-        })
-      } catch (err) {
-        handleError(err, 'api/resolvers/legacy-jobs.ts > createLegacyJob()')
-
-        return {}
-      }
-    },
-
-    createLegacyService(obj, { input }: { input: LegacyService }) {
-      return getPrisma().legacyService.create({
+    createLegacyService: (obj, { input }: { input: LegacyService }) =>
+      getPrisma().legacyService.create({
         data: input,
-      })
-    },
+      }),
 
-    deleteFile(obj, { id }: { id: string }) {
-      return getPrisma().file.delete({
+    deleteFile: (obj, { id }: { id: string }) =>
+      getPrisma().file.delete({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    deleteLegacyEntity(obj, { id }: { id: string }) {
-      return getPrisma().legacyEntity.delete({
+    deleteLegacyEntity: (obj, { id }: { id: string }) =>
+      getPrisma().legacyEntity.delete({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    deleteLegacyInstitution(obj, { id }: { id: string }) {
-      return getPrisma().legacyInstitution.delete({
+    deleteLegacyInstitution: (obj, { id }: { id: string }) =>
+      getPrisma().legacyInstitution.delete({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    deleteLegacyJob(obj, { id }: { id: string }) {
-      return getPrisma().legacyJob.delete({
+    deleteLegacyService: (obj, { id }: { id: string }) =>
+      getPrisma().legacyService.delete({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    deleteLegacyService(obj, { id }: { id: string }) {
-      return getPrisma().legacyService.delete({
+    deleteUser: (obj, { id }: { id: string }) =>
+      getPrisma().user.delete({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    deleteUser(obj, { id }: { id: string }) {
-      return getPrisma().user.delete({
-        where: {
-          id,
-        },
-      })
-    },
-
-    updateFile(obj, { id, input }: { id: string; input: Partial<File> }) {
-      return getPrisma().file.update({
+    updateFile: (obj, { id, input }: { id: string; input: Partial<File> }) =>
+      getPrisma().file.update({
         data: input,
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    updateLegacyEntity(obj, { id, input }: { id: string; input: Partial<LegacyEntity> }) {
-      return getPrisma().legacyEntity.update({
+    updateLegacyEntity: (obj, { id, input }: { id: string; input: Partial<LegacyEntity> }) =>
+      getPrisma().legacyEntity.update({
         data: input,
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    updateLegacyInstitution(obj, { id, input }: { id: string; input: Partial<LegacyInstitution> }) {
-      return getPrisma().legacyInstitution.update({
+    updateLegacyInstitution: (obj, { id, input }: { id: string; input: Partial<LegacyInstitution> }) =>
+      getPrisma().legacyInstitution.update({
         data: input as any,
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    updateLegacyJob(obj, { id, input }: { id: string; input: Partial<LegacyJob> }) {
-      return getPrisma().legacyJob.update({
+    updateLegacyService: (obj, { id, input }: { id: string; input: Partial<LegacyService> }) =>
+      getPrisma().legacyService.update({
         data: input,
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    updateLegacyService(obj, { id, input }: { id: string; input: Partial<LegacyService> }) {
-      return getPrisma().legacyService.update({
+    updateUser: (obj, { id, input }: { id: string; input: User }) =>
+      getPrisma().user.update({
         data: input,
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    updateUser(obj, { id, input }: { id: string; input: User }) {
-      return getPrisma().user.update({
-        data: input,
-        where: {
-          id,
-        },
-      })
-    },
+    ...legacyJobs.mutation,
   },
   Query: {
-    getFile(obj, { id }: { id: string }) {
-      return getPrisma().file.findUnique({
+    getFile: (obj, { id }: { id: string }) =>
+      getPrisma().file.findUnique({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    getFiles(obj, { query }: GetAllArgs) {
+    getFiles: (obj, { query }: GetAllArgs) => {
       const searchFilter = buildPrismaSearchFilter(['title', 'url'], query)
 
       return getPrisma().file.findMany(searchFilter)
     },
 
-    getLegacyEntities(obj, { query }: GetAllArgs) {
+    getLegacyEntities: (obj, { query }: GetAllArgs) => {
       const searchFilter = buildPrismaSearchFilter(['fullName', 'name'], query)
 
       return getPrisma().legacyEntity.findMany(searchFilter)
     },
 
-    getLegacyEntity(obj, { id }: { id: string }) {
-      return getPrisma().legacyEntity.findUnique({
+    getLegacyEntity: (obj, { id }: { id: string }) =>
+      getPrisma().legacyEntity.findUnique({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    getLegacyInstitution(obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) {
+    getLegacyInstitution: (obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) => {
       const where =
         id !== undefined
           ? {
@@ -209,7 +167,7 @@ export default {
       })
     },
 
-    getLegacyInstitutions(obj, { fromId, pageLength, query }: GetAllArgs) {
+    getLegacyInstitutions: (obj, { fromId, pageLength, query }: GetAllArgs) => {
       const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
       const searchFilter = buildPrismaSearchFilter(['fullName', 'title'], query)
 
@@ -226,67 +184,17 @@ export default {
       })
     },
 
-    getLegacyJob(obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) {
-      const where =
-        id !== undefined
-          ? {
-              id,
-            }
-          : {
-              slug,
-            }
-
-      return getPrisma().legacyJob.findUnique({
-        include: {
-          legacyService: {
-            include: {
-              legacyEntity: true,
-            },
-          },
-        },
-        where,
-      })
-    },
-
-    getLegacyJobs(obj, { fromId, pageLength, query }: GetAllArgs) {
-      const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
-      const maybeSearchFilter = buildPrismaSearchFilter(['title'], query)
-      const searchFilter = R.isEmpty(maybeSearchFilter)
-        ? {
-            where: {
-              source: JOB_SOURCE.MNN,
-            },
-          }
-        : maybeSearchFilter
-
-      return getPrisma().legacyJob.findMany({
-        include: {
-          legacyService: {
-            include: {
-              legacyEntity: true,
-            },
-          },
-        },
-        orderBy: {
-          updatedAt: 'desc',
-        },
-        ...paginationFilter,
-        ...searchFilter,
-      })
-    },
-
-    getLegacyService(obj, { id }: { id: string }) {
-      return getPrisma().legacyService.findUnique({
+    getLegacyService: (obj, { id }: { id: string }) =>
+      getPrisma().legacyService.findUnique({
         include: {
           legacyEntity: true,
         },
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    getLegacyServices(obj, { query }: GetAllArgs) {
+    getLegacyServices: (obj, { query }: GetAllArgs) => {
       const searchFilter = buildPrismaSearchFilter(['fullName', 'name'], query)
 
       return getPrisma().legacyService.findMany({
@@ -297,18 +205,19 @@ export default {
       })
     },
 
-    getUser(obj, { id }: { id: string }) {
-      return getPrisma().user.findUnique({
+    getUser: (obj, { id }: { id: string }) =>
+      getPrisma().user.findUnique({
         where: {
           id,
         },
-      })
-    },
+      }),
 
-    getUsers(obj, { query }: GetAllArgs) {
+    getUsers: (obj, { query }: GetAllArgs) => {
       const searchFilter = buildPrismaSearchFilter(['email', 'firstName', 'lastName'], query)
 
       return getPrisma().user.findMany(searchFilter)
     },
+
+    ...legacyJobs.query,
   },
 }
