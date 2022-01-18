@@ -61,7 +61,7 @@
     "graphql-type-json": "0.3.2",
     "ky": "0.28.7",
     "lodash.debounce": "4.0.8",
-    "markdown-it": "12.3.0",
+    "markdown-it": "12.3.2",
     "micro": "9.3.4",
     "nexauth": "1.0.0-beta.5",
     "next": "12.0.7",
