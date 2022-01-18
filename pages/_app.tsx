@@ -75,7 +75,7 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <GlobalStyle />
         <GlobalStyleCustom />
 
-        <AuthProvider Loader={Loader} privatePaths={PRIVATE_PATHS} SignInModal={SignInDialog}>
+        <AuthProvider Loader={Loader} privatePaths={PRIVATE_PATHS} SignInDialog={SignInDialog}>
           <AdminBody>
             <AdminMenu />
 

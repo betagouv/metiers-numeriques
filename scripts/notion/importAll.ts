@@ -5,8 +5,15 @@ import importInstitutions from './importInstitutions'
 import importJobs from './importJobs'
 import importServices from './importServices'
 
+const { CI } = process.env
+const IS_CI = Boolean(CI)
+
 async function importAll() {
   try {
+    if (IS_CI) {
+      return
+    }
+
     const prisma = getPrisma()
 
     await importEntities(prisma)

@@ -53,48 +53,68 @@ jobs:
       - name: Upload coverage
         run: yarn codecov
 
-  # build:
-  #   name: Build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2.5.1
-  #       with:
-  #         cache: yarn
-  #         node-version: 16
-  #     - name: Install
-  #       run: yarn
-  #     - name: Build
-  #       run: yarn build
-
-  # test_e2e:
-  #   name: E2E Test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2.5.1
-  #       with:
-  #         cache: yarn
-  #         node-version: 16
-  #     - name: Setup PostgreSQL
-  #       uses: Harmon758/postgresql-action@v1.0.0
-  #       with:
-  #         postgresql db: postgres
-  #         postgresql user: postgres
-  #         postgresql password: postgres
-  #     - name: Install
-  #       run: yarn
-  #     - name: Build
-  #       run: yarn build
-  #     - name: Test (E2E)
-  #       run: yarn test:integration
-  #       env:
-  #         CI: true
-  #         NOTION_TOKEN: faketoken
-  #         NOTION_JOBS_DATABASE_ID: fakedatabaseid
-  #         NOTION_PEP_JOBS_DATABASE_ID: fakepepdatabaseid
-  #         PEP_ENDPOINT: fakepependpoint
+  test_e2e:
+    name: E2E Test
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
+      DOMAIN_URL: http://localhost:3000
+      NODE_ENV: production
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: metiers_numeriques
+          POSTGRES_USER: test_db_user
+          POSTGRES_PASSWORD: test_db_password
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache
+        if: ${{ always() }}
+        id: cache
+        uses: actions/cache@v2
+        # https://playwright.dev/docs/ci#directories-to-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.5.0
+        with:
+          cache: yarn
+          node-version: 16
+      - name: Install
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: yarn --frozen-lockfile --production=false
+      - name: Install Playwright browsers
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: |
+          npx playwright install-deps chromium
+          npx playwright install chromium
+      - name: Prepare
+        run: yarn setup
+      - name: Build
+        run: |
+          yarn prebuild
+          yarn build
+      - name: Serve
+        run: yarn start &
+      - name: Run end-to-end tests
+        run: yarn test:e2e
+      - name: Archive failed tests trace
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            ./test-results

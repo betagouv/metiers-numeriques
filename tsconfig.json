@@ -30,6 +30,8 @@
     "./app/**/*.ts",
     "./app/**/*.tsx",
     "./common/**/*.ts",
+    "./config/**/*.ts",
+    "./e2e/**/*.ts",
     "./src/**/*.js",
     "./src/**/*.ts",
     "./pages/**/*.ts",

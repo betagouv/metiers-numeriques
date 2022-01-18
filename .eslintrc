@@ -23,6 +23,8 @@
         "./app/**/*.ts",
         "./app/**/*.tsx",
         "./common/**/*.ts",
+        "./config/**/*.ts",
+        "./e2e/**/*.ts",
         "./pages/**/*.ts",
         "./pages/**/*.tsx",
         "./scripts/**/*.js",
