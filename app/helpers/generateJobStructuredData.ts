@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 import structuredData from '../libs/structuredData'
 
 import type { LegacyJobWithRelation } from '../organisms/JobCard'
@@ -59,6 +61,10 @@ export default function generateJobStructuredData(job: LegacyJobWithRelation): s
     return JSON.stringify({})
   }
 
+  if (job.limitDate === null || dayjs(job.limitDate).isBefore(dayjs())) {
+    return JSON.stringify({})
+  }
+
   // —————————————————————————————————————————————————————————————————————————————
   // Required properties for Google Job Posting
   // https://developers.google.com/search/docs/advanced/structured-data/job-posting#job-posting-definition
@@ -75,6 +81,7 @@ export default function generateJobStructuredData(job: LegacyJobWithRelation): s
     hiringOrganization: structuredData.normalizeOrganization(maybeOrganizationData),
     jobLocation: maybeJobLocation,
     title: job.title,
+    validThrough: job.limitDate,
   }
 
   // —————————————————————————————————————————————————————————————————————————————

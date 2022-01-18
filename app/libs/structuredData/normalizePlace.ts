@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
+import getRegionNameFromZipCode from '../../helpers/getRegionNameFromZipCode'
+
 /**
  * @see https://schema.org/Place
  */
@@ -9,6 +11,7 @@ type StructuredDataPlace = {
     '@type': 'PostalAddress'
     addressCountry: string
     addressLocality?: string
+    addressRegion?: string
     postalCode?: string
     streetAddress?: string
   }
@@ -37,6 +40,7 @@ const matchDefault = (addressString: string): StructuredDataPlace | undefined =>
   const streetAddress = `${result[1].trim()} ${result[2].trim()}`
   const postalCode = result[3].replace(/[^\d]+/g, '').trim()
   const addressLocality = result[4].trim()
+  const addressRegion = getRegionNameFromZipCode(postalCode)
 
   return {
     '@type': 'Place',
@@ -44,6 +48,7 @@ const matchDefault = (addressString: string): StructuredDataPlace | undefined =>
       '@type': 'PostalAddress',
       addressCountry: 'FR',
       addressLocality,
+      addressRegion,
       postalCode,
       streetAddress,
     },
