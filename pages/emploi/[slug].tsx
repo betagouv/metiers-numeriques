@@ -2,6 +2,7 @@ import getPrisma from '@api/helpers/getPrisma'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import renderMarkdown from '@app/helpers/renderMarkdown'
 import dayjs from 'dayjs'
+import Head from 'next/head'
 
 import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
 
@@ -9,8 +10,19 @@ type JobPageProps = {
   job: LegacyJobWithRelation
 }
 export default function JobPage({ job }: JobPageProps) {
+  const pageTitle = `${job.title} | metiers.numerique.gouv.fr`
+  const pageDescription = job.mission || ''
+
   return (
     <>
+      <Head>
+        <title>{pageTitle}</title>
+
+        <meta content={pageDescription} name="description" />
+        <meta content={pageTitle} property="og:title" />
+        <meta content={pageDescription} property="og:description" />
+      </Head>
+
       <div className="fr-container" id="job-detail">
         <div className="fr-mb-4w fr-mt-6w">
           <h1>{job.title}</h1>

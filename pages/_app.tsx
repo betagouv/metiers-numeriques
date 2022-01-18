@@ -44,8 +44,16 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <Head>
           <title>metiers.numeriques.gouv.fr</title>
 
-          <meta content="initial-scale=1, width=device-width" name="viewport" />
-          <link href="/index.bundle.css" rel="stylesheet" />
+          <meta charSet="utf-8" />
+          <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+          <meta content="rbHd2NXOspK6-avguNFUvBzgddpFwWzph-a8Ebxepvo" name="google-site-verification" />
+
+          <meta content="metiers.numerique.gouv.fr" property="og:title" />
+          <meta
+            content="L’État Numérique : Des projets à découvrir, des missions à pourvoir !"
+            property="og:description"
+          />
+          <meta content="/images/main-illu.png" property="og:image" />
         </Head>
 
         <Header />
@@ -67,8 +75,6 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
     <>
       <Head>
         <title>Espace d’administration</title>
-
-        <meta content="initial-scale=1, width=device-width" name="viewport" />
       </Head>
 
       <ThemeProvider>
