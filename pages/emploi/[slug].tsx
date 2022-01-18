@@ -1,4 +1,5 @@
 import getPrisma from '@api/helpers/getPrisma'
+import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import renderMarkdown from '@app/helpers/renderMarkdown'
 import dayjs from 'dayjs'
@@ -12,6 +13,7 @@ type JobPageProps = {
 export default function JobPage({ job }: JobPageProps) {
   const pageTitle = `${job.title} | metiers.numerique.gouv.fr`
   const pageDescription = job.mission || ''
+  const structuredData = generateJobStructuredData(job)
 
   return (
     <>
@@ -21,6 +23,8 @@ export default function JobPage({ job }: JobPageProps) {
         <meta content={pageDescription} name="description" />
         <meta content={pageTitle} property="og:title" />
         <meta content={pageDescription} property="og:description" />
+
+        <script type="application/ld+json">{structuredData}</script>
       </Head>
 
       <div className="fr-container" id="job-detail">

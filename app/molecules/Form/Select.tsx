@@ -1,3 +1,4 @@
+import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { Select as SingularitySelect } from '@singularity/core'
 import { useFormikContext } from 'formik'
 
@@ -21,7 +22,7 @@ export function Select({
   noLabel = false,
   options,
 }: SelectProps) {
-  const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
+  const { errors, initialValues, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
@@ -32,6 +33,7 @@ export function Select({
 
   return (
     <SingularitySelect
+      key={generateKeyFromValue(initialValues)}
       cacheOptions={isAsync}
       defaultValue={values[name]}
       disabled={isDisabled || isSubmitting}

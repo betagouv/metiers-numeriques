@@ -1,3 +1,4 @@
+import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { useFormikContext } from 'formik'
 import dynamic from 'next/dynamic'
 import styled from 'styled-components'
@@ -67,7 +68,7 @@ type CodeProps = {
   name: string
 }
 export function Code({ isDisabled = false, label, name }: CodeProps) {
-  const { isSubmitting, setFieldValue, values } = useFormikContext<any>()
+  const { initialValues, isSubmitting, setFieldValue, values } = useFormikContext<any>()
 
   const handleChange = (newValue: string): void => {
     try {
@@ -77,7 +78,7 @@ export function Code({ isDisabled = false, label, name }: CodeProps) {
       }
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.debug(err)
+      console.error(err)
     }
   }
 
@@ -86,6 +87,7 @@ export function Code({ isDisabled = false, label, name }: CodeProps) {
       <Label>{label}</Label>
       <Box isDisabled={isDisabled || isSubmitting}>
         <ReactAce
+          key={generateKeyFromValue(initialValues)}
           defaultValue={values[name]}
           highlightActiveLine={false}
           maxLines={10}
