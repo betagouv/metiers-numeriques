@@ -13,9 +13,11 @@ declare global {
 }
 
 export type LegacyJobWithRelation = LegacyJob & {
-  legacyService?: LegacyService & {
-    legacyEntity?: LegacyEntity
-  }
+  legacyService:
+    | (LegacyService & {
+        legacyEntity: LegacyEntity | null
+      })
+    | null
 }
 
 type JobCardProps = {

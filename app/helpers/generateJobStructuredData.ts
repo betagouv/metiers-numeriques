@@ -18,11 +18,11 @@ const getOrganizationData = (
       websiteUrl?: string
     }
   | undefined => {
-  if (job.legacyService === undefined) {
+  if (job.legacyService === null) {
     return undefined
   }
 
-  if (job.legacyService.legacyEntity !== undefined) {
+  if (job.legacyService.legacyEntity !== null) {
     return {
       department: {
         name: job.legacyService.shortName || job.legacyService.name || '',
