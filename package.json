@@ -12,12 +12,9 @@
     "build": "yarn build:assets && next build",
     "build:assets": "rm -Rf ./public/assets && rollup -c && rm -f ./public/index.js",
     "build:sitemap": "ts-node -r dotenv/config ./scripts/build/generateSitemap.ts",
-    "cache:purge": "ts-node -r dotenv/config ./src/scripts/purgeRedisCache.ts",
-    "cache:update": "ts-node -r dotenv/config ./src/scripts/runCacheUpdate.ts",
-    "data:delete": "ts-node -r dotenv/config ./scripts/notion/deleteAll.ts",
-    "//": "Import legacy data from Notion:",
-    "data:import": "ts-node -r dotenv/config ./scripts/notion/importAll.ts",
+    "data:import": "ts-node -r dotenv/config ./scripts/notion/importJobStates.ts",
     "db:migrate": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
     "dev": "next dev",
     "dev:docker": "docker-compose down && docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up -d db",
     "dev:job:skb": "ts-node -r dotenv/config ./src/scripts/runSkbJobsUpdate.ts",
@@ -33,6 +30,9 @@
     "test:type": "tsc",
     "test:unit": "jest --config=./config/jest.unit.config.js",
     "test:unit:watch": "yarn test:unit --watch"
+  },
+  "prisma": {
+    "seed": "ts-node -r dotenv/config prisma/seeds/index.ts"
   },
   "dependencies": {
     "@apollo/client": "3.5.7",

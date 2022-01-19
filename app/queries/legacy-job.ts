@@ -11,6 +11,7 @@ export const GET_ALL = gql`
       reference
       slug
       source
+      state
       tasks
       team
       title
@@ -55,6 +56,7 @@ export const GET_ONE = gql`
       salary
       slug
       source
+      state
       tasks
       team
       teamInfo

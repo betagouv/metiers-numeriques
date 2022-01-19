@@ -143,6 +143,7 @@ type LegacyJob {
   salary: String
   slug: String!
   source: String!
+  state: String
   tasks: String
   team: String
   teamInfo: String
@@ -171,6 +172,7 @@ input LegacyJobInput {
   publicationDate: DateTime
   salary: String
   slug: String
+  state: String
   source: String
   tasks: String
   team: String

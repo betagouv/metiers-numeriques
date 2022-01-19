@@ -1,11 +1,9 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaSearchFilter from '@api/helpers/buildPrismaSearchFilter'
 import getPrisma from '@api/helpers/getPrisma'
-import { JOB_SOURCE } from '@common/constants'
 import handleError from '@common/helpers/handleError'
+import { JobSource, LegacyJob } from '@prisma/client'
 import * as R from 'ramda'
-
-import type { LegacyJob } from '@prisma/client'
 
 type GetAllArgs = {
   fromId?: string
@@ -71,7 +69,7 @@ export const query = {
     const searchFilter = R.isEmpty(maybeSearchFilter)
       ? {
           where: {
-            source: JOB_SOURCE.MNN,
+            source: JobSource.MNN,
           },
         }
       : maybeSearchFilter

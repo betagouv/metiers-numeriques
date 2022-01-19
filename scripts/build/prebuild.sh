@@ -10,6 +10,5 @@ if [ -z "${GITHUB_WORKFLOW}" ]; then
   yarn data:import
 fi
 
-# yarn cache:purge
-# yarn cache:update
+yarn db:seed
 yarn build:sitemap

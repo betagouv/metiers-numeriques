@@ -27,6 +27,7 @@
         "./e2e/**/*.ts",
         "./pages/**/*.ts",
         "./pages/**/*.tsx",
+        "./prisma/**/*.ts",
         "./scripts/**/*.js",
         "./scripts/**/*.ts",
         "./src/**/*.ts"
