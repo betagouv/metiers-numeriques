@@ -88,6 +88,7 @@ jobs:
             ~/.cache/ms-playwright
             ./node_modules
             !./node_modules/.prisma
+            !./node_modules/@prima
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.0
