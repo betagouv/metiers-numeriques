@@ -162,6 +162,8 @@ export default function InstitutionPage({ institution }: JobPageProps) {
 export async function getStaticPaths() {
   const prisma = getPrisma()
   const legacyInstitutions = await prisma.legacyInstitution.findMany()
+  await prisma.$disconnect()
+
   const paths = legacyInstitutions.map(({ slug }) => ({
     params: { slug },
   }))
@@ -173,9 +175,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const primsa = getPrisma()
-
-  const institution = await primsa.legacyInstitution.findUnique({
+  const prisma = getPrisma()
+  const institution = await prisma.legacyInstitution.findUnique({
     include: {
       logoFile: true,
       thumbnailFile: true,
@@ -184,6 +185,7 @@ export async function getStaticProps({ params: { slug } }) {
       slug,
     },
   })
+  await prisma.$disconnect()
 
   if (institution === null) {
     return {

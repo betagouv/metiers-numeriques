@@ -264,6 +264,8 @@ export default function JobPage({ job }: JobPageProps) {
 export async function getStaticPaths() {
   const prisma = getPrisma()
   const legacyJobs = await prisma.legacyJob.findMany()
+  await prisma.$disconnect()
+
   const paths = legacyJobs.map(({ slug }) => ({
     params: { slug },
   }))
@@ -276,7 +278,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { slug } }) {
   const prisma = getPrisma()
-
   const job = await prisma.legacyJob.findUnique({
     include: {
       legacyService: {
@@ -289,6 +290,7 @@ export async function getStaticProps({ params: { slug } }) {
       slug,
     },
   })
+  await prisma.$disconnect()
 
   if (job === null) {
     return {
