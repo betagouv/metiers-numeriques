@@ -6,7 +6,8 @@ import normalizeDateForDateInput from '@app/helpers/normalizeDateForDateInput'
 import normalizeDateForDateTimeInput from '@app/helpers/normalizeDateForDateTimeInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
-import { JOB_SOURCE } from '@common/constants'
+import { JOB_STATE_LABEL } from '@common/constants'
+import { JobSource } from '@prisma/client'
 import { Card, Field } from '@singularity/core'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
@@ -18,6 +19,14 @@ import * as Yup from 'yup'
 
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { LegacyJob } from '@prisma/client'
+
+const JOB_STATES_AS_OPTIONS = R.pipe(
+  R.toPairs,
+  R.map(([value, label]) => ({
+    label,
+    value,
+  })),
+)(JOB_STATE_LABEL)
 
 const FormSchema = Yup.object().shape({
   limitDate: Yup.string().required(`La date limite est obligatoire.`),
@@ -97,6 +106,11 @@ export default function LegacyJobEditorPage() {
     newInitialValues.locationsAsJson = JSON.stringify(newInitialValues.locations, null, 2)
     newInitialValues.openedToContractTypesAsJson = JSON.stringify(newInitialValues.openedToContractTypes, null, 2)
 
+    newInitialValues.stateAsOption = {
+      label: JOB_STATE_LABEL[newInitialValues.state],
+      value: newInitialValues.state,
+    }
+
     setInitialValues(newInitialValues)
     setIsLoading(false)
   }, [getLegacyJobResult, getLegacyServicesResult, isLoading, isNew])
@@ -126,7 +140,7 @@ export default function LegacyJobEditorPage() {
     if (isNew) {
       input.id = uuid()
       input.slug = slugify(`${input.title}-${input.id}`)
-      input.source = JOB_SOURCE.MNN
+      input.source = JobSource.MNN
     }
 
     if (values.experiencesAsJson) {
@@ -142,6 +156,7 @@ export default function LegacyJobEditorPage() {
     if (values.openedToContractTypes) {
       input.openedToContractTypes = JSON.parse(values.openedToContractTypesAsJson)
     }
+    input.state = values.stateAsOption.value
 
     const options: MutationFunctionOptions = {
       variables: {
@@ -182,6 +197,10 @@ export default function LegacyJobEditorPage() {
 
           <Field>
             <Form.Input isDisabled={isLoading} label="Intitulé" name="title" />
+          </Field>
+
+          <Field>
+            <Form.Select isDisabled={isLoading} label="État" name="stateAsOption" options={JOB_STATES_AS_OPTIONS} />
           </Field>
 
           <Field>

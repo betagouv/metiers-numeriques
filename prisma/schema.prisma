@@ -31,6 +31,12 @@ enum JobSource {
   SKB
 }
 
+enum JobState {
+  DRAFT
+  EXPIRED
+  PUBLISHED
+}
+
 enum LegacyInstitutionSection {
   address
   joinTeam
@@ -140,6 +146,7 @@ model LegacyJob {
   salary                String?
   slug                  String    @unique
   source                JobSource
+  state                 JobState  @default(DRAFT)
   tasks                 String?
   team                  String?
   teamInfo              String?

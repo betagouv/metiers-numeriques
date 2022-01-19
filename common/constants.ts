@@ -1,4 +1,4 @@
-import type { FileType, JobSource } from '@prisma/client'
+import type { FileType, JobState } from '@prisma/client'
 
 export type FileTypeKey = FileType
 export type FileTypeValue = {
@@ -55,11 +55,10 @@ export const FILE_TYPE: Record<FileTypeKey, FileTypeValue> = {
   },
 }
 
-export const JOB_SOURCE: Record<JobSource, JobSource> = {
-  MNB: 'MNB',
-  MNN: 'MNN',
-  PEP: 'PEP',
-  SKB: 'SKB',
+export const JOB_STATE_LABEL: Record<JobState, String> = {
+  DRAFT: 'Brouillon',
+  EXPIRED: 'Expiré',
+  PUBLISHED: 'Publié',
 }
 
 export const USER_ROLE: Record<Common.User.Role, Common.User.Role> = {

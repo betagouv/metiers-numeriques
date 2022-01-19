@@ -2,8 +2,8 @@ import getPrisma from '@api/helpers/getPrisma'
 import { useQuery } from '@apollo/client'
 import JobCard from '@app/organisms/JobCard'
 import queries from '@app/queries'
-import { JOB_SOURCE } from '@common/constants'
 import handleError from '@common/helpers/handleError'
+import { JobSource } from '@prisma/client'
 import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
@@ -261,7 +261,7 @@ export async function getStaticProps() {
     },
     take: PAGE_LENGTH,
     where: {
-      source: JOB_SOURCE.MNN,
+      source: JobSource.MNN,
     },
   })
 
