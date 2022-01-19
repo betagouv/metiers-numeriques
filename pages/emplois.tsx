@@ -247,7 +247,6 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
 
 export async function getStaticProps() {
   const prisma = getPrisma()
-
   const initialJobs = await prisma.legacyJob.findMany({
     include: {
       legacyService: {
@@ -264,6 +263,7 @@ export async function getStaticProps() {
       source: JobSource.MNN,
     },
   })
+  await prisma.$disconnect()
 
   return {
     props: {
