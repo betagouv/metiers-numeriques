@@ -25,22 +25,7 @@
     "target": "es5"
   },
   "exclude": ["./node_modules/*"],
-  "include": [
-    "./api/**/*.ts",
-    "./app/**/*.ts",
-    "./app/**/*.tsx",
-    "./common/**/*.ts",
-    "./config/**/*.ts",
-    "./e2e/**/*.ts",
-    "./src/**/*.js",
-    "./src/**/*.ts",
-    "./pages/**/*.ts",
-    "./pages/**/*.tsx",
-    "./prisma/**/*.ts",
-    "./scripts/**/*.js",
-    "./scripts/**/*.ts",
-    "next-env.d.ts"
-  ],
+  "include": ["./**/*.js", "./**/*.ts", "./**/*.tsx", "next-env.d.ts"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

@@ -1,74 +1,46 @@
 {
-  "extends": "@ivangabriele/eslint-config-base",
+  "extends": "@ivangabriele/eslint-config-typescript-react",
   "env": {
     "browser": false,
     "node": true
   },
   "parserOptions": {
-    "ecmaVersion": 2021
+    "ecmaVersion": 2021,
+    "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["/.next/", "/build/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
+  "ignorePatterns": ["/.next/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",
+    "import/prefer-default-export": "off",
     "no-new": "off",
     "no-plusplus": "off",
     "no-restricted-syntax": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "either"
+      }
+    ],
+
+    "react/function-component-definition": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": [
+      "error",
+      {
+        "ignore": ["children", "className", "Component", "pageProps"]
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off",
+
+    "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   },
   "overrides": [
-    {
-      "files": [
-        "./api/**/*.ts",
-        "./app/**/*.ts",
-        "./app/**/*.tsx",
-        "./common/**/*.ts",
-        "./config/**/*.ts",
-        "./e2e/**/*.ts",
-        "./pages/**/*.ts",
-        "./pages/**/*.tsx",
-        "./prisma/**/*.ts",
-        "./scripts/**/*.js",
-        "./scripts/**/*.ts",
-        "./src/**/*.ts"
-      ],
-      "extends": "@ivangabriele/eslint-config-typescript-react",
-      "parserOptions": {
-        "ecmaVersion": 2021,
-        "project": "./tsconfig.json"
-      },
-      "rules": {
-        "class-methods-use-this": "off",
-        "consistent-return": "off",
-        "import/prefer-default-export": "off",
-        "no-new": "off",
-        "no-plusplus": "off",
-        "no-restricted-syntax": "off",
-        "no-underscore-dangle": "off",
-
-        "jsx-a11y/label-has-associated-control": [
-          "error",
-          {
-            "assert": "either"
-          }
-        ],
-
-        "react/function-component-definition": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/prop-types": [
-          "error",
-          {
-            "ignore": ["children", "className", "Component", "pageProps"]
-          }
-        ],
-        "react/react-in-jsx-scope": "off",
-        "react/require-default-props": "off",
-
-        "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-        "@typescript-eslint/no-shadow": "off",
-        "@typescript-eslint/no-use-before-define": "off"
-      }
-    },
     {
       "files": ["./app/**/*.ts", "./app/**/*.tsx", "./common/**/*.ts", "./pages/**/*.tsx"],
       "env": {
