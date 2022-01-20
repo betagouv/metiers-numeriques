@@ -1,8 +1,8 @@
 import getPrisma from '@api/helpers/getPrisma'
 import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import normalizeDate from '@app/helpers/normalizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'
-import dayjs from 'dayjs'
 import Head from 'next/head'
 
 import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
@@ -302,10 +302,10 @@ export async function getStaticProps({ params: { slug } }) {
     props: {
       job: {
         ...job,
-        createdAt: job.createdAt ? dayjs(job.createdAt).toISOString() : null,
-        limitDate: job.limitDate ? dayjs(job.limitDate).toISOString() : null,
-        publicationDate: job.publicationDate ? dayjs(job.publicationDate).toISOString() : null,
-        updatedAt: job.updatedAt ? dayjs(job.updatedAt).toISOString() : null,
+        createdAt: job.createdAt ? normalizeDate(job.createdAt) : null,
+        limitDate: job.limitDate ? normalizeDate(job.limitDate) : null,
+        publicationDate: job.publicationDate ? normalizeDate(job.publicationDate) : null,
+        updatedAt: job.updatedAt ? normalizeDate(job.updatedAt) : null,
       },
     },
     revalidate: 300,

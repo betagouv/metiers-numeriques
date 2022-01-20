@@ -1,7 +1,7 @@
-import LinkText from '@app/atoms/LinkText'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import Link from '../atoms/Link'
 
 export default function Header() {
   const router = useRouter()
@@ -54,27 +54,26 @@ export default function Header() {
           <nav aria-label="Menu principal" className="fr-nav" role="navigation">
             <ul className="fr-nav__list">
               <li className="fr-nav__item">
-                <Link href="/">
-                  <LinkText aria-current={router.pathname === '/' ? 'page' : undefined} className="fr-nav__link">
-                    Accueil
-                  </LinkText>
+                <Link aria-current={router.pathname === '/' ? 'page' : undefined} className="fr-nav__link" href="/">
+                  Accueil
                 </Link>
               </li>
               <li className="fr-nav__item">
-                <Link href="/emplois">
-                  <LinkText aria-current={router.pathname === '/emplois' ? 'page' : undefined} className="fr-nav__link">
-                    Les offres d’emplois
-                  </LinkText>
+                <Link
+                  aria-current={router.pathname === '/emplois' ? 'page' : undefined}
+                  className="fr-nav__link"
+                  href="/emplois"
+                >
+                  Les offres d’emplois
                 </Link>
               </li>
               <li className="fr-nav__item">
-                <Link href="/institutions">
-                  <LinkText
-                    aria-current={router.pathname === '/institutions' ? 'page' : undefined}
-                    className="fr-nav__link"
-                  >
-                    Les institutions
-                  </LinkText>
+                <Link
+                  aria-current={router.pathname === '/institutions' ? 'page' : undefined}
+                  className="fr-nav__link"
+                  href="/institutions"
+                >
+                  Les institutions
                 </Link>
               </li>
             </ul>

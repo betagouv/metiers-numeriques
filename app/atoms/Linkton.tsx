@@ -24,6 +24,7 @@ const Linkton = styled.button`
   text-rendering: inherit;
   text-transform: inherit;
   word-spacing: inherit;
+  writing-mode: inherit;
 `
 
 export default Linkton

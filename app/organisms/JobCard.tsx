@@ -1,6 +1,8 @@
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import normalizeDate from '@app/helpers/normalizeDate'
 import normalizeJobDescription from '@app/helpers/normalizeJobDescription'
-import Link from 'next/link'
+
+import Link from '../atoms/Link'
 
 import type { LegacyEntity, LegacyJob, LegacyService } from '@prisma/client'
 
@@ -77,16 +79,16 @@ export default function JobCard({ job }: JobCardProps) {
                   }}
                 >
                   <i className="ri-calendar-fill fr-mr-2w" />
-                  {job.updatedAt}
+                  {normalizeDate(job.updatedAt)}
                 </p>
               )}
             </div>
 
             <div className="fr-col-12 fr-col-md-9">
               <h4 className="fr-card__lead">
-                <a className="fr-card__link" href={`/emploi/${job.slug}`}>
+                <Link className="fr-card__link" href={`/emploi/${job.slug}`}>
                   {job.title}
-                </a>
+                </Link>
               </h4>
 
               <p className="fr-card__desc excerpt">{description}</p>
@@ -141,11 +143,9 @@ export default function JobCard({ job }: JobCardProps) {
               {job.reference}
             </code>
 
-            <Link href={`/emploi/${job.slug}`}>
-              <a className="trk-lire-offre fr-btn fr-btn--sm" href={`/emploi/${job.slug}`}>
-                Lire l’offre d’emploi!
-                <span aria-hidden="true" className="fr-fi-arrow-right-line fr-pl-1w" />
-              </a>
+            <Link className="trk-lire-offre fr-btn fr-btn--sm" href={`/emploi/${job.slug}`}>
+              Lire l’offre d’emploi!
+              <span aria-hidden="true" className="fr-fi-arrow-right-line fr-pl-1w" />
             </Link>
           </div>
         </div>
