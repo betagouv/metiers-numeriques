@@ -263,7 +263,6 @@ export async function getStaticProps() {
       source: JobSource.MNN,
     },
   })
-  await prisma.$disconnect()
 
   return {
     props: {
