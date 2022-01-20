@@ -1,13 +1,12 @@
-import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaSearchFilter from '@api/helpers/buildPrismaSearchFilter'
 import getPrisma from '@api/helpers/getPrisma'
-import handleError from '@common/helpers/handleError'
 import { GraphQLDateTime } from 'graphql-iso-date'
 import { GraphQLJSONObject } from 'graphql-type-json'
 
+import * as legacyInstitutions from './legacy-institutions'
 import * as legacyJobs from './legacy-jobs'
 
-import type { File, LegacyEntity, LegacyInstitution, LegacyService, User } from '@prisma/client'
+import type { File, LegacyEntity, LegacyService, User } from '@prisma/client'
 
 type GetAllArgs = {
   fromId?: string
@@ -29,16 +28,6 @@ export default {
         data: input,
       }),
 
-    createLegacyInstitution: (obj, { input }: { input: LegacyInstitution }) => {
-      try {
-        return getPrisma().legacyInstitution.create({
-          data: input,
-        })
-      } catch (err) {
-        handleError(err, 'pages/api/graphql.ts > resolvers.createLegacyInstitution()')
-      }
-    },
-
     createLegacyService: (obj, { input }: { input: LegacyService }) =>
       getPrisma().legacyService.create({
         data: input,
@@ -53,13 +42,6 @@ export default {
 
     deleteLegacyEntity: (obj, { id }: { id: string }) =>
       getPrisma().legacyEntity.delete({
-        where: {
-          id,
-        },
-      }),
-
-    deleteLegacyInstitution: (obj, { id }: { id: string }) =>
-      getPrisma().legacyInstitution.delete({
         where: {
           id,
         },
@@ -95,14 +77,6 @@ export default {
         },
       }),
 
-    updateLegacyInstitution: (obj, { id, input }: { id: string; input: Partial<LegacyInstitution> }) =>
-      getPrisma().legacyInstitution.update({
-        data: input as any,
-        where: {
-          id,
-        },
-      }),
-
     updateLegacyService: (obj, { id, input }: { id: string; input: Partial<LegacyService> }) =>
       getPrisma().legacyService.update({
         data: input,
@@ -119,6 +93,7 @@ export default {
         },
       }),
 
+    ...legacyInstitutions.mutation,
     ...legacyJobs.mutation,
   },
   Query: {
@@ -147,42 +122,6 @@ export default {
           id,
         },
       }),
-
-    getLegacyInstitution: (obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) => {
-      const where =
-        id !== undefined
-          ? {
-              id,
-            }
-          : {
-              slug,
-            }
-
-      return getPrisma().legacyInstitution.findUnique({
-        include: {
-          logoFile: true,
-          thumbnailFile: true,
-        },
-        where,
-      })
-    },
-
-    getLegacyInstitutions: (obj, { fromId, pageLength, query }: GetAllArgs) => {
-      const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
-      const searchFilter = buildPrismaSearchFilter(['fullName', 'title'], query)
-
-      return getPrisma().legacyInstitution.findMany({
-        include: {
-          logoFile: true,
-          thumbnailFile: true,
-        },
-        orderBy: {
-          title: 'asc',
-        },
-        ...paginationFilter,
-        ...searchFilter,
-      })
-    },
 
     getLegacyService: (obj, { id }: { id: string }) =>
       getPrisma().legacyService.findUnique({
@@ -218,6 +157,7 @@ export default {
       return getPrisma().user.findMany(searchFilter)
     },
 
+    ...legacyInstitutions.query,
     ...legacyJobs.query,
   },
 }

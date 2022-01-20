@@ -31,6 +31,17 @@ export const GET_ONE = gql`
 
       address
       challenges
+      files {
+        id
+
+        file {
+          id
+
+          title
+          url
+        }
+        section
+      }
       fullName
       hiringProcess
       isPublished

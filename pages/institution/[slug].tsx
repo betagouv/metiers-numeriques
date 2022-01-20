@@ -1,17 +1,44 @@
 import getPrisma from '@api/helpers/getPrisma'
+import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import renderLegacyInstitutionFile from '@app/helpers/renderLegacyInstitutionFile'
+import renderLegacyInstitutionSocialNetwork from '@app/helpers/renderLegacyInstitutionSocialNetwork'
 import renderMarkdown from '@app/helpers/renderMarkdown'
 import uncapitalizeFirstLetter from '@app/helpers/uncapitalizeFirstLetter'
+import { LegacyInstitutionSection } from '@prisma/client'
 import dayjs from 'dayjs'
 import Head from 'next/head'
+import * as R from 'ramda'
 
 import type { LegacyInstitutionWithRelation } from '@app/organisms/InstitutionCard'
 
-type JobPageProps = {
+const filterAddressFiles = R.filter(R.propEq('section', LegacyInstitutionSection.address))
+const filterJoinTeamFiles = R.filter(R.propEq('section', LegacyInstitutionSection.joinTeam))
+const filterKeyNumbersFiles = R.filter(R.propEq('section', LegacyInstitutionSection.keyNumbers))
+const filterMotivationFiles = R.filter(R.propEq('section', LegacyInstitutionSection.motivation))
+const filterOrganizationFiles = R.filter(R.propEq('section', LegacyInstitutionSection.organization))
+const filterProjectFiles = R.filter(R.propEq('section', LegacyInstitutionSection.project))
+const filterTestimonialFiles = R.filter(R.propEq('section', LegacyInstitutionSection.testimonial))
+const filterValueFiles = R.filter(R.propEq('section', LegacyInstitutionSection.value))
+
+type InsitutionPageProps = {
   institution: LegacyInstitutionWithRelation
 }
-export default function InstitutionPage({ institution }: JobPageProps) {
+export default function InstitutionPage({ institution }: InsitutionPageProps) {
+  // console.log(institution)
   const pageTitle = `${institution.title} | metiers.numerique.gouv.fr`
   const pageDescription = `Tout savoir sur ${uncapitalizeFirstLetter(institution.fullName)}.`
+  // console.log(institution)
+
+  const addressFiles = filterAddressFiles(institution.files || [])
+  const joinTeamFiles = filterJoinTeamFiles(institution.files || [])
+  const keyNumbersFiles = filterKeyNumbersFiles(institution.files || [])
+  const motivationFiles = filterMotivationFiles(institution.files || [])
+  const organizationFiles = filterOrganizationFiles(institution.files || [])
+  const projectFiles = filterProjectFiles(institution.files || [])
+  const testimonialFiles = filterTestimonialFiles(institution.files || [])
+  const valueFiles = filterValueFiles(institution.files || [])
+
+  const socialNetworkUrls = institution.socialNetworkUrls.length > 0 ? institution.socialNetworkUrls.slice(1) : []
 
   return (
     <>
@@ -43,6 +70,14 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <div className="fr-col-sm-12 fr-px-8w">
                   <h5>Raison d’être</h5>
                   {institution.motivation && renderMarkdown(institution.motivation)}
+
+                  {motivationFiles.length > 0 && (
+                    <div className="FileSection">
+                      {motivationFiles
+                        .filter(motivationFile => !/\.(jpg|png)$/.test(motivationFile.file.url))
+                        .map(renderLegacyInstitutionFile)}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -54,7 +89,13 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <div className="fr-col-md-3 fr-col-sm-12">
                   <h3>Valeurs</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.value)}</div>
+                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                  {renderMarkdown(institution.value)}
+
+                  {valueFiles.length > 0 && (
+                    <div className="FileSection">{valueFiles.map(renderLegacyInstitutionFile)}</div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -81,7 +122,13 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <div className="fr-col-md-3 fr-col-sm-12">
                   <h3>Projets</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.project)}</div>
+                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                  {renderMarkdown(institution.project)}
+
+                  {projectFiles.length > 0 && (
+                    <div className="FileSection">{projectFiles.map(renderLegacyInstitutionFile)}</div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -90,7 +137,13 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <div className="fr-col-md-3 fr-col-sm-12">
                   <h3>Organisation</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.organization)}</div>
+                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                  {renderMarkdown(institution.organization)}
+
+                  {organizationFiles.length > 0 && (
+                    <div className="FileSection">{organizationFiles.map(renderLegacyInstitutionFile)}</div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -102,6 +155,10 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
                   <p>Découvrez le témoignage de nos agents:</p>
                   {renderMarkdown(institution.testimonial)}
+
+                  {testimonialFiles.length > 0 && (
+                    <div className="FileSection">{testimonialFiles.map(renderLegacyInstitutionFile)}</div>
+                  )}
                 </div>
               </div>
             )}
@@ -129,7 +186,13 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <div className="fr-col-md-3 fr-col-sm-12">
                   <h3>Nous rejoindre</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.joinTeam)}</div>
+                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                  {renderMarkdown(institution.joinTeam)}
+
+                  {joinTeamFiles.length > 0 && (
+                    <div className="FileSection">{joinTeamFiles.map(renderLegacyInstitutionFile)}</div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -141,7 +204,13 @@ export default function InstitutionPage({ institution }: JobPageProps) {
               <div className="fr-col-md-3 fr-col-sm-12">
                 <h5>Chiffres clés</h5>
               </div>
-              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.keyNumbers)}</div>
+              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                {renderMarkdown(institution.keyNumbers)}
+
+                {keyNumbersFiles.length > 0 && (
+                  <div className="FileSection">{keyNumbersFiles.map(renderLegacyInstitutionFile)}</div>
+                )}
+              </div>
             </div>
           )}
 
@@ -151,6 +220,68 @@ export default function InstitutionPage({ institution }: JobPageProps) {
                 <h5>Agenda</h5>
               </div>
               <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.schedule)}</div>
+            </div>
+          )}
+
+          {(institution.websiteUrls.length > 0 || socialNetworkUrls.length > 0) && (
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-md-3 fr-col-sm-12">
+                <h5>Sites & réseaux</h5>
+              </div>
+              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                {institution.websiteUrls.length > 0 && (
+                  <ul>
+                    {institution.websiteUrls.map(websiteUrl => (
+                      <li key={generateKeyFromValue(websiteUrl)}>
+                        <a href={websiteUrl} rel="noopener noreferrer" target="_blank">
+                          {websiteUrl}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {socialNetworkUrls.length > 0 && (
+                  <p className="SocialNetworkParagraph">
+                    {socialNetworkUrls.map(renderLegacyInstitutionSocialNetwork)}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {(institution.address || addressFiles.length > 0) && (
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-md-3 fr-col-sm-12">
+                <h5>Adresses</h5>
+              </div>
+              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                {institution.address && renderMarkdown(institution.address)}
+
+                {addressFiles.map(addressFile => {
+                  if (addressFile.file.url.search('google.com') !== -1) {
+                    return (
+                      <p key={addressFile.file.id}>
+                        <a href={addressFile.file.url} rel="noopener noreferrer" target="_blank">
+                          Voir sur Google maps
+                        </a>
+                      </p>
+                    )
+                  }
+
+                  return (
+                    <p key={addressFile.file.id}>
+                      <img
+                        alt={addressFile.file.title}
+                        src={addressFile.file.url}
+                        style={{
+                          width: '100%',
+                        }}
+                      />
+                    </p>
+                  )
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -178,6 +309,11 @@ export async function getStaticProps({ params: { slug } }) {
   const prisma = getPrisma()
   const institution = await prisma.legacyInstitution.findUnique({
     include: {
+      files: {
+        include: {
+          file: true,
+        },
+      },
       logoFile: true,
       thumbnailFile: true,
     },
@@ -197,6 +333,15 @@ export async function getStaticProps({ params: { slug } }) {
     props: {
       institution: {
         ...institution,
+        files: institution.files.map(file => ({
+          ...file,
+          assignedAt: dayjs(file.assignedAt).toISOString(),
+          file: {
+            ...file.file,
+            createdAt: dayjs(file.file.createdAt).toISOString(),
+            updatedAt: dayjs(file.file.updatedAt).toISOString(),
+          },
+        })),
         logoFile: institution.logoFile
           ? {
               ...institution.logoFile,

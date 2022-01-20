@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import type { File, LegacyInstitution } from '@prisma/client'
+import type { File, FilesOnLegacyInstitutions, LegacyInstitution } from '@prisma/client'
 
 declare global {
   namespace JSX {
@@ -10,7 +10,12 @@ declare global {
   }
 }
 
+export type FilesOnLegacyInstitutionsWithRelation = FilesOnLegacyInstitutions & {
+  file: File
+}
+
 export type LegacyInstitutionWithRelation = LegacyInstitution & {
+  files?: FilesOnLegacyInstitutionsWithRelation[]
   logoFile?: File
   thumbnailFile?: File
 }

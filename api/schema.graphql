@@ -71,6 +71,7 @@ type LegacyInstitution {
 
   address: String
   challenges: String
+  files: [FilesOnLegacyInstitutions]
   fullName: String
   hiringProcess: String
   isPublished: Boolean
@@ -90,8 +91,13 @@ type LegacyInstitution {
   title: String
   value: String
   websiteUrls: [String]
+}
 
-  files: [File]
+type FilesOnLegacyInstitutions {
+  legacyInstitutionId: String!
+  file: File!
+  section: String!
+  assignedAt: DateTime!
 }
 
 input LegacyInstitutionInput {
