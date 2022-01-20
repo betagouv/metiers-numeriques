@@ -1,9 +1,10 @@
 import { VerticalMenu } from '@singularity/core'
 import MaterialLogoutOutlined from '@singularity/core/icons/material/MaterialLogoutOutlined'
 import { useAuth } from 'nexauth'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+
+import Link from '../atoms/Link'
 
 const Box = styled.div`
   background-color: #293042;

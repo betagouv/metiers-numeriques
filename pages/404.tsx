@@ -1,5 +1,5 @@
+import Link from '@app/atoms/Link'
 import Head from 'next/head'
-import Link from 'next/link'
 
 export default function NotFoundPage() {
   const pageTitle = 'Page non trouvée | metiers.numerique.gouv.fr'

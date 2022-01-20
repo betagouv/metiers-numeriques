@@ -1,7 +1,7 @@
-import LinkText from '@app/atoms/LinkText'
-import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+
+import Link from '../atoms/Link'
 
 const BackToTopButton = styled.button`
   background-color: #2943d1;
@@ -112,13 +112,13 @@ export default function Footer() {
           <div className="fr-footer__bottom">
             <ul className="fr-footer__bottom-list">
               <li className="fr-footer__bottom-item">
-                <Link href="/mentions-legales">
-                  <LinkText className="fr-footer__bottom-link">Mentions légales</LinkText>
+                <Link className="fr-footer__bottom-link" href="/mentions-legales">
+                  Mentions légales
                 </Link>
               </li>
               <li className="fr-footer__bottom-item">
-                <Link href="/donnees-personnelles-et-cookies">
-                  <LinkText className="fr-footer__bottom-link">Données personnelles et cookies</LinkText>
+                <Link className="fr-footer__bottom-link" href="/donnees-personnelles-et-cookies">
+                  Données personnelles et cookies
                 </Link>
               </li>
               <li className="fr-footer__bottom-item">
