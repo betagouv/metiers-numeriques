@@ -293,7 +293,6 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 export async function getStaticPaths() {
   const prisma = getPrisma()
   const legacyInstitutions = await prisma.legacyInstitution.findMany()
-  await prisma.$disconnect()
 
   const paths = legacyInstitutions.map(({ slug }) => ({
     params: { slug },
@@ -321,7 +320,6 @@ export async function getStaticProps({ params: { slug } }) {
       slug,
     },
   })
-  await prisma.$disconnect()
 
   if (institution === null) {
     return {

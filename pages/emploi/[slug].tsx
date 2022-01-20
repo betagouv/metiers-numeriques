@@ -264,7 +264,6 @@ export default function JobPage({ job }: JobPageProps) {
 export async function getStaticPaths() {
   const prisma = getPrisma()
   const legacyJobs = await prisma.legacyJob.findMany()
-  await prisma.$disconnect()
 
   const paths = legacyJobs.map(({ slug }) => ({
     params: { slug },
@@ -290,7 +289,6 @@ export async function getStaticProps({ params: { slug } }) {
       slug,
     },
   })
-  await prisma.$disconnect()
 
   if (job === null) {
     return {
