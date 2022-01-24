@@ -64,8 +64,8 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <Footer />
 
         <>
-          <script defer src="/js/externals/matomo.js" type="text/javascript" />
-          <script defer src="/js/externals/crisp.js" type="text/javascript" />
+          <script defer src="/js/matomo.js" type="text/javascript" />
+          <script defer src="/js/crisp.js" type="text/javascript" />
         </>
       </>
     )
