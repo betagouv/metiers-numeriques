@@ -15,6 +15,6 @@ export default function renderMarkdown(markdownSource: string) {
 
     return content
   } catch (err) {
-    handleError(err, 'app/helpers/')
+    handleError(err, 'app/helpers/renderMarkdown()')
   }
 }

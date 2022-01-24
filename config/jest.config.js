@@ -7,8 +7,14 @@ module.exports = {
       tsconfig: './tsconfig.json',
     },
   },
+  moduleNameMapper: {
+    '^@api/(.*)$': '<rootDir>/api/$1',
+    '^@app/(.*)$': '<rootDir>/app/$1',
+    '^@common/(.*)$': '<rootDir>/common/$1',
+  },
   preset: 'ts-jest',
   rootDir: '..',
   setupFiles: ['dotenv/config'],
+  setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'],
   testMatch: ['**/*.test.ts'],
 }

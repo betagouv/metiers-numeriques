@@ -1,23 +1,8 @@
 /* eslint-disable max-classes-per-file, no-console */
 
-import ß from 'bhala'
-
 import handleError from '../handleError'
 
 describe('api/helpers/handleError()', () => {
-  const consoleError = console.error
-  const bhalaError = ß.error
-
-  beforeAll(() => {
-    console.error = jest.fn()
-    ß.error = jest.fn()
-  })
-
-  afterAll(() => {
-    console.error = consoleError
-    ß.error = bhalaError
-  })
-
   test('with a string error', () => {
     const error = 'A string error.'
 

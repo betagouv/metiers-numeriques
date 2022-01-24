@@ -11,6 +11,10 @@ daysjs.locale('fr')
 
 export default function humanizeDate(isoDate: string): string {
   try {
+    if (typeof isoDate !== 'string' || !daysjs(isoDate).isValid()) {
+      return ''
+    }
+
     return capitalizeFirstLetter(daysjs(isoDate).fromNow())
   } catch (err) {
     handleError(err, 'app/helpers/humanizeDate()')

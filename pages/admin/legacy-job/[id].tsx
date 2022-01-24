@@ -2,8 +2,8 @@ import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Separator from '@app/atoms/Separator'
 import Title from '@app/atoms/Title'
-import normalizeDateForDateInput from '@app/helpers/normalizeDateForDateInput'
-import normalizeDateForDateTimeInput from '@app/helpers/normalizeDateForDateTimeInput'
+import normalizeDateFromDateInput from '@app/helpers/normalizeDateFromDateInput'
+import normalizeDateFromDateTimeInput from '@app/helpers/normalizeDateFromDateTimeInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL } from '@common/constants'
@@ -90,8 +90,8 @@ export default function LegacyJobEditorPage() {
       ...getLegacyJobResult.data.getLegacyJob,
     }
 
-    newInitialValues.limitDate = normalizeDateForDateInput(newInitialValues.limitDate)
-    newInitialValues.updatedAt = normalizeDateForDateTimeInput(newInitialValues.updatedAt)
+    newInitialValues.limitDate = normalizeDateFromDateInput(newInitialValues.limitDate)
+    newInitialValues.updatedAt = normalizeDateFromDateTimeInput(newInitialValues.updatedAt)
 
     if (newInitialValues.legacyService !== null) {
       newInitialValues.legacyServiceAsOption = {

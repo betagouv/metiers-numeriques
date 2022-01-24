@@ -1,3 +1,5 @@
+import handleError from '@common/helpers/handleError'
+
 const DEPARTEMENTS = [
   {
     name: 'Ain',
@@ -507,12 +509,20 @@ const DEPARTEMENTS = [
 ]
 
 export default function getRegionNameFromZipCode(zipCode: string): string | undefined {
-  const normalizedZipCode = zipCode.length === 4 ? `0${zipCode}` : zipCode
+  try {
+    if (zipCode.length < 4 || zipCode.length > 5) {
+      return
+    }
 
-  const foundDepartement = DEPARTEMENTS.find(({ number }) => normalizedZipCode.startsWith(number))
-  if (foundDepartement === undefined) {
-    return
+    const normalizedZipCode = zipCode.length === 4 ? `0${zipCode}` : zipCode
+
+    const foundDepartement = DEPARTEMENTS.find(({ number }) => normalizedZipCode.startsWith(number))
+    if (foundDepartement === undefined) {
+      return
+    }
+
+    return foundDepartement.regionName
+  } catch (err) {
+    handleError(err, 'app/helpers/getRegionNameFromZipCode()')
   }
-
-  return foundDepartement.regionName
 }
