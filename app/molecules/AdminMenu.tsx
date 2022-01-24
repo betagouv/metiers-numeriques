@@ -15,6 +15,10 @@ const Box = styled.div`
   min-width: 16rem;
   padding: ${p => p.theme.padding.layout.medium};
   position: fixed;
+
+  a {
+    text-decoration: none;
+  }
 `
 
 const MenuTitle = styled.h4`

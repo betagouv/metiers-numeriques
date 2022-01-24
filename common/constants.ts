@@ -56,9 +56,9 @@ export const FILE_TYPE: Record<FileTypeKey, FileTypeValue> = {
 }
 
 export const JOB_STATE_LABEL: Record<JobState, String> = {
+  ARCHIVED: 'Archivée',
   DRAFT: 'Brouillon',
-  EXPIRED: 'Expiré',
-  PUBLISHED: 'Publié',
+  PUBLISHED: 'Publiée',
 }
 
 export const USER_ROLE: Record<Common.User.Role, Common.User.Role> = {

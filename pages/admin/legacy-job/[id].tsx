@@ -30,6 +30,7 @@ const JOB_STATES_AS_OPTIONS = R.pipe(
 
 const FormSchema = Yup.object().shape({
   limitDate: Yup.string().required(`La date limite est obligatoire.`),
+  stateAsOption: Yup.object().required(`L’état est obligatoire.`),
   title: Yup.string().required(`L’intitulé est obligatoire.`),
 })
 
@@ -140,6 +141,7 @@ export default function LegacyJobEditorPage() {
     if (isNew) {
       input.id = uuid()
       input.slug = slugify(`${input.title}-${input.id}`)
+      input.reference = `${JobSource.MNN}-${input.id}`
       input.source = JobSource.MNN
     }
 
