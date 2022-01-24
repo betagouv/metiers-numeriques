@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import getRegionNameFromZipCode from '../getRegionNameFromZipCode'
 
 describe('app/helpers/getRegionNameFromZipCode()', () => {
