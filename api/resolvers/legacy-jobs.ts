@@ -12,81 +12,117 @@ type GetAllArgs = {
 }
 
 export const mutation = {
-  createLegacyJob: (obj, { input }: { input: LegacyJob }) => {
+  createLegacyJob: async (obj, { input }: { input: LegacyJob }) => {
     try {
-      return getPrisma().legacyJob.create({
+      const result = await getPrisma().legacyJob.create({
         data: input,
       })
+
+      return result
     } catch (err) {
-      handleError(err, 'api/resolvers/legacy-jobs.ts > createLegacyJob()')
+      handleError(err, 'api/resolvers/legacy-jobs.ts > mutation.createLegacyJob()')
 
       return {}
     }
   },
 
-  deleteLegacyJob: (obj, { id }: { id: string }) =>
-    getPrisma().legacyJob.delete({
-      where: {
-        id,
-      },
-    }),
+  deleteLegacyJob: async (obj, { id }: { id: string }) => {
+    try {
+      const result = await getPrisma().legacyJob.delete({
+        where: {
+          id,
+        },
+      })
 
-  updateLegacyJob: (obj, { id, input }: { id: string; input: Partial<LegacyJob> }) =>
-    getPrisma().legacyJob.update({
-      data: input,
-      where: {
-        id,
-      },
-    }),
+      return result
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-jobs.ts > mutation.deleteLegacyJob()')
+
+      return {}
+    }
+  },
+
+  updateLegacyJob: async (obj, { id, input }: { id: string; input: Partial<LegacyJob> }) => {
+    try {
+      const result = await getPrisma().legacyJob.update({
+        data: input,
+        where: {
+          id,
+        },
+      })
+
+      return result
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-jobs.ts > mutation.updateLegacyJob()')
+
+      return {}
+    }
+  },
 }
 
 export const query = {
-  getLegacyJob: (obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) => {
-    const where =
-      id !== undefined
-        ? {
-            id,
-          }
-        : {
-            slug,
-          }
+  getLegacyJob: async (obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) => {
+    try {
+      const where =
+        id !== undefined
+          ? {
+              id,
+            }
+          : {
+              slug,
+            }
 
-    return getPrisma().legacyJob.findUnique({
-      include: {
-        legacyService: {
-          include: {
-            legacyEntity: true,
+      const result = await getPrisma().legacyJob.findUnique({
+        include: {
+          legacyService: {
+            include: {
+              legacyEntity: true,
+            },
           },
         },
-      },
-      where,
-    })
+        where,
+      })
+
+      return result
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-jobs.ts > query.getLegacyJob()')
+
+      return {}
+    }
   },
 
-  getLegacyJobs: (obj, { fromId, pageLength, query }: GetAllArgs) => {
-    const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
-    const maybeSearchFilter = buildPrismaSearchFilter(['title'], query)
-    const searchFilter = R.isEmpty(maybeSearchFilter)
-      ? {
-          where: {
-            source: JobSource.MNN,
-          },
-        }
-      : maybeSearchFilter
+  getLegacyJobs: async (obj, { fromId, pageLength, query }: GetAllArgs) => {
+    try {
+      const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
+      const maybeSearchFilter = buildPrismaSearchFilter(['title'], query)
+      const searchFilter = R.isEmpty(maybeSearchFilter)
+        ? {
+            where: {
+              source: JobSource.MNN,
+            },
+          }
+        : maybeSearchFilter
 
-    return getPrisma().legacyJob.findMany({
-      include: {
-        legacyService: {
-          include: {
-            legacyEntity: true,
+      const result = await getPrisma().legacyJob.findMany({
+        include: {
+          legacyService: {
+            include: {
+              legacyEntity: true,
+            },
           },
         },
-      },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-      ...paginationFilter,
-      ...searchFilter,
-    })
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        ...paginationFilter,
+        ...searchFilter,
+      })
+
+      return result
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-jobs.ts > query.getLegacyJobs()')
+
+      return {}
+    }
   },
 }

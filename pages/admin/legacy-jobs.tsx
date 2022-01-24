@@ -1,9 +1,10 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import humanizeDate from '@app/helpers/humanizeDate'
+import normalizeDate from '@app/helpers/normalizeDate'
 import DeletionModal from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
+import { JOB_STATE_LABEL } from '@common/constants'
 import { Button, Card, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
 import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
@@ -26,16 +27,17 @@ const BASE_COLUMNS: TableColumnProps[] = [
     key: 'title',
     label: 'Intitulé',
   },
-  // {
-  //   isSortable: true,
-  //   key: 'legacyService.name',
-  //   label: 'Service',
-  // },
+  {
+    isSortable: true,
+    key: 'state',
+    label: 'État',
+    transform: ({ state }) => JOB_STATE_LABEL[state],
+  },
   {
     isSortable: true,
     key: 'updatedAt',
     label: 'Mise à jour',
-    transform: ({ updatedAt }) => humanizeDate(updatedAt),
+    transform: ({ updatedAt }) => normalizeDate(updatedAt),
   },
 ]
 

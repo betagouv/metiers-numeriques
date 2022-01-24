@@ -32,8 +32,8 @@ enum JobSource {
 }
 
 enum JobState {
+  ARCHIVED
   DRAFT
-  EXPIRED
   PUBLISHED
 }
 
