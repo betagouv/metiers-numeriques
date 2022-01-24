@@ -15,8 +15,7 @@
     "paths": {
       "@api/*": ["api/*"],
       "@app/*": ["app/*"],
-      "@common/*": ["common/*"],
-      "@legacy/*": ["src/*"]
+      "@common/*": ["common/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

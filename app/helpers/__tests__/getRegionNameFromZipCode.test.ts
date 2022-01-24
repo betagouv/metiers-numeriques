@@ -28,4 +28,36 @@ describe('app/helpers/getRegionNameFromZipCode()', () => {
 
     expect(result).toEqual('La Réunion')
   })
+
+  test(`with "00000"`, () => {
+    const zipCode = '00000'
+
+    const result = getRegionNameFromZipCode(zipCode)
+
+    expect(result).toBeUndefined()
+  })
+
+  test(`with "123"`, () => {
+    const zipCode = '123'
+
+    const result = getRegionNameFromZipCode(zipCode)
+
+    expect(result).toBeUndefined()
+  })
+
+  test(`with "123456"`, () => {
+    const zipCode = '123456'
+
+    const result = getRegionNameFromZipCode(zipCode)
+
+    expect(result).toBeUndefined()
+  })
+
+  test(`with undefined`, () => {
+    const zipCode = undefined
+
+    const result = getRegionNameFromZipCode(zipCode as any)
+
+    expect(result).toBeUndefined()
+  })
 })

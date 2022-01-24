@@ -4,15 +4,15 @@ import daysjs from 'dayjs'
 /**
  * Normalize an ISO date string (i.e.: `2022-01-03T08:31:00.000Z`) for a date input (i.e.: `2022-01-03`).
  */
-export default function normalizeDateForDateTimeInput(isoDate: string | null): string | null {
+export default function normalizeDateFromDateInput(isoDate: string | null): string | null {
   try {
     if (isoDate === null) {
       return null
     }
 
-    return daysjs(isoDate).format('YYYY-MM-DDTHH:mm')
+    return daysjs(isoDate).format('YYYY-MM-DD')
   } catch (err) {
-    handleError(err, 'app/helpers/normalizeDateForDateTimeInput()')
+    handleError(err, 'app/helpers/normalizeDateFromDateInput()')
 
     return ''
   }

@@ -1,8 +1,8 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import normalizeDateForDateInput from '@app/helpers/normalizeDateForDateInput'
-import normalizeDateForDateTimeInput from '@app/helpers/normalizeDateForDateTimeInput'
+import normalizeDateFromDateInput from '@app/helpers/normalizeDateFromDateInput'
+import normalizeDateFromDateTimeInput from '@app/helpers/normalizeDateFromDateTimeInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { Card, Field } from '@singularity/core'
@@ -147,8 +147,8 @@ export default function LegacyServiceEditorPage() {
       ...getLegacyServiceResult.data.getLegacyService,
     }
 
-    newInitialValues.limitDate = normalizeDateForDateInput(newInitialValues.limitDate)
-    newInitialValues.updatedAt = normalizeDateForDateTimeInput(newInitialValues.updatedAt)
+    newInitialValues.limitDate = normalizeDateFromDateInput(newInitialValues.limitDate)
+    newInitialValues.updatedAt = normalizeDateFromDateTimeInput(newInitialValues.updatedAt)
 
     if (newInitialValues.legacyEntity !== null) {
       newInitialValues.legacyEntityAsOption = {
