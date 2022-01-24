@@ -1,5 +1,6 @@
 module.exports = {
   clearMocks: true,
+  collectCoverageFrom: ['<rootDir>/{api,app,common}/{helpers,hooks,libs}/**/*.ts'],
   coverageProvider: 'v8',
   globals: {
     'ts-jest': {
@@ -8,5 +9,6 @@ module.exports = {
   },
   preset: 'ts-jest',
   rootDir: '..',
-  testMatch: ['!**/*.e2e.[tj]s?(x)', '!**/*.inte.test.[tj]s?(x)', '**/*.unit.test.[tj]s?(x)'],
+  setupFiles: ['dotenv/config'],
+  testMatch: ['**/*.test.ts'],
 }

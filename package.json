@@ -24,7 +24,7 @@
     "test:lint": "eslint --ext js,ts,tsx .",
     "test:e2e": "playwright test -c ./config/playwright.config.ts",
     "test:type": "tsc",
-    "test:unit": "jest --config=./config/jest.unit.config.js",
+    "test:unit": "jest --config=./config/jest.config.js",
     "test:unit:watch": "yarn test:unit --watch"
   },
   "prisma": {
