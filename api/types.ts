@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export type HandlerWithAuth<T = any> = (req: RequestWithAuth, res: NextApiResponse<T>) => void | Promise<void>
 

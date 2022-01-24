@@ -1,5 +1,4 @@
 import { USER_ROLE } from '@common/constants'
-import { User } from '@prisma/client'
 import { AuthenticationError, ForbiddenError } from 'apollo-server-micro'
 import { rule } from 'graphql-shield'
 

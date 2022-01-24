@@ -12,7 +12,6 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          cache: yarn
           node-version: 16
       - name: Install
         run: yarn
@@ -28,11 +27,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          cache: yarn
           node-version: 16
       - name: Install
         run: yarn
-      - name: Lint
+      - name: Prepare
+        run: yarn setup
+      - name: Type
         run: yarn test:type
 
   test_unit:
@@ -44,7 +44,6 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          cache: yarn
           node-version: 16
       - name: Install
         run: yarn
@@ -86,17 +85,14 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-            ./node_modules
-            !./node_modules/.prisma
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.0
         with:
-          cache: yarn
           node-version: 16
       - name: Install
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-        run: yarn --frozen-lockfile --production=false
+        run: yarn
       - name: Install Playwright browsers
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         run: |

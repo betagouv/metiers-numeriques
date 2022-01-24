@@ -114,11 +114,11 @@ dist
 .vscode-test
 
 # yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
+# .yarn/cache
+# .yarn/unplugged
+# .yarn/build-state.yml
+# .yarn/install-state.gz
+# .pnp.*
 
 ### Node Patch ###
 # Serverless Webpack directories
@@ -129,6 +129,18 @@ dist
 
 # SvelteKit build / generate output
 .svelte-kit
+
+################################################################################
+# Yarn 2
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 ################################################################################
 # Custom

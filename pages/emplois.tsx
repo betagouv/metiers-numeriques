@@ -14,7 +14,7 @@ import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
 
 const PAGE_LENGTH = 10
 
-const getJobIds = R.map(R.prop('id'))
+const getJobIds = R.map<LegacyJobWithRelation, string>(R.prop('id'))
 const excludeDuplicateJobs = (existingJobIds: string[], jobs: LegacyJobWithRelation[]): LegacyJobWithRelation[] =>
   R.reject((job: LegacyJobWithRelation) => existingJobIds.includes(job.id))(jobs)
 

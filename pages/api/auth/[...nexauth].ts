@@ -1,6 +1,7 @@
 import getPrisma from '@api/helpers/getPrisma'
-import { User } from '@prisma/client'
 import { Nexauth, PrismaAdapter } from 'nexauth'
+
+import type { User } from '@prisma/client'
 
 export default Nexauth<User>({
   adapter: new PrismaAdapter({

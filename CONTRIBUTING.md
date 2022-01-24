@@ -67,7 +67,6 @@ common/             # Source files that are common to all parts (API & Applicati
 pages/              # URL path entrypoint file (natively handled by Next.js)
 public/             # Public assets (natively handled by Next.js)
 scripts/            # CI and enviroment-related scripts
-src/                # Legacy express.js code base
 ```
 
 ### Stack
@@ -123,6 +122,8 @@ yarn
   "eslint.codeActionsOnSave.mode": "all",
   "eslint.format.enable": true,
   "eslint.packageManager": "yarn",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
