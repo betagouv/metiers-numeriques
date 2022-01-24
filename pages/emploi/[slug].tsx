@@ -51,7 +51,7 @@ export default function JobPage({ job }: JobPageProps) {
                 </div>
               </div>
             )}
-            {!job.legacyService?.legacyEntity && job.department.length && (
+            {!job.legacyService?.legacyEntity && Boolean(job.department.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-md-3 fr-col-sm-12 fr-pl-8w">Entité parente</div>
                 <div className="fr-col-md-9 fr-col-sm-12">
@@ -84,7 +84,7 @@ export default function JobPage({ job }: JobPageProps) {
               </div>
             )}
 
-            {job.locations.length && (
+            {Boolean(job.locations.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-md-3 fr-col-sm-12 fr-pl-8w">Localisation</div>
                 <div className="fr-col-md-9 fr-col-sm-12">
@@ -95,7 +95,7 @@ export default function JobPage({ job }: JobPageProps) {
               </div>
             )}
 
-            {job.openedToContractTypes.length && (
+            {Boolean(job.openedToContractTypes.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-md-3 fr-col-sm-12 fr-pl-8w">Localisation</div>
                 <div className="fr-col-md-9 fr-col-sm-12">
@@ -113,7 +113,7 @@ export default function JobPage({ job }: JobPageProps) {
               </div>
             )}
 
-            {job.experiences.length && (
+            {Boolean(job.experiences.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-md-3 fr-col-sm-12 fr-pl-8w">Expérience</div>
                 <div className="fr-col-md-9 fr-col-sm-12">
