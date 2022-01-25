@@ -1,25 +1,30 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetLegacyInstitutions($fromId: String, $pageLength: Int, $query: String) {
-    getLegacyInstitutions(fromId: $fromId, pageLength: $pageLength, query: $query) {
-      id
-
-      fullName
-      logoFile {
+  query GetLegacyInstitutions($pageIndex: Int!, $perPage: Int!, $query: String) {
+    getLegacyInstitutions(pageIndex: $pageIndex, perPage: $perPage, query: $query) {
+      count
+      data {
         id
 
-        title
-        url
-      }
-      slug
-      thumbnailFile {
-        id
+        fullName
+        logoFile {
+          id
 
+          title
+          url
+        }
+        slug
+        thumbnailFile {
+          id
+
+          title
+          url
+        }
         title
-        url
       }
-      title
+      index
+      length
     }
   }
 `

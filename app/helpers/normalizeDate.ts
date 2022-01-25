@@ -1,9 +1,11 @@
 import handleError from '@common/helpers/handleError'
 import daysjs from 'dayjs'
 
-export default function normalizeDate(date: Date): string {
+function normalizeDate(isoDate: string): string
+function normalizeDate(date: Date): string
+function normalizeDate(date: string | Date): string {
   try {
-    if (!(date instanceof Date)) {
+    if ((!(date instanceof Date) && typeof date !== 'string') || !daysjs(date).isValid) {
       return ''
     }
 
@@ -14,3 +16,5 @@ export default function normalizeDate(date: Date): string {
     return ''
   }
 }
+
+export { normalizeDate }

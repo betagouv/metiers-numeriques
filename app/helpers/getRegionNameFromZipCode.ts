@@ -1,6 +1,12 @@
 import handleError from '@common/helpers/handleError'
 
-const DEPARTEMENTS = [
+import type { REGION } from '@common/constants'
+
+const DEPARTEMENTS: Array<{
+  name: string
+  number: string
+  regionName: keyof typeof REGION
+}> = [
   {
     name: 'Ain',
     number: '01',

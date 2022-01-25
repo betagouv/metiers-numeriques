@@ -1,15 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetFiles($fromId: String, $pageLength: Int, $query: String) {
-    getFiles(fromId: $fromId, pageLength: $pageLength, query: $query) {
-      id
+  query GetFiles($pageIndex: Int!, $perPage: Int!, $query: String) {
+    getFiles(pageIndex: $pageIndex, perPage: $perPage, query: $query) {
+      count
+      data {
+        id
 
-      createdAt
-      title
-      type
-      updatedAt
-      url
+        createdAt
+        title
+        type
+        updatedAt
+        url
+      }
+      index
+      length
     }
   }
 `

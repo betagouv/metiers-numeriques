@@ -3,7 +3,7 @@ import ß from 'bhala'
 
 import type { PrismaClient } from '@prisma/client'
 
-export default async function initializeJobsState(prisma: PrismaClient) {
+export async function initializeLegacyJobsState(prisma: PrismaClient) {
   const nonDraftJobsCount = await prisma.legacyJob.count({
     where: {
       state: JobState.PUBLISHED,
@@ -14,12 +14,12 @@ export default async function initializeJobsState(prisma: PrismaClient) {
     return
   }
 
-  ß.info('Initializing jobs state…')
+  ß.info('Initializing legacy jobs state…')
   await prisma.legacyJob.updateMany({
     data: {
       state: JobState.PUBLISHED,
     },
   })
 
-  ß.success('Jobs state initialized.')
+  ß.success('Legacy jobs state initialized.')
 }

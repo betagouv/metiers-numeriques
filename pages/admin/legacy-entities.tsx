@@ -1,7 +1,8 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import DeletionModal from '@app/organisms/DeletionModal'
+import { define } from '@app/helpers/define'
+import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { Button, Card, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
@@ -11,6 +12,7 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useRef, useState } from 'react'
 
+import type { GetAllResponse } from '@api/resolvers/types'
 import type { LegacyEntity } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
@@ -27,27 +29,46 @@ const BASE_COLUMNS: TableColumnProps[] = [
   },
 ]
 
+const PER_PAGE = 10
+
 export default function AdminLegacyEntityListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
   const [deleteLegacyEntity] = useMutation(queries.legacyEntity.DELETE_ONE)
-  const getLegacyEntitiesResult = useQuery(queries.legacyEntity.GET_ALL, {
-    pollInterval: 1000,
-  })
   const router = useRouter()
 
+  const getLegacyEntitiesResult = useQuery<
+    {
+      getLegacyEntities: GetAllResponse<LegacyEntity>
+    },
+    any
+  >(queries.legacyEntity.GET_ALL, {
+    pollInterval: 5000,
+    variables: {
+      pageIndex: 0,
+      perPage: PER_PAGE,
+    },
+  })
+
   const isLoading = getLegacyEntitiesResult.loading
-  const legacyEntities =
-    isLoading || getLegacyEntitiesResult.error ? [] : getLegacyEntitiesResult.data.getLegacyEntities
+  const legacyEntitiesResult: GetAllResponse<LegacyEntity> =
+    isLoading || getLegacyEntitiesResult.error || getLegacyEntitiesResult.data === undefined
+      ? {
+          count: 1,
+          data: [],
+          index: 0,
+          length: 0,
+        }
+      : getLegacyEntitiesResult.data.getLegacyEntities
 
   const closeDeletionModal = () => {
     setHasDeletionModal(false)
   }
 
   const confirmDeletion = async (id: string) => {
-    const legacyEntity = R.find<LegacyEntity>(R.propEq('id', id))(legacyEntities)
+    const legacyEntity = R.find<LegacyEntity>(R.propEq('id', id))(legacyEntitiesResult.data)
     if (legacyEntity === undefined) {
       return
     }
@@ -71,14 +92,16 @@ export default function AdminLegacyEntityListPage() {
     router.push(`/admin/legacy-entity/${id}`)
   }
 
-  const search = debounce(async () => {
+  const query = debounce(async (pageIndex: number) => {
     if ($searchInput.current === null) {
       return
     }
 
-    const query = $searchInput.current.value
+    const query = define($searchInput.current.value)
 
     getLegacyEntitiesResult.refetch({
+      pageIndex,
+      perPage: PER_PAGE,
       query,
     })
   }, 250)
@@ -112,9 +135,19 @@ export default function AdminLegacyEntityListPage() {
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={search} placeholder="Rechercher une entité (legacy)" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une entité (legacy)" />
 
-        <Table columns={columns} data={legacyEntities} defaultSortedKey="name" isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={legacyEntitiesResult.data}
+          defaultSortedKey="updatedAt"
+          defaultSortedKeyIsDesc
+          isLoading={isLoading}
+          onPageChange={query as any}
+          pageCount={legacyEntitiesResult.count}
+          pageIndex={legacyEntitiesResult.index}
+          perPage={PER_PAGE}
+        />
       </Card>
 
       {hasDeletionModal && (

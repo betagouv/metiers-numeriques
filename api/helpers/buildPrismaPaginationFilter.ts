@@ -1,22 +1,21 @@
 /**
  * @see  https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination
  */
-export default function buildPrismaPaginationFilter(pageLength?: number, fromId?: string): any {
-  if (pageLength === undefined) {
+export default function buildPrismaPaginationFilter(perPage?: number, pageIndex?: number): any {
+  if (perPage === undefined) {
     return {}
   }
 
-  if (fromId === undefined) {
+  if (pageIndex === undefined) {
     return {
-      take: pageLength,
+      take: perPage,
     }
   }
 
+  const skip = pageIndex * perPage
+
   return {
-    cursor: {
-      id: fromId,
-    },
-    skip: 1,
-    take: pageLength,
+    skip,
+    take: perPage,
   }
 }

@@ -1,22 +1,27 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetLegacyServices($fromId: String, $pageLength: Int, $query: String) {
-    getLegacyServices(fromId: $fromId, pageLength: $pageLength, query: $query) {
-      id
-
-      fullName
-      name
-      region
-      shortName
-      url
-
-      legacyEntity {
+  query GetLegacyServices($pageIndex: Int!, $perPage: Int!, $query: String) {
+    getLegacyServices(pageIndex: $pageIndex, perPage: $perPage, query: $query) {
+      count
+      data {
         id
 
         fullName
         name
+        region
+        shortName
+        url
+
+        legacyEntity {
+          id
+
+          fullName
+          name
+        }
       }
+      index
+      length
     }
   }
 `

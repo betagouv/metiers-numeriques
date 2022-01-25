@@ -1,7 +1,8 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import DeletionModal from '@app/organisms/DeletionModal'
+import { define } from '@app/helpers/define'
+import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { Button, Card, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
@@ -11,6 +12,7 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useRef, useState } from 'react'
 
+import type { GetAllResponse } from '@api/resolvers/types'
 import type { LegacyInstitution } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
@@ -27,27 +29,46 @@ const BASE_COLUMNS: TableColumnProps[] = [
   },
 ]
 
+const PER_PAGE = 10
+
 export default function AdminLegacyInstitutionListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
   const [deleteLegacyInstitution] = useMutation(queries.legacyInstitution.DELETE_ONE)
-  const getLegacyInstitutionsResult = useQuery(queries.legacyInstitution.GET_ALL, {
-    pollInterval: 1000,
-  })
   const router = useRouter()
 
+  const getLegacyInstitutionsResult = useQuery<
+    {
+      getLegacyInstitutions: GetAllResponse<LegacyInstitution>
+    },
+    any
+  >(queries.legacyInstitution.GET_ALL, {
+    pollInterval: 5000,
+    variables: {
+      pageIndex: 0,
+      perPage: PER_PAGE,
+    },
+  })
+
   const isLoading = getLegacyInstitutionsResult.loading
-  const legacyInstitutions =
-    isLoading || getLegacyInstitutionsResult.error ? [] : getLegacyInstitutionsResult.data.getLegacyInstitutions
+  const legacyInsititutionResult: GetAllResponse<LegacyInstitution> =
+    isLoading || getLegacyInstitutionsResult.error || getLegacyInstitutionsResult.data === undefined
+      ? {
+          count: 1,
+          data: [],
+          index: 0,
+          length: 0,
+        }
+      : getLegacyInstitutionsResult.data.getLegacyInstitutions
 
   const closeDeletionModal = () => {
     setHasDeletionModal(false)
   }
 
   const confirmDeletion = async (id: string) => {
-    const legacyInstitution = R.find<LegacyInstitution>(R.propEq('id', id))(legacyInstitutions)
+    const legacyInstitution = R.find<LegacyInstitution>(R.propEq('id', id))(legacyInsititutionResult.data)
     if (legacyInstitution === undefined) {
       return
     }
@@ -71,14 +92,16 @@ export default function AdminLegacyInstitutionListPage() {
     router.push(`/admin/legacy-institution/${id}`)
   }
 
-  const search = debounce(async () => {
+  const query = debounce(async (pageIndex: number) => {
     if ($searchInput.current === null) {
       return
     }
 
-    const query = $searchInput.current.value
+    const query = define($searchInput.current.value)
 
     getLegacyInstitutionsResult.refetch({
+      pageIndex,
+      perPage: PER_PAGE,
       query,
     })
   }, 250)
@@ -112,9 +135,19 @@ export default function AdminLegacyInstitutionListPage() {
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={search} placeholder="Rechercher une institution (legacy)" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une institution (legacy)" />
 
-        <Table columns={columns} data={legacyInstitutions} defaultSortedKey="title" isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={legacyInsititutionResult.data}
+          defaultSortedKey="updatedAt"
+          defaultSortedKeyIsDesc
+          isLoading={isLoading}
+          onPageChange={query as any}
+          pageCount={legacyInsititutionResult.count}
+          pageIndex={legacyInsititutionResult.index}
+          perPage={PER_PAGE}
+        />
       </Card>
 
       {hasDeletionModal && (

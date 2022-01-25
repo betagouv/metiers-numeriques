@@ -2,11 +2,19 @@
  * @jest-environment jsdom
  */
 
-import normalizeDate from '../normalizeDate'
+import { normalizeDate } from '../normalizeDate'
 
 describe('app/helpers/normalizeDate()', () => {
   test(`with a valid Date`, () => {
     const date = new Date()
+
+    const result = normalizeDate(date)
+
+    expect(result).toHaveLength(10)
+  })
+
+  test(`with a valid ISO date`, () => {
+    const date = new Date().toISOString()
 
     const result = normalizeDate(date)
 
