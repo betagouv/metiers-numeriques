@@ -3,36 +3,73 @@ scalar JSONObject
 
 type Query {
   getFile(id: String!): File
-  getFiles(fromId: String, query: String, pageLength: Int): [File!]!
-  getLegacyEntities(fromId: String, query: String, pageLength: Int): [LegacyEntity!]!
+  getFiles(
+    pageIndex: Int!
+    query: String
+    perPage: Int
+  ): FilesResult!
+
   getLegacyEntity(id: String!): LegacyEntity
+  getLegacyEntities(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): LegacyEntitiesResult!
+
   getLegacyInstitution(id: String, slug: String): LegacyInstitution
-  getLegacyInstitutions(fromId: String, query: String, pageLength: Int): [LegacyInstitution!]!
+  getLegacyInstitutions(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): LegacyInstitutionsResult!
+
   getLegacyJob(id: String, slug: String): LegacyJob
-  getLegacyJobs(fromId: String, query: String, pageLength: Int): [LegacyJob!]!
+  getLegacyJobs(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+    region: String
+    source: String
+    state: String
+  ): LegacyJobsResult!
+
   getLegacyService(id: String!): LegacyService
-  getLegacyServices(fromId: String, query: String, pageLength: Int): [LegacyService!]!
+  getLegacyServices(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): LegacyServicesResult!
+
   getUser(id: String!): User
-  getUsers(fromId: String, query: String, pageLength: Int): [User!]!
+  getUsers(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): UsersResult!
 }
 
 type Mutation {
   createFile(input: FileInput!): File
-  createLegacyEntity(input: LegacyEntityInput!): LegacyEntity
-  createLegacyInstitution(input: LegacyInstitutionInput!): LegacyInstitution
-  createLegacyJob(input: LegacyJobInput!): LegacyJob
-  createLegacyService(input: LegacyServiceInput!): LegacyService
   deleteFile(id: String!): File
-  deleteLegacyEntity(id: String!): LegacyEntity
-  deleteLegacyInstitution(id: String!): LegacyInstitution
-  deleteLegacyJob(id: String!): LegacyJob
-  deleteLegacyService(id: String!): LegacyService
-  deleteUser(id: String!): User
   updateFile(id: String!, input: FileInput!): File
+
+  createLegacyEntity(input: LegacyEntityInput!): LegacyEntity
+  deleteLegacyEntity(id: String!): LegacyEntity
   updateLegacyEntity(id: String!, input: LegacyEntityInput!): LegacyEntity
+
+  createLegacyInstitution(input: LegacyInstitutionInput!): LegacyInstitution
+  deleteLegacyInstitution(id: String!): LegacyInstitution
   updateLegacyInstitution(id: String!, input: LegacyInstitutionInput!): LegacyInstitution
+
+  createLegacyJob(input: LegacyJobInput!): LegacyJob
+  deleteLegacyJob(id: String!): LegacyJob
   updateLegacyJob(id: String!, input: LegacyJobInput!): LegacyJob
+
+  createLegacyService(input: LegacyServiceInput!): LegacyService
+  deleteLegacyService(id: String!): LegacyService
   updateLegacyService(id: String!, input: LegacyServiceInput!): LegacyService
+
+  deleteUser(id: String!): User
   updateUser(id: String!, input: UserInput!): User
 }
 
@@ -44,6 +81,13 @@ type File {
   type: String!
   updatedAt: DateTime!
   url: String!
+}
+
+type FilesResult {
+  count: Int!
+  data: [File!]!
+  index: Int!
+  length: Int!
 }
 
 input FileInput {
@@ -58,6 +102,13 @@ type LegacyEntity {
   fullName: String
   logoUrl: String
   name: String
+}
+
+type LegacyEntitiesResult {
+  count: Int!
+  data: [LegacyEntity!]!
+  index: Int!
+  length: Int!
 }
 
 input LegacyEntityInput {
@@ -92,12 +143,18 @@ type LegacyInstitution {
   value: String
   websiteUrls: [String]
 }
-
 type FilesOnLegacyInstitutions {
   legacyInstitutionId: String!
   file: File!
   section: String!
   assignedAt: DateTime!
+}
+
+type LegacyInstitutionsResult {
+  count: Int!
+  data: [LegacyInstitution!]!
+  index: Int!
+  length: Int!
 }
 
 input LegacyInstitutionInput {
@@ -160,6 +217,13 @@ type LegacyJob {
   legacyService: LegacyService
 }
 
+type LegacyJobsResult {
+  count: Int!
+  data: [LegacyJob!]!
+  index: Int!
+  length: Int!
+}
+
 input LegacyJobInput {
   id: String
 
@@ -202,6 +266,13 @@ type LegacyService {
   legacyEntity: LegacyEntity
 }
 
+type LegacyServicesResult {
+  count: Int!
+  data: [LegacyService!]!
+  index: Int!
+  length: Int!
+}
+
 input LegacyServiceInput {
   fullName: String
   name: String
@@ -220,6 +291,13 @@ type User {
   isActive: Boolean!
   lastName: String!
   role: String!
+}
+
+type UsersResult {
+  count: Int!
+  data: [User!]!
+  index: Int!
+  length: Int!
 }
 
 input UserInput {

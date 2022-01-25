@@ -4,11 +4,11 @@ declare namespace Common {
    */
   type Nullable<T> = T | null
 
-  type AnyProps = {
-    [key: string]: any
-  }
-
   type BNS = boolean | number | string | null
+
+  type FunctionLike<R = void | Promise<void>> = () => R
+
+  type FunctionLike<R = void | Promise<void>> = () => R
 
   /**
    * Plain Old Javascript Object
@@ -27,6 +27,13 @@ declare namespace Common {
     type ResponseBodySuccess<T = undefined> = {
       data: T
       hasError: false
+    }
+  }
+
+  namespace App {
+    type SelectOption<T extends string> = {
+      label: string
+      value: T
     }
   }
 

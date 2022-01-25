@@ -4,7 +4,7 @@
 
 import { renderHook, act } from '@testing-library/react-hooks'
 
-import useIsMounted from '../useIsMounted'
+import { useIsMounted } from '../useIsMounted'
 
 describe('app/hooks/useIsMounted()', () => {
   test('returns TRUE with a mounted component', () => {

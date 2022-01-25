@@ -69,6 +69,12 @@
       }
     },
     {
+      "files": ["./scripts/**/*.ts"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    },
+    {
       "files": ["**/*.test.js", "**/*.test.ts", "jest.setup.js"],
       "env": {
         "jest": true

@@ -1,15 +1,10 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
-import buildPrismaSearchFilter from '@api/helpers/buildPrismaSearchFilter'
+import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
-import { JobSource, LegacyJob } from '@prisma/client'
-import * as R from 'ramda'
 
-type GetAllArgs = {
-  fromId?: string
-  pageLength?: number
-  query?: string
-}
+import type { GetAllArgs, GetAllResponse } from './types'
+import type { LegacyJob } from '@prisma/client'
 
 export const mutation = {
   createLegacyJob: async (obj, { input }: { input: LegacyJob }) => {
@@ -91,19 +86,37 @@ export const query = {
     }
   },
 
-  getLegacyJobs: async (obj, { fromId, pageLength, query }: GetAllArgs) => {
+  getLegacyJobs: async (
+    obj,
+    {
+      pageIndex,
+      perPage,
+      query,
+      region,
+      source,
+      state,
+    }: GetAllArgs & {
+      region?: string
+      source?: string
+      state?: string
+    },
+  ): Promise<GetAllResponse<LegacyJob>> => {
     try {
-      const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
-      const maybeSearchFilter = buildPrismaSearchFilter(['title'], query)
-      const searchFilter = R.isEmpty(maybeSearchFilter)
-        ? {
-            where: {
-              source: JobSource.MNN,
-            },
-          }
-        : maybeSearchFilter
+      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
-      const result = await getPrisma().legacyJob.findMany({
+      const additionalFilter: Record<string, Common.Pojo> = {}
+      if (region !== undefined) {
+        additionalFilter.legacyService = { region }
+      }
+      if (source !== undefined) {
+        additionalFilter.source = source
+      }
+      if (state !== undefined) {
+        additionalFilter.state = state
+      }
+      const whereFilter = buildPrismaWhereFilter(['title'], query, additionalFilter)
+
+      const args = {
         include: {
           legacyService: {
             include: {
@@ -115,14 +128,28 @@ export const query = {
           updatedAt: 'desc',
         },
         ...paginationFilter,
-        ...searchFilter,
-      })
+        ...whereFilter,
+      }
 
-      return result
+      const length = await getPrisma().legacyJob.count(whereFilter)
+      const data = await getPrisma().legacyJob.findMany(args)
+      const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
+
+      return {
+        count,
+        data,
+        index: pageIndex,
+        length,
+      }
     } catch (err) {
       handleError(err, 'api/resolvers/legacy-jobs.ts > query.getLegacyJobs()')
 
-      return {}
+      return {
+        count: 1,
+        data: [],
+        index: 0,
+        length: 0,
+      }
     }
   },
 }

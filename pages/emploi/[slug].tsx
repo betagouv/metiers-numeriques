@@ -1,7 +1,7 @@
 import getPrisma from '@api/helpers/getPrisma'
 import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import normalizeDate from '@app/helpers/normalizeDate'
+import { normalizeDate } from '@app/helpers/normalizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'
 import Head from 'next/head'
 

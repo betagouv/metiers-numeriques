@@ -5,6 +5,7 @@ import normalizeDateFromDateInput from '@app/helpers/normalizeDateFromDateInput'
 import normalizeDateFromDateTimeInput from '@app/helpers/normalizeDateFromDateTimeInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
+import { REGIONS_AS_OPTIONS } from '@common/constants'
 import { Card, Field } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -18,81 +19,6 @@ const FormSchema = Yup.object().shape({
   name: Yup.string().required(`Le nom court est obligatoire.`),
   regionAsOption: Yup.object().required(`La région est obligatoire.`),
 })
-
-const REGIONS_AS_OPTIONS = [
-  {
-    label: `Auvergne-Rhône-Alpes`,
-    value: `Auvergne-Rhône-Alpes`,
-  },
-  {
-    label: `Bourgogne-Franche-Comté`,
-    value: `Bourgogne-Franche-Comté`,
-  },
-  {
-    label: `Bretagne`,
-    value: `Bretagne`,
-  },
-  {
-    label: `Centre-Val de Loire`,
-    value: `Centre-Val de Loire`,
-  },
-  {
-    label: `Corse`,
-    value: `Corse`,
-  },
-  {
-    label: `Grand Est`,
-    value: `Grand Est`,
-  },
-  {
-    label: `Guadeloupe`,
-    value: `Guadeloupe`,
-  },
-  {
-    label: `Guyane`,
-    value: `Guyane`,
-  },
-  {
-    label: `Hauts-de-France`,
-    value: `Hauts-de-France`,
-  },
-  {
-    label: `Île-de-France`,
-    value: `Île-de-France`,
-  },
-  {
-    label: `La Réunion`,
-    value: `La Réunion`,
-  },
-  {
-    label: `Martinique`,
-    value: `Martinique`,
-  },
-  {
-    label: `Mayotte`,
-    value: `Mayotte`,
-  },
-  {
-    label: `Normandie`,
-    value: `Normandie`,
-  },
-  {
-    label: `Nouvelle-Aquitaine`,
-    value: `Nouvelle-Aquitaine`,
-  },
-  {
-    label: `Occitanie`,
-    value: `Occitanie`,
-  },
-  {
-    label: `Pays de la Loire`,
-    value: `Pays de la Loire`,
-  },
-  {
-    label: `Provence-Alpes-Côte d'Azur`,
-    value: `Provence-Alpes-Côte d'Azur`,
-  },
-]
 
 export default function LegacyServiceEditorPage() {
   const router = useRouter()

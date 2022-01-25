@@ -1,7 +1,8 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import DeletionModal from '@app/organisms/DeletionModal'
+import { define } from '@app/helpers/define'
+import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { Button, Card, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
@@ -11,6 +12,7 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useRef, useState } from 'react'
 
+import type { GetAllResponse } from '@api/resolvers/types'
 import type { LegacyService } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
@@ -29,26 +31,46 @@ const BASE_COLUMNS: TableColumnProps[] = [
   },
 ]
 
+const PER_PAGE = 10
+
 export default function AdminLegacyJobListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
   const [deleteLegacyService] = useMutation(queries.legacyService.DELETE_ONE)
-  const getLegacyServicesResult = useQuery(queries.legacyService.GET_ALL, {
-    pollInterval: 1000,
-  })
   const router = useRouter()
 
+  const getLegacyServicesResult = useQuery<
+    {
+      getLegacyServices: GetAllResponse<LegacyService>
+    },
+    any
+  >(queries.legacyService.GET_ALL, {
+    pollInterval: 5000,
+    variables: {
+      pageIndex: 0,
+      perPage: PER_PAGE,
+    },
+  })
+
   const isLoading = getLegacyServicesResult.loading
-  const legacyJobs = isLoading || getLegacyServicesResult.error ? [] : getLegacyServicesResult.data.getLegacyServices
+  const legacyServicesResult: GetAllResponse<LegacyService> =
+    isLoading || getLegacyServicesResult.error || getLegacyServicesResult.data === undefined
+      ? {
+          count: 1,
+          data: [],
+          index: 0,
+          length: 0,
+        }
+      : getLegacyServicesResult.data.getLegacyServices
 
   const closeDeletionModal = () => {
     setHasDeletionModal(false)
   }
 
   const confirmDeletion = async (id: string) => {
-    const legacyService = R.find<LegacyService>(R.propEq('id', id))(legacyJobs)
+    const legacyService = R.find<LegacyService>(R.propEq('id', id))(legacyServicesResult.data)
     if (legacyService === undefined) {
       return
     }
@@ -72,14 +94,16 @@ export default function AdminLegacyJobListPage() {
     router.push(`/admin/legacy-service/${id}`)
   }
 
-  const search = debounce(async () => {
+  const query = debounce(async (pageIndex: number) => {
     if ($searchInput.current === null) {
       return
     }
 
-    const query = $searchInput.current.value
+    const query = define($searchInput.current.value)
 
     getLegacyServicesResult.refetch({
+      pageIndex,
+      perPage: PER_PAGE,
       query,
     })
   }, 250)
@@ -113,9 +137,19 @@ export default function AdminLegacyJobListPage() {
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={search} placeholder="Rechercher un service (legacy)" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un service (legacy)" />
 
-        <Table columns={columns} data={legacyJobs} defaultSortedKey="name" isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={legacyServicesResult.data}
+          defaultSortedKey="updatedAt"
+          defaultSortedKeyIsDesc
+          isLoading={isLoading}
+          onPageChange={query as any}
+          pageCount={legacyServicesResult.count}
+          pageIndex={legacyServicesResult.index}
+          perPage={PER_PAGE}
+        />
       </Card>
 
       {hasDeletionModal && (

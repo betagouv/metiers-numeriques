@@ -1,13 +1,18 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetLegacyEntities($fromId: String, $pageLength: Int, $query: String) {
-    getLegacyEntities(fromId: $fromId, pageLength: $pageLength, query: $query) {
-      id
+  query GetLegacyEntities($pageIndex: Int!, $perPage: Int!, $query: String) {
+    getLegacyEntities(pageIndex: $pageIndex, perPage: $perPage, query: $query) {
+      count
+      data {
+        id
 
-      fullName
-      logoUrl
-      name
+        fullName
+        logoUrl
+        name
+      }
+      index
+      length
     }
   }
 `

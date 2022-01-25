@@ -1,15 +1,10 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
-import buildPrismaSearchFilter from '@api/helpers/buildPrismaSearchFilter'
+import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
+import type { GetAllArgs, GetAllResponse } from './types'
 import type { LegacyInstitution } from '@prisma/client'
-
-type GetAllArgs = {
-  fromId?: string
-  pageLength?: number
-  query?: string
-}
 
 export const mutation = {
   createLegacyInstitution: (obj, { input }: { input: LegacyInstitution }) => {
@@ -67,20 +62,45 @@ export const query = {
     return legacyInstitution
   },
 
-  getLegacyInstitutions: (obj, { fromId, pageLength, query }: GetAllArgs) => {
-    const paginationFilter = buildPrismaPaginationFilter(pageLength, fromId)
-    const searchFilter = buildPrismaSearchFilter(['fullName', 'title'], query)
+  getLegacyInstitutions: async (
+    obj,
+    { pageIndex, perPage, query }: GetAllArgs,
+  ): Promise<GetAllResponse<LegacyInstitution>> => {
+    try {
+      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
+      const whereFilter = buildPrismaWhereFilter(['fullName', 'title'], query)
 
-    return getPrisma().legacyInstitution.findMany({
-      include: {
-        logoFile: true,
-        thumbnailFile: true,
-      },
-      orderBy: {
-        title: 'asc',
-      },
-      ...paginationFilter,
-      ...searchFilter,
-    })
+      const args = {
+        include: {
+          logoFile: true,
+          thumbnailFile: true,
+        },
+        orderBy: {
+          title: 'asc',
+        },
+        ...paginationFilter,
+        ...whereFilter,
+      }
+
+      const length = await getPrisma().legacyInstitution.count(whereFilter)
+      const data = await getPrisma().legacyInstitution.findMany(args)
+      const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
+
+      return {
+        count,
+        data,
+        index: pageIndex,
+        length,
+      }
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-institutions.ts > query.getLegacyInstitutions()')
+
+      return {
+        count: 1,
+        data: [],
+        index: 0,
+        length: 0,
+      }
+    }
   },
 }

@@ -1,5 +1,5 @@
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import normalizeDate from '@app/helpers/normalizeDate'
+import { normalizeDate } from '@app/helpers/normalizeDate'
 import normalizeJobDescription from '@app/helpers/normalizeJobDescription'
 
 import Link from '../atoms/Link'

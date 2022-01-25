@@ -1,124 +1,94 @@
 import getPrisma from '@api/helpers/getPrisma'
 import { useQuery } from '@apollo/client'
+import { define } from '@app/helpers/define'
 import JobCard from '@app/organisms/JobCard'
 import queries from '@app/queries'
+import { REGIONS_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
 import { JobSource } from '@prisma/client'
 import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
-import * as R from 'ramda'
 import { useCallback, useRef, useState } from 'react'
 
+import type { GetAllResponse } from '@api/resolvers/types'
 import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
 
-const PAGE_LENGTH = 10
-
-const getJobIds = R.map(R.prop('id'))
-const excludeDuplicateJobs = (existingJobIds: string[], jobs: LegacyJobWithRelation[]): LegacyJobWithRelation[] =>
-  R.reject((job: LegacyJobWithRelation) => existingJobIds.includes(job.id))(jobs)
-
-const getLastJobId = (jobs: LegacyJobWithRelation[]): string => {
-  const lastJob = R.last(jobs)
-  if (lastJob === undefined) {
-    return ''
-  }
-
-  return lastJob.id
+const INITIAL_VARIABLES = {
+  pageIndex: 0,
+  perPage: 10,
+  source: JobSource.MNN,
 }
 
 type JobListPageProps = {
   initialJobs: LegacyJobWithRelation[]
 }
 export default function JobListPage({ initialJobs }: JobListPageProps) {
-  const $jobIds = useRef(getJobIds(initialJobs))
-  const $lastJobId = useRef(getLastJobId(initialJobs))
-  const $wasSearching = useRef(false)
+  const $regionSelect = useRef<HTMLSelectElement>(null)
   const $searchInput = useRef<HTMLInputElement>(null)
-  const [jobs, setJobs] = useState(initialJobs)
   const [isLoading, setIsLoading] = useState(false)
+  const [jobs, setJobs] = useState(initialJobs)
 
-  const getLegacyJobsResult = useQuery(queries.legacyJob.GET_ALL, {
-    variables: {
-      pageLength: PAGE_LENGTH,
+  const getLegacyJobsResult = useQuery<
+    {
+      getLegacyJobs: GetAllResponse<LegacyJobWithRelation>
     },
+    any
+  >(queries.legacyJob.GET_ALL, {
+    variables: INITIAL_VARIABLES,
   })
 
-  const loadMoreJobs = useCallback(
-    async (isReset: boolean = false) => {
+  const legacyJobsResult =
+    getLegacyJobsResult.loading || getLegacyJobsResult.error || getLegacyJobsResult.data === undefined
+      ? {
+          index: 0,
+          length: Infinity,
+        }
+      : getLegacyJobsResult.data.getLegacyJobs
+
+  const query = useCallback(
+    debounce(async (pageIndex: number) => {
+      if ($searchInput.current === null || $regionSelect.current === null) {
+        return
+      }
+
       setIsLoading(true)
 
-      const fromId = isReset ? undefined : $lastJobId.current
-      const query =
-        $searchInput.current && $searchInput.current.value.trim().length > 0
-          ? $searchInput.current.value.trim()
-          : undefined
+      const isNewQuery = pageIndex === 0
+      const query = define($searchInput.current.value)
+      const region = define($regionSelect.current.value)
+      const source = query === undefined ? INITIAL_VARIABLES.source : undefined
 
-      // TODO Fix this horrible hack!
-      const result = await getLegacyJobsResult.fetchMore({
-        variables: {
-          fromId,
-          pageLength: PAGE_LENGTH,
-          query,
-        },
+      const newOrAdditionalJobsResult = await getLegacyJobsResult.refetch({
+        ...INITIAL_VARIABLES,
+        pageIndex,
+        query,
+        region,
+        source,
       })
 
-      if (getLegacyJobsResult.error !== undefined) {
-        handleError(getLegacyJobsResult.error, 'pages/emplois.tsx > loadMoreJobs()')
-        setIsLoading(false)
+      setIsLoading(false)
+
+      if (newOrAdditionalJobsResult.error) {
+        handleError(newOrAdditionalJobsResult.error, 'pages/emplois.tsx > query()')
 
         return
       }
 
-      const additionalJobs: LegacyJobWithRelation[] = [...(result.data as any).getLegacyJobs]
-      const uniqueAdditionalJobs = excludeDuplicateJobs($jobIds.current, additionalJobs)
-
-      $jobIds.current = [...$jobIds.current, ...getJobIds(additionalJobs)]
-      $lastJobId.current = getLastJobId(additionalJobs)
+      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getLegacyJobs.data
 
       setIsLoading(false)
-      setJobs([...jobs, ...uniqueAdditionalJobs])
-    },
-    [$lastJobId.current, jobs],
+      if (isNewQuery) {
+        setJobs(newOrAdditionalJobs)
+      } else {
+        setJobs([...jobs, ...newOrAdditionalJobs])
+      }
+    }, 500),
+    [jobs],
   )
 
-  const searchJobs = debounce(async () => {
-    if ($searchInput.current === null) {
-      return
-    }
-
-    const query = $searchInput.current.value.trim()
-
-    if (query.length === 0) {
-      $jobIds.current = getJobIds(initialJobs)
-      $lastJobId.current = getLastJobId(initialJobs)
-
-      setJobs(initialJobs)
-
-      return
-    }
-
-    $wasSearching.current = true
-
-    setIsLoading(true)
-    setJobs([])
-
-    const result = await getLegacyJobsResult.fetchMore({
-      variables: {
-        pageLength: PAGE_LENGTH,
-        query,
-      },
-    })
-
-    const foundJobs: LegacyJobWithRelation[] = [...(result.data as any).getLegacyJobs]
-
-    $jobIds.current = [...$jobIds.current, ...getJobIds(foundJobs)]
-    $lastJobId.current = getLastJobId(foundJobs)
-
-    setJobs(foundJobs)
-    setIsLoading(false)
-  }, 500)
-
+  const hasMoreJobs = legacyJobsResult.length > jobs.length
+  const nextPageIndex = legacyJobsResult.index + 1
   const pageTitle = 'Liste des offres d’emploi numériques de l’État | metiers.numerique.gouv.fr'
   const pageDescription =
     'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
@@ -172,46 +142,51 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
         </div>
 
         <div className="fr-grid-row fr-py-2w">
-          <div className="fr-col-12 fr-col-md-12">
+          <div className="fr-col-12 fr-col-md-7">
             <label className="fr-label" htmlFor="JobsSearchInput">
               Métier
             </label>
             <div className="fr-input-wrap fr-mt-1w fr-fi-search-line">
-              <input ref={$searchInput} className="fr-input" id="JobsSearchInput" onInput={searchJobs} type="text" />
+              <input
+                ref={$searchInput}
+                className="fr-input"
+                id="JobsSearchInput"
+                onInput={() => query(0)}
+                type="text"
+              />
             </div>
           </div>
 
-          {/* <div className="fr-col-12 fr-mt-2w fr-col-md-5 fr-mt-md-0 fr-pl-md-4w">
-          <label className="fr-label" htmlFor="JobsRegionSelect">
-            Région
-          </label>
-          <div className="fr-input-wrap fr-mt-1w">
-            <select className="fr-select" id="JobsRegionSelect">
-              <option value="">Toutes</option>
-              <option value="Auvergne-Rhône-Alpes">Auvergne-Rhône-Alpes</option>
-              <option value="Bourgogne-Franche-Comté">Bourgogne-Franche-Comté</option>
-              <option value="Bretagne">Bretagne</option>
-              <option value="Centre-Val de Loire">Centre-Val de Loire</option>
-              <option value="Corse">Corse</option>
-              <option value="Grand Est">Grand Est</option>
-              <option value="Guadeloupe">Guadeloupe</option>
-              <option value="Guyane">Guyane</option>
-              <option value="Hauts-de-France">Hauts-de-France</option>
-              <option value="Île-de-France">Île-de-France</option>
-              <option value="La Réunion">La Réunion</option>
-              <option value="Martinique">Martinique</option>
-              <option value="Mayotte">Mayotte</option>
-              <option value="Normandie">Normandie</option>
-              <option value="Nouvelle-Aquitaine">Nouvelle-Aquitaine</option>
-              <option value="Occitanie">Occitanie</option>
-              <option value="Pays de la Loire">Pays de la Loire</option>
-              <option value="Provence-Alpes-Côte d'Azur">Provence-Alpes-Côte d’Azur</option>
-            </select>
+          <div className="fr-col-12 fr-pt-2w fr-col-md-5 fr-pt-md-0 fr-pl-md-2w">
+            <label className="fr-label" htmlFor="JobsRegionSelect">
+              Région
+            </label>
+            <div className="fr-input-wrap fr-mt-1w">
+              <select ref={$regionSelect} className="fr-select" onChange={() => query(0)}>
+                <option value="">Toutes</option>
+                {REGIONS_AS_OPTIONS.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div> */}
         </div>
 
         <div className="fr-grid-row">
+          {jobs.length === 0 && (
+            <div
+              className="fr-py-4w"
+              style={{
+                textAlign: 'center',
+                width: '100%',
+              }}
+            >
+              <p>Il n’y a aucune offre disponible satisfaisant cette recherche.</p>
+            </div>
+          )}
+
           {jobs.map(job => (
             <JobCard key={job.id} job={job} />
           ))}
@@ -235,11 +210,13 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
           )}
         </div>
 
-        <div className="fr-py-4w" id="LoadMoreSection">
-          <button className="fr-btn" disabled={isLoading} onClick={() => loadMoreJobs()} type="button">
-            Afficher plus de résultats
-          </button>
-        </div>
+        {hasMoreJobs && (
+          <div className="fr-py-4w" id="LoadMoreSection">
+            <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
+              Afficher plus de résultats
+            </button>
+          </div>
+        )}
       </div>
     </>
   )
@@ -258,9 +235,9 @@ export async function getStaticProps() {
     orderBy: {
       updatedAt: 'desc',
     },
-    take: PAGE_LENGTH,
+    take: INITIAL_VARIABLES.perPage,
     where: {
-      source: JobSource.MNN,
+      source: INITIAL_VARIABLES.source,
     },
   })
 

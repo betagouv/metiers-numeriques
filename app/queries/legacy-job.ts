@@ -1,34 +1,53 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetLegacyJobs($fromId: String, $pageLength: Int, $query: String) {
-    getLegacyJobs(fromId: $fromId, pageLength: $pageLength, query: $query) {
-      id
-
-      experiences
-      mission
-      openedToContractTypes
-      reference
-      slug
-      source
-      state
-      tasks
-      team
-      title
-      updatedAt
-
-      legacyService {
+  query GetLegacyJobs(
+    $pageIndex: Int!
+    $perPage: Int!
+    $query: String
+    $region: String
+    $source: String
+    $state: String
+  ) {
+    getLegacyJobs(
+      pageIndex: $pageIndex
+      perPage: $perPage
+      query: $query
+      region: $region
+      source: $source
+      state: $state
+    ) {
+      count
+      data {
         id
 
-        name
-        region
+        experiences
+        mission
+        openedToContractTypes
+        reference
+        slug
+        source
+        state
+        tasks
+        team
+        title
+        updatedAt
 
-        legacyEntity {
+        legacyService {
           id
 
           name
+          region
+
+          legacyEntity {
+            id
+
+            name
+          }
         }
       }
+      index
+      length
     }
   }
 `

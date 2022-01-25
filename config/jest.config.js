@@ -7,6 +7,7 @@ module.exports = {
       tsconfig: './tsconfig.json',
     },
   },
+  maxWorkers: '50%',
   moduleNameMapper: {
     '^@api/(.*)$': '<rootDir>/api/$1',
     '^@app/(.*)$': '<rootDir>/app/$1',
