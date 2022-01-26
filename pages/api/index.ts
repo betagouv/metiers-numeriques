@@ -1,7 +1,6 @@
 import handleError from '@common/helpers/handleError'
 import { NextApiResponse } from 'next'
 
-import isReady from '../../api/helpers/isReady'
 import ApiError from '../../api/libs/ApiError'
 import { RequestWithPrisma } from '../../api/types'
 
@@ -13,15 +12,11 @@ async function IndexController(req: RequestWithPrisma, res: NextApiResponse) {
     handleError(new ApiError('Method not allowed.', 405, true), ERROR_PATH, res)
   }
 
-  const data: any = {
+  const data = {
     version: VERSION,
   }
-  data.isReady = await isReady()
 
   res.status(200).json({ data })
-
-  // eslint-disable-next-line consistent-return
-  return undefined
 }
 
 export default IndexController

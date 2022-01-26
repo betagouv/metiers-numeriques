@@ -1,4 +1,5 @@
-import { define } from '@app/helpers/define'
+import { define } from '@common/helpers/define'
+import handleError from '@common/helpers/handleError'
 import * as R from 'ramda'
 
 const buildNativeStatements = (fields: string[], searchQuery: string) =>
@@ -31,27 +32,33 @@ export default function buildPrismaWhereFilter(
   searchQuery?: string,
   additionalFilter?: Record<string, Common.Pojo>,
 ): any {
-  const definedSearchQuery = define(searchQuery)
-  const definedAddtionalFilter = define(additionalFilter)
+  try {
+    const definedSearchQuery = define(searchQuery)
+    const definedAddtionalFilter = define(additionalFilter)
 
-  if (definedSearchQuery === undefined && definedAddtionalFilter === undefined) {
+    if (definedSearchQuery === undefined && definedAddtionalFilter === undefined) {
+      return {}
+    }
+
+    const whereFilter: any = {
+      where: {},
+    }
+
+    if (definedSearchQuery !== undefined) {
+      const nativeStatements = buildNativeStatements(fields, definedSearchQuery)
+      const relationStatements = buildRelationStatements(fields, definedSearchQuery)
+
+      whereFilter.where.OR = [...nativeStatements, ...relationStatements]
+    }
+
+    if (definedAddtionalFilter !== undefined) {
+      whereFilter.where.AND = additionalFilter
+    }
+
+    return whereFilter
+  } catch (err) {
+    handleError(err, 'api/helpers/buildPrismaPaginationFilter()')
+
     return {}
   }
-
-  const whereFilter: any = {
-    where: {},
-  }
-
-  if (definedSearchQuery !== undefined) {
-    const nativeStatements = buildNativeStatements(fields, definedSearchQuery)
-    const relationStatements = buildRelationStatements(fields, definedSearchQuery)
-
-    whereFilter.where.OR = [...nativeStatements, ...relationStatements]
-  }
-
-  if (definedAddtionalFilter !== undefined) {
-    whereFilter.where.AND = additionalFilter
-  }
-
-  return whereFilter
 }

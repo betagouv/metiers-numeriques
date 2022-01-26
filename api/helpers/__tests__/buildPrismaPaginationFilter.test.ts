@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import buildPrismaPaginationFilter from '../buildPrismaPaginationFilter'
 
 describe('api/helpers/buildPrismaPaginationFilter()', () => {
