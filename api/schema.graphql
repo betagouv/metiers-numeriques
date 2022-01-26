@@ -15,6 +15,7 @@ type Query {
     perPage: Int!
     query: String
   ): LegacyEntitiesResult!
+  getLegacyEntitiesList: [LegacyEntity!]!
 
   getLegacyInstitution(id: String, slug: String): LegacyInstitution
   getLegacyInstitutions(
@@ -39,6 +40,7 @@ type Query {
     perPage: Int!
     query: String
   ): LegacyServicesResult!
+  getLegacyServicesList: [LegacyService!]!
 
   getUser(id: String!): User
   getUsers(

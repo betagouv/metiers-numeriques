@@ -12,7 +12,7 @@ const Box = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-  min-width: 16rem;
+  width: 14rem;
   padding: ${p => p.theme.padding.layout.medium};
   position: fixed;
 

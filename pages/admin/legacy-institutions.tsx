@@ -18,12 +18,10 @@ import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    isSortable: true,
     key: 'title',
     label: 'Nom court',
   },
   {
-    isSortable: true,
     key: 'fullName',
     label: 'Nom complet',
   },

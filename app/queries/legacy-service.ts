@@ -26,6 +26,25 @@ export const GET_ALL = gql`
   }
 `
 
+export const GET_LIST = gql`
+  query GetLegacyServicesList {
+    getLegacyServicesList {
+      id
+
+      fullName
+      name
+      shortName
+
+      legacyEntity {
+        id
+
+        fullName
+        name
+      }
+    }
+  }
+`
+
 export const GET_ONE = gql`
   query GetLegacyService($id: String!) {
     getLegacyService(id: $id) {

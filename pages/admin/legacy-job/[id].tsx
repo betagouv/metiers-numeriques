@@ -52,12 +52,12 @@ export default function LegacyJobEditorPage() {
       id: id || '',
     },
   })
-  const getLegacyServicesResult = useQuery(queries.legacyService.GET_ALL)
+  const getLegacyServicesListResult = useQuery(queries.legacyService.GET_LIST)
   const [createLegacyJob] = useMutation(queries.legacyJob.CREATE_ONE)
   const [updateLegacyJob] = useMutation(queries.legacyJob.UPDATE_ONE)
 
   useEffect(() => {
-    if (!isLoading || getLegacyServicesResult.loading || getLegacyServicesResult.error) {
+    if (!isLoading || getLegacyServicesListResult.loading || getLegacyServicesListResult.error) {
       return
     }
 
@@ -68,7 +68,7 @@ export default function LegacyJobEditorPage() {
           label: legacyEntity ? `${name} (${legacyEntity.name})` : name,
           value: id,
         })),
-      )(getLegacyServicesResult.data.getLegacyServices)
+      )(getLegacyServicesListResult.data.getLegacyServicesList)
 
       setLegacyServicesAsOptions(newlegacyServicesAsOptions)
     }
@@ -114,7 +114,7 @@ export default function LegacyJobEditorPage() {
 
     setInitialValues(newInitialValues)
     setIsLoading(false)
-  }, [getLegacyJobResult, getLegacyServicesResult, isLoading, isNew])
+  }, [getLegacyJobResult, getLegacyServicesListResult, isLoading, isNew])
 
   const goToList = () => {
     router.push('/admin/legacy-jobs')

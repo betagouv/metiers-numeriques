@@ -38,12 +38,12 @@ export default function LegacyServiceEditorPage() {
       id: id || '',
     },
   })
-  const getLegacyEntitiesResult = useQuery(queries.legacyEntity.GET_ALL)
+  const getLegacyEntitiesListResult = useQuery(queries.legacyEntity.GET_LIST)
   const [createLegacyService] = useMutation(queries.legacyService.CREATE_ONE)
   const [updateLegacyService] = useMutation(queries.legacyService.UPDATE_ONE)
 
   useEffect(() => {
-    if (!isLoading || getLegacyEntitiesResult.loading || getLegacyEntitiesResult.error) {
+    if (!isLoading || getLegacyEntitiesListResult.loading || getLegacyEntitiesListResult.error) {
       return
     }
 
@@ -54,7 +54,7 @@ export default function LegacyServiceEditorPage() {
           label: name,
           value: id,
         })),
-      )(getLegacyEntitiesResult.data.getLegacyEntities)
+      )(getLegacyEntitiesListResult.data.getLegacyEntitiesList)
 
       setLegacyEntitiesAsOptions(newLegacyEntitiesAsOptions)
     }
@@ -92,7 +92,7 @@ export default function LegacyServiceEditorPage() {
 
     setInitialValues(newInitialValues)
     setIsLoading(false)
-  }, [getLegacyServiceResult, getLegacyEntitiesResult, isLoading, isNew])
+  }, [getLegacyServiceResult, getLegacyEntitiesListResult, isLoading, isNew])
 
   const goToList = () => {
     router.push('/admin/legacy-services')

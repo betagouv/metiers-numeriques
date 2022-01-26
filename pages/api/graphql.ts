@@ -14,41 +14,55 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const { DOMAIN_URL } = process.env
 
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 const permissions = shield({
   Mutation: {
     createFile: permission.isAdministrator,
-    createLegacyEntity: permission.isAdministrator,
-    createLegacyInstitution: permission.isAdministrator,
-    createLegacyJob: permission.isAdministrator,
-    createLegacyService: permission.isAdministrator,
     deleteFile: permission.isAdministrator,
-    deleteLegacyEntity: permission.isAdministrator,
-    deleteLegacyInstitution: permission.isAdministrator,
-    deleteLegacyJob: permission.isAdministrator,
-    deleteLegacyService: permission.isAdministrator,
-    deleteUser: permission.isAdministrator,
     updateFile: permission.isAdministrator,
-    updateLegacyEntity: permission.isAdministrator,
-    updateLegacyInstitution: permission.isAdministrator,
+
+    createLegacyJob: permission.isAdministrator,
+    deleteLegacyJob: permission.isAdministrator,
     updateLegacyJob: permission.isAdministrator,
+
+    createLegacyEntity: permission.isAdministrator,
+    deleteLegacyEntity: permission.isAdministrator,
+    updateLegacyEntity: permission.isAdministrator,
+
+    createLegacyInstitution: permission.isAdministrator,
+    deleteLegacyInstitution: permission.isAdministrator,
+    updateLegacyInstitution: permission.isAdministrator,
+
+    createLegacyService: permission.isAdministrator,
+    deleteLegacyService: permission.isAdministrator,
     updateLegacyService: permission.isAdministrator,
+
+    deleteUser: permission.isAdministrator,
     updateUser: permission.isAdministrator,
   },
   Query: {
     getFile: permission.isPublic,
     getFiles: permission.isPublic,
-    getLegacyEntities: permission.isPublic,
+
     getLegacyEntity: permission.isPublic,
+    getLegacyEntities: permission.isPublic,
+    getLegacyEntitiesList: permission.isAdministrator,
+
     getLegacyInstitution: permission.isPublic,
     getLegacyInstitutions: permission.isPublic,
+
     getLegacyJob: permission.isPublic,
     getLegacyJobs: permission.isPublic,
+
     getLegacyService: permission.isPublic,
     getLegacyServices: permission.isPublic,
+    getLegacyServicesList: permission.isAdministrator,
+
     getUser: or(permission.isAdministrator, permission.isMe),
     getUsers: permission.isAdministrator,
   },
 })
+/* eslint-enable sort-keys-fix/sort-keys-fix */
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const __GRAPHQL_SERVER: {

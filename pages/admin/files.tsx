@@ -20,18 +20,15 @@ import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    isSortable: true,
     key: 'title',
     label: 'Titre',
   },
   {
-    isSortable: true,
     key: 'type',
     label: 'Type',
     transform: ({ type }) => FILE_TYPE[type].label,
   },
   {
-    isSortable: true,
     key: 'createdAt',
     label: 'Créé le',
     transform: ({ createdAt }) => humanizeDate(createdAt),
