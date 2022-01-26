@@ -25,6 +25,9 @@ async function synchronize() {
   ß.info('[scripts/dev/synchronize.js] Deleting old legacy institutions…')
   await prisma.legacyInstitution.deleteMany()
 
+  ß.info('[scripts/dev/synchronize.js] Deleting old files…')
+  await prisma.file.deleteMany()
+
   ß.info('[scripts/dev/synchronize.js] Deleting old legacy services…')
   await prisma.legacyService.deleteMany()
 
@@ -33,16 +36,20 @@ async function synchronize() {
 
   ß.info('[scripts/dev/synchronize.js] Fetching legacy entities…')
   const {
-    data: { getLegacyEntities: legacyEntities },
+    data: {
+      getLegacyEntities: { data: legacyEntities },
+    },
   } = await apollo.query({
     query: gql`
       query {
-        getLegacyEntities {
-          id
+        getLegacyEntities(pageIndex: 0, perPage: 1000) {
+          data {
+            id
 
-          fullName
-          logoUrl
-          name
+            fullName
+            logoUrl
+            name
+          }
         }
       }
     `,
@@ -55,21 +62,25 @@ async function synchronize() {
 
   ß.info('[scripts/dev/synchronize.js] Fetching legacy services…')
   const {
-    data: { getLegacyServices: legacyServices },
+    data: {
+      getLegacyServices: { data: legacyServices },
+    },
   } = await apollo.query({
     query: gql`
       query {
-        getLegacyServices {
-          id
-
-          fullName
-          name
-          region
-          shortName
-          url
-
-          legacyEntity {
+        getLegacyServices(pageIndex: 0, perPage: 1000) {
+          data {
             id
+
+            fullName
+            name
+            region
+            shortName
+            url
+
+            legacyEntity {
+              id
+            }
           }
         }
       }
@@ -86,85 +97,151 @@ async function synchronize() {
     ),
   })
 
-  ß.info('[scripts/dev/synchronize.js] Fetching legacy institutions…')
+  ß.info('[scripts/dev/synchronize.js] Fetching legacy files…')
   const {
-    data: { getLegacyInstitutions: legacyInstitutions },
+    data: {
+      getFiles: { data: files },
+    },
   } = await apollo.query({
     query: gql`
       query {
-        getLegacyInstitutions {
-          id
+        getFiles(pageIndex: 0, perPage: 1000) {
+          data {
+            id
 
-          address
-          challenges
-          fullName
-          hiringProcess
-          isPublished
-          joinTeam
-          keyNumbers
-          # logoFileId
-          missions
-          motivation
-          organization
-          profile
-          project
-          schedule
-          slug
-          socialNetworkUrls
-          testimonial
-          # thumbnailFileId
-          title
-          value
-          websiteUrls
+            createdAt
+            title
+            type
+            updatedAt
+            url
+          }
+        }
+      }
+    `,
+  })
 
-          # fileIds
+  ß.info('[scripts/dev/synchronize.js] Saving new legacy files…')
+  await prisma.file.createMany({
+    data: omitTypenameProp(files),
+  })
+
+  ß.info('[scripts/dev/synchronize.js] Fetching legacy institutions…')
+  const {
+    data: {
+      getLegacyInstitutions: { data: legacyInstitutions },
+    },
+  } = await apollo.query({
+    query: gql`
+      query {
+        getLegacyInstitutions(pageIndex: 0, perPage: 1000) {
+          data {
+            id
+
+            address
+            challenges
+            fullName
+            hiringProcess
+            isPublished
+            joinTeam
+            keyNumbers
+            logoFile {
+              id
+            }
+            missions
+            motivation
+            organization
+            profile
+            project
+            schedule
+            slug
+            socialNetworkUrls
+            testimonial
+            thumbnailFile {
+              id
+            }
+            title
+            value
+            websiteUrls
+
+            files {
+              legacyInstitutionId
+              file {
+                id
+              }
+              section
+              assignedAt
+            }
+          }
         }
       }
     `,
   })
 
   ß.info('[scripts/dev/synchronize.js] Saving new legacy institutions…')
+  const filesOnLegacyInstitutions: any[] = []
   await prisma.legacyInstitution.createMany({
-    data: omitTypenameProp(legacyInstitutions),
+    data: omitTypenameProp(
+      legacyInstitutions.map(({ files, logoFile, thumbnailFile, ...rest }) => {
+        if (files !== null) {
+          filesOnLegacyInstitutions.push(...files)
+        }
+
+        return {
+          ...rest,
+          logoFileId: logoFile?.id,
+          thumbnailFileId: thumbnailFile?.id,
+        }
+      }),
+    ),
+  })
+  await prisma.filesOnLegacyInstitutions.createMany({
+    data: filesOnLegacyInstitutions.map(({ file, ...rest }) => ({
+      ...rest,
+      fileId: file.id,
+    })),
   })
 
   ß.info('[scripts/dev/synchronize.js] Fetching legacy jobs…')
   const {
-    data: { getLegacyJobs: legacyJobs },
+    data: {
+      getLegacyJobs: { data: legacyJobs },
+    },
   } = await apollo.query({
     query: gql`
       query {
-        getLegacyJobs {
-          id
-
-          advantages
-          conditions
-          createdAt
-          department
-          entity
-          experiences
-          hiringProcess
-          limitDate
-          locations
-          mission
-          more
-          openedToContractTypes
-          profile
-          publicationDate
-          reference
-          salary
-          slug
-          source
-          state
-          tasks
-          team
-          teamInfo
-          title
-          toApply
-          updatedAt
-
-          legacyService {
+        getLegacyJobs(pageIndex: 0, perPage: 1000) {
+          data {
             id
+
+            advantages
+            conditions
+            createdAt
+            department
+            entity
+            experiences
+            hiringProcess
+            limitDate
+            locations
+            mission
+            more
+            openedToContractTypes
+            profile
+            publicationDate
+            reference
+            salary
+            slug
+            source
+            state
+            tasks
+            team
+            teamInfo
+            title
+            toApply
+            updatedAt
+
+            legacyService {
+              id
+            }
           }
         }
       }
