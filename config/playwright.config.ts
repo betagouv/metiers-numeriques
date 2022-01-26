@@ -9,6 +9,7 @@ const IS_CI = Boolean(CI)
 
 const config: PlaywrightTestConfig = {
   forbidOnly: true,
+  globalSetup: './playwright.setup.ts',
   maxFailures: 1,
   projects: [
     {
@@ -17,12 +18,13 @@ const config: PlaywrightTestConfig = {
     },
   ],
   testDir: '../e2e',
-  timeout: 5000,
+  timeout: 10000,
   use: {
     headless: IS_CI,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },
+  workers: 1,
 }
 
 export default config
