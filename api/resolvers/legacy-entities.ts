@@ -4,7 +4,7 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { LegacyEntity } from '@prisma/client'
+import type { LegacyEntity, Prisma } from '@prisma/client'
 
 export const mutation = {
   createLegacyEntity: (obj, { input }: { input: LegacyEntity }) =>
@@ -61,6 +61,24 @@ export const query = {
         index: 0,
         length: 0,
       }
+    }
+  },
+
+  getLegacyEntitiesList: async (): Promise<LegacyEntity[]> => {
+    try {
+      const args: Prisma.LegacyEntityFindManyArgs = {
+        orderBy: {
+          name: 'asc',
+        },
+      }
+
+      const data = await getPrisma().legacyEntity.findMany(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-services.ts > query.getLegacyInstitutionsList()')
+
+      return []
     }
   },
 

@@ -27,7 +27,6 @@ const BASE_COLUMNS: TableColumnProps[] = [
     transform: ({ source }) => JOB_SOURCE_LABEL[source],
   },
   {
-    isSortable: true,
     key: 'title',
     label: 'Intitulé',
   },
@@ -40,7 +39,7 @@ const BASE_COLUMNS: TableColumnProps[] = [
   {
     grow: 0.15,
     key: 'updatedAt',
-    label: 'Mise à jour',
+    label: 'MàJ le',
     transform: ({ updatedAt }) => normalizeDate(updatedAt),
   },
 ]

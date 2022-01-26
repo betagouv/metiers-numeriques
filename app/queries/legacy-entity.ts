@@ -17,6 +17,17 @@ export const GET_ALL = gql`
   }
 `
 
+export const GET_LIST = gql`
+  query GetLegacyEntitiesList {
+    getLegacyEntitiesList {
+      id
+
+      fullName
+      name
+    }
+  }
+`
+
 export const GET_ONE = gql`
   query GetLegacyEntity($id: String!) {
     getLegacyEntity(id: $id) {

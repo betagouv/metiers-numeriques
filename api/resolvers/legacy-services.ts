@@ -4,7 +4,7 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { LegacyService } from '@prisma/client'
+import type { LegacyService, Prisma } from '@prisma/client'
 
 export const mutation = {
   createLegacyService: (obj, { input }: { input: LegacyService }) =>
@@ -74,6 +74,27 @@ export const query = {
         index: 0,
         length: 0,
       }
+    }
+  },
+
+  getLegacyServicesList: async (): Promise<LegacyService[]> => {
+    try {
+      const args: Prisma.LegacyServiceFindManyArgs = {
+        include: {
+          legacyEntity: true,
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      }
+
+      const data = await getPrisma().legacyService.findMany(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-services.ts > query.getLegacyServicesList()')
+
+      return []
     }
   },
 }

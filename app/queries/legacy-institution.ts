@@ -8,19 +8,6 @@ export const GET_ALL = gql`
         id
 
         fullName
-        logoFile {
-          id
-
-          title
-          url
-        }
-        slug
-        thumbnailFile {
-          id
-
-          title
-          url
-        }
         title
       }
       index
@@ -37,8 +24,6 @@ export const GET_ONE = gql`
       address
       challenges
       files {
-        id
-
         file {
           id
 
