@@ -13,7 +13,6 @@ import path from 'path'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const { DOMAIN_URL } = process.env
-const ALLOWED_ORIGINS = [DOMAIN_URL, 'https://studio.apollographql.com']
 
 const permissions = shield({
   Mutation: {
@@ -63,9 +62,7 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
 
     res.setHeader('Access-Control-Allow-Credentials', 'true')
     res.setHeader('Access-Control-Allow-Headers', 'Accept, Content-Type, Origin, X-Requested-With')
-    if (req.headers.origin !== undefined && ALLOWED_ORIGINS.includes(req.headers.origin)) {
-      res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
-    }
+    res.setHeader('Access-Control-Allow-Origin', DOMAIN_URL)
 
     if (req.method === 'OPTIONS') {
       res.end()
