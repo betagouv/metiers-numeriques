@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import { define } from '../define'
 
 describe('app/helpers/define()', () => {
