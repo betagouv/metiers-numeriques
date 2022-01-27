@@ -105,9 +105,7 @@ jobs:
       - name: Prepare
         run: yarn setup
       - name: Build
-        run: |
-          yarn prebuild
-          yarn build
+        run: yarn build
       - name: Serve
         run: yarn start &
       - name: Run end-to-end tests

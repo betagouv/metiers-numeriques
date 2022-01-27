@@ -1,10 +1,8 @@
+import * as Sentry from '@sentry/nextjs'
 import ß from 'bhala'
 import { NextApiResponse } from 'next'
 
 import ApiError from '../../api/libs/ApiError'
-
-const { NODE_ENV } = process.env
-const IS_PRODUCTION = NODE_ENV === 'production'
 
 const getErrorConstructorName = (error: any) => {
   if (error === undefined || error.constructor === undefined) {
@@ -14,7 +12,6 @@ const getErrorConstructorName = (error: any) => {
   return error.constructor.name
 }
 
-function handleError(error: any): void
 function handleError(error: any, path: string): void
 function handleError(error: any, path: string, isFinal: false): void
 function handleError(error: any, path: string, isFinal: true): never
@@ -27,8 +24,10 @@ function handleError(error: any, path: string, res: NextApiResponse): never
  * handleError(err, "helpers/myFunction()");
  * handleError(err, "scripts/myFileName#oneOfTheScriptFunctions()");
  */
-function handleError(error: any, path?: string, isFinalOrRes?: boolean | NextApiResponse): any {
-  const errorPath = path || 'Unknown Path'
+function handleError(error: any, path: string, isFinalOrRes?: boolean | NextApiResponse): any {
+  const { CI, NODE_ENV } = process.env
+  const IS_CI = Boolean(CI)
+  const IS_PRODUCTION = NODE_ENV === 'production'
 
   let errorString
   switch (true) {
@@ -43,17 +42,26 @@ function handleError(error: any, path?: string, isFinalOrRes?: boolean | NextApi
 
     default:
       // eslint-disable-next-line no-case-declarations
-      ß.error(`[api/helpers/handleError()] This type of error can't be processed. This should never happen.`)
-      ß.error(`[api/helpers/handleError()] Error Type: ${typeof error}`)
-      ß.error(`[api/helpers/handleError()] Error Constructor: ${getErrorConstructorName(error)}`)
+      ß.error(`[common/helpers/handleError()] This type of error cannot be processed. This should never happen.`)
+      ß.error(`[common/helpers/handleError()] Error Type: ${typeof error}`)
+      ß.error(`[common/helpers/handleError()] Error Constructor: ${getErrorConstructorName(error)}`)
       errorString = String(error)
   }
 
   // There is no need to cluster the log with handled errors
   if (!(error instanceof ApiError)) {
-    ß.error(`[${errorPath}] ${errorString}`)
+    ß.error(`[${path}] ${errorString}`)
     // eslint-disable-next-line no-console
     console.error(error)
+  }
+
+  if (!IS_CI && (!(error instanceof ApiError) || error.status <= 400 || error.status >= 500)) {
+    if (error instanceof Error) {
+      Sentry.captureException(error)
+      // console.log(`3, [${path}] ${errorString}`)
+    } else {
+      Sentry.captureMessage(`[${path}] ${errorString}`, Sentry.Severity.Error)
+    }
   }
 
   if (isFinalOrRes === undefined || isFinalOrRes === false) {
@@ -61,7 +69,7 @@ function handleError(error: any, path?: string, isFinalOrRes?: boolean | NextApi
   }
 
   if (isFinalOrRes === true) {
-    process.exit(1)
+    return process.exit(1)
   }
 
   // Unhandled errors are a serious security issue if exposed
@@ -96,7 +104,7 @@ function handleError(error: any, path?: string, isFinalOrRes?: boolean | NextApi
     code,
     hasError: true,
     message: errorString,
-    path: errorPath,
+    path,
   })
 
   return undefined as never
