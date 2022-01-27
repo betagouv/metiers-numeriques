@@ -13,6 +13,6 @@ export function define<T>(value: T | null | undefined): T | undefined {
 
     return value
   } catch (err) {
-    handleError('app/helpers/undefine()')
+    handleError(err, 'app/helpers/undefine()')
   }
 }
