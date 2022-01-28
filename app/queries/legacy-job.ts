@@ -52,6 +52,44 @@ export const GET_ALL = gql`
   }
 `
 
+export const GET_ALL_PUBLIC = gql`
+  query GetPublicLegacyJobs($pageIndex: Int!, $perPage: Int!, $query: String, $region: String) {
+    getPublicLegacyJobs(pageIndex: $pageIndex, perPage: $perPage, query: $query, region: $region) {
+      count
+      data {
+        id
+
+        experiences
+        mission
+        openedToContractTypes
+        reference
+        slug
+        source
+        state
+        tasks
+        team
+        title
+        updatedAt
+
+        legacyService {
+          id
+
+          name
+          region
+
+          legacyEntity {
+            id
+
+            name
+          }
+        }
+      }
+      index
+      length
+    }
+  }
+`
+
 export const GET_ONE = gql`
   query GetLegacyJob($id: String, $slug: String) {
     getLegacyJob(id: $id, slug: $slug) {

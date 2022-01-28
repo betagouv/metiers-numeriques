@@ -2,9 +2,11 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
+import { JobState, LegacyJob } from '@prisma/client'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { LegacyJob } from '@prisma/client'
+
+const PUBLIC_PER_PAGE_THROTTLE = 12
 
 export const mutation = {
   createLegacyJob: async (obj, { input }: { input: LegacyJob }) => {
@@ -104,17 +106,79 @@ export const query = {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
-      const additionalFilter: Record<string, Common.Pojo> = {}
+      const andFilter: Record<string, Common.Pojo> = {}
       if (region !== undefined) {
-        additionalFilter.legacyService = { region }
+        andFilter.legacyService = { region }
       }
       if (source !== undefined) {
-        additionalFilter.source = source
+        andFilter.source = source
       }
       if (state !== undefined) {
-        additionalFilter.state = state
+        andFilter.state = state
       }
-      const whereFilter = buildPrismaWhereFilter(['title'], query, additionalFilter)
+      const whereFilter = buildPrismaWhereFilter(['title'], query, andFilter)
+
+      const args = {
+        include: {
+          legacyService: {
+            include: {
+              legacyEntity: true,
+            },
+          },
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        ...paginationFilter,
+        ...whereFilter,
+      }
+
+      const length = await getPrisma().legacyJob.count(whereFilter)
+      const data = await getPrisma().legacyJob.findMany(args)
+      const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
+
+      return {
+        count,
+        data,
+        index: pageIndex,
+        length,
+      }
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-jobs.ts > query.getLegacyJobs()')
+
+      return {
+        count: 1,
+        data: [],
+        index: 0,
+        length: 0,
+      }
+    }
+  },
+
+  getPublicLegacyJobs: async (
+    obj,
+    {
+      pageIndex,
+      perPage,
+      query,
+      region,
+    }: GetAllArgs & {
+      region?: string
+    },
+  ): Promise<GetAllResponse<LegacyJob>> => {
+    try {
+      const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
+
+      const paginationFilter = buildPrismaPaginationFilter(throttledPerPage, pageIndex)
+
+      const andFilter: Record<string, Common.Pojo> = {
+        state: JobState.PUBLISHED,
+      }
+      if (region !== undefined) {
+        andFilter.legacyService = { region }
+      }
+
+      const whereFilter = buildPrismaWhereFilter(['title'], query, andFilter)
 
       const args = {
         include: {

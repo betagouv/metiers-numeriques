@@ -1,3 +1,4 @@
+import { JobState } from '@prisma/client'
 import ß from 'bhala'
 import { createWriteStream } from 'fs'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -9,7 +10,11 @@ const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', '/emplois', '/insti
 
 async function generateSitemap() {
   ß.info('[scripts/build/generateSitemap.js] Fetching jobs…')
-  const jobs = await getPrisma().legacyJob.findMany()
+  const jobs = await getPrisma().legacyJob.findMany({
+    where: {
+      state: JobState.PUBLISHED,
+    },
+  })
 
   ß.info('[scripts/build/generateSitemap.js] Fetching institutions…')
   const institutions = await getPrisma().legacyInstitution.findMany()

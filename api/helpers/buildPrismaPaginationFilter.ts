@@ -1,6 +1,6 @@
 import handleError from '@common/helpers/handleError'
 
-const MAX_PER_PAGE = 20
+const MAX_PER_PAGE = 100
 
 /**
  * @see  https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination
