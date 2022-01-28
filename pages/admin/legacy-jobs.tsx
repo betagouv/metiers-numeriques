@@ -38,6 +38,12 @@ const BASE_COLUMNS: TableColumnProps[] = [
   },
   {
     grow: 0.15,
+    key: 'limitDate',
+    label: 'Expire le',
+    transform: ({ limitDate }) => normalizeDate(limitDate),
+  },
+  {
+    grow: 0.15,
     key: 'updatedAt',
     label: 'MàJ le',
     transform: ({ updatedAt }) => normalizeDate(updatedAt),

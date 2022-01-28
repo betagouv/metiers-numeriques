@@ -799,10 +799,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@gouvfr/dsfr@1.0.0-rc1.0":
-  version "1.0.0-rc1.0"
-  resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.0.0-rc1.0.tgz#a7d0f8e047322f0b63371d9e35ffcfc29c6bb85d"
-  integrity sha512-mXfun0FzqeSgfyti6SsdPQHSpNsQBOJNkzZtvoN8KfaUGP3asupaMXe2CbRgrkV3ogqM0n/vToWjYjLzBwPxuQ==
+"@gouvfr/dsfr@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.3.0.tgz#0742223d05bf5c1ddbd721c349b60cf1bf36fdd5"
+  integrity sha512-zwwMytV7/i35fSe9VT8K2A8hYDla8sfxzJcSxXSwclyk57JH5HBXBY7k4qt49ECTrvMy8GWAWKqJREg6FAdRgQ==
 
 "@graphql-tools/batch-execute@^7.1.2":
   version "7.1.2"

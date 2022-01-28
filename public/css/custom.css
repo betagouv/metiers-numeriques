@@ -1,5 +1,10 @@
 /* Global*/
 
+body {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
 body:after {
   background: #2a7ffe;
   color: white;
@@ -18,25 +23,40 @@ body:after {
   width: 12rem;
 }
 
-code {
+main .fr-btn {
+  padding-bottom: 0.75rem;
+}
+main .fr-btn::before {
+  margin-top: 0.25rem;
+}
+main .fr-btn.fr-btn--sm {
+  padding-bottom: 0.4rem;
+}
+main .fr-btn.fr-btn--sm::before {
+  margin-top: 0.15rem;
+}
+
+main code {
   background-color: #eeeeee;
 }
 
-p {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin: 0 0 1rem;
+main .fr-card__img {
+  filter: brightness(90%);
+  background: white;
+}
+main .fr-card__img img {
+  object-fit: contain;
 }
 
-.excerpt {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  display: -webkit-box;
-  font-size: 1.15rem;
-  line-clamp: 3;
-  line-height: 1.5;
-  overflow: hidden;
-  text-overflow: ellipsis;
+main p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+main * > p:first-child {
+  margin: 0;
+}
+main * > p:not(:first-child) {
+  margin: 1rem 0 0 0;
 }
 
 .rf-centered {
@@ -56,20 +76,6 @@ p {
 
 p.rf-hint-text {
   margin-bottom: 0;
-}
-
-.tofill {
-  background-color: #fffacd;
-  font-weight: lighter;
-  padding: 0.1em 0.2em;
-}
-
-span.tofill::after {
-  content: ']';
-}
-
-span.tofill::before {
-  content: '[';
 }
 
 .text-grey {
@@ -151,15 +157,6 @@ span.tofill::before {
   justify-content: space-between;
 }
 
-#ministeres .fr-card__img {
-  filter: brightness(90%);
-  background: white;
-}
-
-.fr-card__img img {
-  object-fit: contain;
-}
-
 @-webkit-keyframes rotating
 /* Safari and Chrome */ {
   from {
@@ -235,7 +232,7 @@ span.tofill::before {
   top: 0;
   transform-origin: bottom left;
   transform: rotate(40deg);
-  width: 0;
+  width: 0.65rem;
 }
 #Institution ul > li *,
 #job-detail ul > li * {
@@ -247,17 +244,28 @@ span.tofill::before {
   width: 0.625rem;
 }
 
-#Institution-main-fields .fr-col-md-9,
-#Institution-main-fields .fr-col-md-9 p,
-#job-detail-main-fields .fr-col-md-9,
-#job-detail-main-fields .fr-col-md-9 p {
-  font-size: 1.25rem;
-  line-height: 1.6;
+#Institution .fr-col-md-3 h3,
+#Institution .fr-col-md-3 h5,
+#job-detail .fr-col-md-3 h3,
+#job-detail .fr-col-md-3 h5 {
+  margin: 1.15rem 0 0 0;
 }
+#Institution .fr-col-md-9,
+#job-detail .fr-col-md-9 {
+  padding-top: 0;
+}
+@media screen and (min-width: 768px) {
+  #Institution .fr-col-md-3 h3,
+  #Institution .fr-col-md-3 h5,
+  #job-detail .fr-col-md-3 h3,
+  #job-detail .fr-col-md-3 h5 {
+    margin: 0;
+  }
 
-#Institution-main-fields .fr-col-md-9,
-#job-detail-main-fields .fr-col-md-9 {
-  padding-top: 0.85rem;
+  #Institution .fr-col-md-9,
+  #job-detail .fr-col-md-9 {
+    padding-top: 1.15rem;
+  }
 }
 
 #job-detail-header p {

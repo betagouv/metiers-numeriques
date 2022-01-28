@@ -121,7 +121,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
         >
           <h2>Vous ne trouvez pas ?</h2>
           <a
-            className="fr-btn"
+            className="fr-btn fr-fi-add-circle-line fr-btn--icon-right"
             href="https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee"
             style={{
               marginBottom: '.5rem',
@@ -129,12 +129,6 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
             }}
           >
             Déposez une candidature spontanée
-            <i
-              className="ri-file-add-line"
-              style={{
-                marginLeft: '0.5rem',
-              }}
-            />
           </a>
         </div>
 

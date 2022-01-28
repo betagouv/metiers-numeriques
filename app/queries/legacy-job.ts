@@ -21,15 +21,9 @@ export const GET_ALL = gql`
       data {
         id
 
-        experiences
-        mission
-        openedToContractTypes
-        reference
-        slug
+        limitDate
         source
         state
-        tasks
-        team
         title
         updatedAt
 
