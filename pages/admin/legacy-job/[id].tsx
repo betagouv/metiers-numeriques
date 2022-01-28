@@ -180,7 +180,7 @@ export default function LegacyJobEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle offre (legacy)' : 'Édition d’une offre (legacy)'}</Title>
+        <Title>{isNew ? 'Nouvelle offre [LEGACY]' : 'Édition d’une offre [LEGACY]'}</Title>
       </AdminHeader>
 
       <Card>

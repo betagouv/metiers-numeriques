@@ -110,14 +110,14 @@ export default function AdminLegacyInstitutionListPage() {
       accent: 'primary',
       action: goToEditor,
       Icon: MaterialEditOutlined,
-      label: 'Éditer cette institution',
+      label: 'Éditer cette institution [LEGACY]',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
       Icon: MaterialDeleteOutlined,
-      label: 'Supprimer cette institution',
+      label: 'Supprimer cette institution [LEGACY]',
       type: 'action',
     },
   ]
@@ -125,15 +125,15 @@ export default function AdminLegacyInstitutionListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Institutions (Legacy)</Title>
+        <Title>Institutions [LEGACY]</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter une institution
+          Ajouter une institution [LEGACY]
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une institution (legacy)" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une institution [LEGACY]" />
 
         <Table
           columns={columns}

@@ -21,22 +21,18 @@ import type { TableColumnProps } from '@singularity/core/contents/Table/types'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    isSortable: true,
     key: 'firstName',
     label: 'Prénom',
   },
   {
-    isSortable: true,
     key: 'lastName',
     label: 'Nom',
   },
   {
-    isSortable: true,
     key: 'email',
     label: 'Email',
   },
   {
-    isSortable: true,
     key: 'role',
     label: 'Rôle',
     transform: ({ role }) => USER_ROLE_LABEL[role],

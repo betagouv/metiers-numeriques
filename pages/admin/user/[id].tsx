@@ -27,7 +27,7 @@ const USER_ROLES_AS_OPTIONS = R.pipe(
   R.map(([value, label]) => ({ label, value })),
 )(USER_ROLE_LABEL)
 
-export default function UserEditor() {
+export default function AdminUserEditorPage() {
   const router = useRouter()
   const { id } = router.query
 

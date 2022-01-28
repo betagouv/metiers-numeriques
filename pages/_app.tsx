@@ -12,9 +12,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 
-import '@gouvfr/dsfr/dist/dsfr/dsfr.css'
-import 'remixicon/fonts/remixicon.css'
-
 const PRIVATE_PATHS = [/^\/admin($|\/)/]
 
 const GlobalStyleCustom = createGlobalStyle<{
@@ -42,6 +39,11 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
   const isAdministrationSpace = router.pathname === '/admin' || router.pathname.startsWith('/admin/')
 
   if (!isAdministrationSpace) {
+    // eslint-disable-next-line global-require
+    require('@gouvfr/dsfr/dist/dsfr/dsfr.css')
+    // eslint-disable-next-line global-require
+    require('remixicon/fonts/remixicon.css')
+
     return (
       <>
         <Head>

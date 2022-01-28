@@ -42,7 +42,7 @@ export const CREATE_ONE = gql`
 `
 
 export const DELETE_ONE = gql`
-  mutation DeleteFile($id: ID!) {
+  mutation DeleteFile($id: String!) {
     deleteFile(id: $id) {
       id
     }

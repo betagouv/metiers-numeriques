@@ -1,3 +1,4 @@
+# import Contact, ContactInput, ContactsResult from "contacts.graphql"
 # import File, FileInput, FilesResult from "files.graphql"
 # import Recruiter, RecruiterInput, RecruitersResult from "recruiters.graphql"
 # import User, UserInput, UsersResult from "users.graphql"
@@ -6,6 +7,14 @@ scalar DateTime
 scalar JSONObject
 
 type Query {
+  getContact(id: String!): Contact
+  getContacts(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): ContactsResult!
+  getContactsList: [Contact!]!
+
   getFile(id: String!): File
   getFiles(
     pageIndex: Int!
@@ -69,6 +78,10 @@ type Query {
 }
 
 type Mutation {
+  createContact(input: ContactInput!): Contact
+  deleteContact(id: String!): Contact
+  updateContact(id: String!, input: ContactInput!): Contact
+
   createFile(input: FileInput!): File
   deleteFile(id: String!): File
   updateFile(id: String!, input: FileInput!): File

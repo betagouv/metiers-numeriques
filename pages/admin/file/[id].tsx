@@ -18,7 +18,7 @@ const FormSchema = Yup.object().shape({
   url: Yup.string().required(`L’url est obligatoire.`),
 })
 
-export default function FileEditorPage() {
+export default function AdminFileEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'

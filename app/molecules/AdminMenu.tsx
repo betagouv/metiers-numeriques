@@ -56,6 +56,14 @@ export default function AdminMenu() {
               Tableau de bord
             </VerticalMenu.Item>
           </Link>
+          <Link href="/admin/contacts">
+            <VerticalMenu.Item
+              isActive={router.pathname === '/admin/contacts' || router.pathname.startsWith('/admin/contact/')}
+              isDark
+            >
+              Contacts
+            </VerticalMenu.Item>
+          </Link>
           <Link href="/admin/files">
             <VerticalMenu.Item
               isActive={router.pathname === '/admin/files' || router.pathname.startsWith('/admin/file/')}
@@ -81,6 +89,9 @@ export default function AdminMenu() {
             <VerticalMenu.Item
               isActive={router.pathname === '/admin/legacy-jobs' || router.pathname.startsWith('/admin/legacy-job/')}
               isDark
+              style={{
+                textDecoration: 'line-through',
+              }}
             >
               Offres
             </VerticalMenu.Item>
@@ -102,6 +113,9 @@ export default function AdminMenu() {
                 router.pathname === '/admin/legacy-entities' || router.pathname.startsWith('/admin/legacy-entity/')
               }
               isDark
+              style={{
+                textDecoration: 'line-through',
+              }}
             >
               Entités
             </VerticalMenu.Item>
@@ -112,6 +126,9 @@ export default function AdminMenu() {
                 router.pathname === '/admin/legacy-services' || router.pathname.startsWith('/admin/legacy-service/')
               }
               isDark
+              style={{
+                textDecoration: 'line-through',
+              }}
             >
               Services
             </VerticalMenu.Item>

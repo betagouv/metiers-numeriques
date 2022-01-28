@@ -13,40 +13,44 @@ import * as R from 'ramda'
 import { useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
-import type { LegacyService } from '@prisma/client'
+import type { Contact } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    key: 'name',
-    label: 'Nom court',
+    key: 'firstName',
+    label: 'Prénom',
   },
   {
-    key: 'fullName',
-    label: 'Nom long',
+    key: 'lastName',
+    label: 'Nom',
   },
   {
-    key: 'legacyEntity.name',
-    label: 'Entité [LEGACY]',
+    key: 'email',
+    label: 'Email',
+  },
+  {
+    key: 'phone',
+    label: 'Téléphone',
   },
 ]
 
 const PER_PAGE = 10
 
-export default function AdminLegacyJobListPage() {
+export default function AdminContactListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
-  const [deleteLegacyService] = useMutation(queries.legacyService.DELETE_ONE)
+  const [deleteContact] = useMutation(queries.contact.DELETE_ONE)
   const router = useRouter()
 
-  const getLegacyServicesResult = useQuery<
+  const getContactsResult = useQuery<
     {
-      getLegacyServices: GetAllResponse<LegacyService>
+      getContacts: GetAllResponse<Contact>
     },
     any
-  >(queries.legacyService.GET_ALL, {
+  >(queries.contact.GET_ALL, {
     pollInterval: 500,
     variables: {
       pageIndex: 0,
@@ -54,36 +58,36 @@ export default function AdminLegacyJobListPage() {
     },
   })
 
-  const isLoading = getLegacyServicesResult.loading
-  const legacyServicesResult: GetAllResponse<LegacyService> =
-    isLoading || getLegacyServicesResult.error || getLegacyServicesResult.data === undefined
+  const isLoading = getContactsResult.loading
+  const contactsResult: GetAllResponse<Contact> =
+    isLoading || getContactsResult.error || getContactsResult.data === undefined
       ? {
           count: 1,
           data: [],
           index: 0,
           length: 0,
         }
-      : getLegacyServicesResult.data.getLegacyServices
+      : getContactsResult.data.getContacts
 
   const closeDeletionModal = () => {
     setHasDeletionModal(false)
   }
 
   const confirmDeletion = async (id: string) => {
-    const legacyService = R.find<LegacyService>(R.propEq('id', id))(legacyServicesResult.data)
-    if (legacyService === undefined) {
+    const contact = R.find<Contact>(R.propEq('id', id))(contactsResult.data)
+    if (contact === undefined) {
       return
     }
 
     setSelectedId(id)
-    setSelectedEntity(legacyService.id)
+    setSelectedEntity(`${contact.firstName} ${contact.lastName}`)
     setHasDeletionModal(true)
   }
 
   const deleteAndReload = async () => {
     setHasDeletionModal(false)
 
-    await deleteLegacyService({
+    await deleteContact({
       variables: {
         id: selectedId,
       },
@@ -91,7 +95,7 @@ export default function AdminLegacyJobListPage() {
   }
 
   const goToEditor = (id: string) => {
-    router.push(`/admin/legacy-service/${id}`)
+    router.push(`/admin/contact/${id}`)
   }
 
   const query = debounce(async (pageIndex: number) => {
@@ -101,7 +105,7 @@ export default function AdminLegacyJobListPage() {
 
     const query = define($searchInput.current.value)
 
-    getLegacyServicesResult.refetch({
+    getContactsResult.refetch({
       pageIndex,
       perPage: PER_PAGE,
       query,
@@ -114,14 +118,14 @@ export default function AdminLegacyJobListPage() {
       accent: 'primary',
       action: goToEditor,
       Icon: MaterialEditOutlined,
-      label: 'Éditer ce service [LEGACY]',
+      label: 'Éditer ce contact',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
       Icon: MaterialDeleteOutlined,
-      label: 'Supprimer ce service [LEGACY]',
+      label: 'Supprimer ce contact',
       type: 'action',
     },
   ]
@@ -129,25 +133,25 @@ export default function AdminLegacyJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Services [LEGACY]</Title>
+        <Title>Contacts</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter un service [LEGACY]
+          Ajouter un contact
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un service [LEGACY]" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un contact" />
 
         <Table
           columns={columns}
-          data={legacyServicesResult.data}
+          data={contactsResult.data}
           defaultSortedKey="updatedAt"
           defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
-          pageCount={legacyServicesResult.count}
-          pageIndex={legacyServicesResult.index}
+          pageCount={contactsResult.count}
+          pageIndex={contactsResult.index}
           perPage={PER_PAGE}
         />
       </Card>
