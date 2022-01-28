@@ -1,4 +1,4 @@
-import type { FileType, JobSource, JobState } from '@prisma/client'
+import type { FileType, JobSource, JobState, UserRole } from '@prisma/client'
 
 export type FileTypeKey = FileType
 export type FileTypeValue = {
@@ -164,16 +164,14 @@ export const REGIONS_AS_OPTIONS: Common.App.SelectOption<keyof typeof REGION>[] 
   },
 ]
 
-export const USER_ROLE: Record<Common.User.Role, Common.User.Role> = {
+export const USER_ROLE: Record<UserRole, UserRole> = {
   ADMINISTRATOR: 'ADMINISTRATOR',
-  ENTITY_MANAGER: 'ENTITY_MANAGER',
-  SERVICE_MANAGER: 'SERVICE_MANAGER',
+  RECRUITER: 'RECRUITER',
 }
 
-export const USER_ROLE_LABEL: Record<Common.User.Role, string> = {
+export const USER_ROLE_LABEL: Record<UserRole, string> = {
   ADMINISTRATOR: 'Administeur·rice',
-  ENTITY_MANAGER: 'Responsable d’entité',
-  SERVICE_MANAGER: 'Responsable de service',
+  RECRUITER: 'Recruteur·se',
 }
 
 export const USER_ROLES = Object.values(USER_ROLE)

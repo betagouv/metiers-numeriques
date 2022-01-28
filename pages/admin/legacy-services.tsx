@@ -47,7 +47,7 @@ export default function AdminLegacyJobListPage() {
     },
     any
   >(queries.legacyService.GET_ALL, {
-    pollInterval: 5000,
+    pollInterval: 500,
     variables: {
       pageIndex: 0,
       perPage: PER_PAGE,

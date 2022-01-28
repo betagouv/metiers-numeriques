@@ -13,6 +13,7 @@ import path from 'path'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const { DOMAIN_URL } = process.env
+const GRAPHQL_SCHEMA_PATH = path.join(process.cwd(), 'graphql/schema.graphql')
 
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 const permissions = shield({
@@ -37,26 +38,34 @@ const permissions = shield({
     deleteLegacyService: permission.isAdministrator,
     updateLegacyService: permission.isAdministrator,
 
+    createRecruiter: permission.isAdministrator,
+    deleteRecruiter: permission.isAdministrator,
+    updateRecruiter: permission.isAdministrator,
+
     deleteUser: permission.isAdministrator,
     updateUser: permission.isAdministrator,
   },
   Query: {
-    getFile: permission.isPublic,
-    getFiles: permission.isPublic,
+    getFile: permission.isAdministrator,
+    getFiles: permission.isAdministrator,
 
-    getLegacyEntity: permission.isPublic,
-    getLegacyEntities: permission.isPublic,
+    getLegacyEntity: permission.isAdministrator,
+    getLegacyEntities: permission.isAdministrator,
     getLegacyEntitiesList: permission.isAdministrator,
 
-    getLegacyInstitution: permission.isPublic,
-    getLegacyInstitutions: permission.isPublic,
+    getLegacyInstitution: permission.isAdministrator,
+    getLegacyInstitutions: permission.isAdministrator,
 
-    getLegacyJob: permission.isPublic,
+    getLegacyJob: permission.isAdministrator,
     getLegacyJobs: permission.isPublic,
 
-    getLegacyService: permission.isPublic,
-    getLegacyServices: permission.isPublic,
+    getLegacyService: permission.isAdministrator,
+    getLegacyServices: permission.isAdministrator,
     getLegacyServicesList: permission.isAdministrator,
+
+    getRecruiter: permission.isAdministrator,
+    getRecruiters: permission.isAdministrator,
+    getRecruitersList: permission.isAdministrator,
 
     getUser: or(permission.isAdministrator, permission.isMe),
     getUsers: permission.isAdministrator,
@@ -86,7 +95,7 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
 
     if (!__GRAPHQL_SERVER.apolloServer) {
       // https://www.graphql-tools.com/docs/schema-loading#usage
-      const typeDefs = await loadSchema(path.join(process.cwd(), 'api/schema.graphql'), {
+      const typeDefs = await loadSchema(GRAPHQL_SCHEMA_PATH, {
         loaders: [new GraphQLFileLoader()],
       })
 

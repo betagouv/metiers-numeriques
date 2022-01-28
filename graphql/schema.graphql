@@ -1,3 +1,7 @@
+# import File, FileInput, FilesResult from "files.graphql"
+# import Recruiter, RecruiterInput, RecruitersResult from "recruiters.graphql"
+# import User, UserInput, UsersResult from "users.graphql"
+
 scalar DateTime
 scalar JSONObject
 
@@ -42,6 +46,14 @@ type Query {
   ): LegacyServicesResult!
   getLegacyServicesList: [LegacyService!]!
 
+  getRecruiter(id: String!): Recruiter
+  getRecruiters(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): RecruitersResult!
+  getRecruitersList: [Recruiter!]!
+
   getUser(id: String!): User
   getUsers(
     pageIndex: Int!
@@ -71,31 +83,12 @@ type Mutation {
   deleteLegacyService(id: String!): LegacyService
   updateLegacyService(id: String!, input: LegacyServiceInput!): LegacyService
 
+  createRecruiter(input: RecruiterInput!): Recruiter
+  deleteRecruiter(id: String!): Recruiter
+  updateRecruiter(id: String!, input: RecruiterInput!): Recruiter
+
   deleteUser(id: String!): User
   updateUser(id: String!, input: UserInput!): User
-}
-
-type File {
-  id: ID!
-
-  createdAt: DateTime!
-  title: String!
-  type: String!
-  updatedAt: DateTime!
-  url: String!
-}
-
-type FilesResult {
-  count: Int!
-  data: [File!]!
-  index: Int!
-  length: Int!
-}
-
-input FileInput {
-  title: String!
-  type: String!
-  url: String!
 }
 
 type LegacyEntity {
@@ -285,27 +278,3 @@ input LegacyServiceInput {
   legacyEntityId: String
 }
 
-type User {
-  id: ID!
-
-  email: String!
-  firstName: String!
-  isActive: Boolean!
-  lastName: String!
-  role: String!
-}
-
-type UsersResult {
-  count: Int!
-  data: [User!]!
-  index: Int!
-  length: Int!
-}
-
-input UserInput {
-  email: String!
-  firstName: String!
-  isActive: Boolean!
-  lastName: String!
-  role: String!
-}

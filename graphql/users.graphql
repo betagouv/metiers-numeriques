@@ -1,0 +1,24 @@
+type User {
+  id: ID!
+
+  email: String
+  firstName: String
+  isActive: Boolean
+  lastName: String
+  role: String
+}
+
+input UserInput {
+  email: String
+  firstName: String
+  isActive: Boolean
+  lastName: String
+  role: String
+}
+
+type UsersResult {
+  count: Int!
+  data: [User!]!
+  index: Int!
+  length: Int!
+}

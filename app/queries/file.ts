@@ -40,6 +40,7 @@ export const CREATE_ONE = gql`
     }
   }
 `
+
 export const DELETE_ONE = gql`
   mutation DeleteFile($id: ID!) {
     deleteFile(id: $id) {
