@@ -1,10 +1,6 @@
-@import '@gouvfr/dsfr/dist/css/dsfr.css';
-@import 'remixicon/fonts/remixicon.css';
-
 @import './custom.css';
 
 @import './pages/Institution.css';
 
 @import './components/FileSection.css';
 @import './components/Header.css';
-@import './components/TopScrollerButton.css';

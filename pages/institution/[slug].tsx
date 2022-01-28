@@ -86,10 +86,10 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
           <div className="fr-my-4w" id="Institution-main-fields">
             {institution.value && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Valeurs</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                   {renderMarkdown(institution.value)}
 
                   {valueFiles.length > 0 && (
@@ -101,28 +101,28 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 
             {institution.challenges && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Nos enjeux</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.challenges)}</div>
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">{renderMarkdown(institution.challenges)}</div>
               </div>
             )}
 
             {institution.missions && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Missions</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.missions)}</div>
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">{renderMarkdown(institution.missions)}</div>
               </div>
             )}
 
             {institution.project && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Projets</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                   {renderMarkdown(institution.project)}
 
                   {projectFiles.length > 0 && (
@@ -134,10 +134,10 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 
             {institution.organization && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Organisation</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                   {renderMarkdown(institution.organization)}
 
                   {organizationFiles.length > 0 && (
@@ -149,10 +149,10 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 
             {institution.testimonial && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Nos agents en parlent</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                   <p>Découvrez le témoignage de nos agents:</p>
                   {renderMarkdown(institution.testimonial)}
 
@@ -165,28 +165,28 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 
             {institution.profile && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Ton profil</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.profile)}</div>
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">{renderMarkdown(institution.profile)}</div>
               </div>
             )}
 
             {institution.hiringProcess && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Processus de recrutement</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.hiringProcess)}</div>
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">{renderMarkdown(institution.hiringProcess)}</div>
               </div>
             )}
 
             {institution.joinTeam && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-md-3 fr-col-sm-12">
+                <div className="fr-col-12 fr-col-md-3">
                   <h3>Nous rejoindre</h3>
                 </div>
-                <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+                <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                   {renderMarkdown(institution.joinTeam)}
 
                   {joinTeamFiles.length > 0 && (
@@ -201,10 +201,10 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
         <div className="fr-container fr-py-4w" style={{ backgroundColor: '#F0F0F0' }}>
           {institution.keyNumbers && (
             <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-md-3 fr-col-sm-12">
+              <div className="fr-col-12 fr-col-md-3">
                 <h5>Chiffres clés</h5>
               </div>
-              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                 {renderMarkdown(institution.keyNumbers)}
 
                 {keyNumbersFiles.length > 0 && (
@@ -216,19 +216,19 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 
           {institution.schedule && (
             <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-md-3 fr-col-sm-12">
+              <div className="fr-col-12 fr-col-md-3">
                 <h5>Agenda</h5>
               </div>
-              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">{renderMarkdown(institution.schedule)}</div>
+              <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">{renderMarkdown(institution.schedule)}</div>
             </div>
           )}
 
           {(institution.websiteUrls.length > 0 || socialNetworkUrls.length > 0) && (
             <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-md-3 fr-col-sm-12">
+              <div className="fr-col-12 fr-col-md-3">
                 <h5>Sites & réseaux</h5>
               </div>
-              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                 {institution.websiteUrls.length > 0 && (
                   <ul>
                     {institution.websiteUrls.map(websiteUrl => (
@@ -252,10 +252,10 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 
           {(institution.address || addressFiles.length > 0) && (
             <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-md-3 fr-col-sm-12">
+              <div className="fr-col-12 fr-col-md-3">
                 <h5>Adresses</h5>
               </div>
-              <div className="fr-col-md-9 fr-col-sm-12 fr-mb-4w">
+              <div className="fr-col-12 fr-col-md-9 fr-mb-md-2w">
                 {institution.address && renderMarkdown(institution.address)}
 
                 {addressFiles.map(addressFile => {

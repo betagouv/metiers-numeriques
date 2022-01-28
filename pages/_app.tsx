@@ -12,6 +12,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 
+import '@gouvfr/dsfr/dist/dsfr/dsfr.css'
+import 'remixicon/fonts/remixicon.css'
+
 const PRIVATE_PATHS = [/^\/admin($|\/)/]
 
 const GlobalStyleCustom = createGlobalStyle<{
@@ -46,6 +49,11 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
 
           <meta charSet="utf-8" />
           <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+          <link href="/favicons/apple-touch-icon.png" rel="apple-touch-icon" />
+          <link href="/favicons/favicon.svg" rel="icon" type="image/svg+xml" />
+          <link href="/favicons/favicon.ico" rel="icon" type="image/x-icon" />
+          <link crossOrigin="use-credentials" href="/manifest.webmanifest" rel="manifest" />
+
           <meta content="rbHd2NXOspK6-avguNFUvBzgddpFwWzph-a8Ebxepvo" name="google-site-verification" />
 
           <meta content="metiers.numerique.gouv.fr" property="og:title" />
@@ -58,8 +66,10 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
 
         <Header />
         <WithGraphql>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Component {...pageProps} />
+          <main>
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+            <Component {...pageProps} />
+          </main>
         </WithGraphql>
         <Footer />
 
@@ -75,6 +85,13 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
     <>
       <Head>
         <title>Espace d’administration</title>
+
+        <meta charSet="utf-8" />
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+        <link href="/favicons/apple-touch-icon.png" rel="apple-touch-icon" />
+        <link href="/favicons/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/favicons/favicon.ico" rel="icon" type="image/x-icon" />
+        <link crossOrigin="use-credentials" href="/manifest.webmanifest" rel="manifest" />
       </Head>
 
       <ThemeProvider>

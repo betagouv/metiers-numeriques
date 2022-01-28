@@ -1,6 +1,7 @@
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDate } from '@app/helpers/normalizeDate'
 import normalizeJobDescription from '@app/helpers/normalizeJobDescription'
+import styled from 'styled-components'
 
 import Link from '../atoms/Link'
 
@@ -21,6 +22,17 @@ export type LegacyJobWithRelation = LegacyJob & {
       })
     | null
 }
+
+const Excerpt = styled.p`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  font-size: 1.15rem;
+  line-clamp: 3;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 
 type JobCardProps = {
   job: LegacyJobWithRelation
@@ -91,9 +103,14 @@ export default function JobCard({ job }: JobCardProps) {
                 </Link>
               </h4>
 
-              <p className="fr-card__desc excerpt">{description}</p>
+              <Excerpt className="fr-card__desc">{description}</Excerpt>
 
-              <ul className="fr-tags-group">
+              <ul
+                className="fr-tags-group"
+                style={{
+                  marginTop: '1.15rem',
+                }}
+              >
                 {job.experiences
                   .filter(experience => experience.trim().length > 0)
                   .map(experience => (
@@ -101,8 +118,8 @@ export default function JobCard({ job }: JobCardProps) {
                       key={generateKeyFromValue(`${job.id}-${experience}`)}
                       className="fr-tag fr-tag--sm"
                       style={{
-                        backgroundColor: 'var(--bf200-bf300)',
-                        color: 'var(--bf500-plain)',
+                        backgroundColor: 'var(--background-flat-info)',
+                        color: 'white',
                       }}
                     >
                       {experience}
@@ -116,8 +133,8 @@ export default function JobCard({ job }: JobCardProps) {
                       key={generateKeyFromValue(`${job.id}-${openedToContractType}`)}
                       className="fr-tag fr-tag--sm"
                       style={{
-                        backgroundColor: 'var(--bf200-bf300)',
-                        color: 'var(--bf500-plain)',
+                        backgroundColor: 'var(--background-flat-info)',
+                        color: 'white',
                       }}
                     >
                       {openedToContractType}
@@ -143,9 +160,11 @@ export default function JobCard({ job }: JobCardProps) {
               {job.reference}
             </code>
 
-            <Link className="trk-lire-offre fr-btn fr-btn--sm" href={`/emploi/${job.slug}`}>
-              Lire l’offre d’emploi!
-              <span aria-hidden="true" className="fr-fi-arrow-right-line fr-pl-1w" />
+            <Link
+              className="trk-lire-offre fr-btn fr-btn--sm fr-fi-arrow-right-line fr-btn--icon-right"
+              href={`/emploi/${job.slug}`}
+            >
+              Lire l’offre d’emploi
             </Link>
           </div>
         </div>

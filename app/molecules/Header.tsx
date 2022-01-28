@@ -11,6 +11,7 @@ export default function Header() {
       <Head>
         <link href="/index.bundle.css" rel="stylesheet" />
       </Head>
+
       <header className="fr-header" role="banner">
         <div className="fr-header__body">
           <div className="fr-container">

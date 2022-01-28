@@ -8,7 +8,7 @@ const BackToTopButton = styled.button`
   border-radius: 50%;
   bottom: 6.25rem;
   box-shadow: none;
-  color: white;
+  color: transparent;
   height: 3.75rem !important;
   max-height: 3.75rem !important;
   max-width: 3.75rem !important;
@@ -17,6 +17,10 @@ const BackToTopButton = styled.button`
   position: fixed;
   right: 1.5rem;
   width: 3.75rem !important;
+
+  ::before {
+    color: white;
+  }
 
   :hover {
     background-image: none;
@@ -65,19 +69,16 @@ export default function Footer() {
             </div>
 
             <div className="fr-footer__content">
-              <p className="fr-footer__content-desc">Tout savoir sur les métiers du numérique au sein de l’État.</p>
-
+              <p className="fr-footer__content-desc">Tout savoir sur les métiers numériques au sein de l’État.</p>
               <p className="fr-footer__content-desc">
-                Le code source est ouvert et les contributions sont bienvenues.
                 <a
                   href="https://github.com/betagouv/metiers-numeriques"
                   rel="noopener noreferrer"
                   target="_blank"
                   title="Voir le code source"
                 >
-                  Voir le code source
+                  Le code source est ouvert et les contributions sont bienvenues.
                 </a>
-                .
               </p>
 
               <ul className="fr-footer__content-list">
@@ -131,7 +132,7 @@ export default function Footer() {
                   Contactez-nous
                 </a>
               </li>
-              <li className="fr-footer__bottom-item">
+              {/* <li className="fr-footer__bottom-item">
                 <button
                   aria-controls="fr-theme-modal"
                   className="fr-footer__bottom-link fr-fi-sun-fill-line fr-link--icon-left"
@@ -140,7 +141,7 @@ export default function Footer() {
                 >
                   Paramètres d’affichage
                 </button>
-              </li>
+              </li> */}
             </ul>
 
             <div className="fr-footer__bottom-copy">
