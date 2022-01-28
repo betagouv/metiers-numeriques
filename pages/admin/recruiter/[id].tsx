@@ -1,29 +1,62 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
+import Subtitle from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
-import { Card, Field } from '@singularity/core'
+import { USER_ROLE_LABEL } from '@common/constants'
+import { Card, Field, Table } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 
+import type { RecruiterFromGetOne } from '@api/resolvers/recruiters'
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { Recruiter } from '@prisma/client'
+import type { TableColumnProps } from '@singularity/core'
 
 const FormSchema = Yup.object().shape({
   name: Yup.string().required(`Le nom est obligatoire.`),
 })
+
+const USER_LIST_COLUMNS: TableColumnProps[] = [
+  {
+    isSortable: true,
+    key: 'firstName',
+    label: 'Prénom',
+  },
+  {
+    isSortable: true,
+    key: 'lastName',
+    label: 'Nom',
+  },
+  {
+    isSortable: true,
+    key: 'email',
+    label: 'Email',
+  },
+  {
+    isSortable: true,
+    key: 'role',
+    label: 'Rôle',
+    transform: ({ role }) => USER_ROLE_LABEL[role],
+  },
+]
 
 export default function AdminRecruiterEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
 
-  const [initialValues, setInitialValues] = useState({})
+  const [initialValues, setInitialValues] = useState<RecruiterFromGetOne>()
   const [isLoading, setIsLoading] = useState(true)
-  const getRecruiterResult = useQuery(queries.recruiter.GET_ONE, {
+  const getRecruiterResult = useQuery<
+    {
+      getRecruiter: RecruiterFromGetOne
+    },
+    any
+  >(queries.recruiter.GET_ONE, {
     variables: {
       id,
     },
@@ -36,8 +69,18 @@ export default function AdminRecruiterEditorPage() {
       return
     }
 
+    if (isNew) {
+      setIsLoading(false)
+
+      return
+    }
+
+    if (getRecruiterResult.loading || getRecruiterResult.error || getRecruiterResult.data === undefined) {
+      return
+    }
+
     const initialValues = {
-      ...getRecruiterResult.data.getFile,
+      ...getRecruiterResult.data.getRecruiter,
     }
 
     setInitialValues({ ...initialValues })
@@ -77,7 +120,7 @@ export default function AdminRecruiterEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           {/* <Field>
             <Form.Image accept=".svg" isDisabled={isLoading} label="Logo" name="logoFileId" />
           </Field> */}
@@ -101,6 +144,21 @@ export default function AdminRecruiterEditorPage() {
             <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
           </Field>
         </Form>
+      </Card>
+
+      <Card
+        style={{
+          marginTop: '1rem',
+        }}
+      >
+        <Subtitle>Utilisateur·rices</Subtitle>
+
+        <Table
+          columns={USER_LIST_COLUMNS}
+          data={initialValues ? initialValues.users : []}
+          defaultSortedKey="lastName"
+          isLoading={isLoading}
+        />
       </Card>
     </>
   )

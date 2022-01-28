@@ -1,3 +1,5 @@
+# import Recruiter from "recruiters.graphql"
+
 type User {
   id: ID!
 
@@ -6,6 +8,8 @@ type User {
   isActive: Boolean
   lastName: String
   role: String
+
+  recruiter: Recruiter
 }
 
 input UserInput {
@@ -14,6 +18,8 @@ input UserInput {
   isActive: Boolean
   lastName: String
   role: String
+
+  recruiterId: String
 }
 
 type UsersResult {

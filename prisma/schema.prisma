@@ -199,7 +199,8 @@ model Recruiter {
   children Recruiter[] @relation("RecruiterFamily")
   parent   Recruiter?  @relation("RecruiterFamily", fields: [parentId], references: [id])
   parentId String?
-  // users    User[]      @relation("UserRecruiter")
+  // See User.recruiter comment
+  users    User[]      @relation("UserRecruiter")
 }
 
 // https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
@@ -211,8 +212,7 @@ model RefreshToken {
   createdAt DateTime @default(now())
   expiredAt DateTime
 
-  // See User.recruiter comment
-  // user   User   @relation("UserRefreshToken", fields: [userId], references: [id])
+  user   User   @relation("UserRefreshToken", fields: [userId], references: [id])
   userId String
 }
 
@@ -230,7 +230,7 @@ model User {
 
   // TODO Wait for "Field does not exist on enclosing type." Prisma issue resolution.
   // https://github.com/prisma/prisma/issues/9553
-  // recruiter     Recruiter?     @relation("UserRecruiter", fields: [recruiterId], references: [id])
-  // recruiterId   String?
-  // refreshTokens RefreshToken[] @relation("UserRefreshToken")
+  recruiter     Recruiter?     @relation("UserRecruiter", fields: [recruiterId], references: [id])
+  recruiterId   String?
+  refreshTokens RefreshToken[] @relation("UserRefreshToken")
 }
