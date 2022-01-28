@@ -1,0 +1,28 @@
+scalar DateTime
+
+type Contact {
+  id: ID!
+
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  note: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input ContactInput {
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  note: String
+}
+
+type ContactsResult {
+  count: Int!
+  data: [Contact!]!
+  index: Int!
+  length: Int!
+}

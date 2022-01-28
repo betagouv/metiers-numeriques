@@ -50,7 +50,7 @@ export default function AdminRecruiterListPage() {
     },
     any
   >(queries.recruiter.GET_ALL, {
-    // pollInterval: 500,
+    pollInterval: 500,
     variables: {
       pageIndex: 0,
       perPage: PER_PAGE,

@@ -46,6 +46,10 @@ const permissions = shield({
     updateUser: permission.isAdministrator,
   },
   Query: {
+    getContact: permission.isAdministrator,
+    getContacts: permission.isAdministrator,
+    getContactsList: permission.isAdministrator,
+
     getFile: permission.isAdministrator,
     getFiles: permission.isAdministrator,
 

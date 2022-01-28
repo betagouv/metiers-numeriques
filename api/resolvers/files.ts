@@ -4,10 +4,16 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { File, Prisma } from '@prisma/client'
+import type { File, FileType, Prisma } from '@prisma/client'
+
+export type FileCreateInput = Partial<File> & {
+  title: string
+  type: FileType
+  url: string
+}
 
 export const mutation = {
-  createFile: async (_parent: undefined, { input }: { input: File }): Promise<File | null> => {
+  createFile: async (_parent: undefined, { input }: { input: FileCreateInput }): Promise<File | null> => {
     try {
       const args: Prisma.FileCreateArgs = {
         data: input,

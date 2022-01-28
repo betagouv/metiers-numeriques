@@ -127,7 +127,7 @@ export default function LegacyServiceEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau service (legacy)' : 'Édition d’un service (legacy)'}</Title>
+        <Title>{isNew ? 'Nouveau service [LEGACY]' : 'Édition d’un service [LEGACY]'}</Title>
       </AdminHeader>
 
       <Card>

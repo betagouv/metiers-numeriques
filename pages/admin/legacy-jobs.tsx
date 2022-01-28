@@ -170,14 +170,14 @@ export default function AdminLegacyJobListPage() {
       accent: 'primary',
       action: goToEditor,
       Icon: MaterialEditOutlined,
-      label: 'Éditer cette offre',
+      label: 'Éditer cette offre [LEGACY]',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
       Icon: MaterialDeleteOutlined,
-      label: 'Supprimer cette offre',
+      label: 'Supprimer cette offre [LEGACY]',
       type: 'action',
     },
   ]
@@ -185,16 +185,16 @@ export default function AdminLegacyJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres Legacy</Title>
+        <Title>Offres [LEGACY]</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter une offre legacy
+          Ajouter une offre [LEGACY]
         </Button>
       </AdminHeader>
 
       <Card>
         <Flex>
-          <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre legacy" />
+          <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre [LEGACY]" />
           <Select onChange={handleStateSelect} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
           <Select onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
         </Flex>

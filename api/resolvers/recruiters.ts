@@ -18,8 +18,15 @@ export type RecruiterFromGetOne = Recruiter & {
   users: User[]
 }
 
+export type RecruiterCreateInput = Partial<Recruiter> & {
+  name: string
+}
+
 export const mutation = {
-  createRecruiter: async (_parent: undefined, { input }: { input: Recruiter }): Promise<Recruiter | null> => {
+  createRecruiter: async (
+    _parent: undefined,
+    { input }: { input: RecruiterCreateInput },
+  ): Promise<Recruiter | null> => {
     try {
       const args: Prisma.RecruiterCreateArgs = {
         data: input,
@@ -158,7 +165,7 @@ export const query = {
 
       return data
     } catch (err) {
-      handleError(err, 'api/resolvers/recruiters.ts > query.getLegacyInstitutionsList()')
+      handleError(err, 'api/resolvers/recruiters.ts > query.getRecruitersList()')
 
       return []
     }

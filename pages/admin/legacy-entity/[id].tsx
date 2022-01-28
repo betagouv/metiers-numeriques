@@ -79,7 +79,7 @@ export default function LegacyEntityEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle entité' : 'Édition d’une entité'}</Title>
+        <Title>{isNew ? 'Nouvelle entité [LEGACY]' : 'Édition d’une entité [LEGACY]'}</Title>
       </AdminHeader>
 
       <Card>

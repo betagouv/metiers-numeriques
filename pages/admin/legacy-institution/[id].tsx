@@ -102,7 +102,7 @@ export default function LegacyInstitutionEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle institution' : 'Édition d’une institution'}</Title>
+        <Title>{isNew ? 'Nouvelle institution [LEGACY]' : 'Édition d’une institution [LEGACY]'}</Title>
       </AdminHeader>
 
       <Card>

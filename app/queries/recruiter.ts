@@ -78,7 +78,7 @@ export const CREATE_ONE = gql`
 `
 
 export const DELETE_ONE = gql`
-  mutation DeleteRecruiter($id: ID!) {
+  mutation DeleteRecruiter($id: String!) {
     deleteRecruiter(id: $id) {
       id
     }

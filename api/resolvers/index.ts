@@ -1,6 +1,7 @@
 import { GraphQLDateTime } from 'graphql-iso-date'
 import { GraphQLJSONObject } from 'graphql-type-json'
 
+import * as contacts from './contacts'
 import * as files from './files'
 import * as legacyEntities from './legacy-entities'
 import * as legacyInstitutions from './legacy-institutions'
@@ -13,6 +14,7 @@ export default {
   DateTime: GraphQLDateTime,
   JSONObject: GraphQLJSONObject,
   Mutation: {
+    ...contacts.mutation,
     ...files.mutation,
     ...legacyEntities.mutation,
     ...legacyInstitutions.mutation,
@@ -22,6 +24,7 @@ export default {
     ...users.mutation,
   },
   Query: {
+    ...contacts.query,
     ...files.query,
     ...legacyEntities.query,
     ...legacyInstitutions.query,

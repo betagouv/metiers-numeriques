@@ -110,14 +110,14 @@ export default function AdminLegacyEntityListPage() {
       accent: 'primary',
       action: goToEditor,
       Icon: MaterialEditOutlined,
-      label: 'Éditer cette entité',
+      label: 'Éditer cette entité [LEGACY]',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
       Icon: MaterialDeleteOutlined,
-      label: 'Supprimer cette entité',
+      label: 'Supprimer cette entité [LEGACY]',
       type: 'action',
     },
   ]
@@ -125,15 +125,15 @@ export default function AdminLegacyEntityListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Entités (Legacy)</Title>
+        <Title>Entités [LEGACY]</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter une entité
+          Ajouter une entité [LEGACY]
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une entité (legacy)" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une entité [LEGACY]" />
 
         <Table
           columns={columns}
