@@ -29,6 +29,13 @@ export const GET_ONE = gql`
       isActive
       lastName
       role
+
+      recruiter {
+        id
+
+        fullName
+        name
+      }
     }
   }
 `

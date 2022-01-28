@@ -84,7 +84,7 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
   return (
     <>
       <Head>
-        <title>Espace d’administration</title>
+        <title>Espace d’administration | metiers.numerique.gouv.fr</title>
 
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />

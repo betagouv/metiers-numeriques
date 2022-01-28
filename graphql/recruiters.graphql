@@ -1,4 +1,5 @@
 # import File from "files.graphql"
+# import User from "users.graphql"
 
 scalar DateTime
 
@@ -12,6 +13,13 @@ type Recruiter {
   websiteUrl: String
 
   logoFile: File
+  users: [User!]!
+
+  _count: RecruiterCount
+}
+
+type RecruiterCount {
+  users: Int
 }
 
 input RecruiterInput {

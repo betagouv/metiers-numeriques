@@ -2,9 +2,21 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
+import * as R from 'ramda'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { Prisma, User } from '@prisma/client'
+import type { Prisma, Recruiter, User } from '@prisma/client'
+
+export type UserFromGetAll = User & {
+  recruiter: Recruiter | null
+}
+
+export type UserFromGetOne = User & {
+  recruiter: Recruiter | null
+}
+
+const omitPasswordIn = R.omit(['password'])
+const omitPasswordFor = R.map(omitPasswordIn)
 
 export const mutation = {
   deleteUser: async (_parent: undefined, { id }: { id: string }): Promise<User | null> => {
@@ -15,7 +27,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().user.delete(args)
+      const data = omitPasswordIn(await getPrisma().user.delete(args)) as unknown as User
 
       return data
     } catch (err) {
@@ -34,7 +46,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().user.update(args)
+      const data = omitPasswordIn(await getPrisma().user.update(args)) as unknown as User
 
       return data
     } catch (err) {
@@ -46,15 +58,18 @@ export const mutation = {
 }
 
 export const query = {
-  getUser: async (_parent: undefined, { id }: { id: string }): Promise<User | null> => {
+  getUser: async (_parent: undefined, { id }: { id: string }): Promise<UserFromGetOne | null> => {
     try {
       const args: Prisma.UserFindUniqueArgs = {
+        include: {
+          recruiter: true,
+        },
         where: {
           id,
         },
       }
 
-      const data = await getPrisma().user.findUnique(args)
+      const data = omitPasswordIn(await getPrisma().user.findUnique(args)) as unknown as UserFromGetOne
 
       return data
     } catch (err) {
@@ -64,12 +79,18 @@ export const query = {
     }
   },
 
-  getUsers: async (_parent: undefined, { pageIndex, perPage, query }: GetAllArgs): Promise<GetAllResponse<User>> => {
+  getUsers: async (
+    _parent: undefined,
+    { pageIndex, perPage, query }: GetAllArgs,
+  ): Promise<GetAllResponse<UserFromGetAll>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
       const whereFilter = buildPrismaWhereFilter(['email', 'firstName', 'lastName'], query)
 
       const args: Prisma.UserFindManyArgs = {
+        include: {
+          recruiter: true,
+        },
         orderBy: {
           lastName: 'asc',
         },
@@ -78,7 +99,7 @@ export const query = {
       }
 
       const length = await getPrisma().user.count(whereFilter)
-      const data = await getPrisma().user.findMany(args)
+      const data = omitPasswordFor(await getPrisma().user.findMany(args)) as unknown as UserFromGetAll[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

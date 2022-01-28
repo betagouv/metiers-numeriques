@@ -18,6 +18,10 @@ export const GET_ALL = gql`
 
           url
         }
+
+        _count {
+          users
+        }
       }
       index
       length
@@ -41,6 +45,26 @@ export const GET_ONE = gql`
 
         url
       }
+
+      users {
+        id
+
+        firstName
+        email
+        lastName
+        role
+      }
+    }
+  }
+`
+
+export const GET_LIST = gql`
+  query GetRecruitersList {
+    getRecruitersList {
+      id
+
+      fullName
+      name
     }
   }
 `

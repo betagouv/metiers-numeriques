@@ -4,18 +4,18 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { Recruiter, Prisma } from '@prisma/client'
+import type { Recruiter, Prisma, User } from '@prisma/client'
 
 export type RecruiterFromGetAll = Recruiter & {
-  // _count: {
-  //   users: number
-  // }
+  _count: {
+    users: number
+  }
 }
 
 export type RecruiterFromGetOne = Recruiter & {
   children: Recruiter[]
-  parent?: Recruiter
-  // users: User[]
+  parent: Recruiter | null
+  users: User[]
 }
 
 export const mutation = {
@@ -84,7 +84,7 @@ export const query = {
           children: true,
           logoFile: true,
           parent: true,
-          // users: true,
+          users: true,
         },
         where: {
           id,
@@ -110,13 +110,13 @@ export const query = {
       const whereFilter = buildPrismaWhereFilter(['fullName', 'name'], query)
 
       const args: Prisma.RecruiterFindManyArgs = {
-        // include: {
-        //   _count: {
-        //     select: {
-        //       users: true,
-        //     },
-        //   },
-        // },
+        include: {
+          _count: {
+            select: {
+              users: true,
+            },
+          },
+        },
         orderBy: {
           name: 'asc',
         },
