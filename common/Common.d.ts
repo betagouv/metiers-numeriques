@@ -38,28 +38,8 @@ declare namespace Common {
   }
 
   namespace Auth {
-    type User = {
-      /** User email */
-      email: string
-      /** User first name */
-      firstName: string
-      /** User ID */
-      id: string
-      /** User last name */
-      lastName: string
-      /** User role */
-      role: User.Role
-    }
-  }
+    import type { User as PrismaUser } from '@prisma/client'
 
-  namespace Data {
-    type File = {
-      name: string
-      url: string
-    }
-  }
-
-  namespace User {
-    type Role = 'ADMINISTRATOR' | 'ENTITY_MANAGER' | 'SERVICE_MANAGER'
+    type User = Pick<PrismaUser, 'email' | 'firstName' | 'id' | 'lastName' | 'role'>
   }
 }

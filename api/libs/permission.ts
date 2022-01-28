@@ -3,9 +3,9 @@ import { User } from '@prisma/client'
 import { AuthenticationError, ForbiddenError } from 'apollo-server-micro'
 import { rule } from 'graphql-shield'
 
-import type { GraphQLResolveInfo } from 'graphql'
+import type { GraphQLObjectType, GraphQLResolveInfo } from 'graphql'
 import type { Rule } from 'graphql-shield/dist/rules'
-import type { IRuleResult } from 'graphql-shield/dist/types'
+import type { IRuleFunction, IRuleResult } from 'graphql-shield/dist/types'
 
 class Permission {
   public get isAdministrator(): Rule {
@@ -23,12 +23,12 @@ class Permission {
   }
 
   public get isMe(): Rule {
-    return this.setRule((user, args, info) => {
+    return this.setRule((user, args, info: GraphQLResolveInfo) => {
       if (user === undefined) {
         return new AuthenticationError('Unauthorized.')
       }
 
-      if ((info.returnType as any).name !== 'User' || user.id !== args.id) {
+      if ((info.returnType as GraphQLObjectType).name !== 'User' || user.id !== args.id) {
         return new ForbiddenError('Forbidden.')
       }
 
@@ -47,17 +47,16 @@ class Permission {
       info: GraphQLResolveInfo,
     ) => IRuleResult,
   ): Rule {
-    return rule({ cache: 'contextual' })(
-      async (
-        parent,
-        args,
-        ctx: {
-          user?: Common.Auth.User
-        },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        info,
-      ) => ruleHandler(ctx.user, args, info),
-    )
+    const ruler: IRuleFunction = async (
+      _parent,
+      args,
+      ctx: {
+        user?: Common.Auth.User
+      },
+      info,
+    ) => ruleHandler(ctx.user, args, info)
+
+    return rule({ cache: 'contextual' })(ruler)
   }
 }
 

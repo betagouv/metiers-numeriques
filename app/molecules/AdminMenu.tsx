@@ -64,6 +64,14 @@ export default function AdminMenu() {
               Fichiers
             </VerticalMenu.Item>
           </Link>
+          <Link href="/admin/recruiters">
+            <VerticalMenu.Item
+              isActive={router.pathname === '/admin/recruiters' || router.pathname.startsWith('/admin/recruiter/')}
+              isDark
+            >
+              Recruteurs
+            </VerticalMenu.Item>
+          </Link>
         </VerticalMenu>
 
         <MenuTitle>LEGACY</MenuTitle>

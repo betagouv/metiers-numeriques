@@ -50,12 +50,24 @@ enum LegacyInstitutionSection {
 
 enum UserRole {
   ADMINISTRATOR
-  ENTITY_MANAGER
-  SERVICE_MANAGER
+  RECRUITER
 }
 
 // =========================================================
 // Models
+
+// model Address {
+//   id         String   @id @default(cuid())
+//   street     String
+//   postalCode String
+//   city       String
+//   region     String
+//   // Two-letter country code following ISO 3166-1 alpha-2 standard
+//   // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+//   country    String   @default("FR")
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+// }
 
 model File {
   id        String   @id @default(cuid())
@@ -68,6 +80,7 @@ model File {
   filesOnLegacyInstitutions              FilesOnLegacyInstitutions[]
   relatedLogoFileLegacyInstitutions      LegacyInstitution[]         @relation("legacyInstitutionLogoFile")
   relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
+  recruiter                              Recruiter?                  @relation("RecruiterLogoFile")
 }
 
 model FilesOnLegacyInstitutions {
@@ -173,6 +186,22 @@ model LegacyService {
   legacyEntityId String?
 }
 
+model Recruiter {
+  id         String   @id @default(cuid())
+  name       String
+  fullName   String?
+  logoFile   File?    @relation("RecruiterLogoFile", fields: [logoFileId], references: [id])
+  logoFileId String?  @unique
+  websiteUrl String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  children Recruiter[] @relation("RecruiterFamily")
+  parent   Recruiter?  @relation("RecruiterFamily", fields: [parentId], references: [id])
+  parentId String?
+  // users    User[]      @relation("UserRecruiter")
+}
+
 // https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model RefreshToken {
   id        String   @id @default(cuid())
@@ -182,14 +211,15 @@ model RefreshToken {
   createdAt DateTime @default(now())
   expiredAt DateTime
 
-  user   User   @relation(fields: [userId], references: [id])
+  // See User.recruiter comment
+  // user   User   @relation("UserRefreshToken", fields: [userId], references: [id])
   userId String
 }
 
 // https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model User {
   id        String   @id @default(cuid())
-  role      UserRole @default(SERVICE_MANAGER)
+  role      UserRole @default(RECRUITER)
   email     String   @unique
   password  String
   firstName String
@@ -198,5 +228,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  refreshTokens RefreshToken[]
+  // TODO Wait for "Field does not exist on enclosing type." Prisma issue resolution.
+  // https://github.com/prisma/prisma/issues/9553
+  // recruiter     Recruiter?     @relation("UserRecruiter", fields: [recruiterId], references: [id])
+  // recruiterId   String?
+  // refreshTokens RefreshToken[] @relation("UserRefreshToken")
 }

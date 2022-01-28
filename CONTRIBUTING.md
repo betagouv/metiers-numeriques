@@ -9,8 +9,6 @@
 - [Deployment](#deployment)
 - [Common Tasks](#common-tasks)
   - [Generate a new database migration](#generate-a-new-database-migration)
-  - [Validate the HTML](#validate-the-html)
-  - [Update the Design System](#update-the-design-system)
 - [IDEs](#ides)
   - [Recommended Visual Studio Code settings](#recommended-visual-studio-code-settings)
 
@@ -62,12 +60,15 @@ It will also watch for file changes and automatically re-hydrate the webapp on t
 
 ```sh
 api/                # API code base
-app/                # WebApp code base
-common/             # Source files that are common to all parts (API & Application)
-pages/              # URL path entrypoint file (natively handled by Next.js)
+app/                # Application code base
+common/             # Code base common to both API and Application
+config/             # Various configuration and setup files
+e2e/                # Playwright end-to-end tests
+graphql/            # GraphQL schemas
+pages/              # Path-based entrypoint files (natively handled by Next.js)
+prisma/             # Prisma ORM schema, migrations and seeds
 public/             # Public assets (natively handled by Next.js)
-scripts/            # CI and enviroment-related scripts
-src/                # Legacy express.js code base
+scripts/            # Scripts code base
 ```
 
 ### Stack
@@ -85,27 +86,16 @@ This website should be ready to be deployed on Scalingo as is. Request an access
 
 ### Generate a new database migration
 
-Each time you add a final change in `./prisma/schema.prisma`, you need to generate a migration in order to record it:
+Each time you add a final change in `./prisma/schema.prisma`, you need to generate a migration as well as updating
+Prisma typings in order to record it:
 
 ```sh
-yarn db:migrate
+yarn dev:migrate
 ```
 
-You then need to name your new migration. Please check the previous generated migrations to keep the naming consistent.
+You then need to name your new migration. Please check previous generated migrations to keep some naming consistency.
 
-### Validate the HTML
-
-```sh
-yarn checkHTML -- <page_url>
-```
-
-### Update the Design System
-
-Update @gouvfr/dsfr version in `package.json` and run:
-
-```sh
-yarn
-```
+And don't forget to restart your local instance in order for Prisma to load the new schema.
 
 ## IDEs
 

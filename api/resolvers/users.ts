@@ -4,39 +4,72 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { User } from '@prisma/client'
+import type { Prisma, User } from '@prisma/client'
 
 export const mutation = {
-  deleteUser: (obj, { id }: { id: string }) =>
-    getPrisma().user.delete({
-      where: {
-        id,
-      },
-    }),
+  deleteUser: async (_parent: undefined, { id }: { id: string }): Promise<User | null> => {
+    try {
+      const args: Prisma.UserDeleteArgs = {
+        where: {
+          id,
+        },
+      }
 
-  updateUser: (obj, { id, input }: { id: string; input: User }) =>
-    getPrisma().user.update({
-      data: input,
-      where: {
-        id,
-      },
-    }),
+      const data = await getPrisma().user.delete(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/users.ts > query.deleteUser()')
+
+      return null
+    }
+  },
+
+  updateUser: async (_parent: undefined, { id, input }: { id: string; input: User }): Promise<User | null> => {
+    try {
+      const args: Prisma.UserUpdateArgs = {
+        data: input,
+        where: {
+          id,
+        },
+      }
+
+      const data = await getPrisma().user.update(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/users.ts > query.updateUser()')
+
+      return null
+    }
+  },
 }
 
 export const query = {
-  getUser: (obj, { id }: { id: string }) =>
-    getPrisma().user.findUnique({
-      where: {
-        id,
-      },
-    }),
+  getUser: async (_parent: undefined, { id }: { id: string }): Promise<User | null> => {
+    try {
+      const args: Prisma.UserFindUniqueArgs = {
+        where: {
+          id,
+        },
+      }
 
-  getUsers: async (obj, { pageIndex, perPage, query }: GetAllArgs): Promise<GetAllResponse<User>> => {
+      const data = await getPrisma().user.findUnique(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/users.ts > query.getUser()')
+
+      return null
+    }
+  },
+
+  getUsers: async (_parent: undefined, { pageIndex, perPage, query }: GetAllArgs): Promise<GetAllResponse<User>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
       const whereFilter = buildPrismaWhereFilter(['email', 'firstName', 'lastName'], query)
 
-      const args = {
+      const args: Prisma.UserFindManyArgs = {
         orderBy: {
           lastName: 'asc',
         },
@@ -55,7 +88,7 @@ export const query = {
         length,
       }
     } catch (err) {
-      handleError(err, 'api/resolvers/legacy-entities.ts > query.getLegacyEntities()')
+      handleError(err, 'api/resolvers/users.ts > query.getUsers()')
 
       return {
         count: 1,

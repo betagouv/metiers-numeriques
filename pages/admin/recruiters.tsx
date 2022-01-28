@@ -3,108 +3,93 @@ import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
-import { USER_ROLE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { Card, Table, TextInput } from '@singularity/core'
+import { Button, Card, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
 import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
-import MaterialPersonOffOutlined from '@singularity/core/icons/material/MaterialPersonOffOutlined'
-import MaterialPersonOutlined from '@singularity/core/icons/material/MaterialPersonOutlined'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useRef, useState } from 'react'
 
+import type { RecruiterFromGetAll } from '@api/resolvers/recruiters'
 import type { GetAllResponse } from '@api/resolvers/types'
-import type { User } from '@prisma/client'
-import type { TableColumnProps } from '@singularity/core/contents/Table/types'
+import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    isSortable: true,
-    key: 'firstName',
-    label: 'Prénom',
-  },
-  {
-    isSortable: true,
-    key: 'lastName',
+    grow: 0.3,
+    key: 'name',
     label: 'Nom',
   },
   {
-    isSortable: true,
-    key: 'email',
-    label: 'Email',
-  },
-  {
-    isSortable: true,
-    key: 'role',
-    label: 'Rôle',
-    transform: ({ role }) => USER_ROLE_LABEL[role],
+    grow: 0.7,
+    key: 'fullName',
+    label: 'Nom complet',
   },
 ]
 
 const PER_PAGE = 10
 
-export default function AdminUserListPage() {
+export default function AdminRecruiterListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
-  const [deleteUser] = useMutation(queries.user.DELETE_ONE)
-  const [updateUser] = useMutation(queries.user.UPDATE_ONE)
+  const [deleteRecruiter] = useMutation(queries.recruiter.DELETE_ONE)
   const router = useRouter()
 
-  const getUsersResult = useQuery<
+  const getRecruitersResult = useQuery<
     {
-      getUsers: GetAllResponse<User>
+      getRecruiters: GetAllResponse<RecruiterFromGetAll>
     },
     any
-  >(queries.user.GET_ALL, {
-    pollInterval: 500,
+  >(queries.recruiter.GET_ALL, {
+    // pollInterval: 500,
     variables: {
       pageIndex: 0,
       perPage: PER_PAGE,
     },
   })
 
-  const isLoading = getUsersResult.loading
-  const usersResult: GetAllResponse<User> =
-    isLoading || getUsersResult.error || getUsersResult.data === undefined
+  const isLoading = getRecruitersResult.loading
+  const recruitersResult: GetAllResponse<RecruiterFromGetAll> =
+    isLoading || getRecruitersResult.error || getRecruitersResult.data === undefined
       ? {
           count: 1,
           data: [],
           index: 0,
           length: 0,
         }
-      : getUsersResult.data.getUsers
+      : getRecruitersResult.data.getRecruiters
 
   const closeDeletionModal = () => {
     setHasDeletionModal(false)
   }
 
   const confirmDeletion = async (id: string) => {
-    const user = R.find<User>(R.propEq('id', id))(usersResult.data)
-    if (user === undefined) {
+    const recruiter = R.find<RecruiterFromGetAll>(R.propEq('id', id))(recruitersResult.data)
+    if (recruiter === undefined) {
       return
     }
 
     setSelectedId(id)
-    setSelectedEntity(`${user.firstName} ${user.lastName}`)
+    setSelectedEntity(recruiter.name)
     setHasDeletionModal(true)
   }
 
   const deleteAndReload = async () => {
     setHasDeletionModal(false)
 
-    await deleteUser({
+    await deleteRecruiter({
       variables: {
-        userId: selectedId,
+        id: selectedId,
       },
     })
   }
 
   const goToEditor = (id: string) => {
-    router.push(`/admin/user/${id}`)
+    router.push(`/admin/recruiter/${id}`)
   }
 
   const query = debounce(async (pageIndex: number) => {
@@ -114,49 +99,27 @@ export default function AdminUserListPage() {
 
     const query = define($searchInput.current.value)
 
-    getUsersResult.refetch({
+    getRecruitersResult.refetch({
       pageIndex,
       perPage: PER_PAGE,
       query,
     })
   }, 250)
 
-  const toggleUserIsActive = (id: string, isActive: boolean) => {
-    updateUser({
-      variables: {
-        id,
-        input: {
-          isActive,
-        },
-      },
-    })
-  }
-
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
-    {
-      action: toggleUserIsActive,
-      IconOff: MaterialPersonOffOutlined,
-      IconOn: MaterialPersonOutlined,
-      key: 'isActive',
-      label: 'Actif·ve',
-      labelOff: 'Activer ce compte',
-      labelOn: 'Désactiver ce compte',
-      type: 'boolean',
-      withTooltip: true,
-    },
     {
       accent: 'primary',
       action: goToEditor,
       Icon: MaterialEditOutlined,
-      label: 'Éditer cet·te utilisateur·rice',
+      label: 'Éditer ce recruteur',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
       Icon: MaterialDeleteOutlined,
-      label: 'Supprimer cet·te utilisateur·rice',
+      label: 'Supprimer ce recruteur',
       type: 'action',
     },
   ]
@@ -164,21 +127,25 @@ export default function AdminUserListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Utilisateur·rices</Title>
+        <Title>Recruteurs</Title>
+
+        <Button onClick={() => goToEditor('new')} size="small">
+          Ajouter un recruteur
+        </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un·e utilisateur·rice" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un recruteur" />
 
         <Table
           columns={columns}
-          data={usersResult.data}
+          data={recruitersResult.data}
           defaultSortedKey="updatedAt"
           defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
-          pageCount={usersResult.count}
-          pageIndex={usersResult.index}
+          pageCount={recruitersResult.count}
+          pageIndex={recruitersResult.index}
           perPage={PER_PAGE}
         />
       </Card>

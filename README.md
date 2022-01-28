@@ -1,4 +1,4 @@
-# Métiers Numeriques Website
+# Métiers Numériques Website
 
 [![License][img-license]][lnk-license]
 [![Build Status][img-github]][lnk-github]

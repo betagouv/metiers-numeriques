@@ -133,6 +133,8 @@ dist
 ################################################################################
 # Custom
 
+/.backups
+
 /public/assets/*
 /public/index.bundle.css
 /public/index.js

@@ -1,0 +1,30 @@
+# import File from "files.graphql"
+
+scalar DateTime
+
+type Recruiter {
+  id: ID!
+
+  createdAt: DateTime
+  name: String
+  fullName: String
+  updatedAt: DateTime
+  websiteUrl: String
+
+  logoFile: File
+}
+
+input RecruiterInput {
+  name: String
+  fullName: String
+  websiteUrl: String
+
+  logoFileId: String
+}
+
+type RecruitersResult {
+  count: Int!
+  data: [Recruiter!]!
+  index: Int!
+  length: Int!
+}

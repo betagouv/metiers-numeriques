@@ -4,44 +4,88 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { File } from '@prisma/client'
+import type { File, Prisma } from '@prisma/client'
 
 export const mutation = {
-  createFile: (obj, { input }: { input: File }) =>
-    getPrisma().file.create({
-      data: input,
-    }),
+  createFile: async (_parent: undefined, { input }: { input: File }): Promise<File | null> => {
+    try {
+      const args: Prisma.FileCreateArgs = {
+        data: input,
+      }
 
-  deleteFile: (obj, { id }: { id: string }) =>
-    getPrisma().file.delete({
-      where: {
-        id,
-      },
-    }),
+      const data = await getPrisma().file.create(args)
 
-  updateFile: (obj, { id, input }: { id: string; input: Partial<File> }) =>
-    getPrisma().file.update({
-      data: input,
-      where: {
-        id,
-      },
-    }),
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/files.ts > query.createFile()')
+
+      return null
+    }
+  },
+
+  deleteFile: async (_parent: undefined, { id }: { id: string }): Promise<File | null> => {
+    try {
+      const args: Prisma.FileDeleteArgs = {
+        where: {
+          id,
+        },
+      }
+
+      const data = await getPrisma().file.delete(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/files.ts > query.deleteFile()')
+
+      return null
+    }
+  },
+
+  updateFile: async (_parent: undefined, { id, input }: { id: string; input: Partial<File> }): Promise<File | null> => {
+    try {
+      const args: Prisma.FileUpdateArgs = {
+        data: input,
+        where: {
+          id,
+        },
+      }
+
+      const data = await getPrisma().file.update(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/files.ts > query.updateFile()')
+
+      return null
+    }
+  },
 }
 
 export const query = {
-  getFile: (obj, { id }: { id: string }) =>
-    getPrisma().file.findUnique({
-      where: {
-        id,
-      },
-    }),
+  getFile: async (_parent: undefined, { id }: { id: string }): Promise<File | null> => {
+    try {
+      const args: Prisma.FileFindUniqueArgs = {
+        where: {
+          id,
+        },
+      }
 
-  getFiles: async (obj, { pageIndex, perPage, query }: GetAllArgs): Promise<GetAllResponse<File>> => {
+      const data = await getPrisma().file.findUnique(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/files.ts > query.getFile()')
+
+      return null
+    }
+  },
+
+  getFiles: async (_parent: undefined, { pageIndex, perPage, query }: GetAllArgs): Promise<GetAllResponse<File>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
       const whereFilter = buildPrismaWhereFilter(['title', 'url'], query)
 
-      const args = {
+      const args: Prisma.FileFindManyArgs = {
         orderBy: {
           title: 'asc',
         },
@@ -60,7 +104,7 @@ export const query = {
         length,
       }
     } catch (err) {
-      handleError(err, 'api/resolvers/legacy-entities.ts > query.getLegacyEntities()')
+      handleError(err, 'api/resolvers/files.ts > query.getFiles()')
 
       return {
         count: 1,

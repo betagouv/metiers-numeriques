@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { Code } from './Code'
+// import { Image } from './Image'
 import { Input } from './Input'
 import { Select } from './Select'
 import { Submit } from './Submit'
@@ -49,6 +50,7 @@ export const Form = Object.assign(_Form, {
   Cancel,
   Checkbox,
   Code,
+  // Image,
   Input,
   Select,
   Submit,
