@@ -30,13 +30,15 @@ const buildRelationStatements = (fields: string[], searchQuery: string) =>
 export default function buildPrismaWhereFilter(
   fields: string[],
   searchQuery?: string,
-  additionalFilter?: Record<string, Common.Pojo>,
+  andFilter?: Record<string, Common.Pojo>,
+  notFilter?: Record<string, Common.Pojo>,
 ): any {
   try {
     const definedSearchQuery = define(searchQuery)
-    const definedAddtionalFilter = define(additionalFilter)
+    const definedAndFilter = define(andFilter)
+    const definedNotFilter = define(notFilter)
 
-    if (definedSearchQuery === undefined && definedAddtionalFilter === undefined) {
+    if (definedSearchQuery === undefined && definedAndFilter === undefined) {
       return {}
     }
 
@@ -51,8 +53,12 @@ export default function buildPrismaWhereFilter(
       whereFilter.where.OR = [...nativeStatements, ...relationStatements]
     }
 
-    if (definedAddtionalFilter !== undefined) {
-      whereFilter.where.AND = additionalFilter
+    if (definedAndFilter !== undefined) {
+      whereFilter.where.AND = definedAndFilter
+    }
+
+    if (definedNotFilter !== undefined) {
+      whereFilter.where.NOT = definedNotFilter
     }
 
     return whereFilter

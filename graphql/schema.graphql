@@ -37,6 +37,12 @@ type Query {
     source: String
     state: String
   ): LegacyJobsResult!
+  getPublicLegacyJobs(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+    region: String
+  ): LegacyJobsResult!
 
   getLegacyService(id: String!): LegacyService
   getLegacyServices(

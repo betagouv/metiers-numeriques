@@ -11,17 +11,17 @@ describe('api/helpers/buildPrismaPaginationFilter()', () => {
     })
   })
 
-  test(`with 20`, () => {
-    const perPage = 20
+  test(`with 100`, () => {
+    const perPage = 100
 
     const result = buildPrismaPaginationFilter(perPage)
 
     expect(result).toStrictEqual({
-      take: 20,
+      take: 100,
     })
   })
 
-  test(`with 21`, () => {
+  test(`with 101`, () => {
     const perPage = 1
 
     const result = buildPrismaPaginationFilter(perPage)
@@ -53,6 +53,16 @@ describe('api/helpers/buildPrismaPaginationFilter()', () => {
 
   test(`with 0`, () => {
     const perPage = 0
+
+    const result = buildPrismaPaginationFilter(perPage)
+
+    expect(result).toStrictEqual({
+      take: 1,
+    })
+  })
+
+  test(`with a wrong <perPage> type`, () => {
+    const perPage = 'whatever' as any
 
     const result = buildPrismaPaginationFilter(perPage)
 
@@ -106,16 +116,6 @@ describe('api/helpers/buildPrismaPaginationFilter()', () => {
     expect(result).toStrictEqual({
       skip: 0,
       take: 10,
-    })
-  })
-
-  test(`with a wrong input`, () => {
-    const perPage = 'whatever' as any
-
-    const result = buildPrismaPaginationFilter(perPage)
-
-    expect(result).toStrictEqual({
-      take: 1,
     })
   })
 })

@@ -57,7 +57,8 @@ const permissions = shield({
     getLegacyInstitutions: permission.isAdministrator,
 
     getLegacyJob: permission.isAdministrator,
-    getLegacyJobs: permission.isPublic,
+    getLegacyJobs: permission.isAdministrator,
+    getPublicLegacyJobs: permission.isPublic,
 
     getLegacyService: permission.isAdministrator,
     getLegacyServices: permission.isAdministrator,

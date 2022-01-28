@@ -3,6 +3,7 @@ import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDate } from '@app/helpers/normalizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'
+import { JobState } from '@prisma/client'
 import Head from 'next/head'
 
 import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
@@ -263,7 +264,13 @@ export default function JobPage({ job }: JobPageProps) {
 
 export async function getStaticPaths() {
   const prisma = getPrisma()
-  const legacyJobs = await prisma.legacyJob.findMany()
+  const legacyJobs = await prisma.legacyJob.findMany({
+    where: {
+      NOT: {
+        state: JobState.DRAFT,
+      },
+    },
+  })
 
   const paths = legacyJobs.map(({ slug }) => ({
     params: { slug },
@@ -290,7 +297,7 @@ export async function getStaticProps({ params: { slug } }) {
     },
   })
 
-  if (job === null) {
+  if (job === null || job.state !== JobState.PUBLISHED) {
     return {
       notFound: true,
     }

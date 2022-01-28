@@ -5,7 +5,7 @@ import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
 import handleError from '@common/helpers/handleError'
-import { JobSource } from '@prisma/client'
+import { JobState } from '@prisma/client'
 import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
@@ -17,7 +17,6 @@ import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
 const INITIAL_VARIABLES = {
   pageIndex: 0,
   perPage: 10,
-  source: JobSource.MNN,
 }
 
 type JobListPageProps = {
@@ -31,10 +30,10 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
 
   const getLegacyJobsResult = useQuery<
     {
-      getLegacyJobs: GetAllResponse<LegacyJobWithRelation>
+      getPublicLegacyJobs: GetAllResponse<LegacyJobWithRelation>
     },
     any
-  >(queries.legacyJob.GET_ALL, {
+  >(queries.legacyJob.GET_ALL_PUBLIC, {
     variables: INITIAL_VARIABLES,
   })
 
@@ -44,7 +43,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
           index: 0,
           length: Infinity,
         }
-      : getLegacyJobsResult.data.getLegacyJobs
+      : getLegacyJobsResult.data.getPublicLegacyJobs
 
   const query = useCallback(
     debounce(async (pageIndex: number) => {
@@ -57,14 +56,12 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
       const isNewQuery = pageIndex === 0
       const query = define($searchInput.current.value)
       const region = define($regionSelect.current.value)
-      const source = query === undefined ? INITIAL_VARIABLES.source : undefined
 
       const newOrAdditionalJobsResult = await getLegacyJobsResult.refetch({
         ...INITIAL_VARIABLES,
         pageIndex,
         query,
         region,
-        source,
       })
 
       setIsLoading(false)
@@ -75,7 +72,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
         return
       }
 
-      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getLegacyJobs.data
+      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getPublicLegacyJobs.data
 
       setIsLoading(false)
       if (isNewQuery) {
@@ -237,7 +234,7 @@ export async function getStaticProps() {
     },
     take: INITIAL_VARIABLES.perPage,
     where: {
-      source: INITIAL_VARIABLES.source,
+      state: JobState.PUBLISHED,
     },
   })
 
