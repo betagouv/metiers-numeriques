@@ -12,7 +12,13 @@ export default function NotFoundPage() {
 
       <main>
         <div className="fr-container fr-my-4w">
-          <div className="fr-grid-row Header">
+          <div
+            className="fr-grid-row"
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <div className="fr-col-12 fr-col-md-5">
               <h1>Page introuvable…</h1>
               <p className="text-grey">

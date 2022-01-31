@@ -12,13 +12,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 
+import 'remixicon/fonts/remixicon.css'
+
 const PRIVATE_PATHS = [/^\/admin($|\/)/]
 
-const GlobalStyleCustom = createGlobalStyle<{
-  theme: {
-    color: any
-  }
-}>`
+const GlobalStyleCustom = createGlobalStyle`
   html, body {
     height: 100%;
   }
@@ -39,11 +37,6 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
   const isAdministrationSpace = router.pathname === '/admin' || router.pathname.startsWith('/admin/')
 
   if (!isAdministrationSpace) {
-    // eslint-disable-next-line global-require
-    require('@gouvfr/dsfr/dist/dsfr/dsfr.css')
-    // eslint-disable-next-line global-require
-    require('remixicon/fonts/remixicon.css')
-
     return (
       <>
         <Head>
@@ -64,6 +57,9 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
             property="og:description"
           />
           <meta content="/images/main-illu.png" property="og:image" />
+
+          <link href="/dsfr.min.css" rel="stylesheet" />
+          <link href="/legacy.css" rel="stylesheet" />
         </Head>
 
         <Header />
