@@ -50,6 +50,7 @@ export const CREATE_ONE = gql`
     }
   }
 `
+
 export const DELETE_ONE = gql`
   mutation DeleteContact($id: String!) {
     deleteContact(id: $id) {

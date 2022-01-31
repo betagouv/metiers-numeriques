@@ -4,16 +4,10 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { File, FileType, Prisma } from '@prisma/client'
-
-export type FileCreateInput = Partial<File> & {
-  title: string
-  type: FileType
-  url: string
-}
+import type { File, Prisma } from '@prisma/client'
 
 export const mutation = {
-  createFile: async (_parent: undefined, { input }: { input: FileCreateInput }): Promise<File | null> => {
+  createFile: async (_parent: undefined, { input }: { input: Prisma.FileCreateInput }): Promise<File | null> => {
     try {
       const args: Prisma.FileCreateArgs = {
         data: input,
@@ -89,7 +83,7 @@ export const query = {
   getFiles: async (_parent: undefined, { pageIndex, perPage, query }: GetAllArgs): Promise<GetAllResponse<File>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter(['title', 'url'], query)
+      const whereFilter = buildPrismaWhereFilter<File>(['title', 'url'], query)
 
       const args: Prisma.FileFindManyArgs = {
         orderBy: {

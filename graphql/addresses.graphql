@@ -1,0 +1,28 @@
+scalar DateTime
+
+type Address {
+  id: ID!
+
+  city: String
+  country: String
+  createdAt: DateTime
+  postalCode: String
+  region: String
+  street: String
+  updatedAt: DateTime
+}
+
+input AddressInput {
+  city: String
+  country: String
+  postalCode: String
+  region: String
+  street: String
+}
+
+type AddressesResult {
+  count: Int!
+  data: [Address!]!
+  index: Int!
+  length: Int!
+}

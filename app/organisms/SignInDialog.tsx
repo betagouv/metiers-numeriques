@@ -134,10 +134,15 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
             </p>
 
             <Field>
-              <Form.Input autoComplete="email" label="Email" name="logInEmail" type="email" />
+              <Form.TextInput autoComplete="email" label="Email" name="logInEmail" type="email" />
             </Field>
             <Field>
-              <Form.Input autoComplete="current-password" label="Mot de passe" name="logInPassword" type="password" />
+              <Form.TextInput
+                autoComplete="current-password"
+                label="Mot de passe"
+                name="logInPassword"
+                type="password"
+              />
             </Field>
           </Dialog.Body>
 
@@ -170,13 +175,13 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
           </p>
 
           <Field>
-            <Form.Input autoComplete="email" label="Email" name="signUpEmail" type="email" />
+            <Form.TextInput autoComplete="email" label="Email" name="signUpEmail" type="email" />
           </Field>
           <Field>
-            <Form.Input autoComplete="new-password" label="Mot de passe" name="signUpPassword" type="password" />
+            <Form.TextInput autoComplete="new-password" label="Mot de passe" name="signUpPassword" type="password" />
           </Field>
           <Field>
-            <Form.Input
+            <Form.TextInput
               autoComplete="new-password"
               label="Mot de passe (répêter)"
               name="signUpPasswordConfirmation"
@@ -184,10 +189,10 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
             />
           </Field>
           <Field>
-            <Form.Input autoComplete="given-name" label="Prénom" name="signUpFirstName" />
+            <Form.TextInput autoComplete="given-name" label="Prénom" name="signUpFirstName" />
           </Field>
           <Field>
-            <Form.Input autoComplete="family-name" label="Nom" name="signUpLastName" />
+            <Form.TextInput autoComplete="family-name" label="Nom" name="signUpLastName" />
           </Field>
         </Dialog.Body>
 

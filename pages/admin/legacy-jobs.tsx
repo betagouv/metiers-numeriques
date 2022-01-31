@@ -5,7 +5,7 @@ import Title from '@app/atoms/Title'
 import { normalizeDate } from '@app/helpers/normalizeDate'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
-import { JOB_SOURCE_LABEL, JOB_STATE_LABEL } from '@common/constants'
+import { JOB_SOURCES_AS_OPTIONS, JOB_SOURCE_LABEL, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
@@ -49,22 +49,6 @@ const BASE_COLUMNS: TableColumnProps[] = [
     transform: ({ updatedAt }) => normalizeDate(updatedAt),
   },
 ]
-
-const JOB_SOURCES_AS_OPTIONS = R.pipe(
-  R.toPairs,
-  R.map(([value, label]) => ({
-    label,
-    value,
-  })),
-)(JOB_SOURCE_LABEL)
-
-const JOB_STATES_AS_OPTIONS = R.pipe(
-  R.toPairs,
-  R.map(([value, label]) => ({
-    label,
-    value,
-  })),
-)(JOB_STATE_LABEL)
 
 const PER_PAGE = 10
 
@@ -131,6 +115,18 @@ export default function AdminLegacyJobListPage() {
     router.push(`/admin/legacy-job/${id}`)
   }
 
+  const handleSourceSelect = (option: Common.App.SelectOption | null): void => {
+    $source.current = option !== null ? option.value : ''
+
+    query(0)
+  }
+
+  const handleStateSelect = (option: Common.App.SelectOption | null): void => {
+    $state.current = option !== null ? option.value : ''
+
+    query(0)
+  }
+
   const query = useCallback(
     debounce(async (pageIndex: number) => {
       if ($searchInput.current === null) {
@@ -151,18 +147,6 @@ export default function AdminLegacyJobListPage() {
     }, 250),
     [],
   )
-
-  const handleSourceSelect = option => {
-    $source.current = option.value
-
-    query(0)
-  }
-
-  const handleStateSelect = option => {
-    $state.current = option.value
-
-    query(0)
-  }
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
@@ -195,8 +179,8 @@ export default function AdminLegacyJobListPage() {
       <Card>
         <Flex>
           <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre [LEGACY]" />
-          <Select onChange={handleStateSelect} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
-          <Select onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
+          <Select isClearable onChange={handleStateSelect} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
+          <Select isClearable onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
         </Flex>
 
         <Table

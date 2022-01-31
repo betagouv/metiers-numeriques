@@ -31,6 +31,33 @@ enum JobSource {
   SKB
 }
 
+enum JobContractType {
+  // Contractuel de la fonction publique
+  CONTRACT_WORKER
+  // Freelance
+  FREELANCER
+  // Temps plein
+  FULL_TIME
+  // Stagiaire
+  INTERN
+  // Fonctionnaire territorial
+  LOCAL_CIVIL_SERVANT
+  // Fonctionnaire d'État
+  NATIONAL_CIVIL_SERVANT
+  // Temps partiel
+  PART_TIME
+  // CDI
+  PERMANENT
+  // CDD
+  TEMPORARY
+}
+
+enum JobRemoteStatus {
+  FULL
+  NONE
+  PARTIAL
+}
+
 enum JobState {
   ARCHIVED
   DRAFT
@@ -56,18 +83,20 @@ enum UserRole {
 // =========================================================
 // Models
 
-// model Address {
-//   id         String   @id @default(cuid())
-//   street     String
-//   postalCode String
-//   city       String
-//   region     String
-//   // Two-letter country code following ISO 3166-1 alpha-2 standard
-//   // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-//   country    String   @default("FR")
-//   createdAt  DateTime @default(now())
-//   updatedAt  DateTime @updatedAt
-// }
+model Address {
+  id         String   @id @default(cuid())
+  street     String
+  postalCode String
+  city       String
+  region     String
+  // Two-letter country code following ISO 3166-1 alpha-2 standard
+  // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+  country    String   @default("FR")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  job Job? @relation("JobAddress")
+}
 
 model Contact {
   id        String   @id @default(cuid())
@@ -78,6 +107,8 @@ model Contact {
   note      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  jobs Job[] @relation("JobContact")
 }
 
 model File {
@@ -103,6 +134,39 @@ model FilesOnLegacyInstitutions {
   assignedAt          DateTime                 @default(now())
 
   @@id([legacyInstitutionId, fileId])
+}
+
+model Job {
+  id                         String            @id @default(cuid())
+  title                      String
+  applicationDescription     String?
+  missionDescription         String
+  missionVideoUrl            String?
+  particularitiesDescription String?
+  tasksDescription           String?
+  teamDescription            String?
+  perksDescription           String?
+  processDescription         String?
+  profileDescription         String?
+  contractTypes              JobContractType[]
+  remoteStatus               JobRemoteStatus   @default(NONE)
+  salaryMax                  Int?
+  salaryMin                  Int?
+  seniorityInMonths          Int               @default(0)
+  slug                       String
+  state                      JobState          @default(DRAFT)
+  createdAt                  DateTime          @default(now())
+  expiredAt                  DateTime
+  updatedAt                  DateTime
+
+  address      Address    @relation("JobAddress", fields: [addressId], references: [id])
+  addressId    String     @unique
+  contact      Contact    @relation("JobContact", fields: [contactId], references: [id])
+  contactId    String
+  profession   Profession @relation("JobProfession", fields: [professionId], references: [id])
+  professionId String
+  recruiter    Recruiter  @relation("JobRecruiter", fields: [recruiterId], references: [id])
+  recruiterId  String
 }
 
 model LegacyEntity {
@@ -197,6 +261,15 @@ model LegacyService {
   legacyEntityId String?
 }
 
+model Profession {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobs Job[] @relation("JobProfession")
+}
+
 model Recruiter {
   id         String   @id @default(cuid())
   name       String
@@ -208,6 +281,7 @@ model Recruiter {
   updatedAt  DateTime @updatedAt
 
   children Recruiter[] @relation("RecruiterFamily")
+  jobs     Job[]       @relation("JobRecruiter")
   parent   Recruiter?  @relation("RecruiterFamily", fields: [parentId], references: [id])
   parentId String?
   // See User.recruiter comment

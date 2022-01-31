@@ -1,14 +1,16 @@
 import { Formik, Form as FormikForm } from 'formik'
 import styled from 'styled-components'
 
+import { AddressSelect } from './AddressSelect'
 import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { Code } from './Code'
+import { Editor } from './Editor'
 // import { Image } from './Image'
-import { Input } from './Input'
 import { Select } from './Select'
 import { Submit } from './Submit'
 import { Textarea } from './Textarea'
+import { TextInput } from './TextInput'
 
 import type { FormikConfig, FormikValues } from 'formik'
 import type { FormHTMLAttributes } from 'react'
@@ -47,12 +49,14 @@ const _Form = ({
 )
 
 export const Form = Object.assign(_Form, {
+  AddressSelect,
   Cancel,
   Checkbox,
   Code,
+  Editor,
   // Image,
-  Input,
   Select,
   Submit,
   Textarea,
+  TextInput,
 })

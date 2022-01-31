@@ -27,12 +27,8 @@ export default function LegacyServiceEditorPage() {
 
   const [initialValues, setInitialValues] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [legacyEntitiesAsOptions, setLegacyEntitiesAsOptions] = useState<
-    Array<{
-      label: string
-      value: string
-    }>
-  >([])
+  const [legacyEntitiesAsOptions, setLegacyEntitiesAsOptions] = useState<Common.App.SelectOption[]>([])
+
   const getLegacyServiceResult = useQuery(queries.legacyService.GET_ONE, {
     variables: {
       id: id || '',
@@ -133,11 +129,11 @@ export default function LegacyServiceEditorPage() {
       <Card>
         <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom court *" name="name" />
+            <Form.TextInput isDisabled={isLoading} label="Nom court *" name="name" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>
@@ -154,7 +150,7 @@ export default function LegacyServiceEditorPage() {
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Site Internet (URL)" name="url" />
+            <Form.TextInput isDisabled={isLoading} label="Site Internet (URL)" name="url" />
           </Field>
 
           <Field>

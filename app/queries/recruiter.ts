@@ -20,6 +20,7 @@ export const GET_ALL = gql`
         }
 
         _count {
+          jobs
           users
         }
       }
@@ -46,6 +47,14 @@ export const GET_ONE = gql`
         url
       }
 
+      jobs {
+        id
+
+        expiredAt
+        state
+        title
+        updatedAt
+      }
       users {
         id
 

@@ -25,6 +25,7 @@ export default function AdminFileEditorPage() {
 
   const [initialValues, setInitialValues] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+
   const getFileResult = useQuery(queries.file.GET_ONE, {
     variables: {
       id,
@@ -82,17 +83,17 @@ export default function AdminFileEditorPage() {
       <Card>
         <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.Input isDisabled={isLoading} label="Titre" name="title" />
+            <Form.TextInput isDisabled={isLoading} label="Titre" name="title" />
           </Field>
 
           {!isNew && (
             <Field>
-              <Form.Input isDisabled label="Type" name="typeAsLabel" />
+              <Form.TextInput isDisabled label="Type" name="typeAsLabel" />
             </Field>
           )}
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="URL" name="url" />
+            <Form.TextInput isDisabled={isLoading} label="URL" name="url" />
           </Field>
 
           <Field>

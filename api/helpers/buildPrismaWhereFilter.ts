@@ -2,7 +2,7 @@ import { define } from '@common/helpers/define'
 import handleError from '@common/helpers/handleError'
 import * as R from 'ramda'
 
-const buildNativeStatements = (fields: string[], searchQuery: string) =>
+const buildNativeStatements = <T extends Record<string, any>>(fields: Array<keyof T>, searchQuery: string) =>
   R.pipe(
     R.reject(R.test(/\./)),
     R.map(nativeFields => ({
@@ -13,7 +13,7 @@ const buildNativeStatements = (fields: string[], searchQuery: string) =>
     })),
   )(fields)
 
-const buildRelationStatements = (fields: string[], searchQuery: string) =>
+const buildRelationStatements = <T extends Record<string, any>>(fields: Array<keyof T>, searchQuery: string) =>
   R.pipe(
     R.filter(R.test(/\./)),
     R.map(R.split('.')),
@@ -27,8 +27,8 @@ const buildRelationStatements = (fields: string[], searchQuery: string) =>
     })),
   )(fields)
 
-export default function buildPrismaWhereFilter(
-  fields: string[],
+export default function buildPrismaWhereFilter<T extends Record<string, any>>(
+  fields: Array<keyof T>,
   searchQuery?: string,
   andFilter?: Record<string, Common.Pojo>,
   notFilter?: Record<string, Common.Pojo>,

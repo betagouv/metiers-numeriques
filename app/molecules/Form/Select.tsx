@@ -1,5 +1,5 @@
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import { Select as SingularitySelect } from '@singularity/core'
+import { Select as SuiSelect } from '@singularity/core'
 import { useFormikContext } from 'formik'
 
 type SelectProps = {
@@ -9,8 +9,8 @@ type SelectProps = {
   isMulti?: boolean
   label: string
   name: string
-  noLabel?: boolean
-  options?: any[]
+  options?: Common.App.SelectOption[]
+  placeholder?: string
 }
 export function Select({
   helper,
@@ -19,35 +19,49 @@ export function Select({
   isMulti = false,
   label,
   name,
-  noLabel = false,
   options,
+  placeholder,
 }: SelectProps) {
   const { errors, initialValues, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
 
-  const updateFormikValues = option => {
-    setFieldValue(name, option)
+  const updateFormikValues = (optionOrOptions: Common.App.SelectOption | Common.App.SelectOption[] | null) => {
+    if (optionOrOptions === null) {
+      setFieldValue(name, isMulti ? [] : undefined)
+
+      return
+    }
+
+    if (Array.isArray(optionOrOptions)) {
+      const values = optionOrOptions.map(({ value }) => value)
+
+      setFieldValue(name, values)
+
+      return
+    }
+
+    const { value } = optionOrOptions
+
+    setFieldValue(name, value)
   }
 
   return (
-    <SingularitySelect
+    <SuiSelect
       key={generateKeyFromValue(initialValues)}
       cacheOptions={isAsync}
       defaultValue={values[name]}
-      disabled={isDisabled || isSubmitting}
       error={maybeError}
       helper={helper}
-      isAsync={isAsync}
+      isClearable
+      isDisabled={isDisabled || isSubmitting}
       isMulti={isMulti}
-      label={!noLabel ? label : null}
-      loadOptions={isAsync ? options : null}
+      label={label}
       name={name}
       onChange={updateFormikValues}
-      // onInputChange={isAsync ? updateFormikValues2 : null}
       options={!isAsync ? options : undefined}
-      placeholder={noLabel ? label : null}
+      placeholder={placeholder}
     />
   )
 }

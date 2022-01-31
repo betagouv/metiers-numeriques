@@ -6,14 +6,11 @@ import handleError from '@common/helpers/handleError'
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Contact, Prisma } from '@prisma/client'
 
-export type ContactCreateInput = Partial<Contact> & {
-  email: string
-  firstName: string
-  lastName: string
-}
-
 export const mutation = {
-  createContact: async (_parent: undefined, { input }: { input: ContactCreateInput }): Promise<Contact | null> => {
+  createContact: async (
+    _parent: undefined,
+    { input }: { input: Prisma.ContactCreateInput },
+  ): Promise<Contact | null> => {
     try {
       const args: Prisma.ContactCreateArgs = {
         data: input,
@@ -95,7 +92,7 @@ export const query = {
   ): Promise<GetAllResponse<Contact>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter(['firstName', 'email', 'lastName', 'phone'], query)
+      const whereFilter = buildPrismaWhereFilter<Contact>(['firstName', 'email', 'lastName', 'phone'], query)
 
       const args: Prisma.ContactFindManyArgs = {
         orderBy: {

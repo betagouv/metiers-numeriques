@@ -1,4 +1,4 @@
-import { Checkbox as SingularityCheckbox } from '@singularity/core'
+import { Checkbox as SuiCheckbox } from '@singularity/core'
 import { useFormikContext } from 'formik'
 
 type CheckboxProps = {
@@ -16,7 +16,7 @@ export function Checkbox({ isDisabled = false, label, name }: CheckboxProps) {
   }
 
   return (
-    <SingularityCheckbox
+    <SuiCheckbox
       defaultChecked={isChecked}
       disabled={isDisabled || isSubmitting}
       label={label}

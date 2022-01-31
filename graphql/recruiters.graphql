@@ -1,4 +1,5 @@
 # import File from "files.graphql"
+# import Job from "jobs.graphql"
 # import User from "users.graphql"
 
 scalar DateTime
@@ -12,6 +13,7 @@ type Recruiter {
   updatedAt: DateTime
   websiteUrl: String
 
+  jobs: [Job!]!
   logoFile: File
   users: [User!]!
 
@@ -19,6 +21,7 @@ type Recruiter {
 }
 
 type RecruiterCount {
+  jobs: Int
   users: Int
 }
 

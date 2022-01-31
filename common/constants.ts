@@ -1,4 +1,18 @@
-import type { FileType, JobSource, JobState, UserRole } from '@prisma/client'
+import * as R from 'ramda'
+
+import type { FileType, JobContractType, JobRemoteStatus, JobSource, JobState, UserRole } from '@prisma/client'
+
+const mapLabelObjectToSelectOptions: <T extends string = string>(
+  labelObject: Record<T, string>,
+) => Common.App.SelectOption<T>[] = R.pipe(
+  R.toPairs,
+  R.map(([value, label]) => ({
+    label,
+    value,
+  })),
+) as any
+
+const sortSelectOptions = R.sortBy(R.prop('label'))
 
 export type FileTypeKey = FileType
 export type FileTypeValue = {
@@ -55,18 +69,46 @@ export const FILE_TYPE: Record<FileTypeKey, FileTypeValue> = {
   },
 }
 
-export const JOB_SOURCE_LABEL: Record<JobSource, String> = {
+export const JOB_CONTRACT_TYPE_LABEL: Record<JobContractType, string> = {
+  CONTRACT_WORKER: 'Contractuel',
+  FREELANCER: 'Freelance',
+  FULL_TIME: 'Temps plein',
+  INTERN: 'Stage',
+  LOCAL_CIVIL_SERVANT: 'Fonction territoriale',
+  NATIONAL_CIVIL_SERVANT: 'Fonction d’État',
+  PART_TIME: 'Temps partiel',
+  PERMANENT: 'CDI',
+  TEMPORARY: 'CDD',
+}
+
+export const JOB_CONTRACT_TYPES_AS_OPTIONS = sortSelectOptions(mapLabelObjectToSelectOptions(JOB_CONTRACT_TYPE_LABEL))
+
+export const JOB_SOURCE_LABEL: Record<JobSource, string> = {
   MNB: 'Interne',
   MNN: 'Notion',
   PEP: 'PEP',
   SKB: 'Seekube',
 }
 
-export const JOB_STATE_LABEL: Record<JobState, String> = {
-  ARCHIVED: 'Archivée',
+export const JOB_SOURCES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_SOURCE_LABEL)
+
+export const JOB_REMOTE_STATUS_LABEL: Record<JobRemoteStatus, string> = {
+  FULL: 'Oui',
+  PARTIAL: 'Partiellement',
+  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+  NONE: 'Non',
+}
+
+export const JOB_REMOTE_STATUSES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_REMOTE_STATUS_LABEL)
+
+export const JOB_STATE_LABEL: Record<JobState, string> = {
   DRAFT: 'Brouillon',
   PUBLISHED: 'Publiée',
+  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+  ARCHIVED: 'Archivée',
 }
+
+export const JOB_STATES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_STATE_LABEL)
 
 export enum REGION {
   'Auvergne-Rhône-Alpes' = 'Auvergne-Rhône-Alpes',
@@ -175,3 +217,5 @@ export const USER_ROLE_LABEL: Record<UserRole, string> = {
 }
 
 export const USER_ROLES = Object.values(USER_ROLE)
+
+export const USER_ROLES_AS_OPTIONS = mapLabelObjectToSelectOptions(USER_ROLE_LABEL)

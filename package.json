@@ -41,7 +41,7 @@
     "@graphql-tools/schema": "8.3.1",
     "@prisma/client": "3.0.2",
     "@sentry/nextjs": "6.17.2",
-    "@singularity/core": "2.1.0",
+    "@singularity/core": "2.3.0",
     "ace-builds": "1.4.13",
     "apollo-server-micro": "3.6.2",
     "aws-sdk": "2.1062.0",

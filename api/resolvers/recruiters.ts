@@ -4,28 +4,27 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { Recruiter, Prisma, User } from '@prisma/client'
+import type { File, Job, Prisma, Recruiter, User } from '@prisma/client'
 
 export type RecruiterFromGetAll = Recruiter & {
   _count: {
+    jobs: number
     users: number
   }
 }
 
 export type RecruiterFromGetOne = Recruiter & {
   children: Recruiter[]
+  jobs: Job[]
+  logoFile: File
   parent: Recruiter | null
   users: User[]
-}
-
-export type RecruiterCreateInput = Partial<Recruiter> & {
-  name: string
 }
 
 export const mutation = {
   createRecruiter: async (
     _parent: undefined,
-    { input }: { input: RecruiterCreateInput },
+    { input }: { input: Prisma.RecruiterCreateInput },
   ): Promise<Recruiter | null> => {
     try {
       const args: Prisma.RecruiterCreateArgs = {
@@ -89,6 +88,7 @@ export const query = {
       const args: Prisma.RecruiterFindUniqueArgs = {
         include: {
           children: true,
+          jobs: true,
           logoFile: true,
           parent: true,
           users: true,
@@ -114,12 +114,13 @@ export const query = {
   ): Promise<GetAllResponse<RecruiterFromGetAll>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter(['fullName', 'name'], query)
+      const whereFilter = buildPrismaWhereFilter<Recruiter>(['fullName', 'name'], query)
 
       const args: Prisma.RecruiterFindManyArgs = {
         include: {
           _count: {
             select: {
+              jobs: true,
               users: true,
             },
           },

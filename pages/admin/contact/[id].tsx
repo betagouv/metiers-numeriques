@@ -25,6 +25,7 @@ export default function AdminContactEditorPage() {
 
   const [initialValues, setInitialValues] = useState<Contact>()
   const [isLoading, setIsLoading] = useState(true)
+
   const getContactResult = useQuery<
     {
       getContact: Contact
@@ -39,7 +40,7 @@ export default function AdminContactEditorPage() {
   const [updateContact] = useMutation(queries.contact.UPDATE_ONE)
 
   useEffect(() => {
-    if (!isLoading || getContactResult.loading || getContactResult.error) {
+    if (!isLoading) {
       return
     }
 
@@ -96,19 +97,19 @@ export default function AdminContactEditorPage() {
       <Card>
         <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.Input isDisabled={isLoading} label="Prénom *" name="firstName" />
+            <Form.TextInput isDisabled={isLoading} label="Prénom *" name="firstName" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom *" name="lastName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom *" name="lastName" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Email *" name="email" type="email" />
+            <Form.TextInput isDisabled={isLoading} label="Email *" name="email" type="email" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Téléphone" name="phone" type="tel" />
+            <Form.TextInput isDisabled={isLoading} label="Téléphone" name="phone" type="tel" />
           </Field>
 
           <Field>
