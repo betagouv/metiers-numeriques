@@ -3,21 +3,21 @@ scalar DateTime
 type Contact {
   id: ID!
 
+  createdAt: DateTime
+  email: String
   firstName: String
   lastName: String
-  email: String
-  phone: String
   note: String
-  createdAt: DateTime
+  phone: String
   updatedAt: DateTime
 }
 
 input ContactInput {
+  email: String
   firstName: String
   lastName: String
-  email: String
-  phone: String
   note: String
+  phone: String
 }
 
 type ContactsResult {

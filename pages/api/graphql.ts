@@ -18,9 +18,16 @@ const GRAPHQL_SCHEMA_PATH = path.join(process.cwd(), 'graphql/schema.graphql')
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 const permissions = shield({
   Mutation: {
+    createAddress: permission.isAdministrator,
+    deleteAddress: permission.isAdministrator,
+
     createFile: permission.isAdministrator,
     deleteFile: permission.isAdministrator,
     updateFile: permission.isAdministrator,
+
+    createJob: permission.isAdministrator,
+    deleteJob: permission.isAdministrator,
+    updateJob: permission.isAdministrator,
 
     createLegacyJob: permission.isAdministrator,
     deleteLegacyJob: permission.isAdministrator,
@@ -38,6 +45,10 @@ const permissions = shield({
     deleteLegacyService: permission.isAdministrator,
     updateLegacyService: permission.isAdministrator,
 
+    createProfession: permission.isAdministrator,
+    deleteProfession: permission.isAdministrator,
+    updateProfession: permission.isAdministrator,
+
     createRecruiter: permission.isAdministrator,
     deleteRecruiter: permission.isAdministrator,
     updateRecruiter: permission.isAdministrator,
@@ -46,12 +57,18 @@ const permissions = shield({
     updateUser: permission.isAdministrator,
   },
   Query: {
+    getAddresses: permission.isAdministrator,
+
     getContact: permission.isAdministrator,
     getContacts: permission.isAdministrator,
     getContactsList: permission.isAdministrator,
 
     getFile: permission.isAdministrator,
     getFiles: permission.isAdministrator,
+
+    getJob: permission.isAdministrator,
+    getJobs: permission.isAdministrator,
+    getJobsList: permission.isAdministrator,
 
     getLegacyEntity: permission.isAdministrator,
     getLegacyEntities: permission.isAdministrator,
@@ -67,6 +84,10 @@ const permissions = shield({
     getLegacyService: permission.isAdministrator,
     getLegacyServices: permission.isAdministrator,
     getLegacyServicesList: permission.isAdministrator,
+
+    getProfession: permission.isAdministrator,
+    getProfessions: permission.isAdministrator,
+    getProfessionsList: permission.isAdministrator,
 
     getRecruiter: permission.isAdministrator,
     getRecruiters: permission.isAdministrator,

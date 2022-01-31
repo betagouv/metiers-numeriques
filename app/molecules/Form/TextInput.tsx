@@ -1,9 +1,9 @@
-import { TextInput } from '@singularity/core'
+import { TextInput as SuiTextInput } from '@singularity/core'
 import { useFormikContext } from 'formik'
 
 import type { ChangeEvent, ChangeEventHandler } from 'react'
 
-type CheckboxProps = {
+type TextInputProps = {
   autoComplete?: string
   helper?: string
   isDisabled?: boolean
@@ -13,8 +13,8 @@ type CheckboxProps = {
   placeholder?: string
   type?: string
 }
-export function Input({
-  autoComplete,
+export function TextInput({
+  autoComplete = 'off',
   helper,
   isDisabled = false,
   label,
@@ -22,7 +22,7 @@ export function Input({
   onChange,
   placeholder,
   type = 'text',
-}: CheckboxProps) {
+}: TextInputProps) {
   const { errors, handleChange, isSubmitting, submitCount, touched, values } = useFormikContext<any>()
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
@@ -37,8 +37,8 @@ export function Input({
   }
 
   return (
-    <TextInput
-      autoComplete={String(autoComplete)}
+    <SuiTextInput
+      autoComplete={autoComplete}
       defaultValue={values[name]}
       disabled={isDisabled || isSubmitting}
       error={maybeError}

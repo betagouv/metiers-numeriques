@@ -85,7 +85,7 @@ export const query = {
   ): Promise<GetAllResponse<UserFromGetAll>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter(['email', 'firstName', 'lastName'], query)
+      const whereFilter = buildPrismaWhereFilter<User>(['email', 'firstName', 'lastName'], query)
 
       const args: Prisma.UserFindManyArgs = {
         include: {

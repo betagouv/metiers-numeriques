@@ -85,15 +85,15 @@ export default function LegacyEntityEditorPage() {
       <Card>
         <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom court *" name="name" />
+            <Form.TextInput isDisabled={isLoading} label="Nom court *" name="name" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Logo (URL)" name="logoUrl" />
+            <Form.TextInput isDisabled={isLoading} label="Logo (URL)" name="logoUrl" />
           </Field>
 
           <Field>

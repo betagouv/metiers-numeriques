@@ -20,13 +20,13 @@ import * as Yup from 'yup'
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { LegacyJob } from '@prisma/client'
 
-const JOB_STATES_AS_OPTIONS = R.pipe(
+const JOB_STATES_AS_OPTIONS: Common.App.SelectOption[] = R.pipe(
   R.toPairs,
   R.map(([value, label]) => ({
     label,
     value,
   })),
-)(JOB_STATE_LABEL)
+)(JOB_STATE_LABEL) as any
 
 const FormSchema = Yup.object().shape({
   limitDate: Yup.string().required(`La date limite est obligatoire.`),
@@ -41,12 +41,8 @@ export default function LegacyJobEditorPage() {
 
   const [initialValues, setInitialValues] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [legacyServicesAsOptions, setLegacyServicesAsOptions] = useState<
-    Array<{
-      label: string
-      value: string
-    }>
-  >([])
+  const [legacyServicesAsOptions, setLegacyServicesAsOptions] = useState<Common.App.SelectOption[]>([])
+
   const getLegacyJobResult = useQuery(queries.legacyJob.GET_ONE, {
     variables: {
       id: id || '',
@@ -62,7 +58,7 @@ export default function LegacyJobEditorPage() {
     }
 
     if (legacyServicesAsOptions.length === 0) {
-      const newlegacyServicesAsOptions = R.pipe(
+      const newLegacyServicesAsOptions = R.pipe(
         R.sortBy(R.prop('name')) as any,
         R.map(({ id, legacyEntity, name }) => ({
           label: legacyEntity ? `${name} (${legacyEntity.name})` : name,
@@ -70,7 +66,7 @@ export default function LegacyJobEditorPage() {
         })),
       )(getLegacyServicesListResult.data.getLegacyServicesList)
 
-      setLegacyServicesAsOptions(newlegacyServicesAsOptions)
+      setLegacyServicesAsOptions(newLegacyServicesAsOptions)
     }
 
     if (isNew) {
@@ -187,18 +183,18 @@ export default function LegacyJobEditorPage() {
         <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           {!isNew && (
             <Field>
-              <Form.Input isDisabled label="Référence interne" name="reference" />
+              <Form.TextInput isDisabled label="Référence interne" name="reference" />
             </Field>
           )}
 
           {!isNew && (
             <Field>
-              <Form.Input isDisabled label="Slug" name="slug" />
+              <Form.TextInput isDisabled label="Slug" name="slug" />
             </Field>
           )}
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Intitulé" name="title" />
+            <Form.TextInput isDisabled={isLoading} label="Intitulé" name="title" />
           </Field>
 
           <Field>
@@ -216,7 +212,7 @@ export default function LegacyJobEditorPage() {
 
           {!isNew && (
             <Field>
-              <Form.Input isDisabled label="Entité (obsolète)" name="entity" />
+              <Form.TextInput isDisabled label="Entité (obsolète)" name="entity" />
             </Field>
           )}
 
@@ -228,16 +224,16 @@ export default function LegacyJobEditorPage() {
 
           {!isNew && (
             <Field>
-              <Form.Input isDisabled label="Mise à jour le" name="updatedAt" type="datetime-local" />
+              <Form.TextInput isDisabled label="Mise à jour le" name="updatedAt" type="datetime-local" />
             </Field>
           )}
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Expire le" name="limitDate" type="date" />
+            <Form.TextInput isDisabled={isLoading} label="Expire le" name="limitDate" type="date" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Salaire" name="salary" />
+            <Form.TextInput isDisabled={isLoading} label="Salaire" name="salary" />
           </Field>
 
           <Field>

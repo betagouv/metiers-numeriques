@@ -22,10 +22,10 @@ const FormSchema = Yup.object().shape({
   roleAsOption: Yup.object().required(`Le rôle est obligatoire.`),
 })
 
-const USER_ROLES_AS_OPTIONS = R.pipe(
+const USER_ROLES_AS_OPTIONS: Common.App.SelectOption[] = R.pipe(
   R.toPairs,
   R.map(([value, label]) => ({ label, value })),
-)(USER_ROLE_LABEL)
+)(USER_ROLE_LABEL) as any
 
 export default function AdminUserEditorPage() {
   const router = useRouter()
@@ -40,12 +40,7 @@ export default function AdminUserEditorPage() {
   // }
   const [initialValues, setInitialValues] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [recruitersAsOptions, setRecruitersAsOptions] = useState<
-    Array<{
-      label: string
-      value: string
-    }>
-  >([])
+  const [recruitersAsOptions, setRecruitersAsOptions] = useState<Common.App.SelectOption[]>([])
 
   const getUserResult = useQuery(queries.user.GET_ONE, {
     variables: {
@@ -140,15 +135,15 @@ export default function AdminUserEditorPage() {
       <Card>
         <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.Input isDisabled={isLoading} label="Email" name="email" type="email" />
+            <Form.TextInput isDisabled={isLoading} label="Email" name="email" type="email" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Prénom" name="firstName" />
+            <Form.TextInput isDisabled={isLoading} label="Prénom" name="firstName" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom" name="lastName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom" name="lastName" />
           </Field>
 
           <Field>

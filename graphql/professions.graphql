@@ -1,0 +1,26 @@
+scalar DateTime
+
+type Profession {
+  id: ID!
+
+  createdAt: DateTime
+  name: String
+  updatedAt: DateTime
+
+  _count: ProfessionCount
+}
+
+type ProfessionCount {
+  jobs: Int
+}
+
+input ProfessionInput {
+  name: String
+}
+
+type ProfessionsResult {
+  count: Int!
+  data: [Profession!]!
+  index: Int!
+  length: Int!
+}

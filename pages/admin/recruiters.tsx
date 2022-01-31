@@ -29,8 +29,13 @@ const BASE_COLUMNS: TableColumnProps[] = [
   },
   {
     grow: 0.1,
+    key: '_count.jobs',
+    label: 'O',
+  },
+  {
+    grow: 0.1,
     key: '_count.users',
-    label: '',
+    label: 'U',
   },
 ]
 

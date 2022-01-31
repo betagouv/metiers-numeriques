@@ -64,12 +64,20 @@ export default function AdminMenu() {
               Contacts
             </VerticalMenu.Item>
           </Link>
-          <Link href="/admin/files">
+          <Link href="/admin/jobs">
             <VerticalMenu.Item
-              isActive={router.pathname === '/admin/files' || router.pathname.startsWith('/admin/file/')}
+              isActive={router.pathname === '/admin/jobs' || router.pathname.startsWith('/admin/job/')}
               isDark
             >
-              Fichiers
+              Offres
+            </VerticalMenu.Item>
+          </Link>
+          <Link href="/admin/professions">
+            <VerticalMenu.Item
+              isActive={router.pathname === '/admin/professions' || router.pathname.startsWith('/admin/profession/')}
+              isDark
+            >
+              Métiers
             </VerticalMenu.Item>
           </Link>
           <Link href="/admin/recruiters">
@@ -138,6 +146,22 @@ export default function AdminMenu() {
         <MenuTitle>ADMINISTRATION</MenuTitle>
 
         <VerticalMenu>
+          <Link href="/admin/addresses">
+            <VerticalMenu.Item
+              isActive={router.pathname === '/admin/addresses' || router.pathname.startsWith('/admin/address/')}
+              isDark
+            >
+              Adresses
+            </VerticalMenu.Item>
+          </Link>
+          <Link href="/admin/files">
+            <VerticalMenu.Item
+              isActive={router.pathname === '/admin/files' || router.pathname.startsWith('/admin/file/')}
+              isDark
+            >
+              Fichiers
+            </VerticalMenu.Item>
+          </Link>
           <Link href="/admin/users">
             <VerticalMenu.Item
               isActive={router.pathname === '/admin/users' || router.pathname.startsWith('/admin/user/')}

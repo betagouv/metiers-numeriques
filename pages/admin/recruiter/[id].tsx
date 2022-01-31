@@ -1,11 +1,13 @@
 import { useQuery, useMutation } from '@apollo/client'
+import { AdminCard } from '@app/atoms/AdminCard'
 import AdminHeader from '@app/atoms/AdminHeader'
-import Subtitle from '@app/atoms/Subtitle'
+import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
+import { normalizeDate } from '@app/helpers/normalizeDate'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
-import { USER_ROLE_LABEL } from '@common/constants'
-import { Card, Field, Table } from '@singularity/core'
+import { JOB_STATE_LABEL, USER_ROLE_LABEL } from '@common/constants'
+import { Field, Table } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
@@ -19,6 +21,35 @@ import type { TableColumnProps } from '@singularity/core'
 const FormSchema = Yup.object().shape({
   name: Yup.string().required(`Le nom est obligatoire.`),
 })
+
+const JOB_LIST_COLUMNS: TableColumnProps[] = [
+  {
+    isSortable: true,
+    key: 'title',
+    label: 'Intitulé',
+  },
+  {
+    grow: 0.1,
+    isSortable: true,
+    key: 'state',
+    label: 'État',
+    transform: ({ state }) => JOB_STATE_LABEL[state],
+  },
+  {
+    grow: 0.15,
+    isSortable: true,
+    key: 'expiredAt',
+    label: 'Expire le',
+    transform: ({ expiredAt }) => normalizeDate(expiredAt),
+  },
+  {
+    grow: 0.15,
+    isSortable: true,
+    key: 'updatedAt',
+    label: 'MàJ le',
+    transform: ({ updatedAt }) => normalizeDate(updatedAt),
+  },
+]
 
 const USER_LIST_COLUMNS: TableColumnProps[] = [
   {
@@ -119,22 +150,22 @@ export default function AdminRecruiterEditorPage() {
         <Title>{isNew ? 'Nouveau recruteur' : 'Édition d’un recruteur'}</Title>
       </AdminHeader>
 
-      <Card>
+      <AdminCard isFirst>
         <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           {/* <Field>
             <Form.Image accept=".svg" isDisabled={isLoading} label="Logo" name="logoFileId" />
           </Field> */}
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom *" name="name" />
+            <Form.TextInput isDisabled={isLoading} label="Nom *" name="name" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Site (URL)" name="websiteUrl" />
+            <Form.TextInput isDisabled={isLoading} label="Site (URL)" name="websiteUrl" />
           </Field>
 
           <Field>
@@ -144,13 +175,9 @@ export default function AdminRecruiterEditorPage() {
             <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
           </Field>
         </Form>
-      </Card>
+      </AdminCard>
 
-      <Card
-        style={{
-          marginTop: '1rem',
-        }}
-      >
+      <AdminCard>
         <Subtitle>Utilisateur·rices</Subtitle>
 
         <Table
@@ -159,7 +186,19 @@ export default function AdminRecruiterEditorPage() {
           defaultSortedKey="lastName"
           isLoading={isLoading}
         />
-      </Card>
+      </AdminCard>
+
+      <AdminCard>
+        <Subtitle>Offres</Subtitle>
+
+        <Table
+          columns={JOB_LIST_COLUMNS}
+          data={initialValues ? initialValues.jobs : []}
+          defaultSortedKey="updatedAt"
+          defaultSortedKeyIsDesc
+          isLoading={isLoading}
+        />
+      </AdminCard>
     </>
   )
 }

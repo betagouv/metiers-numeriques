@@ -109,16 +109,16 @@ export default function LegacyInstitutionEditorPage() {
         <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           {!isNew && (
             <Field>
-              <Form.Input isDisabled label="Slug" name="slug" />
+              <Form.TextInput isDisabled label="Slug" name="slug" />
             </Field>
           )}
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom court *" name="title" />
+            <Form.TextInput isDisabled={isLoading} label="Nom court *" name="title" />
           </Field>
 
           <Field>
-            <Form.Input isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>

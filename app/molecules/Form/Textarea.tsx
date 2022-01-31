@@ -1,4 +1,4 @@
-import { Textarea as SingularityTextarea } from '@singularity/core'
+import { Textarea as SuiTextarea } from '@singularity/core'
 import { useFormikContext } from 'formik'
 
 type TextareaProps = {
@@ -15,7 +15,8 @@ export function Textarea({ helper, isDisabled = false, label, name, placeholder 
   const maybeError = hasError ? String(errors[name]) : undefined
 
   return (
-    <SingularityTextarea
+    <SuiTextarea
+      autoComplete="off"
       defaultValue={values[name]}
       disabled={isDisabled || isSubmitting}
       error={maybeError}

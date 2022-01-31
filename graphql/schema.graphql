@@ -1,5 +1,8 @@
+# import Address, AddressInput, AddressesResult from "addresses.graphql"
 # import Contact, ContactInput, ContactsResult from "contacts.graphql"
 # import File, FileInput, FilesResult from "files.graphql"
+# import Job, JobInput, JobsResult from "jobs.graphql"
+# import Profession, ProfessionInput, ProfessionsResult from "professions.graphql"
 # import Recruiter, RecruiterInput, RecruitersResult from "recruiters.graphql"
 # import User, UserInput, UsersResult from "users.graphql"
 
@@ -7,6 +10,12 @@ scalar DateTime
 scalar JSONObject
 
 type Query {
+  getAddresses(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): AddressesResult!
+
   getContact(id: String!): Contact
   getContacts(
     pageIndex: Int!
@@ -21,6 +30,15 @@ type Query {
     query: String
     perPage: Int
   ): FilesResult!
+
+  getJob(id: String!): Job
+  getJobs(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+    state: String
+  ): JobsResult!
+  getJobsList: [Job!]!
 
   getLegacyEntity(id: String!): LegacyEntity
   getLegacyEntities(
@@ -61,6 +79,14 @@ type Query {
   ): LegacyServicesResult!
   getLegacyServicesList: [LegacyService!]!
 
+  getProfession(id: String!): Profession
+  getProfessions(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): ProfessionsResult!
+  getProfessionsList: [Profession!]!
+
   getRecruiter(id: String!): Recruiter
   getRecruiters(
     pageIndex: Int!
@@ -78,6 +104,9 @@ type Query {
 }
 
 type Mutation {
+  createAddress(input: AddressInput!): Address
+  deleteAddress(id: String!): Address
+
   createContact(input: ContactInput!): Contact
   deleteContact(id: String!): Contact
   updateContact(id: String!, input: ContactInput!): Contact
@@ -85,6 +114,10 @@ type Mutation {
   createFile(input: FileInput!): File
   deleteFile(id: String!): File
   updateFile(id: String!, input: FileInput!): File
+
+  createJob(input: JobInput!): Job
+  deleteJob(id: String!): Job
+  updateJob(id: String!, input: JobInput!): Job
 
   createLegacyEntity(input: LegacyEntityInput!): LegacyEntity
   deleteLegacyEntity(id: String!): LegacyEntity
@@ -101,6 +134,10 @@ type Mutation {
   createLegacyService(input: LegacyServiceInput!): LegacyService
   deleteLegacyService(id: String!): LegacyService
   updateLegacyService(id: String!, input: LegacyServiceInput!): LegacyService
+
+  createProfession(input: ProfessionInput!): Profession
+  deleteProfession(id: String!): Profession
+  updateProfession(id: String!, input: ProfessionInput!): Profession
 
   createRecruiter(input: RecruiterInput!): Recruiter
   deleteRecruiter(id: String!): Recruiter
@@ -172,7 +209,7 @@ type LegacyInstitutionsResult {
 }
 
 input LegacyInstitutionInput {
-  id: ID
+  id: String
 
   address: String
   challenges: String
