@@ -10,6 +10,7 @@
   "scripts": {
     "prebuild": "sh ./scripts/build/prebuild.sh",
     "build": "next build",
+    "postbuild": "sh ./scripts/build/postbuild.sh",
     "db:backup": "sh ./scripts/dev/backup.sh",
     "db:migrate": "prisma migrate deploy",
     "db:restore": "sh ./scripts/dev/restore.sh",
