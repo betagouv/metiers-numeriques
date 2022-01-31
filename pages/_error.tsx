@@ -2,7 +2,7 @@
  * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#create-a-custom-_error-page
  */
 
-import Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import NextErrorComponent from 'next/error'
 
 import type { NextPageContext } from 'next'
