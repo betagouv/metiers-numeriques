@@ -32,7 +32,7 @@
     "seed": "ts-node -r dotenv/config prisma/seeds/index.ts"
   },
   "dependencies": {
-    "@apollo/client": "3.5.7",
+    "@apollo/client": "3.5.8",
     "@gouvfr/dsfr": "1.3.0",
     "@graphql-tools/graphql-file-loader": "7.3.3",
     "@graphql-tools/load": "7.5.1",
