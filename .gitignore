@@ -135,9 +135,8 @@ dist
 
 /.backups
 
-/public/assets/*
-/public/index.bundle.css
-/public/index.js
+/public/fonts/*
+/public/dsfr.min.css
 /public/sitemap.xml
 
 /test-results

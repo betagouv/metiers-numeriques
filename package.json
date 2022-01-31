@@ -9,9 +9,7 @@
   },
   "scripts": {
     "prebuild": "sh ./scripts/build/prebuild.sh",
-    "build": "yarn build:assets && next build",
-    "build:assets": "rm -Rf ./public/assets && rollup -c && rm -f ./public/index.js",
-    "build:sitemap": "ts-node -r dotenv/config ./scripts/build/generateSitemap.ts",
+    "build": "next build",
     "db:backup": "sh ./scripts/dev/backup.sh",
     "db:migrate": "prisma migrate deploy",
     "db:restore": "sh ./scripts/dev/restore.sh",
@@ -20,7 +18,7 @@
     "dev:docker": "docker-compose down && docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up -d db",
     "dev:migrate": "prisma migrate dev",
     "dev:synchronize": "ts-node -r dotenv/config ./scripts/dev/synchronize.ts",
-    "prepare": "husky install",
+    "prepare": "husky install && sh ./scripts/build/generateAssets.sh",
     "setup": "sh ./scripts/dev/setup.sh",
     "start": "npx next start",
     "test": "yarn test:lint && yarn test:build && yarn test:unit",
@@ -86,7 +84,6 @@
     "@ivangabriele/eslint-config-typescript-react": "2.1.4",
     "@ivangabriele/prettier-config": "2.0.2",
     "@playwright/test": "1.17.2",
-    "@rollup/plugin-replace": "3.0.0",
     "@swc/core": "1.2.133",
     "@testing-library/react-hooks": "7.0.2",
     "@tsconfig/node16": "1.0.2",
@@ -107,9 +104,6 @@
     "husky": "7.0.4",
     "jest": "27.4.7",
     "postcss": "8.4.5",
-    "rollup": "2.60.2",
-    "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-styles": "3.14.1",
     "ts-jest": "27.1.3"
   },
   "resolutions": {

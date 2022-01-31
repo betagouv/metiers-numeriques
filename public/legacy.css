@@ -292,3 +292,86 @@ p.rf-hint-text {
     display: flex;
   }
 }
+
+#Institution .SocialNetworkParagraph {
+  align-items: center;
+  display: flex;
+}
+#Institution .SocialNetworkParagraph a {
+  box-shadow: none;
+  display: inline-flex;
+  margin-right: 0.5rem;
+}
+#Institution .SocialNetworkParagraph a::after {
+  content: '';
+}
+#Institution .SocialNetworkParagraph a i {
+  font-size: 150%;
+}
+#Institution .SocialNetworkParagraph a img {
+  height: 1.5rem;
+  opacity: 0.75;
+  width: 1.5rem;
+}
+
+.FileSection {
+  display: flex;
+}
+.FileSection a {
+  box-shadow: none;
+}
+.FileSection a::after {
+  content: none;
+}
+
+.FileSection .FileAsDocument {
+  background-color: #fef4f2;
+  display: inline-flex;
+  margin: 0 2rem 0 0;
+  padding: 0 1rem 1rem 1rem;
+}
+.FileSection .FileAsDocument > a {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  max-width: 8rem;
+}
+.FileSection .FileAsDocument > a > i {
+  font-size: 4rem;
+}
+.FileSection .FileAsDocument > a > b {
+  font-size: 1rem;
+  font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.FileSection .FileAsEmbed {
+  width: 100%;
+}
+.FileSection .FileAsEmbed > div {
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+}
+.FileSection .FileAsEmbed > div > iframe {
+  height: 100%;
+  left: 0px;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+}
+
+.FileSection .FileAsImage {
+  width: 100%;
+}
+.FileSection .FileAsImage > img {
+  height: auto;
+  width: 100%;
+}

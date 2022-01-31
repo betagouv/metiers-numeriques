@@ -9,4 +9,4 @@ export $(egrep -v '^(#|EDDSA_PRIVATE_KEY|NEXT_PUBLIC_EDDSA_PUBLIC_KEY)' ./.env |
 yarn prisma generate
 yarn db:migrate
 yarn db:seed
-yarn build:sitemap
+ts-node -r dotenv/config ./scripts/build/generateSitemap.ts

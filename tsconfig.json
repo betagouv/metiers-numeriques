@@ -23,8 +23,8 @@
     "strictNullChecks": true,
     "target": "es5"
   },
-  "exclude": ["./node_modules/*"],
-  "include": ["./**/*.js", "./**/*.ts", "./**/*.tsx", "next-env.d.ts"],
+  "exclude": ["node_modules/*"],
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx", "next-env.d.ts"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
