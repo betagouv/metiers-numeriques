@@ -1546,6 +1546,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@socialgouv/matomo-next@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@socialgouv/matomo-next/-/matomo-next-1.2.2.tgz#0fe3c8978a38f23411fbbdcaf4e3a7edaf8eecbf"
+  integrity sha512-VWIToHeF0rFtLlGGkjdfUCtLckZebwXwYlnAVYwqMivUboqRgxl7wsUGkGfp6HM4cfYla9NQw4mbqRPXfTGu5Q==
+
 "@swc/core-android-arm-eabi@1.2.133":
   version "1.2.133"
   resolved "https://registry.yarnpkg.com/@swc/core-android-arm-eabi/-/core-android-arm-eabi-1.2.133.tgz#dea04365897889c6f827ceb544ea241c90f02709"
