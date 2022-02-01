@@ -61,6 +61,7 @@ jobs:
       DOMAIN_URL: http://localhost:3000
       NODE_ENV: production
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ENVIRONMENT: "ci"
       SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
     services:

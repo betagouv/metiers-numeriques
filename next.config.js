@@ -1,6 +1,6 @@
 const { withSentryConfig } = require('@sentry/nextjs')
 
-const { NODE_ENV } = process.env
+const { NODE_ENV, npm_package_version: VERSION } = process.env
 const IS_PRODUCTION = NODE_ENV === 'production'
 
 const config = {
@@ -30,6 +30,8 @@ const config = {
 
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#extend-nextjs-configuration
 const sentryWebpackPluginOptions = {
+  debug: !IS_PRODUCTION,
+  release: VERSION,
   silent: IS_PRODUCTION,
 }
 
