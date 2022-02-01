@@ -98,7 +98,7 @@ export default function JobCard({ job }: JobCardProps) {
 
             <div className="fr-col-12 fr-col-md-9">
               <h4 className="fr-card__lead">
-                <Link className="fr-card__link" href={`/emploi/${job.slug}`}>
+                <Link className="trk-lire-offre fr-card__link" href={`/emploi/${job.slug}`}>
                   {job.title}
                 </Link>
               </h4>
