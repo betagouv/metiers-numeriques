@@ -517,7 +517,7 @@ const DEPARTEMENTS: Array<{
 export default function getRegionNameFromZipCode(zipCode: string): string | undefined {
   try {
     if (zipCode.length < 4 || zipCode.length > 5) {
-      throw new Error(`This <zipCode> is malformed: "${zipCode}".`)
+      return
     }
 
     const normalizedZipCode = zipCode.length === 4 ? `0${zipCode}` : zipCode

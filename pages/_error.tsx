@@ -28,7 +28,7 @@ MetiersNumeriquesError.getInitialProps = async (context: NextPageContext) => {
   if (err) {
     Sentry.captureException(err)
 
-    // await Sentry.flush(2000)
+    await Sentry.flush(2000)
 
     return errorInitialProps
   }
