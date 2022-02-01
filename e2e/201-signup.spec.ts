@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { UserRole } from '@prisma/client'
 
 import getPrisma from '../api/helpers/getPrisma'
-import { FIRST_USER } from './constants'
+import { TEST_USERS } from './constants'
 
 const { CI } = process.env
 const IS_CI = Boolean(CI)
@@ -11,15 +11,17 @@ test.describe('Signup', () => {
   const prisma = getPrisma()
 
   test('First User Signup', async ({ page }) => {
+    const firstTestUser = TEST_USERS[0]
+
     await page.goto('http://localhost:3000/admin')
 
-    await page.click('text=demander un compte')
-    await page.fill('[name="signUpEmail"]', FIRST_USER.email)
-    await page.fill('[name="signUpPassword"]', FIRST_USER.password)
-    await page.fill('[name="signUpPasswordConfirmation"]', FIRST_USER.password)
-    await page.fill('[name="signUpFirstName"]', FIRST_USER.firstName)
-    await page.fill('[name="signUpLastName"]', FIRST_USER.lastName)
-    await page.click('text=Envoyer ma demande')
+    await page.click('"demander un compte"')
+    await page.fill('"Email"', firstTestUser.email)
+    await page.fill('"Mot de passe"', firstTestUser.password)
+    await page.fill('"Mot de passe (répêter)"', firstTestUser.password)
+    await page.fill('"Prénom"', firstTestUser.firstName)
+    await page.fill('"Nom"', firstTestUser.lastName)
+    await page.click('"Envoyer ma demande"')
 
     await expect(page.locator('h4')).toHaveText('Connexion')
 
@@ -33,7 +35,7 @@ test.describe('Signup', () => {
         role: UserRole.ADMINISTRATOR,
       },
       where: {
-        email: FIRST_USER.email,
+        email: firstTestUser.email,
       },
     })
   })

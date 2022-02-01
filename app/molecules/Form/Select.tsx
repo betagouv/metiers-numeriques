@@ -1,6 +1,7 @@
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { Select as SuiSelect } from '@singularity/core'
 import { useFormikContext } from 'formik'
+import { useMemo } from 'react'
 
 type SelectProps = {
   helper?: string
@@ -19,7 +20,7 @@ export function Select({
   isMulti = false,
   label,
   name,
-  options,
+  options = [],
   placeholder,
 }: SelectProps) {
   const { errors, initialValues, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
@@ -27,17 +28,33 @@ export function Select({
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
 
-  const updateFormikValues = (optionOrOptions: Common.App.SelectOption | Common.App.SelectOption[] | null) => {
-    if (optionOrOptions === null) {
-      setFieldValue(name, isMulti ? [] : undefined)
+  const defaultValue = useMemo(() => {
+    const valueOrValues: string | string[] | null | undefined = values[name]
 
-      return
+    if (valueOrValues === undefined || valueOrValues === null) {
+      return valueOrValues
     }
 
+    if (Array.isArray(valueOrValues)) {
+      return valueOrValues
+        .map(value => options.find(option => option.value === value))
+        .filter(value => value !== undefined) as Common.App.SelectOption[]
+    }
+
+    return options.find(({ value }) => value === valueOrValues)
+  }, [values[name]])
+
+  const updateFormikValues = (optionOrOptions: Common.App.SelectOption | Common.App.SelectOption[] | null) => {
     if (Array.isArray(optionOrOptions)) {
       const values = optionOrOptions.map(({ value }) => value)
 
       setFieldValue(name, values)
+
+      return
+    }
+
+    if (optionOrOptions === null) {
+      setFieldValue(name, null)
 
       return
     }
@@ -51,7 +68,7 @@ export function Select({
     <SuiSelect
       key={generateKeyFromValue(initialValues)}
       cacheOptions={isAsync}
-      defaultValue={values[name]}
+      defaultValue={defaultValue}
       error={maybeError}
       helper={helper}
       isClearable

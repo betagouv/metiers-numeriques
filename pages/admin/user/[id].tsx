@@ -18,8 +18,10 @@ const FormSchema = Yup.object().shape({
     .required(`L’adresse email est obligatoire.`)
     .email(`Cette addresse email ne semble pas correctement formatté.`),
   firstName: Yup.string().required(`Le prénom est obligatoire.`),
+  isActive: Yup.boolean().required(),
   lastName: Yup.string().required(`Le nom de famille est obligatoire.`),
-  roleAsOption: Yup.object().required(`Le rôle est obligatoire.`),
+  recruiterId: Yup.string().nullable(),
+  role: Yup.string().required(`Le rôle est obligatoire.`),
 })
 
 const USER_ROLES_AS_OPTIONS: Common.App.SelectOption[] = R.pipe(
@@ -75,16 +77,8 @@ export default function AdminUserEditorPage() {
       ...getUserResult.data.getUser,
     }
 
-    newInitialValues.roleAsOption = {
-      label: USER_ROLE_LABEL[newInitialValues.role],
-      value: newInitialValues.role,
-    }
-
     if (newInitialValues.recruiter !== null) {
-      newInitialValues.recruiterAsOption = {
-        label: newInitialValues.recruiter.name,
-        value: newInitialValues.recruiter.id,
-      }
+      newInitialValues.recruiterId = newInitialValues.recruiter.id
     }
 
     setInitialValues(newInitialValues)
@@ -96,11 +90,7 @@ export default function AdminUserEditorPage() {
   }
 
   const saveAndGoToList = async (values: any) => {
-    const input: Partial<User> = R.pick(['email', 'firstName', 'isActive', 'lastName'])(values)
-    if (values.recruiterAsOption) {
-      input.recruiterId = values.recruiterAsOption.value
-    }
-    input.role = values.roleAsOption.value
+    const input: Partial<User> = R.pick(['email', 'firstName', 'isActive', 'lastName', 'recruiterId', 'role'])(values)
 
     const options: MutationFunctionOptions = {
       variables: {
@@ -147,16 +137,11 @@ export default function AdminUserEditorPage() {
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="Rôle" name="roleAsOption" options={USER_ROLES_AS_OPTIONS} />
+            <Form.Select isDisabled={isLoading} label="Rôle" name="role" options={USER_ROLES_AS_OPTIONS} />
           </Field>
 
           <Field>
-            <Form.Select
-              isDisabled={isLoading}
-              label="Recruteur"
-              name="recruiterAsOption"
-              options={recruitersAsOptions}
-            />
+            <Form.Select isDisabled={isLoading} label="Recruteur" name="recruiterId" options={recruitersAsOptions} />
           </Field>
 
           <Field>

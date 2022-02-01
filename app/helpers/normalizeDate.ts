@@ -1,16 +1,16 @@
 import handleError from '@common/helpers/handleError'
-import daysjs from 'dayjs'
+import dayjs from 'dayjs'
 
 function normalizeDate(isoDate: string): string
 function normalizeDate(date: Date): string
 function normalizeDate(date: string | Date): string {
   try {
-    if ((!(date instanceof Date) && typeof date !== 'string') || !daysjs(date).isValid) {
+    if ((!(date instanceof Date) && typeof date !== 'string') || !dayjs(date).isValid) {
       return ''
     }
 
-    return daysjs(date).format('DD/MM/YYYY')
-  } catch (err) {
+    return dayjs(date).format('DD/MM/YYYY')
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/normalizeDate()')
 
     return ''

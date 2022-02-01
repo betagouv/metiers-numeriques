@@ -13,6 +13,8 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { LegacyEntity } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
+  fullName: Yup.string().nullable(),
+  logoUrl: Yup.string().nullable(),
   name: Yup.string().required(`Le nom court est obligatoire.`),
 })
 

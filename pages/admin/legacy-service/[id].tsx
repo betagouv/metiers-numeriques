@@ -1,8 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import normalizeDateFromDateInput from '@app/helpers/normalizeDateFromDateInput'
-import normalizeDateFromDateTimeInput from '@app/helpers/normalizeDateFromDateTimeInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
@@ -16,8 +14,11 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { LegacyService } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
+  fullName: Yup.string().nullable(),
+  legacyEntityId: Yup.string().nullable(),
   name: Yup.string().required(`Le nom court est obligatoire.`),
-  regionAsOption: Yup.object().required(`La région est obligatoire.`),
+  region: Yup.string().required(`La région est obligatoire.`),
+  url: Yup.string().nullable(),
 })
 
 export default function LegacyServiceEditorPage() {
@@ -69,21 +70,8 @@ export default function LegacyServiceEditorPage() {
       ...getLegacyServiceResult.data.getLegacyService,
     }
 
-    newInitialValues.limitDate = normalizeDateFromDateInput(newInitialValues.limitDate)
-    newInitialValues.updatedAt = normalizeDateFromDateTimeInput(newInitialValues.updatedAt)
-
     if (newInitialValues.legacyEntity !== null) {
-      newInitialValues.legacyEntityAsOption = {
-        label: newInitialValues.legacyEntity.name,
-        value: newInitialValues.legacyEntity.id,
-      }
-    }
-
-    if (newInitialValues.region !== null) {
-      newInitialValues.regionAsOption = {
-        label: newInitialValues.region,
-        value: newInitialValues.region,
-      }
+      newInitialValues.legacyEntityId = newInitialValues.legacyEntity.id
     }
 
     setInitialValues(newInitialValues)
@@ -97,11 +85,7 @@ export default function LegacyServiceEditorPage() {
   const saveAndGoToList = async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<LegacyService> = R.pick(['fullName', 'name', 'url'])(values)
-    if (values.legacyEntityAsOption) {
-      input.legacyEntityId = values.legacyEntityAsOption.value
-    }
-    input.region = values.regionAsOption.value
+    const input: Partial<LegacyService> = R.pick(['fullName', 'legacyEntityId', 'name', 'region', 'url'])(values)
 
     const options: MutationFunctionOptions = {
       variables: {
@@ -140,13 +124,13 @@ export default function LegacyServiceEditorPage() {
             <Form.Select
               isDisabled={isLoading}
               label="Entité parente"
-              name="legacyEntityAsOption"
+              name="legacyEntityId"
               options={legacyEntitiesAsOptions}
             />
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="Région *" name="regionAsOption" options={REGIONS_AS_OPTIONS} />
+            <Form.Select isDisabled={isLoading} label="Région *" name="region" options={REGIONS_AS_OPTIONS} />
           </Field>
 
           <Field>

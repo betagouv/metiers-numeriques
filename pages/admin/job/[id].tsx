@@ -4,6 +4,7 @@ import AdminHeader from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
+import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
@@ -18,6 +19,7 @@ import { useEffect, useState } from 'react'
 import slugify from 'slugify'
 import * as Yup from 'yup'
 
+import type { JobFromGetOne } from '@api/resolvers/jobs'
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { Job, JobContractType, Prisma } from '@prisma/client'
 
@@ -35,7 +37,7 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
 const FormSchema = Yup.object().shape({
   addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
   contactId: Yup.string().required(`Le contact est obligatoire.`),
-  contractTypes: Yup.array()
+  contractTypes: Yup.array(Yup.string())
     .required(`Au moins un type de contrat est obligatoire.`)
     .min(1, `Au moins un type de contrat est obligatoire.`),
   expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
@@ -43,7 +45,7 @@ const FormSchema = Yup.object().shape({
   professionId: Yup.string().required(`Le métier est obligatoire.`),
   recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
   remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
-  seniorityInYears: Yup.string().required(`Le nombre d’années d’expérience requises est obligatoire.`),
+  seniorityInYears: Yup.number().required(`Le nombre d’années d’expérience requises est obligatoire.`),
   state: Yup.string().required(`L’état est obligatoire.`),
   title: Yup.string().required(`L’intitulé est obligatoire.`),
 })
@@ -61,7 +63,7 @@ export default function AdminJobEditorPage() {
 
   const getJobResult = useQuery<
     {
-      getJob: Job
+      getJob: JobFromGetOne
     },
     any
   >(queries.job.GET_ONE, {
@@ -208,11 +210,19 @@ export default function AdminJobEditorPage() {
       return
     }
 
-    const initialValues = {
+    const newInitialValues: any = {
       ...getJobResult.data.getJob,
     }
 
-    setInitialValues({ ...initialValues })
+    newInitialValues.expiredAtAsString = normalizeDateForDateInput(newInitialValues.expiredAt)
+
+    newInitialValues.seniorityInYears = Math.ceil(newInitialValues.seniorityInMonths / 12)
+
+    newInitialValues.contactId = newInitialValues.contact.id
+    newInitialValues.professionId = newInitialValues.profession.id
+    newInitialValues.recruiterId = newInitialValues.recruiter.id
+
+    setInitialValues(newInitialValues)
     setIsLoading(false)
   }, [getJobResult, isLoading, isNew])
 

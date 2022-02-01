@@ -8,12 +8,12 @@ const { CI } = process.env
 const IS_CI = Boolean(CI)
 
 const config: PlaywrightTestConfig = {
-  forbidOnly: true,
+  forbidOnly: IS_CI,
   globalSetup: './playwright.setup.ts',
   maxFailures: 1,
   projects: [
     {
-      name: 'chrome-desktop',
+      name: 'CHROME DESKTOP',
       use: { ...devices['Desktop Chrome'] },
     },
   ],
