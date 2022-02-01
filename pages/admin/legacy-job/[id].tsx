@@ -2,8 +2,8 @@ import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Separator from '@app/atoms/Separator'
 import Title from '@app/atoms/Title'
-import normalizeDateFromDateInput from '@app/helpers/normalizeDateFromDateInput'
-import normalizeDateFromDateTimeInput from '@app/helpers/normalizeDateFromDateTimeInput'
+import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
+import { normalizeDateForDateTimeInput } from '@app/helpers/normalizeDateForDateTimeInput'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL } from '@common/constants'
@@ -30,7 +30,7 @@ const JOB_STATES_AS_OPTIONS: Common.App.SelectOption[] = R.pipe(
 
 const FormSchema = Yup.object().shape({
   limitDate: Yup.string().required(`La date limite est obligatoire.`),
-  stateAsOption: Yup.object().required(`L’état est obligatoire.`),
+  state: Yup.string().required(`L’état est obligatoire.`),
   title: Yup.string().required(`L’intitulé est obligatoire.`),
 })
 
@@ -86,27 +86,17 @@ export default function LegacyJobEditorPage() {
       ...getLegacyJobResult.data.getLegacyJob,
     }
 
-    newInitialValues.limitDate = normalizeDateFromDateInput(newInitialValues.limitDate)
-    newInitialValues.updatedAt = normalizeDateFromDateTimeInput(newInitialValues.updatedAt)
+    newInitialValues.limitDate = normalizeDateForDateInput(newInitialValues.limitDate)
+    newInitialValues.updatedAt = normalizeDateForDateTimeInput(newInitialValues.updatedAt)
 
     if (newInitialValues.legacyService !== null) {
-      newInitialValues.legacyServiceAsOption = {
-        label: newInitialValues.legacyService.legacyEntity
-          ? `${newInitialValues.legacyService.name} (${newInitialValues.legacyService.legacyEntity.name})`
-          : newInitialValues.legacyService.name,
-        value: newInitialValues.legacyService.id,
-      }
+      newInitialValues.legacyServiceId = newInitialValues.legacyService.id
     }
 
     newInitialValues.departmentAsJson = JSON.stringify(newInitialValues.department, null, 2)
     newInitialValues.experiencesAsJson = JSON.stringify(newInitialValues.experiences, null, 2)
     newInitialValues.locationsAsJson = JSON.stringify(newInitialValues.locations, null, 2)
     newInitialValues.openedToContractTypesAsJson = JSON.stringify(newInitialValues.openedToContractTypes, null, 2)
-
-    newInitialValues.stateAsOption = {
-      label: JOB_STATE_LABEL[newInitialValues.state],
-      value: newInitialValues.state,
-    }
 
     setInitialValues(newInitialValues)
     setIsLoading(false)
@@ -123,10 +113,12 @@ export default function LegacyJobEditorPage() {
       'advantages',
       'conditions',
       'hiringProcess',
+      'legacyServiceId',
       'mission',
       'more',
       'profile',
       'salary',
+      'state',
       'tasks',
       'team',
       'teamInfo',
@@ -144,9 +136,6 @@ export default function LegacyJobEditorPage() {
     if (values.experiencesAsJson) {
       input.experiences = JSON.parse(values.experiencesAsJson)
     }
-    if (values.legacyServiceAsOption) {
-      input.legacyServiceId = values.legacyServiceAsOption.value
-    }
     input.limitDate = dayjs(values.limitDate).toDate()
     if (values.locations) {
       input.locations = JSON.parse(values.locationsAsJson)
@@ -154,7 +143,6 @@ export default function LegacyJobEditorPage() {
     if (values.openedToContractTypes) {
       input.openedToContractTypes = JSON.parse(values.openedToContractTypesAsJson)
     }
-    input.state = values.stateAsOption.value
 
     const options: MutationFunctionOptions = {
       variables: {
@@ -194,18 +182,22 @@ export default function LegacyJobEditorPage() {
           )}
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Intitulé" name="title" />
+            <Form.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="État" name="stateAsOption" options={JOB_STATES_AS_OPTIONS} />
+            <Form.Select isDisabled={isLoading} label="État *" name="state" options={JOB_STATES_AS_OPTIONS} />
+          </Field>
+
+          <Field>
+            <Form.TextInput isDisabled={isLoading} label="Expire le *" name="limitDate" type="date" />
           </Field>
 
           <Field>
             <Form.Select
               isDisabled={isLoading}
               label="Service (entité recruteuse)"
-              name="legacyServiceAsOption"
+              name="legacyServiceId"
               options={legacyServicesAsOptions}
             />
           </Field>
@@ -227,10 +219,6 @@ export default function LegacyJobEditorPage() {
               <Form.TextInput isDisabled label="Mise à jour le" name="updatedAt" type="datetime-local" />
             </Field>
           )}
-
-          <Field>
-            <Form.TextInput isDisabled={isLoading} label="Expire le" name="limitDate" type="date" />
-          </Field>
 
           <Field>
             <Form.TextInput isDisabled={isLoading} label="Salaire" name="salary" />

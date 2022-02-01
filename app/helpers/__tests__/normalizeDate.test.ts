@@ -10,7 +10,7 @@ describe('app/helpers/normalizeDate()', () => {
 
     const result = normalizeDate(date)
 
-    expect(result).toHaveLength(10)
+    expect(result).toMatch(/^\d{2}\/\d{2}\/\d{4}$/)
   })
 
   test(`with a valid ISO date`, () => {
@@ -18,7 +18,7 @@ describe('app/helpers/normalizeDate()', () => {
 
     const result = normalizeDate(date)
 
-    expect(result).toHaveLength(10)
+    expect(result).toMatch(/^\d{2}\/\d{2}\/\d{4}$/)
   })
 
   test(`with undefined`, () => {

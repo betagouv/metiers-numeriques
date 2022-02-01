@@ -5,7 +5,13 @@ import handleError from '@common/helpers/handleError'
 import dayjs from 'dayjs'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { Job, JobState, Prisma } from '@prisma/client'
+import type { Contact, Job, JobState, Prisma, Profession, Recruiter } from '@prisma/client'
+
+export type JobFromGetOne = Job & {
+  contact: Contact
+  profession: Profession
+  recruiter: Recruiter
+}
 
 export const mutation = {
   createJob: async (_parent: undefined, { input }: { input: Prisma.JobCreateInput }): Promise<Job | null> => {
@@ -68,15 +74,20 @@ export const mutation = {
 }
 
 export const query = {
-  getJob: async (_parent: undefined, { id }: { id: string }): Promise<Job | null> => {
+  getJob: async (_parent: undefined, { id }: { id: string }): Promise<JobFromGetOne | null> => {
     try {
       const args: Prisma.JobFindUniqueArgs = {
+        include: {
+          contact: true,
+          profession: true,
+          recruiter: true,
+        },
         where: {
           id,
         },
       }
 
-      const data = await getPrisma().job.findUnique(args)
+      const data = (await getPrisma().job.findUnique(args)) as unknown as JobFromGetOne | null
 
       return data
     } catch (err) {

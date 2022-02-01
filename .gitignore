@@ -133,10 +133,16 @@ dist
 ################################################################################
 # Custom
 
+# Database backups
 /.backups
+
+# Playwright storage states
+/e2e/states/*
+!/e2e/states/README.md
 
 /public/fonts/*
 /public/dsfr.min.css
 /public/sitemap.xml
 
+# Playwright traces
 /test-results

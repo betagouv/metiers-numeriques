@@ -1,22 +1,22 @@
 import handleError from '@common/helpers/handleError'
-import daysjs from 'dayjs'
+import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import capitalizeFirstLetter from './capitalizeFirstLetter'
 
 import 'dayjs/locale/fr'
 
-daysjs.extend(relativeTime)
-daysjs.locale('fr')
+dayjs.extend(relativeTime)
+dayjs.locale('fr')
 
 export default function humanizeDate(isoDate: string): string {
   try {
-    if (typeof isoDate !== 'string' || !daysjs(isoDate).isValid()) {
+    if (typeof isoDate !== 'string' || !dayjs(isoDate).isValid()) {
       return ''
     }
 
-    return capitalizeFirstLetter(daysjs(isoDate).fromNow())
-  } catch (err) {
+    return capitalizeFirstLetter(dayjs(isoDate).fromNow())
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/humanizeDate()')
 
     return ''

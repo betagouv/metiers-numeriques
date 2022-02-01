@@ -69,9 +69,14 @@
       }
     },
     {
-      "files": ["./scripts/**/*.ts"],
+      "files": ["./e2e/**/*.ts", "./scripts/**/*.ts"],
       "rules": {
-        "import/no-extraneous-dependencies": "off"
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
       }
     },
     {

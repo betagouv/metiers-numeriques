@@ -12,7 +12,7 @@ export function define<T>(value: T | null | undefined): T | undefined {
     }
 
     return value
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/undefine()')
   }
 }
