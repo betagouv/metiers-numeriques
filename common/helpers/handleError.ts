@@ -4,6 +4,16 @@ import { NextApiResponse } from 'next'
 
 import ApiError from '../../api/libs/ApiError'
 
+Sentry.init({
+  tracesSampler: event => {
+    if (event.transactionContext.op === 'pageload') {
+      return 0
+    }
+
+    return 1
+  },
+})
+
 const getErrorConstructorName = (error: any) => {
   if (error === undefined || error.constructor === undefined) {
     return 'undefined'
@@ -58,7 +68,6 @@ function handleError(error: any, path: string, isFinalOrRes?: boolean | NextApiR
   if (!IS_CI && (!(error instanceof ApiError) || error.status <= 400 || error.status >= 500)) {
     if (error instanceof Error) {
       Sentry.captureException(error)
-      // console.log(`3, [${path}] ${errorString}`)
     } else {
       Sentry.captureMessage(`[${path}] ${errorString}`, Sentry.Severity.Error)
     }
