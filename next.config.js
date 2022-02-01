@@ -1,4 +1,9 @@
-module.exports = {
+const { withSentryConfig } = require('@sentry/nextjs')
+
+const { NODE_ENV } = process.env
+const IS_PRODUCTION = NODE_ENV === 'production'
+
+const config = {
   eslint: {
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-eslint
     ignoreDuringBuilds: true,
@@ -15,4 +20,17 @@ module.exports = {
     },
   ],
   reactStrictMode: true,
+  // Disable source maps uoloading via SentryWebpackPlugin
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#disable-sentrywebpackplugin
+  sentry: {
+    disableClientWebpackPlugin: true,
+    disableServerWebpackPlugin: true,
+  },
 }
+
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#extend-nextjs-configuration
+const sentryWebpackPluginOptions = {
+  silent: IS_PRODUCTION,
+}
+
+module.exports = withSentryConfig(config, sentryWebpackPluginOptions)

@@ -60,6 +60,9 @@ jobs:
       DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
       DOMAIN_URL: http://localhost:3000
       NODE_ENV: production
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
     services:
       postgres:
         image: postgres:14
@@ -87,7 +90,6 @@ jobs:
           path: |
             ~/.cache/ms-playwright
             **/.next/cache
-            **/node_modules
           key: ${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.0
@@ -95,7 +97,6 @@ jobs:
           cache: yarn
           node-version: 16
       - name: Install
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         run: yarn --frozen-lockfile --production=false
       - name: Install Playwright browsers
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}

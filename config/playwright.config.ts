@@ -18,7 +18,7 @@ const config: PlaywrightTestConfig = {
     },
   ],
   testDir: '../e2e',
-  timeout: 10000,
+  timeout: IS_CI ? 30000 : 10000,
   use: {
     headless: IS_CI,
     screenshot: 'only-on-failure',
