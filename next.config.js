@@ -33,6 +33,7 @@ const sentryWebpackPluginOptions = {
   debug: !IS_PRODUCTION,
   release: VERSION,
   silent: IS_PRODUCTION,
+  tracesSampleRate: 1,
 }
 
 module.exports = withSentryConfig(config, sentryWebpackPluginOptions)
