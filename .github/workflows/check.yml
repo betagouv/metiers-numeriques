@@ -86,9 +86,9 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-            ./node_modules
-            !./node_modules/.prisma
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+            **/.next/cache
+            **/node_modules
+          key: ${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.0
         with:
