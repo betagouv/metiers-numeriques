@@ -17,10 +17,5 @@ export default function WithGraphql({ children }) {
     [auth.state],
   )
 
-  return (
-    <ApolloProvider client={graphqlClient}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      {children}
-    </ApolloProvider>
-  )
+  return <ApolloProvider client={graphqlClient}>{children}</ApolloProvider>
 }

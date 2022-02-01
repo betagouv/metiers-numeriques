@@ -6,6 +6,8 @@ import Footer from '@app/molecules/Footer'
 import Header from '@app/molecules/Header'
 import Loader from '@app/molecules/Loader'
 import SignInDialog from '@app/organisms/SignInDialog'
+import { CrispScript } from '@app/scripts/CrispScript'
+import { MatomoScript } from '@app/scripts/MatomoScript'
 import { GlobalStyle, ThemeProvider } from '@singularity/core'
 import { AuthProvider } from 'nexauth'
 import Head from 'next/head'
@@ -72,8 +74,9 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <Footer />
 
         <>
-          <script defer src="/js/matomo.js" type="text/javascript" />
-          <script defer src="/js/crisp.js" type="text/javascript" />
+          {/* <script defer src="/js/matomo.js" type="text/javascript" /> */}
+          <MatomoScript />
+          <CrispScript />
         </>
       </>
     )
