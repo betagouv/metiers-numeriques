@@ -51,7 +51,13 @@ export const GET_ONE = gql`
         postalCode
         street
       }
-      contact {
+      applicationContacts {
+        id
+
+        firstName
+        lastName
+      }
+      infoContact {
         id
 
         firstName

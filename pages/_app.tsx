@@ -2,6 +2,7 @@ import AdminBody from '@app/atoms/AdminBody'
 import AdminMain from '@app/atoms/AdminMain'
 import WithGraphql from '@app/hocs/WithGraphql'
 import AdminMenu from '@app/molecules/AdminMenu'
+import { AdminToaster } from '@app/molecules/AdminToaster'
 import Footer from '@app/molecules/Footer'
 import Header from '@app/molecules/Header'
 import Loader from '@app/molecules/Loader'
@@ -107,6 +108,8 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
               <WithGraphql>
                 {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 <Component {...pageProps} />
+
+                <AdminToaster />
               </WithGraphql>
             </AdminMain>
           </AdminBody>

@@ -2,6 +2,7 @@ import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
 import humanizeDate from '@app/helpers/humanizeDate'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { FILE_TYPE } from '@common/constants'
@@ -12,7 +13,7 @@ import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditO
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { File } from '@prisma/client'
@@ -98,19 +99,30 @@ export default function AdminFileListPage() {
     router.push(`/admin/file/${id}`)
   }
 
-  const query = debounce(async (pageIndex: number) => {
-    if ($searchInput.current === null) {
+  const query = useCallback(
+    debounce(async (pageIndex: number) => {
+      if ($searchInput.current === null) {
+        return
+      }
+
+      const query = define($searchInput.current.value)
+
+      getFilesResult.refetch({
+        pageIndex,
+        perPage: PER_PAGE,
+        query,
+      })
+    }, 250),
+    [],
+  )
+
+  useEffect(() => {
+    if (getFilesResult.error === undefined) {
       return
     }
 
-    const query = define($searchInput.current.value)
-
-    getFilesResult.refetch({
-      pageIndex,
-      perPage: PER_PAGE,
-      query,
-    })
-  }, 250)
+    showApolloError(getFilesResult.error)
+  }, [getFilesResult.error])
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,

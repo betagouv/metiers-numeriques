@@ -29,10 +29,11 @@ type Job {
   title: String
   updatedAt: DateTime
 
-  address:    Address
-  contact:    Contact
+  address: Address
+  infoContact: Contact
+  applicationContacts: [Contact]
   profession: Profession
-  recruiter:  Recruiter
+  recruiter: Recruiter
 }
 
 input JobInput {
@@ -57,10 +58,11 @@ input JobInput {
   teamDescription: String
   title: String
 
-  addressId:    String
-  contactId:    String
+  addressId: String
+  applicationContactIds: [String]
+  infoContactId: String
   professionId: String
-  recruiterId:  String
+  recruiterId: String
 }
 
 type JobsResult {

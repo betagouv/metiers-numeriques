@@ -1,10 +1,12 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
+import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
@@ -15,7 +17,8 @@ import cuid from 'cuid'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import slugify from 'slugify'
 import * as Yup from 'yup'
 
@@ -25,9 +28,10 @@ import type { Job, JobContractType, Prisma } from '@prisma/client'
 
 type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seniorityInMonths'> & {
   addressAsPrismaAddress: Prisma.AddressCreateInput
-  contactId: string
+  applicationContactIds: string[]
   contractTypes: JobContractType[]
   expiredAtAsString: string
+  infoContactId: string
   professionId: string
   recruiterId: string
   seniorityInYears: number
@@ -36,11 +40,14 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
 
 const FormSchema = Yup.object().shape({
   addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
-  contactId: Yup.string().required(`Le contact est obligatoire.`),
-  contractTypes: Yup.array(Yup.string())
+  applicationContactIds: Yup.array(Yup.string().nullable())
+    .required(`Au moins un contact "candidatures" est obligatoire.`)
+    .min(1, `Au moins un contact "candidatures" est obligatoire.`),
+  contractTypes: Yup.array(Yup.string().nullable())
     .required(`Au moins un type de contrat est obligatoire.`)
     .min(1, `Au moins un type de contrat est obligatoire.`),
   expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
+  infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
   missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
   professionId: Yup.string().required(`Le métier est obligatoire.`),
   recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
@@ -56,6 +63,8 @@ export default function AdminJobEditorPage() {
   const isNew = id === 'new'
 
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
+  const [isNotFound, setIsNotFound] = useState(false)
+  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [contactsAsOptions, setContactsAsOptions] = useState<Common.App.SelectOption[]>([])
   const [professionsAsOptions, setProfessionsAsOptions] = useState<Common.App.SelectOption[]>([])
@@ -78,15 +87,16 @@ export default function AdminJobEditorPage() {
   const [updateJob] = useMutation(queries.job.UPDATE_ONE)
   const [createAddress] = useMutation(queries.address.CREATE_ONE)
 
-  const goToList = () => {
+  const goToList = useCallback(() => {
     router.push('/admin/jobs')
-  }
+  }, [])
 
-  const saveAndGoToList = async (values: JobFormData) => {
+  const saveAndGoToList = useCallback(async (values: JobFormData) => {
     try {
       setIsLoading(true)
 
       const newAddressResult = await createAddress({
+        errorPolicy: 'all',
         variables: {
           input: values.addressAsPrismaAddress,
         },
@@ -97,8 +107,9 @@ export default function AdminJobEditorPage() {
 
       const input: Partial<Job> = R.pick([
         'addressId',
-        'contactId',
+        'applicationContactIds',
         'contractTypes',
+        'infoContactId',
         'missionDescription',
         'missionVideoUrl',
         'particularitiesDescription',
@@ -136,9 +147,20 @@ export default function AdminJobEditorPage() {
       }
 
       if (isNew) {
-        await createJob(options)
+        const createJobResult = await createJob(options)
+        if (createJobResult.data.createJob === null) {
+          toast.error('La requête GraphQL de création a échoué.')
+
+          return
+        }
       } else {
-        await updateJob(options)
+        const updateJobResult = await updateJob(options)
+        if (updateJobResult.data.updateJob === null) {
+          toast.error('La requête GraphQL de modification a échoué.')
+
+          return
+        }
+
         await getJobResult.refetch()
       }
 
@@ -146,18 +168,40 @@ export default function AdminJobEditorPage() {
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (
       !isLoading ||
+      isError ||
+      isNotFound ||
       getContactsListResult.loading ||
-      getContactsListResult.error ||
+      getJobResult.loading ||
       getProfessionsListResult.loading ||
+      getRecruitersListResult.loading
+    ) {
+      return
+    }
+
+    if (
+      getJobResult.error ||
+      getContactsListResult.error ||
       getProfessionsListResult.error ||
-      getRecruitersListResult.loading ||
       getRecruitersListResult.error
     ) {
+      showApolloError(getJobResult.error)
+      showApolloError(getContactsListResult.error)
+      showApolloError(getProfessionsListResult.error)
+      showApolloError(getRecruitersListResult.error)
+
+      setIsError(true)
+
+      return
+    }
+
+    if (getJobResult.data?.getJob === undefined) {
+      setIsNotFound(true)
+
       return
     }
 
@@ -206,10 +250,6 @@ export default function AdminJobEditorPage() {
       return
     }
 
-    if (getJobResult.loading || getJobResult.error || getJobResult.data === undefined) {
-      return
-    }
-
     const newInitialValues: any = {
       ...getJobResult.data.getJob,
     }
@@ -218,19 +258,23 @@ export default function AdminJobEditorPage() {
 
     newInitialValues.seniorityInYears = Math.ceil(newInitialValues.seniorityInMonths / 12)
 
-    newInitialValues.contactId = newInitialValues.contact.id
+    newInitialValues.applicationContactIds = newInitialValues.applicationContacts.map(({ id }) => id)
+    newInitialValues.infoContactId = newInitialValues.infoContact.id
     newInitialValues.professionId = newInitialValues.profession.id
     newInitialValues.recruiterId = newInitialValues.recruiter.id
 
     setInitialValues(newInitialValues)
     setIsLoading(false)
-  }, [getJobResult, isLoading, isNew])
+  }, [getContactsListResult.data, getJobResult.data, getProfessionsListResult.data, getRecruitersListResult])
 
   return (
     <>
       <AdminHeader>
         <Title>{isNew ? 'Nouvelle offre' : 'Édition d’une offre'}</Title>
       </AdminHeader>
+
+      {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
+      {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
       <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
         <AdminCard isFirst>
@@ -263,9 +307,27 @@ export default function AdminJobEditorPage() {
 
             <Form.Select
               isDisabled={isLoading}
-              label="Contact *"
-              name="contactId"
-              options={contactsAsOptions}
+              isMulti
+              label="Types de contrat *"
+              name="contractTypes"
+              options={JOB_CONTRACT_TYPES_AS_OPTIONS}
+              placeholder="…"
+            />
+          </DoubleField>
+
+          <DoubleField>
+            <Form.TextInput
+              isDisabled={isLoading}
+              label="Années d’expérience requises (0 si ouvert aux débutant·es) *"
+              name="seniorityInYears"
+              type="number"
+            />
+
+            <Form.Select
+              isDisabled={isLoading}
+              label="Télétravail possible *"
+              name="remoteStatus"
+              options={JOB_REMOTE_STATUSES_AS_OPTIONS}
               placeholder="…"
             />
           </DoubleField>
@@ -279,30 +341,25 @@ export default function AdminJobEditorPage() {
               placeholder="…"
             />
 
-            <Form.Select
-              isDisabled={isLoading}
-              isMulti
-              label="Types de contrat *"
-              name="contractTypes"
-              options={JOB_CONTRACT_TYPES_AS_OPTIONS}
-              placeholder="…"
-            />
+            <Form.Select isDisabled label="Étiquettes *" name="tagIds" options={[]} placeholder="…" />
           </DoubleField>
 
           <DoubleField>
             <Form.Select
               isDisabled={isLoading}
-              label="Télétravail possible *"
-              name="remoteStatus"
-              options={JOB_REMOTE_STATUSES_AS_OPTIONS}
+              label="Contact unique pour les questions *"
+              name="infoContactId"
+              options={contactsAsOptions}
               placeholder="…"
             />
 
-            <Form.TextInput
+            <Form.Select
               isDisabled={isLoading}
-              label="Années d’expérience requises (0 si ouvert aux débutant·es) *"
-              name="seniorityInYears"
-              type="number"
+              isMulti
+              label="Contacts pour l’envoi des candidatures *"
+              name="applicationContactIds"
+              options={contactsAsOptions}
+              placeholder="…"
             />
           </DoubleField>
 

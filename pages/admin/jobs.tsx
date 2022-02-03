@@ -3,6 +3,7 @@ import AdminHeader from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
 import { normalizeDate } from '@app/helpers/normalizeDate'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
@@ -13,7 +14,7 @@ import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditO
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Job } from '@prisma/client'
@@ -61,7 +62,7 @@ export default function AdminJobListPage() {
     },
     any
   >(queries.job.GET_ALL, {
-    pollInterval: 500,
+    pollInterval: 5000,
     variables: {
       pageIndex: 0,
       perPage: PER_PAGE,
@@ -132,6 +133,14 @@ export default function AdminJobListPage() {
     }, 250),
     [],
   )
+
+  useEffect(() => {
+    if (getJobsResult.error === undefined) {
+      return
+    }
+
+    showApolloError(getJobsResult.error)
+  }, [getJobsResult.error])
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
