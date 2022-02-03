@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
@@ -10,7 +11,7 @@ import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditO
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Profession } from '@prisma/client'
@@ -86,19 +87,30 @@ export default function AdminProfessionListPage() {
     router.push(`/admin/profession/${id}`)
   }
 
-  const query = debounce(async (pageIndex: number) => {
-    if ($searchInput.current === null) {
+  const query = useCallback(
+    debounce(async (pageIndex: number) => {
+      if ($searchInput.current === null) {
+        return
+      }
+
+      const query = define($searchInput.current.value)
+
+      getProfessionsResult.refetch({
+        pageIndex,
+        perPage: PER_PAGE,
+        query,
+      })
+    }, 250),
+    [],
+  )
+
+  useEffect(() => {
+    if (getProfessionsResult.error === undefined) {
       return
     }
 
-    const query = define($searchInput.current.value)
-
-    getProfessionsResult.refetch({
-      pageIndex,
-      perPage: PER_PAGE,
-      query,
-    })
-  }, 250)
+    showApolloError(getProfessionsResult.error)
+  }, [getProfessionsResult.error])
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,

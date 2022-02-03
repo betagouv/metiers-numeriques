@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
@@ -10,7 +11,7 @@ import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditO
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { RecruiterFromGetAll } from '@api/resolvers/recruiters'
 import type { GetAllResponse } from '@api/resolvers/types'
@@ -102,19 +103,30 @@ export default function AdminRecruiterListPage() {
     router.push(`/admin/recruiter/${id}`)
   }
 
-  const query = debounce(async (pageIndex: number) => {
-    if ($searchInput.current === null) {
+  const query = useCallback(
+    debounce(async (pageIndex: number) => {
+      if ($searchInput.current === null) {
+        return
+      }
+
+      const query = define($searchInput.current.value)
+
+      getRecruitersResult.refetch({
+        pageIndex,
+        perPage: PER_PAGE,
+        query,
+      })
+    }, 250),
+    [],
+  )
+
+  useEffect(() => {
+    if (getRecruitersResult.error === undefined) {
       return
     }
 
-    const query = define($searchInput.current.value)
-
-    getRecruitersResult.refetch({
-      pageIndex,
-      perPage: PER_PAGE,
-      query,
-    })
-  }, 250)
+    showApolloError(getRecruitersResult.error)
+  }, [getRecruitersResult.error])
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,

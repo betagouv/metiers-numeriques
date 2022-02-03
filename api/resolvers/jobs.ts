@@ -2,30 +2,54 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
+import { Contact, Job, JobState, Prisma, Profession, Recruiter } from '@prisma/client'
 import dayjs from 'dayjs'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { Contact, Job, JobState, Prisma, Profession, Recruiter } from '@prisma/client'
 
 export type JobFromGetOne = Job & {
-  contact: Contact
+  applicationContacts: Contact[]
+  infoContact: Contact
   profession: Profession
   recruiter: Recruiter
 }
 
 export const mutation = {
-  createJob: async (_parent: undefined, { input }: { input: Prisma.JobCreateInput }): Promise<Job | null> => {
+  createJob: async (
+    _parent: undefined,
+    {
+      input: { applicationContactIds = [], ...input },
+    }: {
+      input: Prisma.JobCreateInput & {
+        applicationContactIds?: string[]
+      }
+    },
+  ): Promise<Job | null> => {
     try {
-      const inputWithUpdatedAt: Prisma.JobCreateInput = {
+      const applicationContactsAsConnections = applicationContactIds.map(id => ({
+        id,
+      }))
+      const controlledInput: Prisma.JobCreateInput = {
         ...input,
         updatedAt: dayjs().toDate(),
       }
 
       const args: Prisma.JobCreateArgs = {
-        data: inputWithUpdatedAt,
+        data: controlledInput,
       }
 
       const data = await getPrisma().job.create(args)
+
+      await getPrisma().job.update({
+        data: {
+          applicationContacts: {
+            connect: applicationContactsAsConnections,
+          },
+        },
+        where: {
+          id: data.id,
+        },
+      })
 
       return data
     } catch (err) {
@@ -53,16 +77,68 @@ export const mutation = {
     }
   },
 
-  updateJob: async (_parent: undefined, { id, input }: { id: string; input: Partial<Job> }): Promise<Job | null> => {
+  updateJob: async (
+    _parent: undefined,
+    {
+      id,
+      input: { applicationContactIds = [], ...input },
+    }: {
+      id: string
+      input: Prisma.JobUpdateInput & {
+        applicationContactIds?: string[]
+      }
+    },
+  ): Promise<Job | null> => {
     try {
+      await getPrisma().job.update({
+        data: {
+          applicationContacts: {
+            set: [],
+          },
+        },
+        where: {
+          id,
+        },
+      })
+
       const args: Prisma.JobUpdateArgs = {
         data: input,
+        include: {
+          applicationContacts: true,
+        },
         where: {
           id,
         },
       }
 
       const data = await getPrisma().job.update(args)
+
+      await getPrisma().job.update({
+        data: {
+          applicationContacts: {
+            set: [],
+          },
+        },
+        where: {
+          id,
+        },
+      })
+      const applicationContactsAsConnections = applicationContactIds.map(id => ({
+        id,
+      }))
+      await getPrisma().job.update({
+        data: {
+          applicationContacts: {
+            connect: applicationContactsAsConnections,
+          },
+        },
+        include: {
+          applicationContacts: true,
+        },
+        where: {
+          id,
+        },
+      })
 
       return data
     } catch (err) {
@@ -78,7 +154,8 @@ export const query = {
     try {
       const args: Prisma.JobFindUniqueArgs = {
         include: {
-          contact: true,
+          applicationContacts: true,
+          infoContact: true,
           profession: true,
           recruiter: true,
         },

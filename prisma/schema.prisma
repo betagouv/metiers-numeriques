@@ -108,7 +108,8 @@ model Contact {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  jobs Job[] @relation("JobContact")
+  applicationContactsOnJobs Job[] @relation("JobApplicationContacts")
+  infoContactOnJobs         Job[] @relation("JobInfoContact")
 }
 
 model File {
@@ -159,14 +160,15 @@ model Job {
   expiredAt                  DateTime
   updatedAt                  DateTime
 
-  address      Address    @relation("JobAddress", fields: [addressId], references: [id])
-  addressId    String     @unique
-  contact      Contact    @relation("JobContact", fields: [contactId], references: [id])
-  contactId    String
-  profession   Profession @relation("JobProfession", fields: [professionId], references: [id])
-  professionId String
-  recruiter    Recruiter  @relation("JobRecruiter", fields: [recruiterId], references: [id])
-  recruiterId  String
+  address             Address    @relation("JobAddress", fields: [addressId], references: [id])
+  addressId           String     @unique
+  applicationContacts Contact[]  @relation("JobApplicationContacts")
+  infoContact         Contact    @relation("JobInfoContact", fields: [infoContactId], references: [id])
+  infoContactId       String
+  profession          Profession @relation("JobProfession", fields: [professionId], references: [id])
+  professionId        String
+  recruiter           Recruiter  @relation("JobRecruiter", fields: [recruiterId], references: [id])
+  recruiterId         String
 }
 
 model LegacyEntity {

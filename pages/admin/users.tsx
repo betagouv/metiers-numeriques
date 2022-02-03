@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
@@ -13,7 +14,7 @@ import MaterialPersonOutlined from '@singularity/core/icons/material/MaterialPer
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { User } from '@prisma/client'
@@ -103,21 +104,24 @@ export default function AdminUserListPage() {
     router.push(`/admin/user/${id}`)
   }
 
-  const query = debounce(async (pageIndex: number) => {
-    if ($searchInput.current === null) {
-      return
-    }
+  const query = useCallback(
+    debounce(async (pageIndex: number) => {
+      if ($searchInput.current === null) {
+        return
+      }
 
-    const query = define($searchInput.current.value)
+      const query = define($searchInput.current.value)
 
-    getUsersResult.refetch({
-      pageIndex,
-      perPage: PER_PAGE,
-      query,
-    })
-  }, 250)
+      getUsersResult.refetch({
+        pageIndex,
+        perPage: PER_PAGE,
+        query,
+      })
+    }, 250),
+    [],
+  )
 
-  const toggleUserIsActive = (id: string, isActive: boolean) => {
+  const toggleUserIsActive = useCallback((id: string, isActive: boolean) => {
     updateUser({
       variables: {
         id,
@@ -126,7 +130,15 @@ export default function AdminUserListPage() {
         },
       },
     })
-  }
+  }, [])
+
+  useEffect(() => {
+    if (getUsersResult.error === undefined) {
+      return
+    }
+
+    showApolloError(getUsersResult.error)
+  }, [getUsersResult.error])
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
