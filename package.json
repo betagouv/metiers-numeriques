@@ -98,7 +98,7 @@
     "@types/jsdom": "16.2.14",
     "@types/lodash.debounce": "4.0.6",
     "@types/markdown-it": "12.2.3",
-    "@types/node": "17.0.10",
+    "@types/node": "17.0.15",
     "@types/ramda": "0.27.64",
     "@types/react": "17.0.38",
     "@types/reflexbox": "4.0.4",
