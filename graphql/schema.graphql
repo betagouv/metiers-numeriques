@@ -39,6 +39,7 @@ type Query {
     state: String
   ): JobsResult!
   getJobsList: [Job!]!
+  getAllJobs: [Job!]!
 
   getLegacyEntity(id: String!): LegacyEntity
   getLegacyEntities(
@@ -64,6 +65,7 @@ type Query {
     source: String
     state: String
   ): LegacyJobsResult!
+  getAllLegacyJobs: [LegacyJob!]!
   getPublicLegacyJobs(
     pageIndex: Int!
     perPage: Int!
