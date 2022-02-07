@@ -2,9 +2,10 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
-import { JobState, LegacyJob } from '@prisma/client'
+import { JobState } from '@prisma/client'
 
 import type { GetAllArgs, GetAllResponse } from './types'
+import type { LegacyJob, Prisma } from '@prisma/client'
 
 const PUBLIC_PER_PAGE_THROTTLE = 12
 
@@ -58,6 +59,24 @@ export const mutation = {
 }
 
 export const query = {
+  getAllLegacyJobs: async (): Promise<LegacyJob[]> => {
+    try {
+      const args: Prisma.LegacyJobFindManyArgs = {
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      }
+
+      const data = await getPrisma().legacyJob.findMany(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/legacy-jobs.ts > query.getAllLegacyJobs()')
+
+      return []
+    }
+  },
+
   getLegacyJob: async (obj, { id, slug }: { id: string; slug: undefined } | { id: undefined; slug: string }) => {
     try {
       const where =

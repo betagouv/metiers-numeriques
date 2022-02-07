@@ -150,6 +150,24 @@ export const mutation = {
 }
 
 export const query = {
+  getAllJobs: async (): Promise<Job[]> => {
+    try {
+      const args: Prisma.JobFindManyArgs = {
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      }
+
+      const data = await getPrisma().job.findMany(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/jobs.ts > query.getAllJobs()')
+
+      return []
+    }
+  },
+
   getJob: async (_parent: undefined, { id }: { id: string }): Promise<JobFromGetOne | null> => {
     try {
       const args: Prisma.JobFindUniqueArgs = {
