@@ -63,7 +63,7 @@
     "micro": "9.3.4",
     "nexauth": "1.0.0-beta.5",
     "next": "canary",
-    "prisma": "3.0.2",
+    "prisma": "3.9.1",
     "ramda": "0.27.1",
     "react": "17.0.2",
     "react-ace": "9.5.0",
