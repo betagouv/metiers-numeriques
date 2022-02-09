@@ -46,32 +46,24 @@ export const GET_ONE = gql`
 
       address {
         id
+        sourceId
 
         city
         postalCode
+        region
         street
       }
       applicationContacts {
         id
-
-        firstName
-        lastName
       }
       infoContact {
         id
-
-        firstName
-        lastName
       }
       profession {
         id
-
-        name
       }
       recruiter {
         id
-
-        name
       }
     }
   }

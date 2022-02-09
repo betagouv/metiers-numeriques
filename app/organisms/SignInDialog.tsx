@@ -27,16 +27,12 @@ export enum SignInDialogType {
 }
 
 const logInFormSchema = Yup.object().shape({
-  logInEmail: Yup.string()
-    .required(`Veuillez entrer votre email.`)
-    .email(`Votre addresse email ne semble pas correctement formatée.`),
+  logInEmail: Yup.string().required(`Veuillez entrer votre email.`).email(`Votre addresse email est mal formatée.`),
   logInPassword: Yup.string().required(`Veuillez entrer votre mot de passe.`),
 })
 
 const signUpFormSchema = Yup.object().shape({
-  signUpEmail: Yup.string()
-    .required(`Veuillez entrer votre email.`)
-    .email(`Votre addresse email ne semble pas correctement formatée.`),
+  signUpEmail: Yup.string().required(`Veuillez entrer votre email.`).email(`Votre addresse email est mal formatée.`),
   signUpFirstName: Yup.string().required(`Veuillez entrer votre prénom.`),
   signUpLastName: Yup.string().required(`Veuillez entrer votre nom.`),
   signUpPassword: Yup.string().required(`Veuillez entrer un mot de passe.`),

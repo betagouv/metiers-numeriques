@@ -36,4 +36,4 @@ const sentryWebpackPluginOptions = {
   tracesSampleRate: 1,
 }
 
-module.exports = withSentryConfig(config, sentryWebpackPluginOptions)
+module.exports = IS_PRODUCTION ? withSentryConfig(config, sentryWebpackPluginOptions) : config

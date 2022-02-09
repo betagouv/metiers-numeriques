@@ -1,7 +1,9 @@
-import { convertGeocodeJsonFeatureToPrismaAddress } from '@app/helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import ky from 'ky'
+
+import { convertGeocodeJsonFeatureToPrismaAddress } from '../../helpers/convertGeocodeJsonFeatureToPrismaAddress'
+import generateKeyFromValue from '../../helpers/generateKeyFromValue'
 
 import type { Prisma } from '@prisma/client'
 
@@ -17,6 +19,14 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
   const placeholder = 'Ex.: 20 avenue de Ségur'
+  const rawValue: any = values[name] ?? null
+  const defaultValue: Common.App.SelectOption<Prisma.AddressCreateInput> | null =
+    rawValue !== null
+      ? {
+          label: `${rawValue.street} ${rawValue.postalCode} ${rawValue.city}`,
+          value: rawValue,
+        }
+      : rawValue
 
   const queryAddress = async (query: string): Promise<Common.App.SelectOption<Prisma.AddressCreateInput>[]> => {
     const searchParams = {
@@ -68,7 +78,8 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
 
   return (
     <Select
-      defaultValue={values[name]}
+      key={generateKeyFromValue(defaultValue)}
+      defaultValue={defaultValue as any}
       error={maybeError}
       helper={helper}
       isAsync

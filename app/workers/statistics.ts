@@ -18,13 +18,15 @@ const GET_ALL_LEGACY_JOBS = gql`
     getAllLegacyJobs {
       id
 
+      isMigrated
       limitDate
     }
   }
 `
 
 const isJobExpired = (job: Job) => dayjs(job.expiredAt).isBefore(dayjs(), 'day')
-const isLegacyJobExpired = (job: LegacyJob) => dayjs(job.limitDate).isBefore(dayjs(), 'day')
+const isLegacyJobExpired = (job: LegacyJob) => !job.isMigrated && dayjs(job.limitDate).isBefore(dayjs(), 'day')
+const isLegacyJobMigrated = (job: LegacyJob) => job.isMigrated
 
 export async function jobs(accessToken?: string): Promise<
   | {
@@ -64,14 +66,15 @@ export async function jobs(accessToken?: string): Promise<
 
   const expiredJobs = jobs.filter(isJobExpired)
   const expiredLegacyJobs = legacyJobs.filter(isLegacyJobExpired)
+  const migratedLegacyJobs = legacyJobs.filter(isLegacyJobMigrated)
 
   return {
     expired: {
       count: expiredJobs.length + expiredLegacyJobs.length,
-      length: jobs.length + legacyJobs.length,
+      length: jobs.length + legacyJobs.length - migratedLegacyJobs.length,
     },
     migrated: {
-      count: jobs.length,
+      count: migratedLegacyJobs.length,
       length: legacyJobs.length,
     },
   }

@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 
 import { convertErrorToPojo } from './convertErrorToPojo'
 
-import type { ApolloError } from '@apollo/client'
+import type { ApolloError, ServerError } from '@apollo/client'
 
 // eslint-disable-next-line no-console
 const debug = (err: Error): void => console.debug(convertErrorToPojo(err))
@@ -39,6 +39,17 @@ export function showApolloError(apolloError?: ApolloError): void {
         debug(apolloError)
         toast.error(message)
       })
+
+      return
+    }
+
+    if (
+      apolloError.networkError !== undefined &&
+      apolloError.networkError !== null &&
+      apolloError.networkError.name === 'ServerError'
+    ) {
+      const serverError = apolloError.networkError as ServerError
+      toast.error(`${serverError.result.message} in ${serverError.result.path}`)
 
       return
     }

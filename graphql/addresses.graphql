@@ -2,6 +2,7 @@ scalar DateTime
 
 type Address {
   id: ID!
+  sourceId: String!
 
   city: String
   country: String
@@ -13,11 +14,13 @@ type Address {
 }
 
 input AddressInput {
-  city: String
-  country: String
-  postalCode: String
-  region: String
-  street: String
+  sourceId: String!
+
+  city: String!
+  # country: String!
+  postalCode: String!
+  region: String!
+  street: String!
 }
 
 type AddressesResult {

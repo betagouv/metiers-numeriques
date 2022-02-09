@@ -63,12 +63,9 @@ export default function AdminJobEditorPage() {
   const isNew = id === 'new'
 
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
-  const [isNotFound, setIsNotFound] = useState(false)
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [contactsAsOptions, setContactsAsOptions] = useState<Common.App.SelectOption[]>([])
-  const [professionsAsOptions, setProfessionsAsOptions] = useState<Common.App.SelectOption[]>([])
-  const [recruitersAsOptions, setRecruitersAsOptions] = useState<Common.App.SelectOption[]>([])
+  const [isNotFound, setIsNotFound] = useState(false)
 
   const getJobResult = useQuery<
     {
@@ -80,12 +77,9 @@ export default function AdminJobEditorPage() {
       id,
     },
   })
-  const getContactsListResult = useQuery(queries.contact.GET_LIST)
-  const getProfessionsListResult = useQuery(queries.profession.GET_LIST)
-  const getRecruitersListResult = useQuery(queries.recruiter.GET_LIST)
+  const [createAddress] = useMutation(queries.address.CREATE_ONE)
   const [createJob] = useMutation(queries.job.CREATE_ONE)
   const [updateJob] = useMutation(queries.job.UPDATE_ONE)
-  const [createAddress] = useMutation(queries.address.CREATE_ONE)
 
   const goToList = useCallback(() => {
     router.push('/admin/jobs')
@@ -96,7 +90,6 @@ export default function AdminJobEditorPage() {
       setIsLoading(true)
 
       const newAddressResult = await createAddress({
-        errorPolicy: 'all',
         variables: {
           input: values.addressAsPrismaAddress,
         },
@@ -106,7 +99,6 @@ export default function AdminJobEditorPage() {
       }
 
       const input: Partial<Job> = R.pick([
-        'addressId',
         'applicationContactIds',
         'contractTypes',
         'infoContactId',
@@ -171,28 +163,12 @@ export default function AdminJobEditorPage() {
   }, [])
 
   useEffect(() => {
-    if (
-      !isLoading ||
-      isError ||
-      isNotFound ||
-      getContactsListResult.loading ||
-      getJobResult.loading ||
-      getProfessionsListResult.loading ||
-      getRecruitersListResult.loading
-    ) {
+    if (!isLoading || isError || isNotFound || getJobResult.loading) {
       return
     }
 
-    if (
-      getJobResult.error ||
-      getContactsListResult.error ||
-      getProfessionsListResult.error ||
-      getRecruitersListResult.error
-    ) {
+    if (getJobResult.error) {
       showApolloError(getJobResult.error)
-      showApolloError(getContactsListResult.error)
-      showApolloError(getProfessionsListResult.error)
-      showApolloError(getRecruitersListResult.error)
 
       setIsError(true)
 
@@ -203,42 +179,6 @@ export default function AdminJobEditorPage() {
       setIsNotFound(true)
 
       return
-    }
-
-    if (contactsAsOptions.length === 0) {
-      const newContactsAsOptions = R.pipe(
-        R.sortBy(R.prop('lastName')) as any,
-        R.map(({ firstName, id, lastName }) => ({
-          label: `${firstName} ${lastName}`,
-          value: id,
-        })),
-      )(getContactsListResult.data.getContactsList)
-
-      setContactsAsOptions(newContactsAsOptions)
-    }
-
-    if (professionsAsOptions.length === 0) {
-      const newProfessionsAsOptions = R.pipe(
-        R.sortBy(R.prop('name')) as any,
-        R.map(({ id, name }) => ({
-          label: name,
-          value: id,
-        })),
-      )(getProfessionsListResult.data.getProfessionsList)
-
-      setProfessionsAsOptions(newProfessionsAsOptions)
-    }
-
-    if (recruitersAsOptions.length === 0) {
-      const newRecruitersAsOptions = R.pipe(
-        R.sortBy(R.prop('name')) as any,
-        R.map(({ id, name }) => ({
-          label: name,
-          value: id,
-        })),
-      )(getRecruitersListResult.data.getRecruitersList)
-
-      setRecruitersAsOptions(newRecruitersAsOptions)
     }
 
     if (isNew) {
@@ -263,9 +203,11 @@ export default function AdminJobEditorPage() {
     newInitialValues.professionId = newInitialValues.profession.id
     newInitialValues.recruiterId = newInitialValues.recruiter.id
 
+    newInitialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(newInitialValues.address)
+
     setInitialValues(newInitialValues)
     setIsLoading(false)
-  }, [getContactsListResult.data, getJobResult.data, getProfessionsListResult.data, getRecruitersListResult])
+  }, [getJobResult.data])
 
   return (
     <>
@@ -297,13 +239,7 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <DoubleField>
-            <Form.Select
-              isDisabled={isLoading}
-              label="Recruteur *"
-              name="recruiterId"
-              options={recruitersAsOptions}
-              placeholder="…"
-            />
+            <Form.RecruiterSelect isDisabled={isLoading} label="Recruteur *" name="recruiterId" placeholder="…" />
 
             <Form.Select
               isDisabled={isLoading}
@@ -333,32 +269,24 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <DoubleField>
-            <Form.Select
-              isDisabled={isLoading}
-              label="Métier *"
-              name="professionId"
-              options={professionsAsOptions}
-              placeholder="…"
-            />
+            <Form.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
 
             <Form.Select isDisabled label="Étiquettes *" name="tagIds" options={[]} placeholder="…" />
           </DoubleField>
 
           <DoubleField>
-            <Form.Select
+            <Form.ContactSelect
               isDisabled={isLoading}
               label="Contact unique pour les questions *"
               name="infoContactId"
-              options={contactsAsOptions}
               placeholder="…"
             />
 
-            <Form.Select
+            <Form.ContactSelect
               isDisabled={isLoading}
               isMulti
               label="Contacts pour l’envoi des candidatures *"
               name="applicationContactIds"
-              options={contactsAsOptions}
               placeholder="…"
             />
           </DoubleField>
@@ -425,7 +353,7 @@ export default function AdminJobEditorPage() {
           <Field>
             <Form.Textarea
               isDisabled={isLoading}
-              label="Profil de candidat·e idéal·e"
+              label="Profil idéal de candidat·e"
               name="profileDescription"
               placeholder="Liste des expériences, qualités et éventuelles qualifications attendues."
             />

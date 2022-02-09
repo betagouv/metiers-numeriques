@@ -12,13 +12,25 @@ export const mutation = {
     { input }: { input: Prisma.ContactCreateInput },
   ): Promise<Contact | null> => {
     try {
-      const args: Prisma.ContactCreateArgs = {
+      const findUniqueArgs: Prisma.ContactFindUniqueArgs = {
+        where: {
+          email: input.email,
+        },
+      }
+
+      const existingData = await getPrisma().contact.findUnique(findUniqueArgs)
+
+      if (existingData !== null) {
+        return existingData
+      }
+
+      const createArgs: Prisma.ContactCreateArgs = {
         data: input,
       }
 
-      const data = await getPrisma().contact.create(args)
+      const newData = await getPrisma().contact.create(createArgs)
 
-      return data
+      return newData
     } catch (err) {
       handleError(err, 'api/resolvers/contacts.ts > query.createContact()')
 
@@ -92,7 +104,7 @@ export const query = {
   ): Promise<GetAllResponse<Contact>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter<Contact>(['firstName', 'email', 'lastName', 'phone'], query)
+      const whereFilter = buildPrismaWhereFilter<Contact>(['email', 'name', 'phone'], query)
 
       const args: Prisma.ContactFindManyArgs = {
         orderBy: {
@@ -128,7 +140,7 @@ export const query = {
     try {
       const args: Prisma.ContactFindManyArgs = {
         orderBy: {
-          lastName: 'asc',
+          name: 'asc',
         },
       }
 

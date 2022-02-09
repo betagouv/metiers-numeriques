@@ -15,7 +15,7 @@ import type { File } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
   title: Yup.string().required(`Le titre est obligatoire.`),
-  url: Yup.string().required(`L’url est obligatoire.`),
+  url: Yup.string().url(`Cette URL est mal formatée.`).required(`L’url est obligatoire.`),
 })
 
 export default function AdminFileEditorPage() {
@@ -93,7 +93,7 @@ export default function AdminFileEditorPage() {
           )}
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="URL" name="url" />
+            <Form.TextInput isDisabled={isLoading} label="URL" name="url" type="url" />
           </Field>
 
           <Field>

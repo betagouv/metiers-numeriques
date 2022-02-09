@@ -5,8 +5,11 @@ import { AddressSelect } from './AddressSelect'
 import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { Code } from './Code'
+import { ContactSelect } from './ContactSelect'
 import { Editor } from './Editor'
 // import { Image } from './Image'
+import { ProfessionSelect } from './ProfessionSelect'
+import { RecruiterSelect } from './RecruiterSelect'
 import { Select } from './Select'
 import { Submit } from './Submit'
 import { Textarea } from './Textarea'
@@ -53,8 +56,11 @@ export const Form = Object.assign(_Form, {
   Cancel,
   Checkbox,
   Code,
+  ContactSelect,
   Editor,
   // Image,
+  ProfessionSelect,
+  RecruiterSelect,
   Select,
   Submit,
   Textarea,

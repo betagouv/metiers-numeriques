@@ -40,6 +40,12 @@ type Query {
   ): JobsResult!
   getJobsList: [Job!]!
   getAllJobs: [Job!]!
+  getPublicJobs(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+    region: String
+  ): JobsResult!
 
   getLegacyEntity(id: String!): LegacyEntity
   getLegacyEntities(
@@ -248,6 +254,7 @@ type LegacyJob {
   entity: String
   experiences: [String]
   hiringProcess: String
+  isMigrated: Boolean
   limitDate: DateTime
   locations: [String]
   mission: String
@@ -286,6 +293,7 @@ input LegacyJobInput {
   entity: String
   experiences: [String]
   hiringProcess: String
+  isMigrated: Boolean
   limitDate: DateTime
   locations: [String]
   mission: String
