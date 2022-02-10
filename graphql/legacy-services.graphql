@@ -1,0 +1,30 @@
+# import LegacyEntity from "legacy-entities.graphql"
+
+type LegacyService {
+  id: ID!
+
+  fullName: String
+  name: String
+  region: String
+  shortName: String
+  url: String
+
+  legacyEntity: LegacyEntity
+}
+
+type LegacyServicesResult {
+  count: Int!
+  data: [LegacyService!]!
+  index: Int!
+  length: Int!
+}
+
+input LegacyServiceInput {
+  fullName: String
+  name: String
+  region: String
+  shortName: String
+  url: String
+
+  legacyEntityId: String
+}

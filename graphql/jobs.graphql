@@ -2,6 +2,7 @@
 # import Contact from "contacts.graphql"
 # import Profession from "professions.graphql"
 # import Recruiter from "recruiters.graphql"
+# import LegacyService from "legacy-services.graphql"
 
 scalar DateTime
 
@@ -71,6 +72,77 @@ input JobInput {
 type JobsResult {
   count: Int!
   data: [Job!]!
+  index: Int!
+  length: Int!
+}
+
+type PublicJob {
+  id: ID!
+
+  applicationDescription: String
+  contractTypes: [String]
+  createdAt: DateTime
+  expiredAt: DateTime
+  missionDescription: String
+  missionVideoUrl: String
+  particularitiesDescription: String
+  pepUrl: String
+  perksDescription: String
+  processDescription: String
+  profileDescription: String
+  remoteStatus: String
+  salaryMax: Int
+  salaryMin: Int
+  seniorityInMonths: Int
+  slug: String
+  state: String
+  tasksDescription: String
+  teamDescription: String
+  title: String
+  updatedAt: DateTime
+
+  address: Address
+  infoContact: Contact
+  applicationContacts: [Contact]
+  profession: Profession
+  recruiter: Recruiter
+
+  ########################################
+  # Legacy fields
+
+  advantages: String
+  conditions: String
+  # createdAt: DateTime
+  department: [String]
+  entity: String
+  experiences: [String]
+  hiringProcess: String
+  isMigrated: Boolean
+  limitDate: DateTime
+  locations: [String]
+  mission: String
+  more: String
+  openedToContractTypes: [String]
+  profile: String
+  publicationDate: DateTime
+  reference: String
+  salary: String
+  # slug: String!
+  source: String
+  # state: String!
+  tasks: String
+  team: String
+  teamInfo: String
+  # title: String!
+  toApply: String
+  # updatedAt: DateTime
+
+  legacyService: LegacyService
+}
+
+type PublicJobsResult {
+  count: Int!
+  data: [PublicJob!]!
   index: Int!
   length: Int!
 }

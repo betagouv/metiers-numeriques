@@ -1,5 +1,6 @@
 // import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDate } from '@app/helpers/normalizeDate'
+import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import styled from 'styled-components'
 
 import Link from '../atoms/Link'
@@ -33,11 +34,13 @@ const Excerpt = styled.p`
   text-overflow: ellipsis;
 `
 
-type LegacyJobCardProps = {
+type JobCardProps = {
   job: JobWithRelation
 }
 
-export function LegacyJobCard({ job }: LegacyJobCardProps) {
+export function JobCard({ job }: JobCardProps) {
+  const seniorityInYears = Math.ceil(job.seniorityInMonths / 12)
+
   return (
     <div className="fr-col-12 fr-py-2w fr-col-md-12 job-card">
       <div className="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable">
@@ -103,35 +106,34 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                   marginTop: '1.15rem',
                 }}
               >
-                {/* {job.experiences
-                  .filter(experience => experience.trim().length > 0)
-                  .map(experience => (
-                    <li
-                      key={generateKeyFromValue(`${job.id}-${experience}`)}
-                      className="fr-tag fr-tag--sm"
-                      style={{
-                        backgroundColor: 'var(--background-flat-info)',
-                        color: 'white',
-                      }}
-                    >
-                      {experience}
-                    </li>
-                  ))} */}
+                {job.contractTypes.map(contractType => (
+                  <li
+                    key={`${job.id}-${contractType}`}
+                    className="fr-tag fr-tag--sm"
+                    style={{
+                      backgroundColor: 'var(--background-flat-info)',
+                      color: 'white',
+                    }}
+                  >
+                    {JOB_CONTRACT_TYPE_LABEL[contractType]}
+                  </li>
+                ))}
 
-                {/* {job.openedToContractTypes
-                  .filter(openedToContractType => openedToContractType.trim().length > 0)
-                  .map(openedToContractType => (
-                    <li
-                      key={generateKeyFromValue(`${job.id}-${openedToContractType}`)}
-                      className="fr-tag fr-tag--sm"
-                      style={{
-                        backgroundColor: 'var(--background-flat-info)',
-                        color: 'white',
-                      }}
-                    >
-                      {openedToContractType}
-                    </li>
-                  ))} */}
+                <li
+                  key={`${job.id}-${job.seniorityInMonths}`}
+                  className="fr-tag fr-tag--sm"
+                  style={{
+                    backgroundColor: 'var(--background-flat-success)',
+                    color: 'white',
+                  }}
+                >
+                  {/* eslint-disable-next-line no-nested-ternary */}
+                  {seniorityInYears === 0
+                    ? 'Ouvert aux débutant·es'
+                    : seniorityInYears === 1
+                    ? `Min. 1 an d’expérience`
+                    : `Min. ${seniorityInYears} ans d’expérience`}
+                </li>
               </ul>
             </div>
           </div>

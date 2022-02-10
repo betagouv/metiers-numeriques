@@ -19,6 +19,73 @@ export const GET_ALL = gql`
   }
 `
 
+export const GET_ALL_PUBLIC = gql`
+  query GetPublicJobs($pageIndex: Int!, $perPage: Int!, $query: String, $region: String) {
+    getPublicJobs(pageIndex: $pageIndex, perPage: $perPage, query: $query, region: $region) {
+      count
+      data {
+        id
+
+        contractTypes
+        expiredAt
+        missionDescription
+        slug
+        state
+        title
+        updatedAt
+
+        address {
+          id
+
+          region
+        }
+        profession {
+          id
+
+          name
+        }
+        recruiter {
+          id
+
+          fullName
+          name
+          websiteUrl
+        }
+
+        ########################################
+        # Legacy fields
+
+        experiences
+        mission
+        openedToContractTypes
+        reference
+        # slug
+        source
+        # state
+        tasks
+        team
+        # title
+        # updatedAt
+
+        legacyService {
+          id
+
+          name
+          region
+
+          legacyEntity {
+            id
+
+            name
+          }
+        }
+      }
+      index
+      length
+    }
+  }
+`
+
 export const GET_ONE = gql`
   query GetJob($id: String!) {
     getJob(id: $id) {

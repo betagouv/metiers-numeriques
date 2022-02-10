@@ -1,7 +1,9 @@
 # import Address, AddressInput, AddressesResult from "addresses.graphql"
 # import Contact, ContactInput, ContactsResult from "contacts.graphql"
 # import File, FileInput, FilesResult from "files.graphql"
-# import Job, JobInput, JobsResult from "jobs.graphql"
+# import Job, JobInput, JobsResult, PublicJobsResult from "jobs.graphql"
+# import LegacyEntity, LegacyEntityInput, LegacyEntitiesResult from "legacy-entities.graphql"
+# import LegacyService, LegacyServiceInput, LegacyServicesResult from "legacy-services.graphql"
 # import Profession, ProfessionInput, ProfessionsResult from "professions.graphql"
 # import Recruiter, RecruiterInput, RecruitersResult from "recruiters.graphql"
 # import User, UserInput, UsersResult from "users.graphql"
@@ -45,7 +47,7 @@ type Query {
     perPage: Int!
     query: String
     region: String
-  ): JobsResult!
+  ): PublicJobsResult!
 
   getLegacyEntity(id: String!): LegacyEntity
   getLegacyEntities(
@@ -155,26 +157,6 @@ type Mutation {
   updateUser(id: String!, input: UserInput!): User
 }
 
-type LegacyEntity {
-  id: ID!
-
-  fullName: String
-  logoUrl: String
-  name: String
-}
-
-type LegacyEntitiesResult {
-  count: Int!
-  data: [LegacyEntity!]!
-  index: Int!
-  length: Int!
-}
-
-input LegacyEntityInput {
-  fullName: String
-  logoUrl: String
-  name: String
-}
 
 type LegacyInstitution {
   id: ID!
@@ -314,33 +296,3 @@ input LegacyJobInput {
 
   legacyServiceId: String
 }
-
-type LegacyService {
-  id: ID!
-
-  fullName: String
-  name: String
-  region: String
-  shortName: String
-  url: String
-
-  legacyEntity: LegacyEntity
-}
-
-type LegacyServicesResult {
-  count: Int!
-  data: [LegacyService!]!
-  index: Int!
-  length: Int!
-}
-
-input LegacyServiceInput {
-  fullName: String
-  name: String
-  region: String
-  shortName: String
-  url: String
-
-  legacyEntityId: String
-}
-

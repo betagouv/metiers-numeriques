@@ -193,6 +193,7 @@ export const query = {
       const paginationFilter = buildPrismaPaginationFilter(throttledPerPage, pageIndex)
 
       const andFilter: Record<string, Common.Pojo> = {
+        isMigrated: false,
         state: JobState.PUBLISHED,
       }
       if (region !== undefined) {

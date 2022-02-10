@@ -2,8 +2,11 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
-import { JobState } from '@prisma/client'
+import { JobState, LegacyJob } from '@prisma/client'
 import dayjs from 'dayjs'
+import * as R from 'ramda'
+
+import { query as legacyJobsQuery } from './legacy-jobs'
 
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Address, Contact, Job, Prisma, Profession, Recruiter } from '@prisma/client'
@@ -286,16 +289,15 @@ export const query = {
 
   getPublicJobs: async (
     obj,
-    {
-      pageIndex,
-      perPage,
-      query,
-      region,
-    }: GetAllArgs & {
+    queryArgs: GetAllArgs & {
       region?: string
     },
-  ): Promise<GetAllResponse<JobFromGetPublicJobs>> => {
+  ): Promise<GetAllResponse<JobFromGetPublicJobs | LegacyJob>> => {
     try {
+      const legacyJobsResult = await legacyJobsQuery.getPublicLegacyJobs(obj, queryArgs)
+
+      const { pageIndex, perPage, query, region } = queryArgs
+
       const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
 
       const paginationFilter = buildPrismaPaginationFilter(throttledPerPage, pageIndex)
@@ -323,9 +325,15 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().job.count(whereFilter)
-      const data = (await getPrisma().job.findMany(args)) as unknown as JobFromGetPublicJobs[]
+      const jobslength = await getPrisma().job.count(whereFilter)
+      const jobsData = (await getPrisma().job.findMany(args)) as unknown as JobFromGetPublicJobs[]
+      const length = legacyJobsResult.length + jobslength
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
+
+      const data = R.pipe(
+        R.sort(R.descend(R.prop('updatedAt') as any)),
+        R.slice(0, perPage) as any,
+      )([...jobsData, ...legacyJobsResult.data]) as Array<JobFromGetPublicJobs | LegacyJob>
 
       return {
         count,

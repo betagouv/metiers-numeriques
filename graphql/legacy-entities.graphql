@@ -1,0 +1,20 @@
+type LegacyEntity {
+  id: ID!
+
+  fullName: String
+  logoUrl: String
+  name: String
+}
+
+type LegacyEntitiesResult {
+  count: Int!
+  data: [LegacyEntity!]!
+  index: Int!
+  length: Int!
+}
+
+input LegacyEntityInput {
+  fullName: String
+  logoUrl: String
+  name: String
+}

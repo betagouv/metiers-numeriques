@@ -1,17 +1,20 @@
 import getPrisma from '@api/helpers/getPrisma'
 import { useQuery } from '@apollo/client'
+import { humanizeDeepDates } from '@app/helpers/humanizeDeepDates'
+import { JobCard } from '@app/organisms/JobCard'
 import { LegacyJobCard } from '@app/organisms/LegacyJobCard'
 import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
 import handleError from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
-import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
+import * as R from 'ramda'
 import { useCallback, useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
+import type { JobWithRelation } from '@app/organisms/JobCard'
 import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
 
 const INITIAL_VARIABLES = {
@@ -20,7 +23,7 @@ const INITIAL_VARIABLES = {
 }
 
 type JobListPageProps = {
-  initialJobs: LegacyJobWithRelation[]
+  initialJobs: Array<JobWithRelation | LegacyJobWithRelation>
 }
 export default function JobListPage({ initialJobs }: JobListPageProps) {
   const $regionSelect = useRef<HTMLSelectElement>(null)
@@ -28,22 +31,22 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [jobs, setJobs] = useState(initialJobs)
 
-  const getLegacyJobsResult = useQuery<
+  const getJobsResult = useQuery<
     {
-      getPublicLegacyJobs: GetAllResponse<LegacyJobWithRelation>
+      getPublicJobs: GetAllResponse<JobWithRelation | LegacyJobWithRelation>
     },
     any
-  >(queries.legacyJob.GET_ALL_PUBLIC, {
+  >(queries.job.GET_ALL_PUBLIC, {
     variables: INITIAL_VARIABLES,
   })
 
-  const legacyJobsResult =
-    getLegacyJobsResult.loading || getLegacyJobsResult.error || getLegacyJobsResult.data === undefined
+  const jobsResult =
+    getJobsResult.loading || getJobsResult.error || getJobsResult.data === undefined
       ? {
           index: 0,
           length: Infinity,
         }
-      : getLegacyJobsResult.data.getPublicLegacyJobs
+      : getJobsResult.data.getPublicJobs
 
   const query = useCallback(
     debounce(async (pageIndex: number) => {
@@ -57,7 +60,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
       const query = define($searchInput.current.value)
       const region = define($regionSelect.current.value)
 
-      const newOrAdditionalJobsResult = await getLegacyJobsResult.refetch({
+      const newOrAdditionalJobsResult = await getJobsResult.refetch({
         ...INITIAL_VARIABLES,
         pageIndex,
         query,
@@ -72,7 +75,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
         return
       }
 
-      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getPublicLegacyJobs.data
+      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getPublicJobs.data
 
       setIsLoading(false)
       if (isNewQuery) {
@@ -84,8 +87,8 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
     [jobs],
   )
 
-  const hasMoreJobs = legacyJobsResult.length > jobs.length
-  const nextPageIndex = legacyJobsResult.index + 1
+  const hasMoreJobs = jobsResult.length > jobs.length
+  const nextPageIndex = jobsResult.index + 1
   const pageTitle = 'Liste des offres d’emploi numériques de l’État | metiers.numerique.gouv.fr'
   const pageDescription =
     'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
@@ -178,9 +181,13 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
             </div>
           )}
 
-          {jobs.map(job => (
-            <LegacyJobCard key={job.id} job={job} />
-          ))}
+          {jobs.map(job => {
+            if (!R.isNil((job as any).missionDescription)) {
+              return <JobCard key={job.id} job={job as JobWithRelation} />
+            }
+
+            return <LegacyJobCard key={job.id} job={job as LegacyJobWithRelation} />
+          })}
 
           {isLoading && (
             <div
@@ -215,7 +222,25 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
 
 export async function getStaticProps() {
   const prisma = getPrisma()
-  const initialJobs = await prisma.legacyJob.findMany({
+
+  const initialJobs = await prisma.job.findMany({
+    include: {
+      address: true,
+      applicationContacts: true,
+      infoContact: true,
+      profession: true,
+      recruiter: true,
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+    take: INITIAL_VARIABLES.perPage,
+    where: {
+      state: JobState.PUBLISHED,
+    },
+  })
+
+  const initialLegacyJobs = await prisma.legacyJob.findMany({
     include: {
       legacyService: {
         include: {
@@ -228,19 +253,20 @@ export async function getStaticProps() {
     },
     take: INITIAL_VARIABLES.perPage,
     where: {
+      isMigrated: false,
       state: JobState.PUBLISHED,
     },
   })
 
+  const initialData = R.pipe(
+    R.sort(R.descend(R.prop('updatedAt') as any)),
+    R.slice(0, INITIAL_VARIABLES.perPage) as any,
+    R.map(humanizeDeepDates),
+  )([...initialJobs, ...initialLegacyJobs])
+
   return {
     props: {
-      initialJobs: initialJobs.map(initialJob => ({
-        ...initialJob,
-        createdAt: initialJob.createdAt ? dayjs(initialJob.createdAt).toISOString() : null,
-        limitDate: initialJob.limitDate ? dayjs(initialJob.limitDate).toISOString() : null,
-        publicationDate: initialJob.publicationDate ? dayjs(initialJob.publicationDate).toISOString() : null,
-        updatedAt: initialJob.updatedAt ? dayjs(initialJob.updatedAt).toISOString() : null,
-      })),
+      initialJobs: initialData,
     },
     revalidate: 300,
   }
