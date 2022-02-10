@@ -115,7 +115,7 @@ export default function AdminLegacyJobListPage() {
   }
 
   const goToMigrator = (id: string) => {
-    window.open(`/admin/legacy-job/migrate/${id}`, '_blank')
+    router.push(`/admin/legacy-job/migrate/${id}`)
   }
 
   const handleSourceSelect = (option: Common.App.SelectOption | null): void => {

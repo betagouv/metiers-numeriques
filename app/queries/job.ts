@@ -30,6 +30,7 @@ export const GET_ONE = gql`
       missionDescription
       missionVideoUrl
       particularitiesDescription
+      pepUrl
       perksDescription
       processDescription
       profileDescription

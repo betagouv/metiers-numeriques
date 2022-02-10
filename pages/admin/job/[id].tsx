@@ -15,9 +15,11 @@ import { JobState } from '@prisma/client'
 import { Field } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
+import ky from 'ky-universal'
+import { useAuth } from 'nexauth'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import slugify from 'slugify'
 import * as Yup from 'yup'
@@ -38,24 +40,53 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   state: JobState
 }
 
-const FormSchema = Yup.object().shape({
-  addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
-  applicationContactIds: Yup.array(Yup.string().nullable())
-    .required(`Au moins un contact "candidatures" est obligatoire.`)
-    .min(1, `Au moins un contact "candidatures" est obligatoire.`),
-  contractTypes: Yup.array(Yup.string().nullable())
-    .required(`Au moins un type de contrat est obligatoire.`)
-    .min(1, `Au moins un type de contrat est obligatoire.`),
-  expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
-  infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
-  missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
-  professionId: Yup.string().required(`Le métier est obligatoire.`),
-  recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
-  remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
-  seniorityInYears: Yup.number().required(`Le nombre d’années d’expérience requises est obligatoire.`),
-  state: Yup.string().required(`L’état est obligatoire.`),
-  title: Yup.string().required(`L’intitulé est obligatoire.`),
-})
+const getFormSchema = (accessToken?: string) =>
+  Yup.object().shape({
+    addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
+    applicationContactIds: Yup.array(Yup.string().nullable())
+      .required(`Au moins un contact "candidatures" est obligatoire.`)
+      .min(1, `Au moins un contact "candidatures" est obligatoire.`),
+    contractTypes: Yup.array(Yup.string().nullable())
+      .required(`Au moins un type de contrat est obligatoire.`)
+      .min(1, `Au moins un type de contrat est obligatoire.`),
+    expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
+    infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
+    missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
+    pepUrl: Yup.string()
+      .url(`Cette URL est mal formatée.`)
+      .test('is2XX', 'Cette URL PEP renvoie vers une page introuvable.', async value => {
+        try {
+          const res = (await ky
+            .get('/api/pep', {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+              searchParams: {
+                url: String(value),
+              },
+            })
+            .json()) as Common.Api.ResponseBody<{
+            isValid: boolean
+          }>
+
+          if (res.hasError === false && res.data.isValid) {
+            return true
+          }
+
+          return false
+        } catch (err) {
+          handleError(err, 'pages/admin/legacy-jobs/migrate/[id].tsx > FormSchema')
+
+          return false
+        }
+      }),
+    professionId: Yup.string().required(`Le métier est obligatoire.`),
+    recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
+    remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
+    seniorityInYears: Yup.number().required(`Le nombre d’années d’expérience requises est obligatoire.`),
+    state: Yup.string().required(`L’état est obligatoire.`),
+    title: Yup.string().required(`L’intitulé est obligatoire.`),
+  })
 
 export default function AdminJobEditorPage() {
   const router = useRouter()
@@ -66,6 +97,9 @@ export default function AdminJobEditorPage() {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
+  const auth = useAuth()
+
+  const FormSchema = useMemo(() => getFormSchema(auth.state.accessToken), [auth.state])
 
   const getJobResult = useQuery<
     {
@@ -105,6 +139,7 @@ export default function AdminJobEditorPage() {
         'missionDescription',
         'missionVideoUrl',
         'particularitiesDescription',
+        'pepUrl',
         'perksDescription',
         'professionId',
         'processDescription',
@@ -383,6 +418,15 @@ export default function AdminJobEditorPage() {
               label="Processus de recrutement"
               name="processDescription"
               placeholder="En une seule phrase si possible."
+            />
+          </Field>
+
+          <Field>
+            <Form.TextInput
+              isDisabled={isLoading}
+              label="Lien PEP (URL)"
+              name="pepUrl"
+              placeholder="https://place-emploi-public.gouv.fr/offre-emploi/…"
             />
           </Field>
         </AdminCard>
