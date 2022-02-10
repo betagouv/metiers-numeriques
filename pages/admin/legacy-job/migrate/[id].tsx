@@ -52,16 +52,21 @@ const getFormSchema = (accessToken?: string) =>
     infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
     missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
     pepUrl: Yup.string()
+      .nullable()
       .url(`Cette URL est mal formatée.`)
       .test('is2XX', 'Cette URL PEP renvoie vers une page introuvable.', async value => {
         try {
+          if (value === undefined || value === null) {
+            return true
+          }
+
           const res = (await ky
             .get('/api/pep', {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
               },
               searchParams: {
-                url: String(value),
+                url: value,
               },
             })
             .json()) as Common.Api.ResponseBody<{
