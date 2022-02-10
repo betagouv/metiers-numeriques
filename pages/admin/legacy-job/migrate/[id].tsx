@@ -15,7 +15,7 @@ import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
-import { Job, JobContractType, JobRemoteStatus, JobState, Prisma } from '@prisma/client'
+import { JobContractType, JobRemoteStatus } from '@prisma/client'
 import { Field, Select, TextInput } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
@@ -26,6 +26,8 @@ import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import slugify from 'slugify'
 import * as Yup from 'yup'
+
+import type { Job, JobState, Prisma } from '@prisma/client'
 
 type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seniorityInMonths'> & {
   addressAsPrismaAddress: Prisma.AddressCreateInput
@@ -38,6 +40,28 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   seniorityInYears: number
   state: JobState
 }
+
+const extractContractType = (legacyContractType: string): JobContractType | null => {
+  switch (true) {
+    case /contractuel/i.test(legacyContractType):
+      return JobContractType.CONTRACT_WORKER
+
+    case /fonctionnaire/i.test(legacyContractType):
+      return JobContractType.NATIONAL_CIVIL_SERVANT
+
+    case /cdd/i.test(legacyContractType):
+      return JobContractType.TEMPORARY
+
+    case /cdi/i.test(legacyContractType):
+      return JobContractType.PERMANENT
+
+    default:
+      return null
+  }
+}
+
+const extractContractTypes = (legacyContractTypes: string[]): JobContractType[] =>
+  R.pipe(R.map(extractContractType), R.reject(R.isNil))(legacyContractTypes) as JobContractType[]
 
 const getFormSchema = (accessToken?: string) =>
   Yup.object().shape({
@@ -259,6 +283,8 @@ export default function LegacyJobEditorPage() {
     newValues.tasksDescription = legacyValues.tasks
     newValues.teamDescription = legacyValues.team
     newValues.title = legacyValues.title
+
+    newValues.contractTypes = extractContractTypes(legacyValues.openedToContractTypes)
 
     // Async address & PEP URL extractions
     ;(async () => {
