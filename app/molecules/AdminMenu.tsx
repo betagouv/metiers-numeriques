@@ -1,7 +1,7 @@
 import { VerticalMenu } from '@singularity/core'
-import MaterialLogoutOutlined from '@singularity/core/icons/material/MaterialLogoutOutlined'
 import { useAuth } from 'nexauth'
 import { useRouter } from 'next/router'
+import { LogOut } from 'react-feather'
 import styled from 'styled-components'
 
 import Link from '../atoms/Link'
@@ -174,7 +174,7 @@ export default function AdminMenu() {
       </div>
 
       <UserMenu>
-        <MaterialLogoutOutlined accent="secondary" onClick={auth.logOut} />
+        <LogOut onClick={auth.logOut} />
       </UserMenu>
     </Box>
   )

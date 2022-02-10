@@ -6,12 +6,11 @@ import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
 import { Button, Card, Table, TextInput } from '@singularity/core'
-import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
-import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Edit, Trash } from 'react-feather'
 
 import type { RecruiterFromGetAll } from '@api/resolvers/recruiters'
 import type { GetAllResponse } from '@api/resolvers/types'
@@ -133,14 +132,14 @@ export default function AdminRecruiterListPage() {
     {
       accent: 'primary',
       action: goToEditor,
-      Icon: MaterialEditOutlined,
+      Icon: Edit,
       label: 'Éditer ce recruteur',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
-      Icon: MaterialDeleteOutlined,
+      Icon: Trash,
       label: 'Supprimer ce recruteur',
       type: 'action',
     },

@@ -6,10 +6,10 @@ import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
 import { Card, Table, TextInput } from '@singularity/core'
-import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
 import debounce from 'lodash.debounce'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Address } from '@prisma/client'
@@ -125,7 +125,7 @@ export default function AdminAddressListPage() {
     {
       accent: 'danger',
       action: confirmDeletion,
-      Icon: MaterialDeleteOutlined,
+      Icon: Trash,
       label: 'Supprimer cette adresse',
       type: 'action',
     },
