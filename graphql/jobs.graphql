@@ -59,6 +59,7 @@ input JobInput {
   tasksDescription: String
   teamDescription: String
   title: String
+  updatedAt: DateTime
 
   addressId: String
   applicationContactIds: [String]

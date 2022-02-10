@@ -43,9 +43,11 @@ export const mutation = {
       const applicationContactsAsConnections = applicationContactIds.map(id => ({
         id,
       }))
+
+      const updatedAt = input.updatedAt || dayjs().toDate()
       const controlledInput: Prisma.JobCreateInput = {
         ...input,
-        updatedAt: dayjs().toDate(),
+        updatedAt,
       }
 
       const args: Prisma.JobCreateArgs = {
