@@ -125,7 +125,9 @@ export const query = {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
-      const andFilter: Record<string, Common.Pojo> = {}
+      const andFilter: Record<string, Common.Pojo> = {
+        isMigrated: false,
+      }
       if (region !== undefined) {
         andFilter.legacyService = { region }
       }

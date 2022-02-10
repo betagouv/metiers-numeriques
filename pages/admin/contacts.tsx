@@ -19,18 +19,16 @@ import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    key: 'firstName',
-    label: 'Prénom',
-  },
-  {
-    key: 'lastName',
+    key: 'name',
     label: 'Nom',
   },
   {
+    grow: 0.3,
     key: 'email',
     label: 'Email',
   },
   {
+    grow: 0.2,
     key: 'phone',
     label: 'Téléphone',
   },
@@ -81,7 +79,7 @@ export default function AdminContactListPage() {
     }
 
     setSelectedId(id)
-    setSelectedEntity(`${contact.firstName} ${contact.lastName}`)
+    setSelectedEntity(contact.name)
     setHasDeletionModal(true)
   }
 

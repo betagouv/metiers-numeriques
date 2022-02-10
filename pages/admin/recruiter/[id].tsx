@@ -20,6 +20,7 @@ import type { TableColumnProps } from '@singularity/core'
 
 const FormSchema = Yup.object().shape({
   name: Yup.string().required(`Le nom est obligatoire.`),
+  websiteUrl: Yup.string().url(`Cette URL est mal formatée.`),
 })
 
 const JOB_LIST_COLUMNS: TableColumnProps[] = [
@@ -165,7 +166,7 @@ export default function AdminRecruiterEditorPage() {
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Site (URL)" name="websiteUrl" />
+            <Form.TextInput isDisabled={isLoading} label="Site (URL)" name="websiteUrl" type="url" />
           </Field>
 
           <Field>

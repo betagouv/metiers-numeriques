@@ -96,6 +96,7 @@ export const GET_ONE = gql`
       entity
       experiences
       hiringProcess
+      isMigrated
       limitDate
       locations
       mission

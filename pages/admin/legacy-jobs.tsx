@@ -10,6 +10,7 @@ import { define } from '@common/helpers/define'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
 import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
+import MaterialUpgradeOutlined from '@singularity/core/icons/material/MaterialUpgradeOutlined'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -115,6 +116,10 @@ export default function AdminLegacyJobListPage() {
     router.push(`/admin/legacy-job/${id}`)
   }
 
+  const goToMigrator = (id: string) => {
+    window.open(`/admin/legacy-job/migrate/${id}`, '_blank')
+  }
+
   const handleSourceSelect = (option: Common.App.SelectOption | null): void => {
     $source.current = option !== null ? option.value : ''
 
@@ -150,6 +155,14 @@ export default function AdminLegacyJobListPage() {
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
+    {
+      accent: 'warning',
+      action: goToMigrator,
+      Icon: MaterialUpgradeOutlined,
+      label: 'Migrer cette offre [LEGACY]',
+      type: 'action',
+      withTooltip: true,
+    },
     {
       accent: 'primary',
       action: goToEditor,

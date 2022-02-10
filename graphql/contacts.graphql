@@ -5,19 +5,19 @@ type Contact {
 
   createdAt: DateTime
   email: String
-  firstName: String
-  lastName: String
+  name: String
   note: String
   phone: String
+  position: String
   updatedAt: DateTime
 }
 
 input ContactInput {
   email: String
-  firstName: String
-  lastName: String
+  name: String
   note: String
   phone: String
+  position: String
 }
 
 type ContactsResult {

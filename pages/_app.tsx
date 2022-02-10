@@ -60,9 +60,6 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
             property="og:description"
           />
           <meta content="/images/main-illu.png" property="og:image" />
-
-          <link href="/dsfr.min.css" rel="stylesheet" />
-          <link href="/legacy.css" rel="stylesheet" />
         </Head>
 
         <Header />

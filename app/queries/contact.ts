@@ -7,9 +7,8 @@ export const GET_ALL = gql`
       data {
         id
 
-        firstName
         email
-        lastName
+        name
         phone
       }
       index
@@ -23,8 +22,8 @@ export const GET_LIST = gql`
     getContactsList {
       id
 
-      firstName
-      lastName
+      name
+      email
     }
   }
 `
@@ -34,11 +33,11 @@ export const GET_ONE = gql`
     getContact(id: $id) {
       id
 
-      firstName
       email
-      lastName
+      name
       note
       phone
+      position
     }
   }
 `

@@ -14,9 +14,7 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { User } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
-  email: Yup.string()
-    .required(`L’adresse email est obligatoire.`)
-    .email(`Cette addresse email ne semble pas correctement formatté.`),
+  email: Yup.string().required(`L’adresse email est obligatoire.`).email(`Cette addresse email est mal formatée.`),
   firstName: Yup.string().required(`Le prénom est obligatoire.`),
   isActive: Yup.boolean().required(),
   lastName: Yup.string().required(`Le nom de famille est obligatoire.`),

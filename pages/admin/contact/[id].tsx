@@ -13,9 +13,8 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { Contact } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
-  email: Yup.string().required(`L’email est obligatoire.`),
-  firstName: Yup.string().required(`Le prénom est obligatoire.`),
-  lastName: Yup.string().required(`Le nom est obligatoire.`),
+  email: Yup.string().required(`L’email est obligatoire.`).email(`Cette addresse email est mal formatée.`),
+  name: Yup.string().required(`Le nom est obligatoire.`),
 })
 
 export default function AdminContactEditorPage() {
@@ -97,11 +96,7 @@ export default function AdminContactEditorPage() {
       <Card>
         <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Prénom *" name="firstName" />
-          </Field>
-
-          <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom *" name="lastName" />
+            <Form.TextInput isDisabled={isLoading} label="Nom *" name="name" />
           </Field>
 
           <Field>
@@ -110,6 +105,10 @@ export default function AdminContactEditorPage() {
 
           <Field>
             <Form.TextInput isDisabled={isLoading} label="Téléphone" name="phone" type="tel" />
+          </Field>
+
+          <Field>
+            <Form.TextInput isDisabled={isLoading} label="Poste" name="position" />
           </Field>
 
           <Field>

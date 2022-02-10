@@ -6,19 +6,38 @@ import handleError from '@common/helpers/handleError'
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Address, Prisma } from '@prisma/client'
 
+export type AddressFromGetAddresses = Address & {
+  _count: {
+    jobs: number
+    users: number
+  }
+}
+
 export const mutation = {
   createAddress: async (
     _parent: undefined,
     { input }: { input: Prisma.AddressCreateInput },
   ): Promise<Address | null> => {
     try {
-      const args: Prisma.AddressCreateArgs = {
+      const findUniqueArgs: Prisma.AddressFindUniqueArgs = {
+        where: {
+          sourceId: input.sourceId,
+        },
+      }
+
+      const existingData = await getPrisma().address.findUnique(findUniqueArgs)
+
+      if (existingData !== null) {
+        return existingData
+      }
+
+      const createArgs: Prisma.AddressCreateArgs = {
         data: input,
       }
 
-      const data = await getPrisma().address.create(args)
+      const newData = await getPrisma().address.create(createArgs)
 
-      return data
+      return newData
     } catch (err) {
       handleError(err, 'api/resolvers/addresses.ts > query.createAddress()')
 
@@ -29,12 +48,25 @@ export const mutation = {
   deleteAddress: async (_parent: undefined, { id }: { id: string }): Promise<Address | null> => {
     try {
       const args: Prisma.AddressDeleteArgs = {
+        include: {
+          _count: {
+            select: {
+              jobs: true,
+            },
+          },
+        },
         where: {
           id,
         },
       }
 
-      const data = await getPrisma().address.delete(args)
+      const data = (await getPrisma().address.findUnique(args)) as unknown as AddressFromGetAddresses | null
+
+      if (data === null || data._count.jobs > 0) {
+        return null
+      }
+
+      await getPrisma().address.delete(args)
 
       return data
     } catch (err) {
@@ -49,12 +81,19 @@ export const query = {
   getAddresses: async (
     _parent: undefined,
     { pageIndex, perPage, query }: GetAllArgs,
-  ): Promise<GetAllResponse<Address>> => {
+  ): Promise<GetAllResponse<AddressFromGetAddresses>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter<Address>(['city', 'postalCode', 'street'], query)
+      const whereFilter = buildPrismaWhereFilter<AddressFromGetAddresses>(['city', 'postalCode', 'street'], query)
 
       const args: Prisma.AddressFindManyArgs = {
+        include: {
+          _count: {
+            select: {
+              jobs: true,
+            },
+          },
+        },
         orderBy: {
           postalCode: 'asc',
         },
@@ -63,7 +102,7 @@ export const query = {
       }
 
       const length = await getPrisma().address.count(whereFilter)
-      const data = await getPrisma().address.findMany(args)
+      const data = (await getPrisma().address.findMany(args)) as unknown as AddressFromGetAddresses[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
