@@ -152,6 +152,8 @@ model Job {
   processDescription         String?
   profileDescription         String?
   contractTypes              JobContractType[]
+  // Job URL on place-emploi-public.gouv.fr
+  pepUrl                     String?
   remoteStatus               JobRemoteStatus   @default(NONE)
   salaryMax                  Int?
   salaryMin                  Int?

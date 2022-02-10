@@ -57,7 +57,7 @@
     "graphql-middleware": "6.0.10",
     "graphql-shield": "7.5.0",
     "graphql-type-json": "0.3.2",
-    "ky": "0.28.7",
+    "ky-universal": "0.10.0",
     "lodash.debounce": "4.0.8",
     "markdown-it": "12.3.2",
     "micro": "9.3.4",

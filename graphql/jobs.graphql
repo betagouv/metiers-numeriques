@@ -15,6 +15,7 @@ type Job {
   missionDescription: String
   missionVideoUrl: String
   particularitiesDescription: String
+  pepUrl: String
   perksDescription: String
   processDescription: String
   profileDescription: String
@@ -45,6 +46,7 @@ input JobInput {
   missionDescription: String
   missionVideoUrl: String
   particularitiesDescription: String
+  pepUrl: String
   perksDescription: String
   processDescription: String
   profileDescription: String

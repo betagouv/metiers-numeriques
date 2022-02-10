@@ -1,6 +1,6 @@
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
-import ky from 'ky'
+import ky from 'ky-universal'
 
 import { convertGeocodeJsonFeatureToPrismaAddress } from '../../helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import generateKeyFromValue from '../../helpers/generateKeyFromValue'
