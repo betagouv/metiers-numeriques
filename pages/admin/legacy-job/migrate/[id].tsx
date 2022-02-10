@@ -178,6 +178,7 @@ export default function LegacyJobEditorPage() {
         'tasksDescription',
         'teamDescription',
         'title',
+        'updatedAt',
       ])(values)
 
       input.id = cuid()
@@ -283,6 +284,7 @@ export default function LegacyJobEditorPage() {
     newValues.tasksDescription = legacyValues.tasks
     newValues.teamDescription = legacyValues.team
     newValues.title = legacyValues.title
+    newValues.updatedAt = legacyValues.updatedAt
 
     newValues.contractTypes = extractContractTypes(legacyValues.openedToContractTypes)
 
