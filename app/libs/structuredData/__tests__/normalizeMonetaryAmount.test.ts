@@ -1,10 +1,11 @@
 import structuredData from '..'
 
 describe('libs/structuredData.normalizeMonetaryAmount()', () => {
-  test(`with "Entre 45k€ et 63 K€ annuels bruts"`, () => {
-    const salaryString = `Entre 45k€ et 63 K€ annuels bruts`
+  test(`with 45000 and 63000`, () => {
+    const salaryMin = 45000
+    const salaryMax = 63000
 
-    const result = structuredData.normalizeMonetaryAmount(salaryString)
+    const result = structuredData.normalizeMonetaryAmount(salaryMin, salaryMax)
 
     expect(result).toStrictEqual({
       '@type': 'MonetaryAmount',
@@ -18,10 +19,11 @@ describe('libs/structuredData.normalizeMonetaryAmount()', () => {
     })
   })
 
-  test(`with "La rémunération est à définir en fonction de l’expérience et du profil"`, () => {
-    const salaryString = `La rémunération est à définir en fonction de l’expérience et du profil`
+  test(`with 63000 and 45000`, () => {
+    const salaryMin = 63000
+    const salaryMax = 45000
 
-    const result = structuredData.normalizeMonetaryAmount(salaryString)
+    const result = structuredData.normalizeMonetaryAmount(salaryMin, salaryMax)
 
     expect(result).toBeUndefined()
   })

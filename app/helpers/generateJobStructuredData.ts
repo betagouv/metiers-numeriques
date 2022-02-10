@@ -1,69 +1,16 @@
-import dayjs from 'dayjs'
-
 import structuredData from '../libs/structuredData'
+import { convertHumanDateToIso8601 } from './convertHumanDateToIso8601'
 
-import type { LegacyJobWithRelation } from '../organisms/JobCard'
-
-const getDescription = (job: LegacyJobWithRelation): string | null => job.mission
-
-const getOrganizationData = (
-  job: LegacyJobWithRelation,
-):
-  | {
-      department?: {
-        logoUrl?: string
-        name: string
-        websiteUrl?: string
-      }
-      logoUrl?: string
-      name: string
-      websiteUrl?: string
-    }
-  | undefined => {
-  if (job.legacyService === null) {
-    return undefined
-  }
-
-  if (job.legacyService.legacyEntity !== null) {
-    return {
-      department: {
-        name: job.legacyService.shortName || job.legacyService.name || '',
-        websiteUrl: job.legacyService.url || '',
-      },
-      logoUrl: job.legacyService.legacyEntity.logoUrl || '',
-      name: job.legacyService.legacyEntity.name || '',
-      websiteUrl: job.legacyService.url || '',
-    }
-  }
-
-  return {
-    name: job.legacyService.name || '',
-    websiteUrl: job.legacyService.url || '',
-  }
-}
+import type { JobWithRelation } from '../organisms/JobCard'
 
 /**
  * @see https://developers.google.com/search/docs/advanced/structured-data/job-posting
  */
-export default function generateJobStructuredData(job: LegacyJobWithRelation): string {
-  const maybeDescription = getDescription(job)
-  if (maybeDescription === undefined) {
-    return JSON.stringify({})
-  }
-
-  const maybeJobLocation = structuredData.normalizePlace(String(job.locations[0]))
-  if (maybeJobLocation === undefined) {
-    return JSON.stringify({})
-  }
-
-  const maybeOrganizationData = getOrganizationData(job)
-  if (maybeOrganizationData === undefined) {
-    return JSON.stringify({})
-  }
-
-  if (job.limitDate === null || dayjs(job.limitDate).isBefore(dayjs())) {
-    return JSON.stringify({})
-  }
+export default function generateJobStructuredData(job: JobWithRelation): string {
+  const datePosted = convertHumanDateToIso8601(job.updatedAt as unknown as string)
+  const hiringOrganization = structuredData.normalizeOrganization(job.recruiter)
+  const jobLocation = structuredData.normalizePlace(job.address)
+  const validThrough = convertHumanDateToIso8601(job.expiredAt as unknown as string)
 
   // —————————————————————————————————————————————————————————————————————————————
   // Required properties for Google Job Posting
@@ -76,18 +23,18 @@ export default function generateJobStructuredData(job: LegacyJobWithRelation): s
       '@type': 'Country',
       name: 'France',
     },
-    datePosted: job.updatedAt,
-    description: maybeDescription,
-    hiringOrganization: structuredData.normalizeOrganization(maybeOrganizationData),
-    jobLocation: maybeJobLocation,
+    datePosted,
+    description: job.missionDescription,
+    hiringOrganization,
+    jobLocation,
     title: job.title,
-    validThrough: job.limitDate,
+    validThrough,
   }
 
   // —————————————————————————————————————————————————————————————————————————————
   // Optional (but recommended!) properties for Google Job Posting
 
-  const maybeBaseSalary = structuredData.normalizeMonetaryAmount(String(job.salary))
+  const maybeBaseSalary = structuredData.normalizeMonetaryAmount(job.salaryMin, job.salaryMax)
   if (maybeBaseSalary !== undefined) {
     structureData.baseSalary = maybeBaseSalary
   }

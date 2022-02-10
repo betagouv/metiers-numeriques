@@ -8,6 +8,7 @@ export const GET_ALL = gql`
         id
 
         expiredAt
+        slug
         state
         title
         updatedAt

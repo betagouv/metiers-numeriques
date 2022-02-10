@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
+import type { Recruiter } from '@prisma/client'
+
 /**
  * @see https://schema.org/Organization
  */
@@ -18,48 +20,19 @@ type StructuredOrganization = {
   sameAs?: string
 }
 
-export default function normalizeOrganization({
-  department,
-  logoUrl,
-  name,
-  websiteUrl,
-}: {
-  department?: {
-    logoUrl?: string
-    name: string
-    websiteUrl?: string
-  }
-  logoUrl?: string
-  name: string
-  websiteUrl?: string
-}): StructuredOrganization {
+export default function normalizeOrganization({ name, websiteUrl }: Recruiter): StructuredOrganization {
   const structuredOrganization: StructuredOrganization = {
     '@type': 'Organization',
     name,
   }
 
-  if (websiteUrl !== undefined) {
+  if (websiteUrl !== null) {
     structuredOrganization.sameAs = websiteUrl
   }
 
-  if (logoUrl !== undefined) {
-    structuredOrganization.logo = logoUrl
-  }
-
-  if (department !== undefined) {
-    structuredOrganization.department = {
-      '@type': 'Organization',
-      name: department.name,
-    }
-
-    if (department.websiteUrl !== undefined) {
-      structuredOrganization.department.sameAs = websiteUrl
-    }
-
-    if (department.logoUrl !== undefined) {
-      structuredOrganization.department.logo = logoUrl
-    }
-  }
+  // if (recruiter.logoFile !== null) {
+  //   structuredOrganization.logo = logoUrl
+  // }
 
   return structuredOrganization
 }

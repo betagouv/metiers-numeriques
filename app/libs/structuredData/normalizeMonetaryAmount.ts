@@ -20,36 +20,21 @@ type StructuredDataMonetaryAmount = {
       }
 }
 
-const REGEXP = {
-  DEFAULT: /(\d{2,3}).*(\d{2,3})/i,
-}
-
-export default function normalizeMonetaryAmount(salaryString: string): StructuredDataMonetaryAmount | undefined {
-  const defaultResult = matchDefault(salaryString)
-
-  if (defaultResult !== undefined) {
-    return defaultResult
-  }
-
-  return undefined
-}
-
-const matchDefault = (addressString: string): StructuredDataMonetaryAmount | undefined => {
-  const result = addressString.match(REGEXP.DEFAULT)
-  if (result === null) {
+export default function normalizeMonetaryAmount(
+  salaryMin: number | null,
+  salaryMax: number | null,
+): StructuredDataMonetaryAmount | undefined {
+  if (salaryMin === null || salaryMax === null || salaryMin > salaryMax) {
     return undefined
   }
-
-  const minValue = Number(result[1].trim()) * 1000
-  const maxValue = Number(result[2].trim()) * 1000
 
   return {
     '@type': 'MonetaryAmount',
     currency: 'EUR',
     value: {
       '@type': 'QuantitativeValue',
-      maxValue,
-      minValue,
+      maxValue: salaryMax,
+      minValue: salaryMin,
       unitText: 'YEAR',
     },
   }

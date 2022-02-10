@@ -1,6 +1,6 @@
 import getPrisma from '@api/helpers/getPrisma'
 import { useQuery } from '@apollo/client'
-import JobCard from '@app/organisms/JobCard'
+import { LegacyJobCard } from '@app/organisms/LegacyJobCard'
 import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
@@ -12,7 +12,7 @@ import Head from 'next/head'
 import { useCallback, useRef, useState } from 'react'
 
 import type { GetAllResponse } from '@api/resolvers/types'
-import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
+import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
 
 const INITIAL_VARIABLES = {
   pageIndex: 0,
@@ -179,7 +179,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
           )}
 
           {jobs.map(job => (
-            <JobCard key={job.id} job={job} />
+            <LegacyJobCard key={job.id} job={job} />
           ))}
 
           {isLoading && (

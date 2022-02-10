@@ -246,24 +246,24 @@ p.rf-hint-text {
 
 #Institution .fr-col-md-3 h3,
 #Institution .fr-col-md-3 h5,
-#job-detail .fr-col-md-3 h3,
-#job-detail .fr-col-md-3 h5 {
+#job-detail-main-fields .fr-col-md-3 h3,
+#job-detail-main-fields .fr-col-md-3 h5 {
   margin: 1.15rem 0 0 0;
 }
 #Institution .fr-col-md-9,
-#job-detail .fr-col-md-9 {
+#job-detail-main-fields .fr-col-md-9 {
   padding-top: 0;
 }
 @media screen and (min-width: 768px) {
   #Institution .fr-col-md-3 h3,
   #Institution .fr-col-md-3 h5,
-  #job-detail .fr-col-md-3 h3,
-  #job-detail .fr-col-md-3 h5 {
+  #job-detail-main-fields .fr-col-md-3 h3,
+  #job-detail-main-fields .fr-col-md-3 h5 {
     margin: 0;
   }
 
   #Institution .fr-col-md-9,
-  #job-detail .fr-col-md-9 {
+  #job-detail-main-fields .fr-col-md-9 {
     padding-top: 1.15rem;
   }
 }
