@@ -8,7 +8,7 @@
     "ecmaVersion": 2021,
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["/.next/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
+  "ignorePatterns": ["/.next/", "/.yarn/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",

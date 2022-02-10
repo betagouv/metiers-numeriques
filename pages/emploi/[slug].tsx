@@ -4,11 +4,14 @@ import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDate } from '@app/helpers/normalizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'
-import { JobState } from '@prisma/client'
+import { JobSource, JobState } from '@prisma/client'
 import dayjs from 'dayjs'
 import Head from 'next/head'
 
 import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
+import type { LegacyJob } from '@prisma/client'
+
+const isLegacyJobExpired = (job: LegacyJob) => !job.isMigrated && dayjs(job.limitDate).isBefore(dayjs(), 'day')
 
 type JobPageProps = {
   isExpired: boolean
@@ -292,12 +295,17 @@ export async function getStaticPaths() {
   const legacyJobs = await prisma.legacyJob.findMany({
     where: {
       NOT: {
+        source: {
+          in: [JobSource.PEP, JobSource.SKB],
+        },
         state: JobState.DRAFT,
       },
     },
   })
 
-  const paths = legacyJobs.map(({ slug }) => ({
+  const nonExpiredLegacyJobs = legacyJobs.filter(isLegacyJobExpired)
+
+  const paths = nonExpiredLegacyJobs.map(({ slug }) => ({
     params: { slug },
   }))
 
@@ -328,7 +336,7 @@ export async function getStaticProps({ params: { slug } }) {
     }
   }
 
-  const isExpired = dayjs(job.limitDate).isBefore(dayjs(), 'day')
+  const isExpired = isLegacyJobExpired(job)
 
   return {
     props: {
