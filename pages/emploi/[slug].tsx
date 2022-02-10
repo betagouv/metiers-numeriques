@@ -2,25 +2,249 @@ import getPrisma from '@api/helpers/getPrisma'
 import Link from '@app/atoms/Link'
 import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import { normalizeDate } from '@app/helpers/normalizeDate'
+import { humanizeDeepDates } from '@app/helpers/humanizeDeepDates'
 import renderMarkdown from '@app/helpers/renderMarkdown'
+import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { JobSource, JobState } from '@prisma/client'
 import dayjs from 'dayjs'
 import Head from 'next/head'
+import * as R from 'ramda'
 
-import type { LegacyJobWithRelation } from '@app/organisms/JobCard'
-import type { LegacyJob } from '@prisma/client'
+import type { JobWithRelation } from '@app/organisms/JobCard'
+import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
+import type { Job, LegacyJob } from '@prisma/client'
 
+const isJobExpired = (job: Job) => dayjs(job.expiredAt).isBefore(dayjs(), 'day')
 const isLegacyJobExpired = (job: LegacyJob) => !job.isMigrated && dayjs(job.limitDate).isBefore(dayjs(), 'day')
 
-type JobPageProps = {
-  isExpired: boolean
-  job: LegacyJobWithRelation
-}
-export default function JobPage({ isExpired, job }: JobPageProps) {
-  const pageTitle = `${job.title} | metiers.numerique.gouv.fr`
-  const pageDescription = job.mission || ''
-  const structuredData = generateJobStructuredData(job)
+type JobPageProps =
+  | {
+      data: JobWithRelation
+      isExpired: boolean
+      isNew: true
+    }
+  | {
+      data: LegacyJobWithRelation
+      isExpired: boolean
+      isNew: false
+    }
+
+export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
+  const pageTitle = `${data.title} | metiers.numerique.gouv.fr`
+
+  if (isNew) {
+    const job = data as JobWithRelation
+    const pageDescription = job.missionDescription
+    const structuredData = generateJobStructuredData(job)
+
+    return (
+      <>
+        <Head>
+          <title>{pageTitle}</title>
+
+          <meta content={pageDescription} name="description" />
+          <meta content={pageTitle} property="og:title" />
+          <meta content={pageDescription} property="og:description" />
+
+          {!isExpired && <script type="application/ld+json">{structuredData}</script>}
+        </Head>
+
+        <div className="fr-container" id="job-detail">
+          <div className="fr-mb-4w fr-mt-6w">
+            <h1>{job.title}</h1>
+          </div>
+
+          {isExpired && (
+            <div className="fr-alert fr-alert--warning fr-my-2w">
+              <p className="fr-alert__title">Cette offre a déjà été pourvue !</p>
+              <p
+                style={{
+                  paddingTop: '1rem',
+                }}
+              >
+                <Link href="/emplois">Voulez-vous rechercher un autre offre d’emploi ?</Link>
+              </p>
+            </div>
+          )}
+
+          <div className="fr-callout fr-px-0 fr-my-2w">
+            <div className="fr-callout__text fr-text--lg">
+              {!isExpired && job.updatedAt && (
+                <div className="fr-grid-row fr-grid-row--gutters">
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Mis à jour le</div>
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{job.updatedAt}</div>
+                </div>
+              )}
+
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Recruteur</div>
+                <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+                  {job.recruiter.websiteUrl && (
+                    <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
+                      {job.recruiter.fullName || job.recruiter.name}
+                    </a>
+                  )}
+                  {!job.recruiter.websiteUrl && (job.recruiter.fullName || job.recruiter.name)}
+                </div>
+              </div>
+
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Localisation</div>
+                <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+                  {`${job.address.street} ${job.address.postalCode} ${job.address.city}`}
+                </div>
+              </div>
+
+              {Boolean(job.contractTypes.length) && (
+                <div className="fr-grid-row fr-grid-row--gutters">
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Types de contrat</div>
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+                    {job.contractTypes.map(contractType => JOB_CONTRACT_TYPE_LABEL[contractType]).join(', ')}
+                  </div>
+                </div>
+              )}
+
+              {job.salaryMin && job.salaryMax && (
+                <div className="fr-grid-row fr-grid-row--gutters">
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Rémunération</div>
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+                    <p>{`Entre ${job.salaryMin}K et ${job.salaryMax}K selon l’expérience.`}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Expérience requise</div>
+                <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+                  <p>{job.seniorityInMonths} mois</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="fr-my-4w" id="job-detail-main-fields">
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-12 fr-col-md-3">
+                <h3>Mission</h3>
+              </div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.missionDescription)}</div>
+            </div>
+
+            {job.teamDescription && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3">
+                  <h3>Équipe</h3>
+                </div>
+                <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.teamDescription)}</div>
+              </div>
+            )}
+
+            {job.perksDescription && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3">
+                  <h3>Avantages</h3>
+                </div>
+                <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.perksDescription)}</div>
+              </div>
+            )}
+
+            {job.tasksDescription && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3">
+                  <h3>Votre rôle</h3>
+                </div>
+                <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.tasksDescription)}</div>
+              </div>
+            )}
+
+            {job.profileDescription && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3">
+                  <h3>Votre profil</h3>
+                </div>
+                <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.profileDescription)}</div>
+              </div>
+            )}
+
+            {job.particularitiesDescription && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3">
+                  <h3>
+                    Conditions particulières
+                    <br />
+                    du poste
+                  </h3>
+                </div>
+                <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.particularitiesDescription)}</div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div
+          className="trk-candidature fr-container fr-py-4w fr-text--lg"
+          style={{
+            backgroundColor: '#F0F0F0',
+          }}
+        >
+          {!isExpired && job.infoContact && (
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-12 fr-col-md-3">Si vous avez des questions</div>
+              <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{job.infoContact.name}</div>
+            </div>
+          )}
+
+          {!isExpired && job.applicationDescription && (
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-12 fr-col-md-3">Pour candidater</div>
+              <div
+                className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
+                style={{
+                  fontWeight: 700,
+                }}
+              >
+                {renderMarkdown(job.applicationDescription)}
+              </div>
+            </div>
+          )}
+
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col-12 fr-col-md-3">Date Limite</div>
+            <div
+              className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
+              style={{
+                color: isExpired ? 'red' : 'inherit',
+                fontWeight: 700,
+              }}
+            >
+              {job.expiredAt}
+            </div>
+          </div>
+
+          {!isExpired && job.processDescription && (
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-12 fr-col-md-3">Processus de recrutement</div>
+              <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(job.processDescription)}</div>
+            </div>
+          )}
+
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col-12 fr-col-md-3">
+              <p>Référence interne</p>
+            </div>
+            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+              <p>
+                <code>{job.id.toUpperCase()}</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  const legacyJob = data as LegacyJobWithRelation
+  const pageDescription = legacyJob.mission || ''
 
   return (
     <>
@@ -30,13 +254,11 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
         <meta content={pageDescription} name="description" />
         <meta content={pageTitle} property="og:title" />
         <meta content={pageDescription} property="og:description" />
-
-        {!isExpired && <script type="application/ld+json">{structuredData}</script>}
       </Head>
 
       <div className="fr-container" id="job-detail">
         <div className="fr-mb-4w fr-mt-6w">
-          <h1>{job.title}</h1>
+          <h1>{legacyJob.title}</h1>
         </div>
 
         {isExpired && (
@@ -54,90 +276,90 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
 
         <div className="fr-callout fr-px-0 fr-my-2w">
           <div className="fr-callout__text fr-text--lg">
-            {!isExpired && job.updatedAt && (
+            {!isExpired && legacyJob.updatedAt && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Mis à jour le</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.updatedAt}</p>
+                  <p>{legacyJob.updatedAt}</p>
                 </div>
               </div>
             )}
 
-            {job.legacyService?.legacyEntity && (
+            {legacyJob.legacyService?.legacyEntity && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Entité parente</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.legacyService.legacyEntity.fullName || job.legacyService.legacyEntity.name}</p>
+                  <p>{legacyJob.legacyService.legacyEntity.fullName || legacyJob.legacyService.legacyEntity.name}</p>
                 </div>
               </div>
             )}
-            {!job.legacyService?.legacyEntity && Boolean(job.department.length) && (
+            {!legacyJob.legacyService?.legacyEntity && Boolean(legacyJob.department.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Entité parente</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.department.join(', ')}</p>
+                  <p>{legacyJob.department.join(', ')}</p>
                 </div>
               </div>
             )}
 
-            {job.legacyService && (
+            {legacyJob.legacyService && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Entité recruteuse</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
                   <p>
-                    {job.legacyService.url && (
-                      <a href={job.legacyService.url} rel="noopener noreferrer" target="_blank">
-                        {job.legacyService.fullName || job.legacyService.name}
+                    {legacyJob.legacyService.url && (
+                      <a href={legacyJob.legacyService.url} rel="noopener noreferrer" target="_blank">
+                        {legacyJob.legacyService.fullName || legacyJob.legacyService.name}
                       </a>
                     )}
-                    {!job.legacyService.url && (job.legacyService.fullName || job.legacyService.name)}
+                    {!legacyJob.legacyService.url && (legacyJob.legacyService.fullName || legacyJob.legacyService.name)}
                   </p>
                 </div>
               </div>
             )}
-            {!job.legacyService && job.entity && (
+            {!legacyJob.legacyService && legacyJob.entity && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Entité recruteuse</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.entity}</p>
+                  <p>{legacyJob.entity}</p>
                 </div>
               </div>
             )}
 
-            {Boolean(job.locations.length) && (
+            {Boolean(legacyJob.locations.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Localisation</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  {job.locations.map(location => (
+                  {legacyJob.locations.map(location => (
                     <p key={generateKeyFromValue(location)}>{location}</p>
                   ))}
                 </div>
               </div>
             )}
 
-            {Boolean(job.openedToContractTypes.length) && (
+            {Boolean(legacyJob.openedToContractTypes.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Localisation</div>
+                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w" />
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.openedToContractTypes.join(', ')}</p>
+                  <p>{legacyJob.openedToContractTypes.join(', ')}</p>
                 </div>
               </div>
             )}
 
-            {job.salary && (
+            {legacyJob.salary && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Rémunération</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.salary}</p>
+                  <p>{legacyJob.salary}</p>
                 </div>
               </div>
             )}
 
-            {Boolean(job.experiences.length) && (
+            {Boolean(legacyJob.experiences.length) && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Expérience</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.experiences.join(', ')}</p>
+                  <p>{legacyJob.experiences.join(', ')}</p>
                 </div>
               </div>
             )}
@@ -145,34 +367,34 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
         </div>
 
         <div className="fr-my-4w" id="job-detail-main-fields">
-          {job.team && (
+          {legacyJob.team && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
                 <h3>Équipe</h3>
               </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.team)}</div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.team)}</div>
             </div>
           )}
 
-          {job.mission && (
+          {legacyJob.mission && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
                 <h3>Mission</h3>
               </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.mission)}</div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.mission)}</div>
             </div>
           )}
 
-          {job.tasks && (
+          {legacyJob.tasks && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
                 <h3>Votre rôle</h3>
               </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.tasks)}</div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.tasks)}</div>
             </div>
           )}
 
-          {job.advantages && (
+          {legacyJob.advantages && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
                 <h3>
@@ -181,20 +403,20 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
                   du poste
                 </h3>
               </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.advantages)}</div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.advantages)}</div>
             </div>
           )}
 
-          {job.profile && (
+          {legacyJob.profile && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
                 <h3>Votre profil</h3>
               </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.profile)}</div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.profile)}</div>
             </div>
           )}
 
-          {job.conditions && (
+          {legacyJob.conditions && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
                 <h3>
@@ -203,7 +425,7 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
                   du poste
                 </h3>
               </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.conditions)}</div>
+              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.conditions)}</div>
             </div>
           )}
         </div>
@@ -215,16 +437,16 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
           backgroundColor: '#F0F0F0',
         }}
       >
-        {!isExpired && job.teamInfo && (
+        {!isExpired && legacyJob.teamInfo && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Si vous avez des questions</p>
             </div>
-            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(job.teamInfo)}</div>
+            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(legacyJob.teamInfo)}</div>
           </div>
         )}
 
-        {!isExpired && job.toApply && (
+        {!isExpired && legacyJob.toApply && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Pour candidater</p>
@@ -235,21 +457,21 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
                 fontWeight: 700,
               }}
             >
-              {renderMarkdown(job.toApply)}
+              {renderMarkdown(legacyJob.toApply)}
             </div>
           </div>
         )}
 
-        {!isExpired && job.more && (
+        {!isExpired && legacyJob.more && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Pour en savoir plus</p>
             </div>
-            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(job.more)}</div>
+            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(legacyJob.more)}</div>
           </div>
         )}
 
-        {job.limitDate && (
+        {legacyJob.limitDate && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Date Limite</p>
@@ -261,17 +483,17 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
                 fontWeight: 700,
               }}
             >
-              <p>{job.limitDate}</p>
+              <p>{legacyJob.limitDate}</p>
             </div>
           </div>
         )}
 
-        {!isExpired && job.hiringProcess && (
+        {!isExpired && legacyJob.hiringProcess && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Processus de recrutement</p>
             </div>
-            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(job.hiringProcess)}</div>
+            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(legacyJob.hiringProcess)}</div>
           </div>
         )}
 
@@ -281,7 +503,7 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
           </div>
           <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
             <p>
-              <code>{job.reference}</code>
+              <code>{legacyJob.reference}</code>
             </p>
           </div>
         </div>
@@ -292,9 +514,21 @@ export default function JobPage({ isExpired, job }: JobPageProps) {
 
 export async function getStaticPaths() {
   const prisma = getPrisma()
+
+  const jobs = await prisma.job.findMany({
+    where: {
+      NOT: {
+        state: JobState.DRAFT,
+      },
+    },
+  })
+
+  const nonExpiredJobs = jobs.filter(isJobExpired)
+
   const legacyJobs = await prisma.legacyJob.findMany({
     where: {
       NOT: {
+        isMigrated: true,
         source: {
           in: [JobSource.PEP, JobSource.SKB],
         },
@@ -305,7 +539,9 @@ export async function getStaticPaths() {
 
   const nonExpiredLegacyJobs = legacyJobs.filter(isLegacyJobExpired)
 
-  const paths = nonExpiredLegacyJobs.map(({ slug }) => ({
+  const slugs = R.pipe(R.map(R.prop('slug')), R.uniq)([...nonExpiredJobs, ...nonExpiredLegacyJobs])
+
+  const paths = slugs.map(slug => ({
     params: { slug },
   }))
 
@@ -317,7 +553,41 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { slug } }) {
   const prisma = getPrisma()
-  const job = await prisma.legacyJob.findUnique({
+
+  const job = await prisma.job.findUnique({
+    include: {
+      address: true,
+      applicationContacts: true,
+      infoContact: true,
+      profession: true,
+      recruiter: true,
+    },
+    where: {
+      slug,
+    },
+  })
+
+  if (job !== null) {
+    if (job.state !== JobState.PUBLISHED) {
+      return {
+        notFound: true,
+      }
+    }
+
+    const isExpired = isJobExpired(job)
+    const jobWithHumanDates = humanizeDeepDates(job)
+
+    return {
+      props: {
+        data: jobWithHumanDates,
+        isExpired,
+        isNew: true,
+      },
+      revalidate: 300,
+    }
+  }
+
+  const legacyJob = await prisma.legacyJob.findUnique({
     include: {
       legacyService: {
         include: {
@@ -330,24 +600,20 @@ export async function getStaticProps({ params: { slug } }) {
     },
   })
 
-  if (job === null || job.state !== JobState.PUBLISHED) {
+  if (legacyJob === null || legacyJob.state !== JobState.PUBLISHED || legacyJob.isMigrated) {
     return {
       notFound: true,
     }
   }
 
-  const isExpired = isLegacyJobExpired(job)
+  const isExpired = isLegacyJobExpired(legacyJob)
+  const legacyJobWithHumanDates = humanizeDeepDates(legacyJob)
 
   return {
     props: {
+      data: legacyJobWithHumanDates,
       isExpired,
-      job: {
-        ...job,
-        createdAt: job.createdAt ? normalizeDate(job.createdAt) : null,
-        limitDate: job.limitDate ? normalizeDate(job.limitDate) : null,
-        publicationDate: job.publicationDate ? normalizeDate(job.publicationDate) : null,
-        updatedAt: job.updatedAt ? normalizeDate(job.updatedAt) : null,
-      },
+      isNew: false,
     },
     revalidate: 300,
   }

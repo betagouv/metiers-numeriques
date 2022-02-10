@@ -1,12 +1,21 @@
 import structuredData from '..'
 
+import type { Recruiter } from '@prisma/client'
+
 describe('libs/structuredData.normalizeOrganization()', () => {
   test(`with "Grand Besançon Métropole"`, () => {
-    const params = {
+    const recruiter: Recruiter = {
+      createdAt: new Date(),
+      fullName: null,
+      id: '',
+      logoFileId: null,
       name: `Grand Besançon Métropole`,
+      parentId: null,
+      updatedAt: new Date(),
+      websiteUrl: null,
     }
 
-    const result = structuredData.normalizeOrganization(params)
+    const result = structuredData.normalizeOrganization(recruiter)
 
     expect(result).toStrictEqual({
       '@type': 'Organization',
@@ -15,34 +24,23 @@ describe('libs/structuredData.normalizeOrganization()', () => {
   })
 
   test(`with "Ministère de l’économie, des finances et de la relance", "https://www.economie.gouv.fr"`, () => {
-    const params = {
+    const recruiter: Recruiter = {
+      createdAt: new Date(),
+      fullName: null,
+      id: '',
+      logoFileId: null,
       name: `Ministère de l’économie, des finances et de la relance`,
+      parentId: null,
+      updatedAt: new Date(),
       websiteUrl: `https://www.economie.gouv.fr`,
     }
 
-    const result = structuredData.normalizeOrganization(params)
+    const result = structuredData.normalizeOrganization(recruiter)
 
     expect(result).toStrictEqual({
       '@type': 'Organization',
       name: 'Ministère de l’économie, des finances et de la relance',
       sameAs: 'https://www.economie.gouv.fr',
-    })
-  })
-
-  test(`with "ARCEP", "https://www.arcep.fr", "https://www.arcep.fr/images/logo-arcep.svg`, () => {
-    const params = {
-      logoUrl: `https://www.arcep.fr/images/logo-arcep.svg`,
-      name: `ARCEP`,
-      websiteUrl: `https://www.arcep.fr`,
-    }
-
-    const result = structuredData.normalizeOrganization(params)
-
-    expect(result).toStrictEqual({
-      '@type': 'Organization',
-      logo: 'https://www.arcep.fr/images/logo-arcep.svg',
-      name: 'ARCEP',
-      sameAs: 'https://www.arcep.fr',
     })
   })
 })

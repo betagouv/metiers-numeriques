@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Edit, Trash } from 'react-feather'
+import { Edit, Eye, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Job } from '@prisma/client'
@@ -108,6 +108,15 @@ export default function AdminJobListPage() {
     router.push(`/admin/job/${id}`)
   }
 
+  const goToPreview = (id: string) => {
+    const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
+    if (job === undefined) {
+      return
+    }
+
+    window.open(`/emploi/${job.slug}`, '_blank')
+  }
+
   const handleStateSelect = (option: Common.App.SelectOption | null): void => {
     $state.current = option !== null ? option.value : ''
 
@@ -143,6 +152,13 @@ export default function AdminJobListPage() {
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
+    {
+      accent: 'secondary',
+      action: goToPreview,
+      Icon: Eye,
+      label: 'Prévisualiser cette offre',
+      type: 'action',
+    },
     {
       accent: 'primary',
       action: goToEditor,

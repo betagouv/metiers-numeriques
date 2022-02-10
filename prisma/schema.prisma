@@ -158,7 +158,7 @@ model Job {
   salaryMax                  Int?
   salaryMin                  Int?
   seniorityInMonths          Int               @default(0)
-  slug                       String
+  slug                       String            @unique
   state                      JobState          @default(DRAFT)
   createdAt                  DateTime          @default(now())
   expiredAt                  DateTime

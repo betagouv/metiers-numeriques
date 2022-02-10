@@ -1,10 +1,11 @@
-// import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDate } from '@app/helpers/normalizeDate'
+import normalizeJobDescription from '@app/helpers/normalizeJobDescription'
 import styled from 'styled-components'
 
 import Link from '../atoms/Link'
 
-import type { Address, Contact, Job, Profession, Recruiter } from '@prisma/client'
+import type { LegacyEntity, LegacyJob, LegacyService } from '@prisma/client'
 
 declare global {
   namespace JSX {
@@ -14,12 +15,12 @@ declare global {
   }
 }
 
-export type JobWithRelation = Job & {
-  address: Address
-  applicationContacts: Contact[]
-  infoContact: Contact
-  profession: Profession
-  recruiter: Recruiter
+export type LegacyJobWithRelation = LegacyJob & {
+  legacyService:
+    | (LegacyService & {
+        legacyEntity: LegacyEntity | null
+      })
+    | null
 }
 
 const Excerpt = styled.p`
@@ -34,45 +35,53 @@ const Excerpt = styled.p`
 `
 
 type LegacyJobCardProps = {
-  job: JobWithRelation
+  job: LegacyJobWithRelation
 }
 
 export function LegacyJobCard({ job }: LegacyJobCardProps) {
+  const description = normalizeJobDescription(job)
+
   return (
     <div className="fr-col-12 fr-py-2w fr-col-md-12 job-card">
       <div className="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable">
         <div className="fr-card__body">
           <div className="fr-grid-row fr-grid-row--gutters fr-pb-2w">
             <div className="fr-col-12 fr-col-md-3 hidden-md">
-              <p
-                style={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  fontSize: '1rem',
-                }}
-              >
-                <i className="ri-building-fill fr-mr-2w" />
-                {job.recruiter.websiteUrl && (
-                  <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                    {job.recruiter.fullName && <acronym title={job.recruiter.fullName}>{job.recruiter.name}</acronym>}
-                  </a>
-                )}
-                {!job.recruiter.websiteUrl && job.recruiter.fullName && (
-                  <acronym title={job.recruiter.fullName}>{job.recruiter.name}</acronym>
-                )}
-                {!job.recruiter.websiteUrl && !job.recruiter.fullName && job.recruiter.name}
-              </p>
+              {job.legacyService && (
+                <p
+                  style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    fontSize: '1rem',
+                  }}
+                >
+                  <i className="ri-building-fill fr-mr-2w" />
+                  {job.legacyService.url && (
+                    <a href={job.legacyService.url} rel="noopener noreferrer" target="_blank">
+                      {job.legacyService.fullName && (
+                        <acronym title={job.legacyService.fullName}>{job.legacyService.name}</acronym>
+                      )}
+                    </a>
+                  )}
+                  {!job.legacyService.url && job.legacyService.fullName && (
+                    <acronym title={job.legacyService.fullName}>{job.legacyService.name}</acronym>
+                  )}
+                  {!job.legacyService.url && !job.legacyService.fullName && job.legacyService.name}
+                </p>
+              )}
 
-              <p
-                style={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  fontSize: '1rem',
-                }}
-              >
-                <i className="ri-map-pin-fill fr-mr-2w" />
-                {job.address.region}
-              </p>
+              {job.legacyService && (
+                <p
+                  style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    fontSize: '1rem',
+                  }}
+                >
+                  <i className="ri-map-pin-fill fr-mr-2w" />
+                  {job.legacyService.region}
+                </p>
+              )}
 
               {job.updatedAt && (
                 <p
@@ -95,7 +104,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                 </Link>
               </h4>
 
-              <Excerpt className="fr-card__desc">{job.missionDescription}</Excerpt>
+              <Excerpt className="fr-card__desc">{description}</Excerpt>
 
               <ul
                 className="fr-tags-group"
@@ -103,7 +112,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                   marginTop: '1.15rem',
                 }}
               >
-                {/* {job.experiences
+                {job.experiences
                   .filter(experience => experience.trim().length > 0)
                   .map(experience => (
                     <li
@@ -116,9 +125,9 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                     >
                       {experience}
                     </li>
-                  ))} */}
+                  ))}
 
-                {/* {job.openedToContractTypes
+                {job.openedToContractTypes
                   .filter(openedToContractType => openedToContractType.trim().length > 0)
                   .map(openedToContractType => (
                     <li
@@ -131,7 +140,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                     >
                       {openedToContractType}
                     </li>
-                  ))} */}
+                  ))}
               </ul>
             </div>
           </div>
@@ -140,9 +149,18 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
             className="hidden-md-flex"
             style={{
               alignItems: 'flex-end',
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
             }}
           >
+            <code
+              style={{
+                backgroundColor: 'transparent',
+                opacity: 0.5,
+              }}
+            >
+              {job.reference}
+            </code>
+
             <Link
               className="trk-lire-offre fr-btn fr-btn--sm fr-fi-arrow-right-line fr-btn--icon-right"
               href={`/emploi/${job.slug}`}
