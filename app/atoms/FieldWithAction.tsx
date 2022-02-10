@@ -1,4 +1,4 @@
-import MaterialAddCircleOutlined from '@singularity/core/icons/material/MaterialAddCircleOutlined'
+import { PlusCircle } from 'react-feather'
 import styled from 'styled-components'
 
 const Box = styled.div`
@@ -27,7 +27,7 @@ type FieldWithActionProps = {
   onClick: () => void | Promise<void>
 }
 
-export function FieldWithAction({ children, Icon = MaterialAddCircleOutlined, onClick }: FieldWithActionProps) {
+export function FieldWithAction({ children, Icon = PlusCircle, onClick }: FieldWithActionProps) {
   return (
     <Box>
       {children}

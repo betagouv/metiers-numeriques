@@ -1,5 +1,5 @@
 import { theme } from '@singularity/core'
-import MaterialCloseOutlined from '@singularity/core/icons/material/MaterialCloseOutlined'
+import { X } from 'react-feather'
 import { toast, ToastBar, Toaster } from 'react-hot-toast'
 import styled from 'styled-components'
 
@@ -82,7 +82,7 @@ export function AdminToaster() {
                 <MessageBox>{message}</MessageBox>
                 {thisToast.type === 'error' && (
                   <Button onClick={() => toast.dismiss(thisToast.id)} type="button">
-                    <MaterialCloseOutlined />
+                    <X />
                   </Button>
                 )}
               </>

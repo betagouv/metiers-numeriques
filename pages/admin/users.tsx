@@ -7,14 +7,11 @@ import queries from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Card, Table, TextInput } from '@singularity/core'
-import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
-import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
-import MaterialPersonOffOutlined from '@singularity/core/icons/material/MaterialPersonOffOutlined'
-import MaterialPersonOutlined from '@singularity/core/icons/material/MaterialPersonOutlined'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Edit, Trash, UserCheck, UserX } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { User } from '@prisma/client'
@@ -144,8 +141,8 @@ export default function AdminUserListPage() {
     ...BASE_COLUMNS,
     {
       action: toggleUserIsActive,
-      IconOff: MaterialPersonOffOutlined,
-      IconOn: MaterialPersonOutlined,
+      IconOff: UserX,
+      IconOn: UserCheck,
       key: 'isActive',
       label: 'Actif·ve',
       labelOff: 'Activer ce compte',
@@ -156,14 +153,14 @@ export default function AdminUserListPage() {
     {
       accent: 'primary',
       action: goToEditor,
-      Icon: MaterialEditOutlined,
+      Icon: Edit,
       label: 'Éditer cet·te utilisateur·rice',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
-      Icon: MaterialDeleteOutlined,
+      Icon: Trash,
       label: 'Supprimer cet·te utilisateur·rice',
       type: 'action',
     },

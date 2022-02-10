@@ -8,13 +8,11 @@ import queries from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_SOURCE_LABEL, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
-import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
-import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
-import MaterialUpgradeOutlined from '@singularity/core/icons/material/MaterialUpgradeOutlined'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useRef, useState } from 'react'
+import { Box, Edit, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { LegacyJob } from '@prisma/client'
@@ -158,7 +156,7 @@ export default function AdminLegacyJobListPage() {
     {
       accent: 'warning',
       action: goToMigrator,
-      Icon: MaterialUpgradeOutlined,
+      Icon: Box,
       label: 'Migrer cette offre [LEGACY]',
       type: 'action',
       withTooltip: true,
@@ -166,14 +164,14 @@ export default function AdminLegacyJobListPage() {
     {
       accent: 'primary',
       action: goToEditor,
-      Icon: MaterialEditOutlined,
+      Icon: Edit,
       label: 'Éditer cette offre [LEGACY]',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
-      Icon: MaterialDeleteOutlined,
+      Icon: Trash,
       label: 'Supprimer cette offre [LEGACY]',
       type: 'action',
     },

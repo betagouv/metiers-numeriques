@@ -6,12 +6,11 @@ import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
 import { Button, Card, Table, TextInput } from '@singularity/core'
-import MaterialDeleteOutlined from '@singularity/core/icons/material/MaterialDeleteOutlined'
-import MaterialEditOutlined from '@singularity/core/icons/material/MaterialEditOutlined'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Edit, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Profession } from '@prisma/client'
@@ -117,14 +116,14 @@ export default function AdminProfessionListPage() {
     {
       accent: 'primary',
       action: goToEditor,
-      Icon: MaterialEditOutlined,
+      Icon: Edit,
       label: 'Éditer cette profession',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
-      Icon: MaterialDeleteOutlined,
+      Icon: Trash,
       label: 'Supprimer cette profession',
       type: 'action',
     },
