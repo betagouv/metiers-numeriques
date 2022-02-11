@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
@@ -27,7 +28,7 @@ const USER_ROLES_AS_OPTIONS: Common.App.SelectOption[] = R.pipe(
   R.map(([value, label]) => ({ label, value })),
 )(USER_ROLE_LABEL) as any
 
-export default function AdminUserEditorPage() {
+function AdminUserEditorPage() {
   const router = useRouter()
   const { id } = router.query
 
@@ -157,3 +158,5 @@ export default function AdminUserEditorPage() {
     </>
   )
 }
+
+export default withAdminHocs(AdminUserEditorPage)

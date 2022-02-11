@@ -1,5 +1,6 @@
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { AdminProgressCard } from '@app/molecules/AdminProgressCard'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
 import { useAuth } from 'nexauth'
@@ -9,7 +10,7 @@ import type { AdminProgressCardDataProps } from '@app/molecules/AdminProgressCar
 
 const createStatisticsWorker = createWorkerFactory(() => import('../../app/workers/statistics'))
 
-export default function AdminDashboardPage() {
+function AdminDashboardPage() {
   const [jobsStatisticsData, setJobsStatisticsData] = useState<AdminProgressCardDataProps[]>([])
   const auth = useAuth()
   const statisticsWorker = useWorker(createStatisticsWorker)
@@ -54,3 +55,5 @@ export default function AdminDashboardPage() {
     </>
   )
 }
+
+export default withAdminHocs(AdminDashboardPage)

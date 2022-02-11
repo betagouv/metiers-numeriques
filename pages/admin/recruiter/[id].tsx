@@ -4,6 +4,7 @@ import AdminHeader from '@app/atoms/AdminHeader'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { normalizeDate } from '@app/helpers/normalizeDate'
+import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL, USER_ROLE_LABEL } from '@common/constants'
@@ -76,7 +77,7 @@ const USER_LIST_COLUMNS: TableColumnProps[] = [
   },
 ]
 
-export default function AdminRecruiterEditorPage() {
+function AdminRecruiterEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -203,3 +204,5 @@ export default function AdminRecruiterEditorPage() {
     </>
   )
 }
+
+export default withAdminHocs(AdminRecruiterEditorPage)

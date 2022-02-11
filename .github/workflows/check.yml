@@ -59,6 +59,8 @@ jobs:
     env:
       DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
       DOMAIN_URL: http://localhost:3000
+      EDDSA_PRIVATE_KEY: ${{ secrets.EDDSA_PRIVATE_KEY }}
+      NEXT_PUBLIC_EDDSA_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EDDSA_PUBLIC_KEY }}
       NODE_ENV: production
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_ENVIRONMENT: "ci"
@@ -104,8 +106,6 @@ jobs:
         run: |
           npx playwright install-deps chromium
           npx playwright install chromium
-      - name: Prepare
-        run: yarn setup
       - name: Build
         run: yarn build
       - name: Serve
