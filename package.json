@@ -3,6 +3,7 @@
   "description": "Tout savoir sur les métiers du numérique au sein de l’État.",
   "version": "0.0.0",
   "license": "MIT",
+  "private": true,
   "engines": {
     "node": "16",
     "npm": "8"
@@ -61,7 +62,7 @@
     "lodash.debounce": "4.0.8",
     "markdown-it": "12.3.2",
     "micro": "9.3.4",
-    "nexauth": "1.0.0-beta.5",
+    "nexauth": "1.0.1",
     "next": "canary",
     "prisma": "3.9.1",
     "ramda": "0.27.1",

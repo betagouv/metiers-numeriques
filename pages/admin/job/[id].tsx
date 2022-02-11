@@ -7,6 +7,7 @@ import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
+import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
@@ -93,7 +94,7 @@ const getFormSchema = (accessToken?: string) =>
     title: Yup.string().required(`L’intitulé est obligatoire.`),
   })
 
-export default function AdminJobEditorPage() {
+function AdminJobEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -446,3 +447,5 @@ export default function AdminJobEditorPage() {
     </>
   )
 }
+
+export default withAdminHocs(AdminJobEditorPage)

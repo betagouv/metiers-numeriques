@@ -35,7 +35,10 @@ export default class TellMeDocument extends Document {
   render(): JSX.Element {
     return (
       <Html lang="fr-FR">
-        <Head />
+        <Head>
+          <link href="/dsfr.min.css" rel="stylesheet" />
+          <link href="/legacy.css" rel="stylesheet" />
+        </Head>
 
         <body>
           <Main />

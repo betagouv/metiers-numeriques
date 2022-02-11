@@ -108,7 +108,7 @@ export const query = {
 
       const args: Prisma.ContactFindManyArgs = {
         orderBy: {
-          lastName: 'asc',
+          name: 'asc',
         },
         ...paginationFilter,
         ...whereFilter,

@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
@@ -21,7 +22,7 @@ const FormSchema = Yup.object().shape({
   url: Yup.string().nullable(),
 })
 
-export default function LegacyServiceEditorPage() {
+function AdminLegacyServiceEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -148,3 +149,5 @@ export default function LegacyServiceEditorPage() {
     </>
   )
 }
+
+export default withAdminHocs(AdminLegacyServiceEditorPage)

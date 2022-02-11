@@ -4,6 +4,7 @@ import Separator from '@app/atoms/Separator'
 import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { normalizeDateForDateTimeInput } from '@app/helpers/normalizeDateForDateTimeInput'
+import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL } from '@common/constants'
@@ -34,7 +35,7 @@ const FormSchema = Yup.object().shape({
   title: Yup.string().required(`L’intitulé est obligatoire.`),
 })
 
-export default function LegacyJobEditorPage() {
+function AdminLegacyJobEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -291,3 +292,5 @@ export default function LegacyJobEditorPage() {
     </>
   )
 }
+
+export default withAdminHocs(AdminLegacyJobEditorPage)
