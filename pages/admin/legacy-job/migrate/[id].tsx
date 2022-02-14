@@ -9,7 +9,6 @@ import Title from '@app/atoms/Title'
 import { convertGeocodeJsonFeatureToPrismaAddress } from '@app/helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
-import { normalizeDateForDateTimeInput } from '@app/helpers/normalizeDateForDateTimeInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
@@ -64,7 +63,7 @@ const extractContractType = (legacyContractType: string): JobContractType | null
 const extractContractTypes = (legacyContractTypes: string[]): JobContractType[] =>
   R.pipe(R.map(extractContractType), R.reject(R.isNil))(legacyContractTypes) as JobContractType[]
 
-const getFormSchema = (accessToken?: string) =>
+const getFormSchema = () =>
   Yup.object().shape({
     addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
     applicationContactIds: Yup.array(Yup.string().nullable())
@@ -76,39 +75,6 @@ const getFormSchema = (accessToken?: string) =>
     expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
     infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
     missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
-    pepUrl: Yup.string()
-      .nullable()
-      .url(`Cette URL est mal formatée.`)
-      .test('is2XX', 'Cette URL PEP renvoie vers une page introuvable.', async value => {
-        try {
-          if (value === undefined || value === null) {
-            return true
-          }
-
-          const res = (await ky
-            .get('/api/pep', {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-              searchParams: {
-                url: value,
-              },
-            })
-            .json()) as Common.Api.ResponseBody<{
-            isValid: boolean
-          }>
-
-          if (res.hasError === false && res.data.isValid) {
-            return true
-          }
-
-          return false
-        } catch (err) {
-          handleError(err, 'pages/admin/legacy-jobs/migrate/[id].tsx > FormSchema')
-
-          return false
-        }
-      }),
     professionId: Yup.string().required(`Le métier est obligatoire.`),
     recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
     remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
@@ -139,7 +105,7 @@ function AdminLegacyJobMigratorPage() {
   const [createJob] = useMutation(queries.job.CREATE_ONE)
   const [updateLegacyJob] = useMutation(queries.legacyJob.UPDATE_ONE)
 
-  const FormSchema = useMemo(() => getFormSchema(auth.state.accessToken), [auth.state])
+  const FormSchema = useMemo(() => getFormSchema(), [auth.state])
 
   const goToList = () => {
     router.push('/admin/legacy-jobs')
@@ -165,7 +131,6 @@ function AdminLegacyJobMigratorPage() {
         'missionDescription',
         'missionVideoUrl',
         'particularitiesDescription',
-        'pepUrl',
         'perksDescription',
         'professionId',
         'processDescription',
@@ -251,7 +216,6 @@ function AdminLegacyJobMigratorPage() {
     }
 
     legacyValues.limitDate = normalizeDateForDateInput(legacyValues.limitDate)
-    legacyValues.updatedAt = normalizeDateForDateTimeInput(legacyValues.updatedAt)
 
     if (legacyValues.legacyService !== null) {
       legacyValues.legacyServiceId = legacyValues.legacyService.id
@@ -314,31 +278,6 @@ function AdminLegacyJobMigratorPage() {
 
           // eslint-disable-next-line prefer-destructuring
           newValues.addressAsPrismaAddress = foundAddresses[0]
-        }
-      }
-
-      if (typeof legacyValues.more === 'string') {
-        const maybePepUrlResult = /"(https:\/\/place-emploi-public\.gouv\.fr\/[^"]+)"/.exec(legacyValues.more)
-        if (maybePepUrlResult !== null) {
-          const searchParams = {
-            url: maybePepUrlResult[1],
-          }
-          const url = `/api/pep`
-          const res = (await ky
-            .get(url, {
-              headers: {
-                Authorization: `Bearer ${auth.state.accessToken}`,
-              },
-              searchParams,
-            })
-            .json()) as Common.Api.ResponseBody<{
-            isValid: boolean
-          }>
-
-          if (res.hasError === false && res.data.isValid) {
-            // eslint-disable-next-line prefer-destructuring
-            newValues.pepUrl = maybePepUrlResult[1]
-          }
         }
       }
 
@@ -654,15 +593,6 @@ function AdminLegacyJobMigratorPage() {
                   label="Processus de recrutement"
                   name="processDescription"
                   placeholder="En une seule phrase si possible."
-                />
-              </Field>
-
-              <Field>
-                <Form.TextInput
-                  isDisabled={isLoading}
-                  label="Lien PEP (URL)"
-                  name="pepUrl"
-                  placeholder="https://place-emploi-public.gouv.fr/offre-emploi/…"
                 />
               </Field>
             </AdminCard>
