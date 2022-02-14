@@ -4,7 +4,6 @@ import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
 import { normalizeDate } from '@app/helpers/normalizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
-import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
@@ -47,7 +46,7 @@ const BASE_COLUMNS: TableColumnProps[] = [
 
 const PER_PAGE = 10
 
-function AdminJobListPage() {
+export default function AdminJobListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const $state = useRef('')
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
@@ -211,5 +210,3 @@ function AdminJobListPage() {
     </>
   )
 }
-
-export default withAdminHocs(AdminJobListPage)

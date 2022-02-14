@@ -1,5 +1,5 @@
 import { VerticalMenu } from '@singularity/core'
-import { useAuth } from 'nexauth'
+import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import { LogOut } from 'react-feather'
 import styled from 'styled-components'
@@ -15,6 +15,7 @@ const Box = styled.div`
   width: 14rem;
   padding: ${p => p.theme.padding.layout.medium};
   position: fixed;
+  overflow-y: auto;
 
   a {
     text-decoration: none;

@@ -1,7 +1,7 @@
 import Linkton from '@app/atoms/Linkton'
 import handleError from '@common/helpers/handleError'
 import { Dialog, Field } from '@singularity/core'
-import { NexauthError, useAuth } from 'nexauth'
+import { NexauthError, useAuth } from 'nexauth/client'
 import { useState } from 'react'
 import * as Yup from 'yup'
 

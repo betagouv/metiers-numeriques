@@ -10,7 +10,6 @@ import { convertGeocodeJsonFeatureToPrismaAddress } from '@app/helpers/convertGe
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
-import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
@@ -20,7 +19,7 @@ import { Field, Select, TextInput } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
 import ky from 'ky-universal'
-import { useAuth } from 'nexauth'
+import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -83,7 +82,7 @@ const getFormSchema = () =>
     title: Yup.string().required(`L’intitulé est obligatoire.`),
   })
 
-function AdminLegacyJobMigratorPage() {
+export default function AdminLegacyJobMigratorPage() {
   const router = useRouter()
   const { id } = router.query
 
@@ -609,5 +608,3 @@ function AdminLegacyJobMigratorPage() {
     </>
   )
 }
-
-export default withAdminHocs(AdminLegacyJobMigratorPage)
