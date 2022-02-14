@@ -1,4 +1,7 @@
+import { Hero } from '@app/atoms/Hero'
+import { LinkAsButton } from '@app/atoms/LinkAsButton'
 import Head from 'next/head'
+import Image from 'next/image'
 
 export default function HomePage() {
   const pageTitle = 'Découvrez les métiers numériques de l’État | metiers.numerique.gouv.fr'
@@ -14,33 +17,37 @@ export default function HomePage() {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <main className="fr-mt-4w" id="contenu" role="main">
-        <div className="fr-container">
-          <div className="fr-grid-row fr-grid-row--center fr-grid-row--middle">
-            <div className="fr-col-md-5 fr-col-xs-6w fr-px-6w fr-my-5w">
-              <h1>L’État Numérique : Des projets à découvrir, des missions à pourvoir !</h1>
-              <p className="text-grey">
-                Découvrez les projets numériques au sein des ministères et entités numériques, rencontrez des acteurs et
-                co-construisons ensemble l’État Numérique de demain !
-              </p>
-              <div className="fr-mt-4w">
-                <a className="fr-btn fr-btn--secondary btn-home--secondary" href="/institutions">
-                  Découvrir
-                </a>
-                <a className="fr-btn btn-home" href="/emplois">
-                  Candidater
-                </a>
-              </div>
-            </div>
-            <div className="fr-col-md-5 fr-col-xs-6">
-              <div>
-                <img alt="L’État Numérique" src="/images/main-illu.svg" />
-              </div>
-            </div>
+      <main
+        style={{
+          backgroundColor: '#f4f6fe',
+        }}
+      >
+        <Hero
+          illustrationPath="/images/illu-proud-coder.svg"
+          title={
+            <>
+              L’État Numérique :<br />
+              Des projets à découvrir,
+              <br />
+              des missions à pourvoir !
+            </>
+          }
+        >
+          <p className="text-grey">
+            Découvrez les projets numériques au sein des ministères et entités numériques, rencontrez des acteurs et
+            co-construisons ensemble l’État Numérique de demain !
+          </p>
+          <div className="fr-mt-6w">
+            <LinkAsButton accent="moutarde" href="/institutions" isLight isSecondary size="large">
+              Découvrir
+            </LinkAsButton>
+            <LinkAsButton accent="moutarde" className="fr-ml-4w" href="/emplois" isLight size="large">
+              Candidater
+            </LinkAsButton>
           </div>
-        </div>
+        </Hero>
 
-        <section className="fr-py-8w home-bg--alt">
+        <section className="fr-py-4w home-bg--alt">
           <div className="fr-container" id="decouvrir">
             <div className="fr-fr-grid-row fr-grid-row--center rf-centered">
               <div className="fr-mb-6w fr-px-6w">
@@ -66,7 +73,13 @@ export default function HomePage() {
             <div className="fr-grid-row fr-mt-4v">
               <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
                 <div className="rf-centered fr-mx-3w">
-                  <img alt="Icone d’information" className="card-icon " src="/images/picto-metiersnumeriques-1.png" />
+                  <img
+                    alt="Icone d’information"
+                    className="card-icon"
+                    height={90}
+                    src="/images/picto-metiersnumeriques-1.png"
+                    width={90}
+                  />
                   <h4>Plus de 200</h4>
                   <p className="fr-text--md">nouvelles offres d’emplois à pourvoir chaque mois !</p>
                 </div>
@@ -74,7 +87,13 @@ export default function HomePage() {
 
               <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
                 <div className="rf-centered fr-mx-3w">
-                  <img alt="Icone de montagne" className="card-icon " src="/images/picto-metiersnumeriques-2.png" />
+                  <Image
+                    alt="Icone de montagne"
+                    className="card-icon"
+                    height={90}
+                    src="/images/picto-metiersnumeriques-2.png"
+                    width={90}
+                  />
                   <h4>Des missions ambitieuses &amp; challengeantes</h4>
                   <p className="fr-text--md" />
                 </div>
@@ -82,10 +101,12 @@ export default function HomePage() {
 
               <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
                 <div className="rf-centered fr-mx-3w">
-                  <img
+                  <Image
                     alt="Icone de main avec un coeur"
-                    className="card-icon "
+                    className="card-icon"
+                    height={90}
                     src="/images/picto-metiersnumeriques-3.png"
+                    width={90}
                   />
                   <h4>Des projets qui ont de l’impact</h4>
                   <p className="fr-text--md">&amp; touchent des milliers d’utilisateurs</p>
@@ -94,10 +115,12 @@ export default function HomePage() {
 
               <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
                 <div className="rf-centered fr-mx-3w">
-                  <img
+                  <Image
                     alt="Icone d’avion qui décole"
-                    className="card-icon "
+                    className="card-icon"
+                    height={90}
                     src="/images/picto-metiersnumeriques-4.png"
+                    width={90}
                   />
                   <h4>Un univers pérenne &amp; plein d’avenir</h4>
                   <p className="fr-text--md" />
@@ -106,10 +129,12 @@ export default function HomePage() {
 
               <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
                 <div className="rf-centered fr-mx-3w">
-                  <img
+                  <Image
                     alt="Icone de quatres flèches"
-                    className="card-icon "
+                    className="card-icon"
+                    height={90}
                     src="/images/picto-metiersnumeriques-5.png"
+                    width={90}
                   />
                   <h4>Des secteurs très différents</h4>
                   <p className="fr-text--md">santé, éducation, économie, finance...</p>
@@ -118,7 +143,13 @@ export default function HomePage() {
 
               <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
                 <div className="rf-centered fr-mx-3w">
-                  <img alt="Icone d’ampoule" className="card-icon " src="/images/picto-metiersnumeriques-6.png" />
+                  <Image
+                    alt="Icone d’ampoule"
+                    className="card-icon"
+                    height={90}
+                    src="/images/picto-metiersnumeriques-6.png"
+                    width={90}
+                  />
                   <h4>Des métiers divers &amp; très variés</h4>
                   <p className="fr-text--md">pour tous les profils</p>
                 </div>
@@ -141,9 +172,9 @@ export default function HomePage() {
           </div>
           <div className="fr-container">
             <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center fr-mt-4v fr-pb-4v">
-              <div className="stories fr-col-9 fr-col-xs-6 fr-my-5w">
-                <img alt="Marine" className="stories-picture fr-my-3w" src="/images/marine-boudeau.png" />
-                <div className="fr-col-8 fr-col-xs-6 fr-mx-6w">
+              <div className="fr-col-9 fr-col-xs-6 fr-my-5w">
+                <Image alt="Marine" height={200} src="/images/marine-boudeau.png" width={200} />
+                <div className="fr-col-12 fr-col-xs-6 fr-mx-6w">
                   <h4 className="stories-name">Marine</h4>
                   <h5 className="stories-title">Responsable du pôle design - DINUM</h5>
                   <p className="stories-text">
@@ -161,7 +192,7 @@ export default function HomePage() {
                   </a>
                 </div>
               </div>
-              <div className="stories fr-col-9 fr-col-xs-6  fr-my-5w">
+              <div className="fr-col-9 fr-col-xs-6 fr-my-5w">
                 <div className="fr-col-8 fr-col-xs-6 fr-mx-6w">
                   <h4 className="stories-name">Laetitia</h4>
                   <h5 className="stories-title">
@@ -182,10 +213,10 @@ export default function HomePage() {
                     Voir la vidéo
                   </a>
                 </div>
-                <img alt="Laetitia" className="stories-picture fr-my-3w" src="/images/laetitia-herbin-collot.png" />
+                <Image alt="Laetitia" height={200} src="/images/laetitia-herbin-collot.png" width={200} />
               </div>
-              <div className="stories fr-col-9 fr-col-xs-6  fr-my-5w">
-                <img alt="Pierre" className="stories-picture fr-my-3w" src="/images/pierre-dubreuil.png" />
+              <div className="fr-col-9 fr-col-xs-6 fr-my-5w">
+                <Image alt="Pierre" height={200} src="/images/pierre-dubreuil.png" width={200} />
                 <div className="fr-col-8 fr-col-xs-6 fr-mx-6w">
                   <h4 className="stories-name">Pierre</h4>
                   <h5 className="stories-title">Chef de l’unité Régulation par la donnée - ARCEP</h5>

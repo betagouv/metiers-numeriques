@@ -10,6 +10,6 @@ test.describe('Sanity Check', () => {
   test('Home', async ({ page }) => {
     await page.goto('http://localhost:3000')
 
-    await expect(page.locator('h1')).toHaveText('L’État Numérique : Des projets à découvrir, des missions à pourvoir !')
+    await expect(page.locator('h1')).toHaveText('L’État Numérique :Des projets à découvrir,des missions à pourvoir !')
   })
 })

@@ -9,7 +9,7 @@ export default function PrivacyPage() {
         <title>{pageTitle}</title>
       </Head>
 
-      <main id="contenu" role="main">
+      <main role="main">
         <div className="fr-container fr-my-4w">
           <h1>Données personnelles et cookies</h1>
 

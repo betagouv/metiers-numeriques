@@ -8,7 +8,8 @@ export default function LegalNoticesPage() {
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <main id="contenu" role="main">
+
+      <main role="main">
         <div className="fr-container fr-my-4w">
           <h1>Mentions légales</h1>
 

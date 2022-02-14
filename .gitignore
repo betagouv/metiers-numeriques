@@ -141,6 +141,7 @@ dist
 !/e2e/states/README.md
 
 /public/fonts/*
+/public/dsfr.css
 /public/dsfr.min.css
 /public/sitemap.xml
 
