@@ -1,7 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { FILE_TYPE } from '@common/constants'
@@ -19,7 +18,7 @@ const FormSchema = Yup.object().shape({
   url: Yup.string().url(`Cette URL est mal formatée.`).required(`L’url est obligatoire.`),
 })
 
-function AdminFileEditorPage() {
+export default function AdminFileEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -108,5 +107,3 @@ function AdminFileEditorPage() {
     </>
   )
 }
-
-export default withAdminHocs(AdminFileEditorPage)

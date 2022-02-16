@@ -1,7 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
@@ -33,7 +32,7 @@ const BASE_COLUMNS: TableColumnProps[] = [
 
 const PER_PAGE = 10
 
-function AdminLegacyJobListPage() {
+export default function AdminLegacyJobListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
@@ -158,5 +157,3 @@ function AdminLegacyJobListPage() {
     </>
   )
 }
-
-export default withAdminHocs(AdminLegacyJobListPage)

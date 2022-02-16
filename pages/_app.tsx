@@ -1,24 +1,50 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import AdminBody from '@app/atoms/AdminBody'
+import AdminMain from '@app/atoms/AdminMain'
+import { WithGraphql } from '@app/hocs/WithGraphql'
+import AdminMenu from '@app/molecules/AdminMenu'
+import { AdminToaster } from '@app/molecules/AdminToaster'
 import Footer from '@app/molecules/Footer'
 import Header from '@app/molecules/Header'
+import Loader from '@app/molecules/Loader'
+import SignInDialog from '@app/organisms/SignInDialog'
 import { CrispScript } from '@app/scripts/CrispScript'
 import { MatomoScript } from '@app/scripts/MatomoScript'
+import { GlobalStyle, ThemeProvider } from '@singularity/core'
+import { AuthProvider } from 'nexauth/client'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { createGlobalStyle } from 'styled-components'
 
-const graphqlClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  uri: '/api/graphql',
-})
+import '@fontsource/poppins/300.css'
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/poppins/700.css'
+
+const GlobalStyleCustom = createGlobalStyle`
+  html, body {
+    height: 100%;
+  }
+
+  body,
+  #__next {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    min-width: 0;
+ }
+
+  [href] {
+    box-shadow: none;
+  }
+`
+
+const PRIVATE_PATHS = [/^\/admin($|\/)/]
 
 export default function MetiersNumeriquesApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
 
   const isAdministrationSpace = router.pathname === '/admin' || router.pathname.startsWith('/admin/')
-
-  if (isAdministrationSpace) {
-    return <Component {...pageProps} />
-  }
 
   return (
     <>
@@ -42,20 +68,42 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <meta content="/images/main-illu.png" property="og:image" />
       </Head>
 
-      <ApolloProvider client={graphqlClient}>
-        <Header />
-        <main>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-      </ApolloProvider>
+      <ThemeProvider>
+        <GlobalStyle />
+        <GlobalStyleCustom />
 
-      <>
-        {/* <script defer src="/js/matomo.js" type="text/javascript" /> */}
-        <MatomoScript />
-        <CrispScript />
-      </>
+        <AuthProvider Loader={Loader} privatePaths={PRIVATE_PATHS} SignInDialog={SignInDialog}>
+          <WithGraphql>
+            {!isAdministrationSpace && (
+              <>
+                <Header />
+                <main>
+                  {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                  <Component {...pageProps} />
+                </main>
+                <Footer />
+
+                <>
+                  <MatomoScript />
+                  <CrispScript />
+                </>
+              </>
+            )}
+
+            {isAdministrationSpace && (
+              <AdminBody>
+                <AdminMenu />
+
+                <AdminMain>
+                  <Component {...pageProps} />
+
+                  <AdminToaster />
+                </AdminMain>
+              </AdminBody>
+            )}
+          </WithGraphql>
+        </AuthProvider>
+      </ThemeProvider>
     </>
   )
 }

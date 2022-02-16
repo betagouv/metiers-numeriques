@@ -3,7 +3,6 @@ import AdminHeader from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
 import { normalizeDate } from '@app/helpers/normalizeDate'
-import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_SOURCE_LABEL, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
@@ -52,7 +51,7 @@ const BASE_COLUMNS: TableColumnProps[] = [
 
 const PER_PAGE = 10
 
-function AdminLegacyJobListPage() {
+export default function AdminLegacyJobListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const $source = useRef('')
   const $state = useRef('')
@@ -214,5 +213,3 @@ function AdminLegacyJobListPage() {
     </>
   )
 }
-
-export default withAdminHocs(AdminLegacyJobListPage)

@@ -1,7 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { withAdminHocs } from '@app/hocs/withAdminHocs'
 import { Form } from '@app/molecules/Form'
 import queries from '@app/queries'
 import { Card, Field } from '@singularity/core'
@@ -18,7 +17,7 @@ const FormSchema = Yup.object().shape({
   name: Yup.string().required(`Le nom est obligatoire.`),
 })
 
-function AdminContactEditorPage() {
+export default function AdminContactEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -127,5 +126,3 @@ function AdminContactEditorPage() {
     </>
   )
 }
-
-export default withAdminHocs(AdminContactEditorPage)
