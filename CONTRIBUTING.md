@@ -28,7 +28,7 @@
 Then run:
 
 ```sh
-git clone https://github.com/betagouv/tell-me.git
+git clone https://github.com/betagouv/metiers-numeriques.git
 cd tell-me
 yarn
 yarn setup
