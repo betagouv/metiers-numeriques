@@ -69,9 +69,6 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
       </Head>
 
       <ThemeProvider>
-        <GlobalStyle />
-        <GlobalStyleCustom />
-
         <AuthProvider Loader={Loader} privatePaths={PRIVATE_PATHS} SignInDialog={SignInDialog}>
           <WithGraphql>
             {!isAdministrationSpace && (
@@ -91,15 +88,20 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
             )}
 
             {isAdministrationSpace && (
-              <AdminBody>
-                <AdminMenu />
+              <>
+                <GlobalStyle />
+                <GlobalStyleCustom />
 
-                <AdminMain>
-                  <Component {...pageProps} />
+                <AdminBody>
+                  <AdminMenu />
 
-                  <AdminToaster />
-                </AdminMain>
-              </AdminBody>
+                  <AdminMain>
+                    <Component {...pageProps} />
+
+                    <AdminToaster />
+                  </AdminMain>
+                </AdminBody>
+              </>
             )}
           </WithGraphql>
         </AuthProvider>
