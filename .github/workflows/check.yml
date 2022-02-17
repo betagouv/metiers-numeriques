@@ -1,7 +1,6 @@
 name: Check
 
 on:
-  pull_request:
   pull_request_target:
 
 jobs:
@@ -20,6 +19,7 @@ jobs:
     # needs:
     #   - approve
     # if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
+    if: ${{ github.event.event_name != 'pull_request_target' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
