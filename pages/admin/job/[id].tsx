@@ -7,7 +7,7 @@ import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
@@ -245,16 +245,16 @@ export default function AdminJobEditorPage() {
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
-      <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={JobFormSchema}>
+      <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={JobFormSchema}>
         <AdminCard isFirst>
           <Subtitle>Informations essentielles</Subtitle>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
           </Field>
 
           <DoubleField>
-            <Form.Select
+            <AdminForm.Select
               isDisabled={isLoading}
               label="État *"
               name="state"
@@ -262,13 +262,13 @@ export default function AdminJobEditorPage() {
               placeholder="…"
             />
 
-            <Form.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
           </DoubleField>
 
           <DoubleField>
-            <Form.RecruiterSelect isDisabled={isLoading} label="Recruteur *" name="recruiterId" placeholder="…" />
+            <AdminForm.RecruiterSelect isDisabled={isLoading} label="Recruteur *" name="recruiterId" placeholder="…" />
 
-            <Form.Select
+            <AdminForm.Select
               isDisabled={isLoading}
               isMulti
               label="Types de contrat *"
@@ -279,14 +279,14 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <DoubleField>
-            <Form.TextInput
+            <AdminForm.TextInput
               isDisabled={isLoading}
               label="Années d’expérience requises (0 si ouvert aux débutant·es) *"
               name="seniorityInYears"
               type="number"
             />
 
-            <Form.Select
+            <AdminForm.Select
               isDisabled={isLoading}
               label="Télétravail possible *"
               name="remoteStatus"
@@ -296,9 +296,9 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <DoubleField>
-            <Form.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
+            <AdminForm.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
 
-            <Form.ContactSelect
+            <AdminForm.ContactSelect
               isDisabled={isLoading}
               label="Contact unique pour les questions *"
               name="infoContactId"
@@ -307,7 +307,7 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <DoubleField>
-            <Form.ContactSelect
+            <AdminForm.ContactSelect
               isDisabled={isLoading}
               isMulti
               label="Contacts pour l’envoi des candidatures **"
@@ -315,7 +315,7 @@ export default function AdminJobEditorPage() {
               placeholder="…"
             />
 
-            <Form.TextInput
+            <AdminForm.TextInput
               isDisabled={isLoading}
               label="ou site officiel de candidature (URL) **"
               name="applicationWebsiteUrl"
@@ -324,11 +324,11 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <Field>
-            <Form.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
+            <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
           </Field>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Mission *"
               name="missionDescription"
@@ -341,18 +341,22 @@ export default function AdminJobEditorPage() {
           <Subtitle>Informations recommandées</Subtitle>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Vidéo (URL YouTube ou DailyMotion)" name="missionVideoUrl" />
+            <AdminForm.TextInput
+              isDisabled={isLoading}
+              label="Vidéo (URL YouTube ou DailyMotion)"
+              name="missionVideoUrl"
+            />
           </Field>
 
           <DoubleField>
-            <Form.TextInput
+            <AdminForm.TextInput
               isDisabled={isLoading}
               label="Rémunération minimum (annuelle brute)"
               name="salaryMin"
               type="number"
             />
 
-            <Form.TextInput
+            <AdminForm.TextInput
               isDisabled={isLoading}
               label="Rémunération maximum (annuelle brute)"
               name="salaryMax"
@@ -361,7 +365,7 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="L'équipe"
               name="teamDescription"
@@ -370,7 +374,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Avantages"
               name="perksDescription"
@@ -383,7 +387,7 @@ export default function AdminJobEditorPage() {
           <Subtitle>Informations complémentaires</Subtitle>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Contexte"
               name="contextDescription"
@@ -392,7 +396,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Profil idéal de candidat·e"
               name="profileDescription"
@@ -401,7 +405,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Tâches"
               name="tasksDescription"
@@ -410,7 +414,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <Form.Textarea
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Conditions particulières"
               name="particularitiesDescription"
@@ -419,7 +423,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <Form.TextInput
+            <AdminForm.TextInput
               isDisabled={isLoading}
               label="Processus de recrutement"
               name="processDescription"
@@ -429,12 +433,12 @@ export default function AdminJobEditorPage() {
         </AdminCard>
 
         <AdminCard>
-          <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+          <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
             Annuler
-          </Form.Cancel>
-          <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+          </AdminForm.Cancel>
+          <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
         </AdminCard>
-      </Form>
+      </AdminForm>
     </>
   )
 }

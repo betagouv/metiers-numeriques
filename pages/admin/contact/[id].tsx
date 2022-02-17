@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { Card, Field } from '@singularity/core'
 import { useRouter } from 'next/router'
@@ -94,34 +94,34 @@ export default function AdminContactEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Email *" name="email" type="email" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Email *" name="email" type="email" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Téléphone" name="phone" type="tel" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Téléphone" name="phone" type="tel" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Poste" name="position" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Poste" name="position" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Notes" name="note" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Notes" name="note" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )

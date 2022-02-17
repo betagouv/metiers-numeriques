@@ -10,7 +10,7 @@ import { convertGeocodeJsonFeatureToPrismaAddress } from '@app/helpers/convertGe
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
@@ -278,7 +278,7 @@ export default function AdminLegacyJobMigratorPage() {
             width: '50%',
           }}
         >
-          <Form
+          <AdminForm
             key={generateKeyFromValue(initialLegacyValues)}
             initialValues={initialLegacyValues}
             onSubmit={() => undefined}
@@ -287,25 +287,25 @@ export default function AdminLegacyJobMigratorPage() {
               <Subtitle>Anciens champs</Subtitle>
 
               {/* <Field>
-              <Form.TextInput isDisabled label="Référence interne" name="reference" />
+              <AdminForm.TextInput isDisabled label="Référence interne" name="reference" />
             </Field> */}
 
               {/* <Field>
-              <Form.TextInput isDisabled label="Slug" name="slug" />
+              <AdminForm.TextInput isDisabled label="Slug" name="slug" />
             </Field> */}
 
               <Field>
-                <Form.TextInput isDisabled label="Intitulé *" name="title" />
+                <AdminForm.TextInput isDisabled label="Intitulé *" name="title" />
               </Field>
 
               <DoubleField>
-                <Form.Select isDisabled label="État *" name="state" options={JOB_STATES_AS_OPTIONS} />
+                <AdminForm.Select isDisabled label="État *" name="state" options={JOB_STATES_AS_OPTIONS} />
 
-                <Form.TextInput isDisabled label="Expire le *" name="limitDate" type="date" />
+                <AdminForm.TextInput isDisabled label="Expire le *" name="limitDate" type="date" />
               </DoubleField>
 
               <DoubleField>
-                <Form.Select
+                <AdminForm.Select
                   isDisabled
                   label="Service (entité recruteuse)"
                   name="legacyServiceId"
@@ -344,56 +344,56 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.TextInput isDisabled label="Salaire" name="salary" />
+                <AdminForm.TextInput isDisabled label="Salaire" name="salary" />
               </Field>
 
               <Field>
-                <Form.Textarea isDisabled label="Mission" name="mission" />
+                <AdminForm.Textarea isDisabled label="Mission" name="mission" />
               </Field>
             </AdminCard>
 
             <AdminCard>
               <Field>
-                <Form.Textarea isDisabled label="Si vous avez des questions" name="teamInfo" />
+                <AdminForm.Textarea isDisabled label="Si vous avez des questions" name="teamInfo" />
               </Field>
 
               <Field>
-                <Form.Textarea isDisabled label="Pour candidater" name="toApply" />
+                <AdminForm.Textarea isDisabled label="Pour candidater" name="toApply" />
               </Field>
             </AdminCard>
 
             <AdminCard>
               {/* <Field>
-              <Form.Textarea isDisabled label="Équipe" name="team" />
+              <AdminForm.Textarea isDisabled label="Équipe" name="team" />
             </Field> */}
 
               {/* <Field>
-              <Form.Textarea isDisabled label="Ce que vous ferez" name="tasks" />
+              <AdminForm.Textarea isDisabled label="Ce que vous ferez" name="tasks" />
             </Field> */}
 
               {/* <Field>
-              <Form.Textarea isDisabled label="Les plus du poste" name="advantages" />
+              <AdminForm.Textarea isDisabled label="Les plus du poste" name="advantages" />
             </Field> */}
 
               {/* <Field>
-              <Form.Textarea isDisabled label="Conditions particulière du poste" name="conditions" />
+              <AdminForm.Textarea isDisabled label="Conditions particulière du poste" name="conditions" />
             </Field> */}
 
               {/* <Field>
-              <Form.Textarea isDisabled label="Votre profil" name="profile" />
+              <AdminForm.Textarea isDisabled label="Votre profil" name="profile" />
             </Field> */}
 
               {/* <Separator /> */}
 
               <Field>
-                <Form.Textarea isDisabled label="Pour en savoir plus" name="more" />
+                <AdminForm.Textarea isDisabled label="Pour en savoir plus" name="more" />
               </Field>
 
               <Field>
-                <Form.Textarea isDisabled label="Processus de recrutement" name="hiringProcess" />
+                <AdminForm.Textarea isDisabled label="Processus de recrutement" name="hiringProcess" />
               </Field>
             </AdminCard>
-          </Form>
+          </AdminForm>
         </Flex>
 
         <Flex
@@ -403,7 +403,7 @@ export default function AdminLegacyJobMigratorPage() {
             width: '50%',
           }}
         >
-          <Form
+          <AdminForm
             key={generateKeyFromValue(initialValues)}
             initialValues={initialValues || {}}
             onSubmit={migrateAndGoToList}
@@ -413,11 +413,11 @@ export default function AdminLegacyJobMigratorPage() {
               <Subtitle>Nouveaux champs</Subtitle>
 
               <Field>
-                <Form.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
+                <AdminForm.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
               </Field>
 
               <DoubleField>
-                <Form.Select
+                <AdminForm.Select
                   isDisabled={isLoading}
                   label="État *"
                   name="state"
@@ -425,13 +425,18 @@ export default function AdminLegacyJobMigratorPage() {
                   placeholder="…"
                 />
 
-                <Form.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
+                <AdminForm.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
               </DoubleField>
 
               <DoubleField>
-                <Form.RecruiterSelect isDisabled={isLoading} label="Recruteur *" name="recruiterId" placeholder="…" />
+                <AdminForm.RecruiterSelect
+                  isDisabled={isLoading}
+                  label="Recruteur *"
+                  name="recruiterId"
+                  placeholder="…"
+                />
 
-                <Form.Select
+                <AdminForm.Select
                   isDisabled={isLoading}
                   isMulti
                   label="Types de contrat *"
@@ -442,14 +447,14 @@ export default function AdminLegacyJobMigratorPage() {
               </DoubleField>
 
               <DoubleField>
-                <Form.TextInput
+                <AdminForm.TextInput
                   isDisabled={isLoading}
                   label="Années d’expérience (0 si débutant·e) *"
                   name="seniorityInYears"
                   type="number"
                 />
 
-                <Form.Select
+                <AdminForm.Select
                   isDisabled={isLoading}
                   label="Télétravail possible *"
                   name="remoteStatus"
@@ -459,24 +464,29 @@ export default function AdminLegacyJobMigratorPage() {
               </DoubleField>
 
               <DoubleField>
-                <Form.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
+                <AdminForm.ProfessionSelect
+                  isDisabled={isLoading}
+                  label="Métier *"
+                  name="professionId"
+                  placeholder="…"
+                />
 
-                <Form.Select isDisabled label="Étiquettes *" name="tagIds" options={[]} placeholder="…" />
+                <AdminForm.Select isDisabled label="Étiquettes *" name="tagIds" options={[]} placeholder="…" />
               </DoubleField>
 
               <Field>
-                <Form.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
+                <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
               </Field>
 
               <DoubleField>
-                <Form.TextInput
+                <AdminForm.TextInput
                   isDisabled={isLoading}
                   label="Rémunération minimum (annuelle brute)"
                   name="salaryMin"
                   type="number"
                 />
 
-                <Form.TextInput
+                <AdminForm.TextInput
                   isDisabled={isLoading}
                   label="Rémunération maximum (annuelle brute)"
                   name="salaryMax"
@@ -485,7 +495,7 @@ export default function AdminLegacyJobMigratorPage() {
               </DoubleField>
 
               <Field>
-                <Form.Textarea
+                <AdminForm.Textarea
                   isDisabled={isLoading}
                   label="Mission *"
                   name="missionDescription"
@@ -496,7 +506,7 @@ export default function AdminLegacyJobMigratorPage() {
 
             <AdminCard>
               <Field>
-                <Form.ContactSelect
+                <AdminForm.ContactSelect
                   isDisabled={isLoading}
                   label="Contact unique pour les questions *"
                   name="infoContactId"
@@ -505,7 +515,7 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.ContactSelect
+                <AdminForm.ContactSelect
                   isDisabled={isLoading}
                   isMulti
                   label="Contacts pour l’envoi des candidatures **"
@@ -515,7 +525,7 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.TextInput
+                <AdminForm.TextInput
                   isDisabled={isLoading}
                   label="ou site officiel de candidure (URL) **"
                   name="applicationWebsiteUrl"
@@ -526,7 +536,7 @@ export default function AdminLegacyJobMigratorPage() {
 
             <AdminCard>
               <Field>
-                <Form.Textarea
+                <AdminForm.Textarea
                   isDisabled={isLoading}
                   label="L'équipe"
                   name="teamDescription"
@@ -535,7 +545,7 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.Textarea
+                <AdminForm.Textarea
                   isDisabled={isLoading}
                   label="Avantages"
                   name="perksDescription"
@@ -546,7 +556,7 @@ export default function AdminLegacyJobMigratorPage() {
 
             <AdminCard>
               <Field>
-                <Form.Textarea
+                <AdminForm.Textarea
                   isDisabled={isLoading}
                   label="Profil idéal de candidat·e"
                   name="profileDescription"
@@ -555,7 +565,7 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.Textarea
+                <AdminForm.Textarea
                   isDisabled={isLoading}
                   label="Tâches"
                   name="tasksDescription"
@@ -564,7 +574,7 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.Textarea
+                <AdminForm.Textarea
                   isDisabled={isLoading}
                   label="Conditions particulières"
                   name="particularitiesDescription"
@@ -573,7 +583,7 @@ export default function AdminLegacyJobMigratorPage() {
               </Field>
 
               <Field>
-                <Form.TextInput
+                <AdminForm.TextInput
                   isDisabled={isLoading}
                   label="Processus de recrutement"
                   name="processDescription"
@@ -583,12 +593,12 @@ export default function AdminLegacyJobMigratorPage() {
             </AdminCard>
 
             <AdminCard>
-              <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+              <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
                 Annuler
-              </Form.Cancel>
-              <Form.Submit isDisabled={isLoading}>Migrer</Form.Submit>
+              </AdminForm.Cancel>
+              <AdminForm.Submit isDisabled={isLoading}>Migrer</AdminForm.Submit>
             </AdminCard>
-          </Form>
+          </AdminForm>
         </Flex>
       </Flex>
     </>

@@ -1,20 +1,18 @@
-import { Button } from '@singularity/core'
 import { useFormikContext } from 'formik'
-import { MouseEventHandler } from 'react'
+import styled from 'styled-components'
 
-type CancelProps = {
-  children: any
-  isDisabled?: boolean
+import type { ButtonHTMLAttributes, MouseEventHandler } from 'react'
+
+const StyledButton = styled.button``
+
+type CancelProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   onClick: MouseEventHandler<HTMLButtonElement>
 }
-export function Cancel({ children, isDisabled = false, onClick }: CancelProps) {
+
+export function Cancel({ disabled, onClick, ...props }: CancelProps) {
   const { isSubmitting } = useFormikContext<any>()
 
-  const isControlledDisabled = isDisabled || isSubmitting
+  const isControlledDisabled = disabled || isSubmitting
 
-  return (
-    <Button accent="secondary" disabled={isControlledDisabled} onClick={onClick} style={{ marginRight: '1rem' }}>
-      {children}
-    </Button>
-  )
+  return <StyledButton className="fr-btn" disabled={isControlledDisabled} onClick={onClick} type="button" {...props} />
 }

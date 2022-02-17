@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { Card, Field } from '@singularity/core'
 import { useRouter } from 'next/router'
@@ -106,80 +106,80 @@ export default function AdminLegacyInstitutionEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           {!isNew && (
             <Field>
-              <Form.TextInput isDisabled label="Slug" name="slug" />
+              <AdminForm.TextInput isDisabled label="Slug" name="slug" />
             </Field>
           )}
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom court *" name="title" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom court *" name="title" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Raison d’être" name="motivation" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Raison d’être" name="motivation" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Valeurs" name="value" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Valeurs" name="value" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Nos enjeux" name="challenges" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Nos enjeux" name="challenges" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Missions" name="missions" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Missions" name="missions" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Projets" name="project" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Projets" name="project" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Notre organisation" name="organization" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Notre organisation" name="organization" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Nos agents en parlent" name="testimonial" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Nos agents en parlent" name="testimonial" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Ton profil" name="profile" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Ton profil" name="profile" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Processus de recrutement" name="hiringProcess" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Processus de recrutement" name="hiringProcess" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Nous rejoindre" name="joinTeam" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Nous rejoindre" name="joinTeam" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Chiffres-clés" name="keyNumbers" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Chiffres-clés" name="keyNumbers" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Agenda" name="schedule" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Agenda" name="schedule" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Adresse" name="address" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Adresse" name="address" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )

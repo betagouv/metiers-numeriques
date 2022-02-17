@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
 import { Card, Field } from '@singularity/core'
@@ -121,38 +121,43 @@ export default function AdminUserEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Email" name="email" type="email" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Email" name="email" type="email" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Prénom" name="firstName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Prénom" name="firstName" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom" name="lastName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom" name="lastName" />
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="Rôle" name="role" options={USER_ROLES_AS_OPTIONS} />
+            <AdminForm.Select isDisabled={isLoading} label="Rôle" name="role" options={USER_ROLES_AS_OPTIONS} />
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="Recruteur" name="recruiterId" options={recruitersAsOptions} />
+            <AdminForm.Select
+              isDisabled={isLoading}
+              label="Recruteur"
+              name="recruiterId"
+              options={recruitersAsOptions}
+            />
           </Field>
 
           <Field>
-            <Form.Checkbox isDisabled={isLoading} label="Compte actif" name="isActive" />
+            <AdminForm.Checkbox isDisabled={isLoading} label="Compte actif" name="isActive" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>Mettre à jour</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>Mettre à jour</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )

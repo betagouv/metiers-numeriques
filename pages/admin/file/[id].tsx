@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { FILE_TYPE } from '@common/constants'
 import { Card, Field } from '@singularity/core'
@@ -81,28 +81,28 @@ export default function AdminFileEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Titre" name="title" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Titre" name="title" />
           </Field>
 
           {!isNew && (
             <Field>
-              <Form.TextInput isDisabled label="Type" name="typeAsLabel" />
+              <AdminForm.TextInput isDisabled label="Type" name="typeAsLabel" />
             </Field>
           )}
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="URL" name="url" type="url" />
+            <AdminForm.TextInput isDisabled={isLoading} label="URL" name="url" type="url" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )
