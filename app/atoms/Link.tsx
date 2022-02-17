@@ -2,10 +2,11 @@ import NextLink from 'next/link'
 
 import type { AnchorHTMLAttributes } from 'react'
 
-type LinkButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string
 }
-export default function Link({ children, href, ...props }: LinkButtonProps) {
+
+export default function Link({ children, href, ...props }: LinkProps) {
   return (
     <NextLink href={href}>
       <a href={href} {...props}>

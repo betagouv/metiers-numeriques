@@ -1,14 +1,19 @@
 import getPrisma from '@api/helpers/getPrisma'
+import ExternalLink from '@app/atoms/ExternalLink'
 import Link from '@app/atoms/Link'
+import { SoftParagraph } from '@app/atoms/SoftParagraph'
 import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { humanizeDeepDates } from '@app/helpers/humanizeDeepDates'
+import { humanizeSeniority } from '@app/helpers/humanizeSeniority'
 import renderMarkdown from '@app/helpers/renderMarkdown'
+import { JobApplicationModal } from '@app/organisms/JobApplicationModal'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { JobSource, JobState } from '@prisma/client'
 import dayjs from 'dayjs'
 import Head from 'next/head'
 import * as R from 'ramda'
+import { useCallback, useState } from 'react'
 
 import type { JobWithRelation } from '@app/organisms/JobCard'
 import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
@@ -30,7 +35,17 @@ type JobPageProps =
     }
 
 export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
+
   const pageTitle = `${data.title} | metiers.numerique.gouv.fr`
+
+  const closeApplicationModal = useCallback(() => {
+    setIsApplicationModalOpen(false)
+  }, [])
+
+  const openApplicationModal = useCallback(() => {
+    setIsApplicationModalOpen(true)
+  }, [])
 
   if (isNew) {
     const job = data as JobWithRelation
@@ -91,7 +106,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Localisation</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  {`${job.address.street} ${job.address.postalCode} ${job.address.city}`}
+                  {`${job.address.street}, ${job.address.postalCode} ${job.address.city}`}
                 </div>
               </div>
 
@@ -108,7 +123,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
                 <div className="fr-grid-row fr-grid-row--gutters">
                   <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Rémunération</div>
                   <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                    <p>{`Entre ${job.salaryMin}K€ et ${job.salaryMax}K€ brut, selon l’expérience.`}</p>
+                    <p>{`Entre ${job.salaryMin}K€ et ${job.salaryMax}K€ bruts annuels, selon l’expérience.`}</p>
                   </div>
                 </div>
               )}
@@ -116,7 +131,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Expérience requise</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{job.seniorityInMonths} mois</p>
+                  <p>{humanizeSeniority(job.seniorityInMonths)}</p>
                 </div>
               </div>
             </div>
@@ -178,6 +193,24 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
                 <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.particularitiesDescription)}</div>
               </div>
             )}
+
+            <div className="fr-grid-row fr-grid-row--gutters">
+              <div className="fr-col-12 fr-col-md-3" />
+              <div className="fr-col-12 fr-pt-4w fr-col-md-9">
+                <button
+                  className="fr-btn fr-btn--lg"
+                  onClick={openApplicationModal}
+                  style={{
+                    lineHeight: 1,
+                    minHeight: 'auto',
+                    padding: '0.75rem 2rem 1rem',
+                  }}
+                  type="button"
+                >
+                  POSTULER À CETTE OFFRE
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -187,10 +220,22 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             backgroundColor: '#F0F0F0',
           }}
         >
-          {!isExpired && job.infoContact && (
+          {!isExpired && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">Si vous avez des questions</div>
-              <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{job.infoContact.name}</div>
+              <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+                <SoftParagraph>
+                  <strong>{job.infoContact.name}</strong>
+                </SoftParagraph>
+                {job.infoContact.position && (
+                  <SoftParagraph>
+                    <em>{job.infoContact.position}</em>
+                  </SoftParagraph>
+                )}
+                <ExternalLink href={`mailto:${job.infoContact.email}`} remixIconId="mail-send-line">
+                  {job.infoContact.email}
+                </ExternalLink>
+              </div>
             </div>
           )}
 
@@ -214,17 +259,17 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             </div>
           )}
 
-          <div className="fr-grid-row fr-grid-row--gutters">
+          <div className="fr-grid-row fr-grid-row--gutters" style={{ opacity: 0.65 }}>
             <div className="fr-col-12 fr-col-md-3">
               <p>Référence interne</p>
             </div>
             <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-              <p>
-                <code>{job.id.toUpperCase()}</code>
-              </p>
+              <code>{job.id.toUpperCase()}</code>
             </div>
           </div>
         </div>
+
+        {isApplicationModalOpen && <JobApplicationModal job={job} onDone={closeApplicationModal} />}
       </>
     )
   }
@@ -414,6 +459,23 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.conditions)}</div>
             </div>
           )}
+
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col-12 fr-col-md-3" />
+            <div className="fr-col-12 fr-pt-4w fr-col-md-9">
+              <button
+                className="fr-btn fr-btn--lg"
+                style={{
+                  lineHeight: 1,
+                  minHeight: 'auto',
+                  padding: '0.75rem 2rem 1rem',
+                }}
+                type="button"
+              >
+                POSTULER À CETTE OFFRE
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

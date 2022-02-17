@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
 import { Card, Field } from '@singularity/core'
@@ -111,17 +111,17 @@ export default function AdminLegacyServiceEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom court *" name="name" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom court *" name="name" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>
-            <Form.Select
+            <AdminForm.Select
               isDisabled={isLoading}
               label="Entité parente"
               name="legacyEntityId"
@@ -130,20 +130,20 @@ export default function AdminLegacyServiceEditorPage() {
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="Région *" name="region" options={REGIONS_AS_OPTIONS} />
+            <AdminForm.Select isDisabled={isLoading} label="Région *" name="region" options={REGIONS_AS_OPTIONS} />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Site Internet (URL)" name="url" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Site Internet (URL)" name="url" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )

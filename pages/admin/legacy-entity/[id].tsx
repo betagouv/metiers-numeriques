@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { Card, Field } from '@singularity/core'
 import { useRouter } from 'next/router'
@@ -85,26 +85,26 @@ export default function AdminLegacyEntityEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom court *" name="name" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom court *" name="name" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Logo (URL)" name="logoUrl" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Logo (URL)" name="logoUrl" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )

@@ -4,7 +4,7 @@ import Separator from '@app/atoms/Separator'
 import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { normalizeDateForDateTimeInput } from '@app/helpers/normalizeDateForDateTimeInput'
-import { Form } from '@app/molecules/Form'
+import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL } from '@common/constants'
 import { JobSource } from '@prisma/client'
@@ -168,33 +168,33 @@ export default function AdminLegacyJobEditorPage() {
       </AdminHeader>
 
       <Card>
-        <Form initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           {!isNew && (
             <Field>
-              <Form.TextInput isDisabled label="Référence interne" name="reference" />
+              <AdminForm.TextInput isDisabled label="Référence interne" name="reference" />
             </Field>
           )}
 
           {!isNew && (
             <Field>
-              <Form.TextInput isDisabled label="Slug" name="slug" />
+              <AdminForm.TextInput isDisabled label="Slug" name="slug" />
             </Field>
           )}
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
           </Field>
 
           <Field>
-            <Form.Select isDisabled={isLoading} label="État *" name="state" options={JOB_STATES_AS_OPTIONS} />
+            <AdminForm.Select isDisabled={isLoading} label="État *" name="state" options={JOB_STATES_AS_OPTIONS} />
           </Field>
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Expire le *" name="limitDate" type="date" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Expire le *" name="limitDate" type="date" />
           </Field>
 
           <Field>
-            <Form.Select
+            <AdminForm.Select
               isDisabled={isLoading}
               label="Service (entité recruteuse)"
               name="legacyServiceId"
@@ -204,89 +204,89 @@ export default function AdminLegacyJobEditorPage() {
 
           {!isNew && (
             <Field>
-              <Form.TextInput isDisabled label="Entité (obsolète)" name="entity" />
+              <AdminForm.TextInput isDisabled label="Entité (obsolète)" name="entity" />
             </Field>
           )}
 
           {!isNew && (
             <Field>
-              <Form.Code isDisabled label="Départements (obsolète)" name="departmentAsJson" />
+              <AdminForm.Code isDisabled label="Départements (obsolète)" name="departmentAsJson" />
             </Field>
           )}
 
           {!isNew && (
             <Field>
-              <Form.TextInput isDisabled label="Mise à jour le" name="updatedAt" type="datetime-local" />
+              <AdminForm.TextInput isDisabled label="Mise à jour le" name="updatedAt" type="datetime-local" />
             </Field>
           )}
 
           <Field>
-            <Form.TextInput isDisabled={isLoading} label="Salaire" name="salary" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Salaire" name="salary" />
           </Field>
 
           <Field>
-            <Form.Code isDisabled={isLoading} label="Localisations" name="locationsAsJson" />
+            <AdminForm.Code isDisabled={isLoading} label="Localisations" name="locationsAsJson" />
           </Field>
 
           <Field>
-            <Form.Code isDisabled={isLoading} label="Ouvert aux" name="openedToContractTypesAsJson" />
+            <AdminForm.Code isDisabled={isLoading} label="Ouvert aux" name="openedToContractTypesAsJson" />
           </Field>
 
           <Field>
-            <Form.Code isDisabled={isLoading} label="Expérience" name="experiencesAsJson" />
-          </Field>
-
-          <Separator />
-
-          <Field>
-            <Form.Textarea isDisabled={isLoading} label="Équipe" name="team" />
-          </Field>
-
-          <Field>
-            <Form.Textarea isDisabled={isLoading} label="Mission" name="mission" />
-          </Field>
-
-          <Field>
-            <Form.Textarea isDisabled={isLoading} label="Ce que vous ferez" name="tasks" />
-          </Field>
-
-          <Field>
-            <Form.Textarea isDisabled={isLoading} label="Les plus du poste" name="advantages" />
-          </Field>
-
-          <Field>
-            <Form.Textarea isDisabled={isLoading} label="Conditions particulière du poste" name="conditions" />
-          </Field>
-
-          <Field>
-            <Form.Textarea isDisabled={isLoading} label="Votre profil" name="profile" />
+            <AdminForm.Code isDisabled={isLoading} label="Expérience" name="experiencesAsJson" />
           </Field>
 
           <Separator />
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Si vous avez des questions" name="teamInfo" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Équipe" name="team" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Pour candidater" name="toApply" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Mission" name="mission" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Pour en savoir plus" name="more" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Ce que vous ferez" name="tasks" />
           </Field>
 
           <Field>
-            <Form.Textarea isDisabled={isLoading} label="Processus de recrutement" name="hiringProcess" />
+            <AdminForm.Textarea isDisabled={isLoading} label="Les plus du poste" name="advantages" />
           </Field>
 
           <Field>
-            <Form.Cancel isDisabled={isLoading} onClick={goToList}>
+            <AdminForm.Textarea isDisabled={isLoading} label="Conditions particulière du poste" name="conditions" />
+          </Field>
+
+          <Field>
+            <AdminForm.Textarea isDisabled={isLoading} label="Votre profil" name="profile" />
+          </Field>
+
+          <Separator />
+
+          <Field>
+            <AdminForm.Textarea isDisabled={isLoading} label="Si vous avez des questions" name="teamInfo" />
+          </Field>
+
+          <Field>
+            <AdminForm.Textarea isDisabled={isLoading} label="Pour candidater" name="toApply" />
+          </Field>
+
+          <Field>
+            <AdminForm.Textarea isDisabled={isLoading} label="Pour en savoir plus" name="more" />
+          </Field>
+
+          <Field>
+            <AdminForm.Textarea isDisabled={isLoading} label="Processus de recrutement" name="hiringProcess" />
+          </Field>
+
+          <Field>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
-            </Form.Cancel>
-            <Form.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</Form.Submit>
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </Form>
+        </AdminForm>
       </Card>
     </>
   )

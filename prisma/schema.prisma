@@ -173,6 +173,20 @@ model Job {
   professionId        String
   recruiter           Recruiter  @relation("JobRecruiter", fields: [recruiterId], references: [id])
   recruiterId         String
+
+  leads Lead[] @relation("LeadJobSource")
+}
+
+model Lead {
+  id             String   @id @default(cuid())
+  email          String?
+  withAlert      Boolean  @default(false)
+  withNewsletter Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  fromJob   Job?    @relation("LeadJobSource", fields: [fromJobId], references: [id])
+  fromJobId String?
 }
 
 model LegacyEntity {

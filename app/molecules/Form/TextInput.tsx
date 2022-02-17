@@ -1,53 +1,56 @@
-import { TextInput as SuiTextInput } from '@singularity/core'
+import classnames from 'classnames'
 import { useFormikContext } from 'formik'
+import styled from 'styled-components'
 
-import type { ChangeEvent, ChangeEventHandler } from 'react'
+import type { InputHTMLAttributes } from 'react'
 
-type TextInputProps = {
-  autoComplete?: string
-  helper?: string
-  isDisabled?: boolean
+const StyledInput = styled.input``
+
+type TextInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string
   name: string
-  onChange?: ChangeEventHandler<HTMLInputElement>
-  placeholder?: string
-  type?: string
 }
-export function TextInput({
-  autoComplete = 'off',
-  helper,
-  isDisabled = false,
-  label,
-  name,
-  onChange,
-  placeholder,
-  type = 'text',
-}: TextInputProps) {
+
+export function TextInput({ autoComplete = 'off', disabled, label, name, type = 'text', ...props }: TextInputProps) {
   const { errors, handleChange, isSubmitting, submitCount, touched, values } = useFormikContext<any>()
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
 
-  const checkChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (onChange !== undefined) {
-      onChange(event)
-    }
-
-    handleChange(event)
-  }
+  const ariaDescribedBy = hasError ? `${name}-error` : undefined
+  const boxClassName = classnames('fr-input-group', {
+    'fr-input-group--error': hasError,
+  })
+  const className = classnames('fr-input', {
+    'fr-input--error': hasError,
+  })
+  const isControlledDisabled = disabled || isSubmitting
+  const value = values[name]
 
   return (
-    <SuiTextInput
-      autoComplete={autoComplete}
-      defaultValue={values[name]}
-      disabled={isDisabled || isSubmitting}
-      error={maybeError}
-      helper={helper}
-      label={label}
-      name={name}
-      onChange={checkChange}
-      placeholder={placeholder}
-      type={type}
-    />
+    <div className={boxClassName}>
+      <label className="fr-label" htmlFor={name}>
+        {label}
+      </label>
+
+      <StyledInput
+        aria-describedby={ariaDescribedBy}
+        autoComplete={autoComplete}
+        className={className}
+        defaultValue={value}
+        disabled={isControlledDisabled}
+        id={name}
+        name={name}
+        onChange={handleChange}
+        type={type}
+        {...props}
+      />
+
+      {hasError && (
+        <p className="fr-error-text" id={`${name}-error`}>
+          {maybeError}
+        </p>
+      )}
+    </div>
   )
 }

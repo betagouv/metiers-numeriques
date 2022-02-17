@@ -5,7 +5,7 @@ import { NexauthError, useAuth } from 'nexauth/client'
 import { useState } from 'react'
 import * as Yup from 'yup'
 
-import { Form } from '../molecules/Form'
+import { AdminForm } from '../molecules/AdminForm'
 
 import type { FormikHelpers } from 'formik'
 
@@ -117,7 +117,13 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
   if (type === SignInDialogType.LOG_IN) {
     return (
       <Dialog>
-        <Form key="logIn.form" autoComplete="on" initialValues={{}} onSubmit={logIn} validationSchema={logInFormSchema}>
+        <AdminForm
+          key="logIn.form"
+          autoComplete="on"
+          initialValues={{}}
+          onSubmit={logIn}
+          validationSchema={logInFormSchema}
+        >
           <Dialog.Body>
             <Dialog.Title>Connexion</Dialog.Title>
 
@@ -130,10 +136,10 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
             </p>
 
             <Field>
-              <Form.TextInput autoComplete="email" label="Email" name="logInEmail" type="email" />
+              <AdminForm.TextInput autoComplete="email" label="Email" name="logInEmail" type="email" />
             </Field>
             <Field>
-              <Form.TextInput
+              <AdminForm.TextInput
                 autoComplete="current-password"
                 label="Mot de passe"
                 name="logInPassword"
@@ -143,16 +149,16 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
           </Dialog.Body>
 
           <Dialog.Action>
-            <Form.Submit>Se connecter</Form.Submit>
+            <AdminForm.Submit>Se connecter</AdminForm.Submit>
           </Dialog.Action>
-        </Form>
+        </AdminForm>
       </Dialog>
     )
   }
 
   return (
     <Dialog>
-      <Form
+      <AdminForm
         key="signUp.form"
         autoComplete="on"
         initialValues={{}}
@@ -171,13 +177,18 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
           </p>
 
           <Field>
-            <Form.TextInput autoComplete="email" label="Email" name="signUpEmail" type="email" />
+            <AdminForm.TextInput autoComplete="email" label="Email" name="signUpEmail" type="email" />
           </Field>
           <Field>
-            <Form.TextInput autoComplete="new-password" label="Mot de passe" name="signUpPassword" type="password" />
+            <AdminForm.TextInput
+              autoComplete="new-password"
+              label="Mot de passe"
+              name="signUpPassword"
+              type="password"
+            />
           </Field>
           <Field>
-            <Form.TextInput
+            <AdminForm.TextInput
               autoComplete="new-password"
               label="Mot de passe (répêter)"
               name="signUpPasswordConfirmation"
@@ -185,17 +196,17 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
             />
           </Field>
           <Field>
-            <Form.TextInput autoComplete="given-name" label="Prénom" name="signUpFirstName" />
+            <AdminForm.TextInput autoComplete="given-name" label="Prénom" name="signUpFirstName" />
           </Field>
           <Field>
-            <Form.TextInput autoComplete="family-name" label="Nom" name="signUpLastName" />
+            <AdminForm.TextInput autoComplete="family-name" label="Nom" name="signUpLastName" />
           </Field>
         </Dialog.Body>
 
         <Dialog.Action>
-          <Form.Submit>Envoyer ma demande</Form.Submit>
+          <AdminForm.Submit>Envoyer ma demande</AdminForm.Submit>
         </Dialog.Action>
-      </Form>
+      </AdminForm>
     </Dialog>
   )
 }
