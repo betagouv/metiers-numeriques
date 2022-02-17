@@ -1,25 +1,25 @@
 name: Check
 
 on:
-  push:
+  pull_request:
   pull_request_target:
 
 jobs:
-  approve:
-    name: Approve
-    if: ${{ github.event.event_name == 'pull_request_target' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Approve
-        run: |
-          echo github.event.event_name
-          echo For security reasons, all external pull requests require an approval before running this workflow.
+  # approve:
+  #   name: Approve
+  #   if: ${{ github.event.event_name == 'pull_request_target' }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Approve
+  #       run: |
+  #         echo github.event.event_name
+  #         echo For security reasons, all external pull requests require an approval before running this workflow.
 
   lint:
     name: Lint
-    needs:
-      - approve
-    if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
+    # needs:
+    #   - approve
+    # if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,9 +36,9 @@ jobs:
 
   type:
     name: Type
-    needs:
-      - approve
-    if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
+    # needs:
+    #   - approve
+    # if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -55,9 +55,9 @@ jobs:
 
   test_unit:
     name: Unit Test
-    needs:
-      - approve
-    if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
+    # needs:
+    #   - approve
+    # if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -76,9 +76,9 @@ jobs:
 
   test_e2e:
     name: E2E Test
-    needs:
-      - approve
-    if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
+    # needs:
+    #   - approve
+    # if: ${{ always() && (github.event.event_name != 'pull_request_target' || needs.approve.result == 'success') }}
     runs-on: ubuntu-latest
     environment:
       name: Test
