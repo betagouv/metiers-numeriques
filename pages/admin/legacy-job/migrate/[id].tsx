@@ -19,12 +19,11 @@ import { Field, Select, TextInput } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
 import ky from 'ky-universal'
-import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
+import { JobFormSchema } from 'pages/admin/job/[id]'
 import * as R from 'ramda'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import slugify from 'slugify'
-import * as Yup from 'yup'
 
 import type { Job, JobState, Prisma } from '@prisma/client'
 
@@ -62,26 +61,6 @@ const extractContractType = (legacyContractType: string): JobContractType | null
 const extractContractTypes = (legacyContractTypes: string[]): JobContractType[] =>
   R.pipe(R.map(extractContractType), R.reject(R.isNil))(legacyContractTypes) as JobContractType[]
 
-const getFormSchema = () =>
-  Yup.object().shape({
-    addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
-    applicationContactIds: Yup.array(Yup.string().nullable())
-      .required(`Au moins un contact "candidatures" est obligatoire.`)
-      .min(1, `Au moins un contact "candidatures" est obligatoire.`),
-    contractTypes: Yup.array(Yup.string().nullable())
-      .required(`Au moins un type de contrat est obligatoire.`)
-      .min(1, `Au moins un type de contrat est obligatoire.`),
-    expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
-    infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
-    missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
-    professionId: Yup.string().required(`Le métier est obligatoire.`),
-    recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
-    remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
-    seniorityInYears: Yup.number().required(`Le nombre d’années d’expérience requises est obligatoire.`),
-    state: Yup.string().required(`L’état est obligatoire.`),
-    title: Yup.string().required(`L’intitulé est obligatoire.`),
-  })
-
 export default function AdminLegacyJobMigratorPage() {
   const router = useRouter()
   const { id } = router.query
@@ -92,7 +71,6 @@ export default function AdminLegacyJobMigratorPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
   const [legacyServicesAsOptions, setLegacyServicesAsOptions] = useState<Common.App.SelectOption[]>([])
-  const auth = useAuth()
 
   const getLegacyJobResult = useQuery(queries.legacyJob.GET_ONE, {
     variables: {
@@ -103,8 +81,6 @@ export default function AdminLegacyJobMigratorPage() {
   const [createAddress] = useMutation(queries.address.CREATE_ONE)
   const [createJob] = useMutation(queries.job.CREATE_ONE)
   const [updateLegacyJob] = useMutation(queries.legacyJob.UPDATE_ONE)
-
-  const FormSchema = useMemo(() => getFormSchema(), [auth.state])
 
   const goToList = () => {
     router.push('/admin/legacy-jobs')
@@ -125,6 +101,7 @@ export default function AdminLegacyJobMigratorPage() {
 
       const input: Partial<Job> = R.pick([
         'applicationContactIds',
+        'applicationWebsiteUrl',
         'contractTypes',
         'infoContactId',
         'missionDescription',
@@ -430,7 +407,7 @@ export default function AdminLegacyJobMigratorPage() {
             key={generateKeyFromValue(initialValues)}
             initialValues={initialValues || {}}
             onSubmit={migrateAndGoToList}
-            validationSchema={FormSchema}
+            validationSchema={JobFormSchema}
           >
             <AdminCard isFirst>
               <Subtitle>Nouveaux champs</Subtitle>
@@ -531,9 +508,18 @@ export default function AdminLegacyJobMigratorPage() {
                 <Form.ContactSelect
                   isDisabled={isLoading}
                   isMulti
-                  label="Contacts pour l’envoi des candidatures *"
+                  label="Contacts pour l’envoi des candidatures **"
                   name="applicationContactIds"
                   placeholder="…"
+                />
+              </Field>
+
+              <Field>
+                <Form.TextInput
+                  isDisabled={isLoading}
+                  label="ou site officiel de candidure (URL) **"
+                  name="applicationWebsiteUrl"
+                  type="url"
                 />
               </Field>
             </AdminCard>

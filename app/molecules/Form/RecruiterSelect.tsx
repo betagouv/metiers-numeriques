@@ -100,8 +100,8 @@ export function RecruiterSelect({
       return
     }
 
-    const newRecruitersAsOptions = R.map(({ email, id, name }) => ({
-      label: `${name} (${email})`,
+    const newRecruitersAsOptions = R.map(({ id, name }) => ({
+      label: name,
       value: id,
     }))(getRecruitersListResult.data.getRecruitersList)
 

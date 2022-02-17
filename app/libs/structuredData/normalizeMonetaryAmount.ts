@@ -33,8 +33,8 @@ export default function normalizeMonetaryAmount(
     currency: 'EUR',
     value: {
       '@type': 'QuantitativeValue',
-      maxValue: salaryMax,
-      minValue: salaryMin,
+      maxValue: salaryMax * 1000,
+      minValue: salaryMin * 1000,
       unitText: 'YEAR',
     },
   }

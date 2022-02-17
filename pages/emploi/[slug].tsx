@@ -108,7 +108,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
                 <div className="fr-grid-row fr-grid-row--gutters">
                   <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Rémunération</div>
                   <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                    <p>{`Entre ${job.salaryMin}K et ${job.salaryMax}K selon l’expérience.`}</p>
+                    <p>{`Entre ${job.salaryMin}K€ et ${job.salaryMax}K€ brut, selon l’expérience.`}</p>
                   </div>
                 </div>
               )}
@@ -191,20 +191,6 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">Si vous avez des questions</div>
               <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{job.infoContact.name}</div>
-            </div>
-          )}
-
-          {!isExpired && job.applicationDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-12 fr-col-md-3">Pour candidater</div>
-              <div
-                className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
-                style={{
-                  fontWeight: 700,
-                }}
-              >
-                {renderMarkdown(job.applicationDescription)}
-              </div>
             </div>
           )}
 

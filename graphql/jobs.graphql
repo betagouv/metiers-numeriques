@@ -9,14 +9,14 @@ scalar DateTime
 type Job {
   id: ID!
 
-  applicationDescription: String
+  applicationWebsiteUrl: String
+  contextDescription: String
   contractTypes: [String]
   createdAt: DateTime
   expiredAt: DateTime
   missionDescription: String
   missionVideoUrl: String
   particularitiesDescription: String
-  pepUrl: String
   perksDescription: String
   processDescription: String
   profileDescription: String
@@ -41,13 +41,13 @@ type Job {
 input JobInput {
   id: String
 
-  # applicationDescription: String
+  applicationWebsiteUrl: String
+  contextDescription: String
   contractTypes: [String]
   expiredAt: DateTime
   missionDescription: String
   missionVideoUrl: String
   particularitiesDescription: String
-  pepUrl: String
   perksDescription: String
   processDescription: String
   profileDescription: String
@@ -79,14 +79,14 @@ type JobsResult {
 type PublicJob {
   id: ID!
 
-  applicationDescription: String
+  applicationWebsiteUrl: String
+  contextDescription: String
   contractTypes: [String]
   createdAt: DateTime
   expiredAt: DateTime
   missionDescription: String
   missionVideoUrl: String
   particularitiesDescription: String
-  pepUrl: String
   perksDescription: String
   processDescription: String
   profileDescription: String
