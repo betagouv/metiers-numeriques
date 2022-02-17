@@ -26,13 +26,9 @@ export default function normalizeOrganization({ name, websiteUrl }: Recruiter): 
     name,
   }
 
-  if (websiteUrl !== null) {
+  if (websiteUrl !== null && websiteUrl.length !== 0) {
     structuredOrganization.sameAs = websiteUrl
   }
-
-  // if (recruiter.logoFile !== null) {
-  //   structuredOrganization.logo = logoUrl
-  // }
 
   return structuredOrganization
 }
