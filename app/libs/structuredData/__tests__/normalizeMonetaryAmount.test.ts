@@ -1,9 +1,9 @@
 import structuredData from '..'
 
 describe('libs/structuredData.normalizeMonetaryAmount()', () => {
-  test(`with 45000 and 63000`, () => {
-    const salaryMin = 45000
-    const salaryMax = 63000
+  test(`with 45 and 63`, () => {
+    const salaryMin = 45
+    const salaryMax = 63
 
     const result = structuredData.normalizeMonetaryAmount(salaryMin, salaryMax)
 
@@ -19,9 +19,9 @@ describe('libs/structuredData.normalizeMonetaryAmount()', () => {
     })
   })
 
-  test(`with 63000 and 45000`, () => {
-    const salaryMin = 63000
-    const salaryMax = 45000
+  test(`with 63 and 45`, () => {
+    const salaryMin = 63
+    const salaryMax = 45
 
     const result = structuredData.normalizeMonetaryAmount(salaryMin, salaryMax)
 
