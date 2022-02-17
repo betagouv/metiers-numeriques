@@ -9,7 +9,7 @@ import handleError from '@common/helpers/handleError'
  */
 export function convertHumanDateToIso8601(humanDate: string): string {
   try {
-    return `${humanDate.substring(6, 4)}-${humanDate.substring(3, 2)}-${humanDate.substring(0, 2)}`
+    return `${humanDate.substring(6)}-${humanDate.substring(3, 5)}-${humanDate.substring(0, 2)}`
   } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/convertHumanDateToIso8601()')
 

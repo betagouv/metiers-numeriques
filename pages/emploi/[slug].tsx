@@ -61,7 +61,8 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           <meta content={pageTitle} property="og:title" />
           <meta content={pageDescription} property="og:description" />
 
-          {!isExpired && <script type="application/ld+json">{structuredData}</script>}
+          {/* eslint-disable-next-line react/no-danger */}
+          {!isExpired && <script dangerouslySetInnerHTML={{ __html: structuredData }} type="application/ld+json" />}
         </Head>
 
         <div className="fr-container" id="job-detail">
@@ -459,23 +460,6 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(legacyJob.conditions)}</div>
             </div>
           )}
-
-          <div className="fr-grid-row fr-grid-row--gutters">
-            <div className="fr-col-12 fr-col-md-3" />
-            <div className="fr-col-12 fr-pt-4w fr-col-md-9">
-              <button
-                className="fr-btn fr-btn--lg"
-                style={{
-                  lineHeight: 1,
-                  minHeight: 'auto',
-                  padding: '0.75rem 2rem 1rem',
-                }}
-                type="button"
-              >
-                POSTULER À CETTE OFFRE
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 
