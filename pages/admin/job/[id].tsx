@@ -15,11 +15,9 @@ import { JobState } from '@prisma/client'
 import { Field } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
-import ky from 'ky-universal'
-import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import slugify from 'slugify'
 import * as Yup from 'yup'
@@ -40,58 +38,49 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   state: JobState
 }
 
-const getFormSchema = (accessToken?: string) =>
-  Yup.object().shape({
+export const JobFormSchema = Yup.object().shape(
+  {
     addressAsPrismaAddress: Yup.object().required(`L’adresse est obligatoire.`),
-    applicationContactIds: Yup.array(Yup.string().nullable())
-      .required(`Au moins un contact "candidatures" est obligatoire.`)
-      .min(1, `Au moins un contact "candidatures" est obligatoire.`),
+    applicationContactIds: Yup.array().when('applicationWebsiteUrl', {
+      is: (applicationWebsiteUrl?: string | null) =>
+        !applicationWebsiteUrl || applicationWebsiteUrl.trim().length === 0,
+      otherwise: Yup.array(Yup.string().nullable()),
+      then: Yup.array(Yup.string().nullable())
+        .required(`Au moins un contact "candidatures" est obligatoire si le site de candidature n’est pas renseigné.`)
+        .min(1, `Au moins un contact "candidatures" est obligatoire si le site de candidature n’est pas renseigné.`),
+    }),
+    applicationWebsiteUrl: Yup.string().when('applicationContactIds', {
+      is: (applicationContactIds?: string[] | null) => !applicationContactIds || applicationContactIds.length === 0,
+      otherwise: Yup.string().nullable(),
+      then: Yup.string()
+        .required(`Le site de candidature est obligatoire si aucun contact "candidatures" n’est renseigné.`)
+        .url(`Cette URL est mal formatée.`),
+    }),
     contractTypes: Yup.array(Yup.string().nullable())
       .required(`Au moins un type de contrat est obligatoire.`)
       .min(1, `Au moins un type de contrat est obligatoire.`),
     expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
     infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
-    missionDescription: Yup.string().required(`Décrire la mission est obligatoire.`),
-    pepUrl: Yup.string()
-      .nullable()
-      .url(`Cette URL est mal formatée.`)
-      .test('is2XX', 'Cette URL PEP renvoie vers une page introuvable.', async value => {
-        try {
-          if (value === undefined || value === null) {
-            return true
-          }
-
-          const res = (await ky
-            .get('/api/pep', {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-              searchParams: {
-                url: value,
-              },
-            })
-            .json()) as Common.Api.ResponseBody<{
-            isValid: boolean
-          }>
-
-          if (res.hasError === false && res.data.isValid) {
-            return true
-          }
-
-          return false
-        } catch (err) {
-          handleError(err, 'pages/admin/legacy-jobs/migrate/[id].tsx > FormSchema')
-
-          return false
-        }
-      }),
+    missionDescription: Yup.string().trim().required(`Décrire la mission est obligatoire.`),
     professionId: Yup.string().required(`Le métier est obligatoire.`),
     recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
     remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
+    salaryMax: Yup.number()
+      .nullable()
+      .integer(`La rémunération maximum doit être un nombre entier, en millier d'euros.`)
+      .min(10, `La rémunération maximum doit être un nombre entier, en millier d'euros.`)
+      .max(200, `La rémunération maximum doit être un nombre entier, en millier d'euros.`),
+    salaryMin: Yup.number()
+      .nullable()
+      .integer(`La rémunération minimum doit être un nombre entier, en millier d'euros.`)
+      .min(10, `La rémunération minimum doit être un nombre entier, en millier d'euros.`)
+      .max(200, `La rémunération minimum doit être un nombre entier, en millier d'euros.`),
     seniorityInYears: Yup.number().required(`Le nombre d’années d’expérience requises est obligatoire.`),
     state: Yup.string().required(`L’état est obligatoire.`),
     title: Yup.string().required(`L’intitulé est obligatoire.`),
-  })
+  },
+  [['applicationContactIds', 'applicationWebsiteUrl']],
+)
 
 export default function AdminJobEditorPage() {
   const router = useRouter()
@@ -102,9 +91,6 @@ export default function AdminJobEditorPage() {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
-  const auth = useAuth()
-
-  const FormSchema = useMemo(() => getFormSchema(auth.state.accessToken), [auth.state])
 
   const getJobResult = useQuery<
     {
@@ -139,12 +125,13 @@ export default function AdminJobEditorPage() {
 
       const input: Partial<Job> = R.pick([
         'applicationContactIds',
+        'applicationWebsiteUrl',
+        'contextDescription',
         'contractTypes',
         'infoContactId',
         'missionDescription',
         'missionVideoUrl',
         'particularitiesDescription',
-        'pepUrl',
         'perksDescription',
         'professionId',
         'processDescription',
@@ -258,7 +245,7 @@ export default function AdminJobEditorPage() {
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
-      <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+      <Form initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={JobFormSchema}>
         <AdminCard isFirst>
           <Subtitle>Informations essentielles</Subtitle>
 
@@ -311,23 +298,28 @@ export default function AdminJobEditorPage() {
           <DoubleField>
             <Form.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
 
-            <Form.Select isDisabled label="Étiquettes *" name="tagIds" options={[]} placeholder="…" />
-          </DoubleField>
-
-          <DoubleField>
             <Form.ContactSelect
               isDisabled={isLoading}
               label="Contact unique pour les questions *"
               name="infoContactId"
               placeholder="…"
             />
+          </DoubleField>
 
+          <DoubleField>
             <Form.ContactSelect
               isDisabled={isLoading}
               isMulti
-              label="Contacts pour l’envoi des candidatures *"
+              label="Contacts pour l’envoi des candidatures **"
               name="applicationContactIds"
               placeholder="…"
+            />
+
+            <Form.TextInput
+              isDisabled={isLoading}
+              label="ou site officiel de candidature (URL) **"
+              name="applicationWebsiteUrl"
+              type="url"
             />
           </DoubleField>
 
@@ -393,6 +385,15 @@ export default function AdminJobEditorPage() {
           <Field>
             <Form.Textarea
               isDisabled={isLoading}
+              label="Contexte"
+              name="contextDescription"
+              placeholder="Contexte de la mission."
+            />
+          </Field>
+
+          <Field>
+            <Form.Textarea
+              isDisabled={isLoading}
               label="Profil idéal de candidat·e"
               name="profileDescription"
               placeholder="Liste des expériences, qualités et éventuelles qualifications attendues."
@@ -423,15 +424,6 @@ export default function AdminJobEditorPage() {
               label="Processus de recrutement"
               name="processDescription"
               placeholder="En une seule phrase si possible."
-            />
-          </Field>
-
-          <Field>
-            <Form.TextInput
-              isDisabled={isLoading}
-              label="Lien PEP (URL)"
-              name="pepUrl"
-              placeholder="https://place-emploi-public.gouv.fr/offre-emploi/…"
             />
           </Field>
         </AdminCard>

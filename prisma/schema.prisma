@@ -142,7 +142,7 @@ model FilesOnLegacyInstitutions {
 model Job {
   id                         String            @id @default(cuid())
   title                      String
-  applicationDescription     String?
+  contextDescription         String?
   missionDescription         String
   missionVideoUrl            String?
   particularitiesDescription String?
@@ -151,9 +151,9 @@ model Job {
   perksDescription           String?
   processDescription         String?
   profileDescription         String?
+  applicationWebsiteUrl      String?
   contractTypes              JobContractType[]
   // Job URL on place-emploi-public.gouv.fr
-  pepUrl                     String?
   remoteStatus               JobRemoteStatus   @default(NONE)
   salaryMax                  Int?
   salaryMin                  Int?

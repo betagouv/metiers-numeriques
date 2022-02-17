@@ -72,7 +72,6 @@ export const GET_LIST = gql`
     getRecruitersList {
       id
 
-      fullName
       name
     }
   }

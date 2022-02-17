@@ -91,14 +91,14 @@ export const GET_ONE = gql`
     getJob(id: $id) {
       id
 
-      applicationDescription
+      applicationWebsiteUrl
+      contextDescription
       contractTypes
       createdAt
       expiredAt
       missionDescription
       missionVideoUrl
       particularitiesDescription
-      pepUrl
       perksDescription
       processDescription
       profileDescription
