@@ -24,7 +24,7 @@ type StructuredDataPlace = {
   }
 }
 
-export default function normalizePlace(address: Address): StructuredDataPlace {
+export function normalizePlace(address: Address): StructuredDataPlace {
   return {
     '@type': 'Place',
     address: {

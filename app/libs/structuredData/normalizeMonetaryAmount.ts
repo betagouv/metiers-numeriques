@@ -20,7 +20,7 @@ type StructuredDataMonetaryAmount = {
       }
 }
 
-export default function normalizeMonetaryAmount(
+export function normalizeMonetaryAmount(
   salaryMin: number | null,
   salaryMax: number | null,
 ): StructuredDataMonetaryAmount | undefined {

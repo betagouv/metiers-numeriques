@@ -1,4 +1,4 @@
-import structuredData from '..'
+import { structuredData } from '..'
 
 import type { Address } from '@prisma/client'
 

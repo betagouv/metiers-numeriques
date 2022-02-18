@@ -20,7 +20,7 @@ type StructuredOrganization = {
   sameAs?: string
 }
 
-export default function normalizeOrganization({ name, websiteUrl }: Recruiter): StructuredOrganization {
+export function normalizeOrganization({ name, websiteUrl }: Recruiter): StructuredOrganization {
   const structuredOrganization: StructuredOrganization = {
     '@type': 'Organization',
     name,
