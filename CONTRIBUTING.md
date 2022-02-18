@@ -29,7 +29,7 @@ Then run:
 
 ```sh
 git clone https://github.com/betagouv/metiers-numeriques.git
-cd tell-me
+cd metiers-numeriques
 yarn
 yarn setup
 yarn dev:docker
