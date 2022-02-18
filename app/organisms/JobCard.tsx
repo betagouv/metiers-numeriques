@@ -1,6 +1,8 @@
 // import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { normalizeDate } from '@app/helpers/normalizeDate'
+import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
+import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 
 import Link from '../atoms/Link'
@@ -39,7 +41,11 @@ type JobCardProps = {
 }
 
 export function JobCard({ job }: JobCardProps) {
-  const seniorityInYears = Math.ceil(job.seniorityInMonths / 12)
+  const seniorityInYears = useMemo(() => Math.ceil(job.seniorityInMonths / 12), [])
+
+  const trackJobOpening = useCallback(() => {
+    matomo.trackGoal(MatomoGoal.JOB_OPENING)
+  }, [])
 
   return (
     <div className="fr-col-12 fr-py-2w fr-col-md-12 job-card">
@@ -93,7 +99,12 @@ export function JobCard({ job }: JobCardProps) {
 
             <div className="fr-col-12 fr-col-md-9">
               <h4 className="fr-card__lead">
-                <Link className="trk-lire-offre fr-card__link" href={`/emploi/${job.slug}`}>
+                <Link
+                  className="fr-card__link"
+                  href={`/emploi/${job.slug}`}
+                  onAuxClick={trackJobOpening}
+                  onClick={trackJobOpening}
+                >
                   {job.title}
                 </Link>
               </h4>
@@ -146,8 +157,10 @@ export function JobCard({ job }: JobCardProps) {
             }}
           >
             <Link
-              className="trk-lire-offre fr-btn fr-btn--sm fr-fi-arrow-right-line fr-btn--icon-right"
+              className="fr-btn fr-btn--sm fr-fi-arrow-right-line fr-btn--icon-right"
               href={`/emploi/${job.slug}`}
+              onAuxClick={trackJobOpening}
+              onClick={trackJobOpening}
             >
               Lire l’offre d’emploi
             </Link>
