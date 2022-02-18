@@ -7,13 +7,14 @@ import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { humanizeDeepDates } from '@app/helpers/humanizeDeepDates'
 import { humanizeSeniority } from '@app/helpers/humanizeSeniority'
 import renderMarkdown from '@app/helpers/renderMarkdown'
+import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { JobApplicationModal } from '@app/organisms/JobApplicationModal'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { JobSource, JobState } from '@prisma/client'
 import dayjs from 'dayjs'
 import Head from 'next/head'
 import * as R from 'ramda'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import type { JobWithRelation } from '@app/organisms/JobCard'
 import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
@@ -37,7 +38,7 @@ type JobPageProps =
 export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
 
-  const pageTitle = `${data.title} | metiers.numerique.gouv.fr`
+  const pageTitle = useMemo(() => `${data.title} | metiers.numerique.gouv.fr`, [])
 
   const closeApplicationModal = useCallback(() => {
     setIsApplicationModalOpen(false)
@@ -45,6 +46,8 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
 
   const openApplicationModal = useCallback(() => {
     setIsApplicationModalOpen(true)
+
+    matomo.trackGoal(MatomoGoal.NEW_JOB_APPLICATION)
   }, [])
 
   if (isNew) {
@@ -216,7 +219,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
         </div>
 
         <div
-          className="trk-candidature fr-container fr-py-4w fr-text--lg"
+          className="fr-container fr-py-4w fr-text--lg"
           style={{
             backgroundColor: '#F0F0F0',
           }}
@@ -464,7 +467,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
       </div>
 
       <div
-        className="trk-candidature fr-container fr-py-4w"
+        className="fr-container fr-py-4w"
         style={{
           backgroundColor: '#F0F0F0',
         }}
