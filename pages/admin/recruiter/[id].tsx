@@ -3,7 +3,7 @@ import { AdminCard } from '@app/atoms/AdminCard'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
-import { normalizeDate } from '@app/helpers/normalizeDate'
+import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL, USER_ROLE_LABEL } from '@common/constants'
@@ -41,14 +41,14 @@ const JOB_LIST_COLUMNS: TableColumnProps[] = [
     isSortable: true,
     key: 'expiredAt',
     label: 'Expire le',
-    transform: ({ expiredAt }) => normalizeDate(expiredAt),
+    transform: ({ expiredAt }) => humanizeDate(expiredAt),
   },
   {
     grow: 0.15,
     isSortable: true,
     key: 'updatedAt',
     label: 'MàJ le',
-    transform: ({ updatedAt }) => normalizeDate(updatedAt),
+    transform: ({ updatedAt }) => humanizeDate(updatedAt),
   },
 ]
 
