@@ -1,10 +1,10 @@
 import handleError from '@common/helpers/handleError'
 import dayjs from 'dayjs'
 
-export function humanizeDeepDates(input: any): Common.Pojo {
+export function stringifyDeepDates(input: any): Common.Pojo {
   try {
     if (input instanceof Date) {
-      return dayjs(input).format('DD/MM/YYYY')
+      return dayjs(input).toISOString()
     }
 
     if (input === null || ['boolean', 'number', 'string'].includes(typeof input)) {
@@ -12,20 +12,20 @@ export function humanizeDeepDates(input: any): Common.Pojo {
     }
 
     if (Array.isArray(input)) {
-      return input.map(humanizeDeepDates)
+      return input.map(stringifyDeepDates)
     }
 
     const inputAsPojo = {}
 
     for (const key in input) {
       if (Object.prototype.hasOwnProperty.call(input, key)) {
-        inputAsPojo[key] = humanizeDeepDates(input[key])
+        inputAsPojo[key] = stringifyDeepDates(input[key])
       }
     }
 
     return inputAsPojo
   } catch (err) /* istanbul ignore next */ {
-    handleError(err, 'app/helpers/humanizeDeepDates()')
+    handleError(err, 'app/helpers/stringifyDeepDates()')
 
     return ''
   }

@@ -1,6 +1,6 @@
 import getPrisma from '@api/helpers/getPrisma'
 import { useQuery } from '@apollo/client'
-import { humanizeDeepDates } from '@app/helpers/humanizeDeepDates'
+import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { JobCard } from '@app/organisms/JobCard'
 import { LegacyJobCard } from '@app/organisms/LegacyJobCard'
 import queries from '@app/queries'
@@ -261,7 +261,7 @@ export async function getStaticProps() {
   const initialData = R.pipe(
     R.sort(R.descend(R.prop('updatedAt') as any)),
     R.slice(0, INITIAL_VARIABLES.perPage) as any,
-    R.map(humanizeDeepDates),
+    R.map(stringifyDeepDates),
   )([...initialJobs, ...initialLegacyJobs])
 
   return {

@@ -2,11 +2,12 @@ import getPrisma from '@api/helpers/getPrisma'
 import ExternalLink from '@app/atoms/ExternalLink'
 import Link from '@app/atoms/Link'
 import { SoftParagraph } from '@app/atoms/SoftParagraph'
-import generateJobStructuredData from '@app/helpers/generateJobStructuredData'
+import { generateJobStructuredData } from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import { humanizeDeepDates } from '@app/helpers/humanizeDeepDates'
+import { humanizeDate } from '@app/helpers/humanizeDate'
 import { humanizeSeniority } from '@app/helpers/humanizeSeniority'
 import renderMarkdown from '@app/helpers/renderMarkdown'
+import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { JobApplicationModal } from '@app/organisms/JobApplicationModal'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
@@ -91,7 +92,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               {!isExpired && job.updatedAt && (
                 <div className="fr-grid-row fr-grid-row--gutters">
                   <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Mis à jour le</div>
-                  <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{job.updatedAt}</div>
+                  <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{humanizeDate(job.updatedAt)}</div>
                 </div>
               )}
 
@@ -252,7 +253,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
                 fontWeight: 700,
               }}
             >
-              {job.expiredAt}
+              {humanizeDate(job.expiredAt)}
             </div>
           </div>
 
@@ -315,7 +316,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Mis à jour le</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  <p>{legacyJob.updatedAt}</p>
+                  <p>{humanizeDate(legacyJob.updatedAt)}</p>
                 </div>
               </div>
             )}
@@ -518,7 +519,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
                 fontWeight: 700,
               }}
             >
-              <p>{legacyJob.limitDate}</p>
+              <p>{humanizeDate(legacyJob.limitDate)}</p>
             </div>
           </div>
         )}
@@ -610,7 +611,7 @@ export async function getStaticProps({ params: { slug } }) {
     }
 
     const isExpired = isJobExpired(job)
-    const jobWithHumanDates = humanizeDeepDates(job)
+    const jobWithHumanDates = stringifyDeepDates(job)
 
     return {
       props: {
@@ -642,7 +643,7 @@ export async function getStaticProps({ params: { slug } }) {
   }
 
   const isExpired = isLegacyJobExpired(legacyJob)
-  const legacyJobWithHumanDates = humanizeDeepDates(legacyJob)
+  const legacyJobWithHumanDates = stringifyDeepDates(legacyJob)
 
   return {
     props: {

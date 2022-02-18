@@ -1,17 +1,23 @@
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+
 import { structuredData } from '../libs/structuredData'
-import { convertHumanDateToIso8601 } from './convertHumanDateToIso8601'
 
 import type { JobWithRelation } from '../organisms/JobCard'
+
+dayjs.extend(utc)
+
+const normalizeDate = (date: Date | string) => dayjs.utc(date).format('YYYY-MM-DD')
 
 /**
  * @see https://developers.google.com/search/docs/advanced/structured-data/job-posting
  */
-export default function generateJobStructuredData(job: JobWithRelation): string {
-  const datePosted = convertHumanDateToIso8601(job.updatedAt as unknown as string)
+export function generateJobStructuredData(job: JobWithRelation): string {
+  const datePosted = normalizeDate(job.updatedAt)
   const employmentType = structuredData.normalizeEmploymentType(job.contractTypes)
   const hiringOrganization = structuredData.normalizeOrganization(job.recruiter)
   const jobLocation = structuredData.normalizePlace(job.address)
-  const validThrough = convertHumanDateToIso8601(job.expiredAt as unknown as string)
+  const validThrough = normalizeDate(job.expiredAt)
 
   // —————————————————————————————————————————————————————————————————————————————
   // Required properties for Google Job Posting

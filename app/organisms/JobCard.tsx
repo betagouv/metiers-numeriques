@@ -1,5 +1,5 @@
 // import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import { normalizeDate } from '@app/helpers/normalizeDate'
+import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { useCallback, useMemo } from 'react'
@@ -92,7 +92,7 @@ export function JobCard({ job }: JobCardProps) {
                   }}
                 >
                   <i className="ri-calendar-fill fr-mr-2w" />
-                  {normalizeDate(job.updatedAt)}
+                  {humanizeDate(job.updatedAt)}
                 </p>
               )}
             </div>

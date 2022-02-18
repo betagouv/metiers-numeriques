@@ -1,5 +1,5 @@
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import { normalizeDate } from '@app/helpers/normalizeDate'
+import { humanizeDate } from '@app/helpers/humanizeDate'
 import normalizeJobDescription from '@app/helpers/normalizeJobDescription'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { useCallback, useMemo } from 'react'
@@ -98,7 +98,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                   }}
                 >
                   <i className="ri-calendar-fill fr-mr-2w" />
-                  {normalizeDate(job.updatedAt)}
+                  {humanizeDate(job.updatedAt)}
                 </p>
               )}
             </div>

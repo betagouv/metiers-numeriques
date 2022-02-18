@@ -2,7 +2,7 @@ import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
-import { normalizeDate } from '@app/helpers/normalizeDate'
+import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
@@ -34,13 +34,13 @@ const BASE_COLUMNS: TableColumnProps[] = [
     grow: 0.15,
     key: 'expiredAt',
     label: 'Expire le',
-    transform: ({ expiredAt }) => normalizeDate(expiredAt),
+    transform: ({ expiredAt }) => humanizeDate(expiredAt),
   },
   {
     grow: 0.15,
     key: 'updatedAt',
     label: 'MàJ le',
-    transform: ({ updatedAt }) => normalizeDate(updatedAt),
+    transform: ({ updatedAt }) => humanizeDate(updatedAt),
   },
 ]
 
