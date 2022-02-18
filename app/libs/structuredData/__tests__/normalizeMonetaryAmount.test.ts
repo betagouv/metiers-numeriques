@@ -1,4 +1,4 @@
-import structuredData from '..'
+import { structuredData } from '..'
 
 describe('libs/structuredData.normalizeMonetaryAmount()', () => {
   test(`with 45 and 63`, () => {

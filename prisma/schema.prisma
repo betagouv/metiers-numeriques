@@ -40,8 +40,8 @@ enum JobContractType {
   FULL_TIME
   // Stagiaire
   INTERN
-  // Fonctionnaire territorial
-  LOCAL_CIVIL_SERVANT
+  // VIA (VIE)
+  INTERNATIONAL_VOLUNTEER
   // Fonctionnaire d'État
   NATIONAL_CIVIL_SERVANT
   // Temps partiel
