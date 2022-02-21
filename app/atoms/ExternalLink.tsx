@@ -20,7 +20,7 @@ type ExternalLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 
 export default function ExternalLink({ children, remixIconId, ...props }: ExternalLinkProps) {
   return (
-    <StyledA rel="noreferrer" target="_blank" {...props}>
+    <StyledA rel="noopener noreferrer" target="_blank" {...props}>
       {remixIconId && <StyledI className={`ri-${remixIconId}`} />}
       {children}
     </StyledA>

@@ -1,4 +1,4 @@
-import Linkton from '@app/atoms/Linkton'
+import { ButtonAsLink } from '@app/atoms/ButtonAsLink'
 import handleError from '@common/helpers/handleError'
 import { Dialog, Field } from '@singularity/core'
 import { NexauthError, useAuth } from 'nexauth/client'
@@ -129,9 +129,9 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
 
             <p>
               Veuillez{' '}
-              <Linkton onClick={switchToSignUp} type="button">
+              <ButtonAsLink onClick={switchToSignUp} type="button">
                 demander un compte
-              </Linkton>{' '}
+              </ButtonAsLink>{' '}
               si vous n’en avez pas.
             </p>
 
@@ -170,9 +170,9 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
 
           <p>
             Veuillez{' '}
-            <Linkton onClick={switchToLogIn} type="button">
+            <ButtonAsLink onClick={switchToLogIn} type="button">
               vous connecter
-            </Linkton>{' '}
+            </ButtonAsLink>{' '}
             si vous avez déjà un compte.
           </p>
 
