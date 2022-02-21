@@ -1,72 +1,40 @@
-import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
-import Link from '../atoms/Link'
+import Link from '../../atoms/Link'
+import { BackToTopButton } from './BackToTopButton'
 
-const BackToTopButton = styled.button`
-  background-color: #2943d1;
-  border-radius: 50%;
-  bottom: 6.25rem;
-  box-shadow: none;
-  color: transparent;
-  height: 3.75rem !important;
-  max-height: 3.75rem !important;
-  max-width: 3.75rem !important;
-  /* opacity: 0; */
-  padding: 1.125rem !important;
-  position: fixed;
-  right: 1.5rem;
-  width: 3.75rem !important;
-
-  ::before {
-    color: white;
-  }
-
-  :hover {
-    background-image: none;
-  }
+const Brand = styled.div`
+  align-items: flex-start;
 `
 
-export default function Footer() {
-  const $backToTopButton = useRef<HTMLButtonElement>(null)
-
-  const goToTop = () => {
-    window.scroll({
-      behavior: 'smooth',
-      top: 0,
-    })
-  }
-
-  useEffect(() => {
-    window.document.addEventListener('scroll', () => {
-      if ($backToTopButton.current === null) {
-        return
-      }
-
-      if (window.scrollY < window.innerHeight) {
-        $backToTopButton.current.style.opacity = String(Math.round((100 * window.scrollY) / window.innerHeight) / 100)
-
-        return
-      }
-
-      $backToTopButton.current.style.opacity = '1'
-    })
-  }, [])
-
+export function Footer() {
   return (
     <>
-      <footer className="fr-footer" id="footer" role="contentinfo">
+      <footer className="fr-footer" role="contentinfo">
         <div className="fr-container">
-          <div className="fr-footer__body">
-            <div className="fr-footer__brand fr-enlarge-link">
-              <a href="/" title="Retour à l’accueil">
+          <div className="fr-footer__body fr-footer__body--operator">
+            <Brand className="fr-footer__brand fr-enlarge-link">
+              <Link className="fr-footer__brand-link" href="/" title="Retour à l’accueil">
                 <p className="fr-logo">
                   République
                   <br />
                   française
                 </p>
-              </a>
-            </div>
+              </Link>
+
+              {/* <p
+                className="fr-logo fr-logo--lg d-none d-md-block fr-ml-5w"
+                title="Ministère de la transformation et de la fonction publiques"
+              >
+                Ministère
+                <br />
+                de la transformation
+                <br />
+                et de la fonction
+                <br />
+                publiques
+              </p> */}
+            </Brand>
 
             <div className="fr-footer__content">
               <p className="fr-footer__content-desc">Tout savoir sur les métiers numériques au sein de l’État.</p>
@@ -85,24 +53,30 @@ export default function Footer() {
                 <li className="fr-footer__content-item">
                   <a
                     className="fr-footer__content-link"
-                    href="mailto:contact@metiers.numerique.gouv.fr"
-                    title="Contactez-nous"
+                    href="https://beta.gouv.fr"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    Contactez-nous
-                  </a>
-                </li>
-                <li className="fr-footer__content-item">
-                  <a className="fr-footer__content-link" href="https://www.numerique.gouv.fr/">
-                    numerique.gouv.fr
-                  </a>
-                </li>
-                <li className="fr-footer__content-item">
-                  <a className="fr-footer__content-link" href="https://beta.gouv.fr/">
                     beta.gouv.fr
                   </a>
                 </li>
                 <li className="fr-footer__content-item">
-                  <a className="fr-footer__content-link" href="https://www.gouvernement.fr/">
+                  <a
+                    className="fr-footer__content-link"
+                    href="https://www.numerique.gouv.fr"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    numerique.gouv.fr
+                  </a>
+                </li>
+                <li className="fr-footer__content-item">
+                  <a
+                    className="fr-footer__content-link"
+                    href="https://www.gouvernement.fr"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
                     gouvernement.fr
                   </a>
                 </li>
@@ -132,16 +106,6 @@ export default function Footer() {
                   Contactez-nous
                 </a>
               </li>
-              {/* <li className="fr-footer__bottom-item">
-                <button
-                  aria-controls="fr-theme-modal"
-                  className="fr-footer__bottom-link fr-fi-sun-fill-line fr-link--icon-left"
-                  data-fr-opened="false"
-                  type="button"
-                >
-                  Paramètres d’affichage
-                </button>
-              </li> */}
             </ul>
 
             <div className="fr-footer__bottom-copy">
@@ -161,14 +125,7 @@ export default function Footer() {
         </div>
       </footer>
 
-      <BackToTopButton
-        ref={$backToTopButton}
-        className="fr-btn fr-fi-arrow-up-line"
-        onClick={goToTop}
-        title="Revenir en haut de la page"
-      >
-        Revenir en haut de la page
-      </BackToTopButton>
+      <BackToTopButton />
     </>
   )
 }

@@ -1,17 +1,22 @@
 import NextLink from 'next/link'
+import styled from 'styled-components'
 
 import type { AnchorHTMLAttributes } from 'react'
 
-type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+const StyledAnchor = styled.a`
+  --blend: none;
+`
+
+type LinkButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string
 }
 
-export default function Link({ children, href, ...props }: LinkProps) {
+export default function Link({ children, href, ...props }: LinkButtonProps) {
   return (
     <NextLink href={href}>
-      <a href={href} {...props}>
+      <StyledAnchor href={href} {...props}>
         {children}
-      </a>
+      </StyledAnchor>
     </NextLink>
   )
 }

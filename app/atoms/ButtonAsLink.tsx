@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Linkton = styled.button`
+export const ButtonAsLink = styled.button`
   -webkit-writing-mode: inherit;
   appearance: inherit;
   background-color: transparent;
@@ -26,5 +26,3 @@ const Linkton = styled.button`
   word-spacing: inherit;
   writing-mode: inherit;
 `
-
-export default Linkton

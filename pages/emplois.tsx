@@ -104,37 +104,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <div className="fr-container fr-mt-6w fr-mb-2w" id="offres-de-mission">
-        <h1
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          Découvrez les offres d’emploi
-        </h1>
-
-        <div
-          className="hidden-md-flex"
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <h2>Vous ne trouvez pas ?</h2>
-          <a
-            className="fr-btn fr-fi-add-circle-line fr-btn--icon-right"
-            href="https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee"
-            style={{
-              marginBottom: '.5rem',
-              marginLeft: '2rem',
-            }}
-          >
-            Déposez une candidature spontanée
-          </a>
-        </div>
-
+      <div className="fr-container fr-mt-2w fr-mb-2w" id="offres-de-mission">
         <div className="fr-grid-row fr-py-2w">
           <div className="fr-col-12 fr-col-md-7">
             <label className="fr-label" htmlFor="JobsSearchInput">
