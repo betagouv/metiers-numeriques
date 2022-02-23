@@ -37,6 +37,7 @@ export const GET_ALL_PUBLIC = gql`
         address {
           id
 
+          country
           region
         }
         profession {
