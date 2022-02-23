@@ -1,11 +1,17 @@
+import { useLazyQuery } from '@apollo/client'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import ky from 'ky-universal'
+import * as R from 'ramda'
 
 import { convertGeocodeJsonFeatureToPrismaAddress } from '../../helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import generateKeyFromValue from '../../helpers/generateKeyFromValue'
+import { getCountryFromCode } from '../../helpers/getCountryFromCode'
+import queries from '../../queries'
 
-import type { Prisma } from '@prisma/client'
+import type { Address, Prisma } from '@prisma/client'
+
+const PER_PAGE = 5
 
 type AddressSelectProps = {
   helper?: string
@@ -16,6 +22,8 @@ type AddressSelectProps = {
 export function AddressSelect({ helper, isDisabled = false, label, name }: AddressSelectProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
+  const [getAddresses] = useLazyQuery(queries.address.GET_ALL)
+
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
   const placeholder = 'Ex.: 20 avenue de Ségur'
@@ -23,7 +31,7 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
   const defaultValue: Common.App.SelectOption<Prisma.AddressCreateInput> | null =
     rawValue !== null
       ? {
-          label: `${rawValue.street} ${rawValue.postalCode} ${rawValue.city}`,
+          label: `${rawValue.street}, ${rawValue.postalCode} ${rawValue.city}, ${getCountryFromCode(rawValue.country)}`,
           value: rawValue,
         }
       : rawValue
@@ -39,8 +47,28 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
       })
       .json()
 
-    if (!Array.isArray(res.features) || res.features.length === 0) {
+    if (!Array.isArray(res.features)) {
       return []
+    }
+
+    if (res.features.length === 0) {
+      const getAddressesResult = await getAddresses({
+        variables: {
+          pageIndex: 0,
+          perPage: PER_PAGE,
+          query,
+        },
+      })
+
+      return getAddressesResult.data.getAddresses.data.map((prismaAddress: Common.Graphqled<Address>) => {
+        const { city, country, postalCode, region, street } = prismaAddress
+        const value = R.omit(['__typename'])(prismaAddress)
+
+        return {
+          label: `${street}, ${postalCode} ${city}, ${region}, ${getCountryFromCode(country)}`,
+          value,
+        }
+      })
     }
 
     const resultsAsOptions = res.features.reduce(
@@ -53,7 +81,7 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
         return [
           ...options,
           {
-            label: feature.properties.label,
+            label: `${feature.properties.label}, France`,
             value: prismaAddress,
           },
         ]

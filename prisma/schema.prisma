@@ -86,7 +86,10 @@ enum UserRole {
 model Address {
   id         String   @id @default(cuid())
   // API Adresse (adresse.data.gouv.fr) ID
-  sourceId   String   @unique
+  // This should be a nullable unique but it's a planned Prisma feature for now:
+  // https://github.com/prisma/prisma/issues/3387
+  // TODO Follow nullable unique Prisma feature progress and implement it once ready.
+  sourceId   String?
   street     String
   postalCode String
   city       String

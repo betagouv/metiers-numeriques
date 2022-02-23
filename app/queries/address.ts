@@ -8,12 +8,27 @@ export const GET_ALL = gql`
         id
 
         city
+        country
         postalCode
         region
         street
       }
       index
       length
+    }
+  }
+`
+
+export const GET_ONE = gql`
+  query GetAddress($id: String!) {
+    getAddress(id: $id) {
+      id
+
+      city
+      country
+      postalCode
+      region
+      street
     }
   }
 `
@@ -29,6 +44,14 @@ export const CREATE_ONE = gql`
 export const DELETE_ONE = gql`
   mutation DeleteAddress($id: String!) {
     deleteAddress(id: $id) {
+      id
+    }
+  }
+`
+
+export const UPDATE_ONE = gql`
+  mutation UpdateAddress($id: String!, $input: AddressInput!) {
+    updateAddress(id: $id, input: $input) {
       id
     }
   }
