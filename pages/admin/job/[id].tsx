@@ -114,15 +114,6 @@ export default function AdminJobEditorPage() {
     try {
       setIsLoading(true)
 
-      const newAddressResult = await createAddress({
-        variables: {
-          input: values.addressAsPrismaAddress,
-        },
-      })
-      if (newAddressResult.errors) {
-        throw new Error(`Cannot create address: ${JSON.stringify(values?.addressAsPrismaAddress)}.`)
-      }
-
       const input: Partial<Job> = R.pick([
         'applicationContactIds',
         'applicationWebsiteUrl',
@@ -154,7 +145,21 @@ export default function AdminJobEditorPage() {
         input.slug = slugify(`${input.title}-${input.id}`)
       }
 
-      input.addressId = newAddressResult.data.createAddress.id
+      if (values.addressAsPrismaAddress.id === undefined) {
+        const newAddressResult = await createAddress({
+          variables: {
+            input: values.addressAsPrismaAddress,
+          },
+        })
+        if (newAddressResult.errors) {
+          throw new Error(`Cannot create address: ${JSON.stringify(values?.addressAsPrismaAddress)}.`)
+        }
+
+        input.addressId = newAddressResult.data.createAddress.id
+      } else {
+        input.addressId = values.addressAsPrismaAddress.id
+      }
+
       input.expiredAt = dayjs(values.expiredAtAsString).toDate()
       input.seniorityInMonths = values.seniorityInYears * 12
 

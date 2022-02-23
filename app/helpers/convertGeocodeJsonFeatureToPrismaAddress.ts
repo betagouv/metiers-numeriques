@@ -15,11 +15,13 @@ export function convertGeocodeJsonFeatureToPrismaAddress({
 
     const { city } = properties
     const postalCode = properties.postcode
+    const country = 'FR'
     const sourceId = properties.id
     const street = properties.name
 
     return {
       city,
+      country,
       postalCode,
       region,
       sourceId,

@@ -97,4 +97,8 @@ declare namespace Common {
     }
     type: 'Feature'
   }
+
+  type Graphqled<T> = T & {
+    __typename: string
+  }
 }

@@ -1,4 +1,5 @@
 // import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
@@ -41,6 +42,7 @@ type JobCardProps = {
 }
 
 export function JobCard({ job }: JobCardProps) {
+  const location = job.address.country === 'FR' ? job.address.region : getCountryFromCode(job.address.country)
   const seniorityInYears = useMemo(() => Math.ceil(job.seniorityInMonths / 12), [])
 
   const trackJobOpening = useCallback(() => {
@@ -80,7 +82,7 @@ export function JobCard({ job }: JobCardProps) {
                 }}
               >
                 <i className="ri-map-pin-fill fr-mr-2w" />
-                {job.address.region}
+                {location}
               </p>
 
               {job.updatedAt && (

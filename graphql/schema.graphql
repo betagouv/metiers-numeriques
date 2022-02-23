@@ -12,6 +12,7 @@ scalar DateTime
 scalar JSONObject
 
 type Query {
+  getAddress(id: String!): Address
   getAddresses(
     pageIndex: Int!
     perPage: Int!

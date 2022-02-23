@@ -4,6 +4,7 @@ import Link from '@app/atoms/Link'
 import { SoftParagraph } from '@app/atoms/SoftParagraph'
 import { generateJobStructuredData } from '@app/helpers/generateJobStructuredData'
 import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { humanizeSeniority } from '@app/helpers/humanizeSeniority'
 import renderMarkdown from '@app/helpers/renderMarkdown'
@@ -53,6 +54,9 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
 
   if (isNew) {
     const job = data as JobWithRelation
+    const location = `${job.address.street}, ${job.address.city}, ${job.address.region}, ${getCountryFromCode(
+      job.address.country,
+    )}`
     const pageDescription = job.missionDescription
     const structuredData = generateJobStructuredData(job)
 
@@ -109,10 +113,8 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               </div>
 
               <div className="fr-grid-row fr-grid-row--gutters">
-                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Localisation</div>
-                <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
-                  {`${job.address.street}, ${job.address.postalCode} ${job.address.city}`}
-                </div>
+                <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Lieu</div>
+                <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{location}</div>
               </div>
 
               {Boolean(job.contractTypes.length) && (

@@ -1,15 +1,17 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
-import { Card, Table, TextInput } from '@singularity/core'
+import { Button, Card, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
+import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Trash } from 'react-feather'
+import { Edit, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Address } from '@prisma/client'
@@ -35,6 +37,12 @@ const BASE_COLUMNS: TableColumnProps[] = [
     key: 'region',
     label: 'Région',
   },
+  {
+    grow: 0.2,
+    key: 'country',
+    label: 'Pays',
+    transform: ({ country }) => getCountryFromCode(country),
+  },
 ]
 
 const PER_PAGE = 10
@@ -45,6 +53,7 @@ export default function AdminAddressListPage() {
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
   const [deleteAddress] = useMutation(queries.address.DELETE_ONE)
+  const router = useRouter()
 
   const getAddressesResult = useQuery<
     {
@@ -95,6 +104,10 @@ export default function AdminAddressListPage() {
     })
   }
 
+  const goToEditor = (id: string) => {
+    router.push(`/admin/address/${id}`)
+  }
+
   const query = useCallback(
     debounce(async (pageIndex: number) => {
       if ($searchInput.current === null) {
@@ -123,6 +136,13 @@ export default function AdminAddressListPage() {
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
     {
+      accent: 'primary',
+      action: goToEditor,
+      Icon: Edit,
+      label: 'Éditer cette adresse',
+      type: 'action',
+    },
+    {
       accent: 'danger',
       action: confirmDeletion,
       Icon: Trash,
@@ -135,6 +155,10 @@ export default function AdminAddressListPage() {
     <>
       <AdminHeader>
         <Title>Adresses</Title>
+
+        <Button onClick={() => goToEditor('new')} size="small">
+          Ajouter une adresse
+        </Button>
       </AdminHeader>
 
       <Card>

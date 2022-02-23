@@ -2,6 +2,7 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
+import * as R from 'ramda'
 
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Address, Prisma } from '@prisma/client'
@@ -19,16 +20,18 @@ export const mutation = {
     { input }: { input: Prisma.AddressCreateInput },
   ): Promise<Address | null> => {
     try {
-      const findUniqueArgs: Prisma.AddressFindUniqueArgs = {
-        where: {
-          sourceId: input.sourceId,
-        },
-      }
+      if (!R.isNil(input.sourceId)) {
+        const findFirstArgs: Prisma.AddressFindFirstArgs = {
+          where: {
+            sourceId: input.sourceId,
+          },
+        }
 
-      const existingData = await getPrisma().address.findUnique(findUniqueArgs)
+        const existingData = await getPrisma().address.findFirst(findFirstArgs)
 
-      if (existingData !== null) {
-        return existingData
+        if (existingData !== null) {
+          return existingData
+        }
       }
 
       const createArgs: Prisma.AddressCreateArgs = {
@@ -78,13 +81,34 @@ export const mutation = {
 }
 
 export const query = {
+  getAddress: async (_parent: undefined, { id }: { id: string }): Promise<Address | null> => {
+    try {
+      const args: Prisma.AddressFindUniqueArgs = {
+        where: {
+          id,
+        },
+      }
+
+      const data = await getPrisma().address.findUnique(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/addresses.ts > query.getAddress()')
+
+      return null
+    }
+  },
+
   getAddresses: async (
     _parent: undefined,
     { pageIndex, perPage, query }: GetAllArgs,
   ): Promise<GetAllResponse<AddressFromGetAddresses>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter<AddressFromGetAddresses>(['city', 'postalCode', 'street'], query)
+      const whereFilter = buildPrismaWhereFilter<AddressFromGetAddresses>(
+        ['city', 'postalCode', 'region', 'street'],
+        query,
+      )
 
       const args: Prisma.AddressFindManyArgs = {
         include: {

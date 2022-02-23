@@ -118,6 +118,7 @@ export const GET_ONE = gql`
         sourceId
 
         city
+        country
         postalCode
         region
         street
