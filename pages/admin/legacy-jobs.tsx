@@ -1,18 +1,16 @@
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
-import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_SOURCE_LABEL, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
-import * as R from 'ramda'
-import { useCallback, useRef, useState } from 'react'
-import { Box, Edit, Trash } from 'react-feather'
+import { useCallback, useRef } from 'react'
+import { Sunrise } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { LegacyJob } from '@prisma/client'
@@ -55,10 +53,6 @@ export default function AdminLegacyJobListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const $source = useRef('')
   const $state = useRef('')
-  const [hasDeletionModal, setHasDeletionModal] = useState(false)
-  const [selectedId, setSelectedId] = useState('')
-  const [selectedEntity, setSelectedEntity] = useState('')
-  const [deleteLegacyJob] = useMutation(queries.legacyJob.DELETE_ONE)
   const router = useRouter()
 
   const getLegacyJobsResult = useQuery<
@@ -84,31 +78,6 @@ export default function AdminLegacyJobListPage() {
           length: 0,
         }
       : getLegacyJobsResult.data.getLegacyJobs
-
-  const closeDeletionModal = () => {
-    setHasDeletionModal(false)
-  }
-
-  const confirmDeletion = async (id: string) => {
-    const legacyJob = R.find<LegacyJob>(R.propEq('id', id))(legacyJobsResult.data)
-    if (legacyJob === undefined) {
-      return
-    }
-
-    setSelectedId(id)
-    setSelectedEntity(String(legacyJob.title))
-    setHasDeletionModal(true)
-  }
-
-  const deleteAndReload = async () => {
-    setHasDeletionModal(false)
-
-    await deleteLegacyJob({
-      variables: {
-        id: selectedId,
-      },
-    })
-  }
 
   const goToEditor = (id: string) => {
     router.push(`/admin/legacy-job/${id}`)
@@ -156,24 +125,10 @@ export default function AdminLegacyJobListPage() {
     {
       accent: 'warning',
       action: goToMigrator,
-      Icon: Box,
+      Icon: Sunrise,
       label: 'Migrer cette offre [LEGACY]',
       type: 'action',
       withTooltip: true,
-    },
-    {
-      accent: 'primary',
-      action: goToEditor,
-      Icon: Edit,
-      label: 'Éditer cette offre [LEGACY]',
-      type: 'action',
-    },
-    {
-      accent: 'danger',
-      action: confirmDeletion,
-      Icon: Trash,
-      label: 'Supprimer cette offre [LEGACY]',
-      type: 'action',
     },
   ]
 
@@ -182,8 +137,8 @@ export default function AdminLegacyJobListPage() {
       <AdminHeader>
         <Title>Offres [LEGACY]</Title>
 
-        <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter une offre [LEGACY]
+        <Button onClick={() => goToEditor('archiver')} size="small">
+          Démarrer l’archiveur
         </Button>
       </AdminHeader>
 
@@ -206,10 +161,6 @@ export default function AdminLegacyJobListPage() {
           perPage={PER_PAGE}
         />
       </Card>
-
-      {hasDeletionModal && (
-        <DeletionModal entity={selectedEntity} onCancel={closeDeletionModal} onConfirm={deleteAndReload} />
-      )}
     </>
   )
 }

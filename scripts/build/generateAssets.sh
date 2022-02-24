@@ -9,12 +9,20 @@ export $(egrep -v '^(#|EDDSA_PRIVATE_KEY|NEXT_PUBLIC_EDDSA_PUBLIC_KEY)' ./.env |
 echo "info  - Generating @gouvfr/dsfr CSS file…"
 rm -f ./public/dsfr.min.css
 cp ./node_modules/@gouvfr/dsfr/dist/dsfr/dsfr.min.css ./public/dsfr.min.css
-sed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.min.css
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  gsed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.min.css
+else
+  sed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.min.css
+fi
 
 if [ "${NODE_ENV}" != 'production' ] || [ -n "${CI}" ]; then
   rm -f ./public/dsfr.css
   cp ./node_modules/@gouvfr/dsfr/dist/dsfr/dsfr.css ./public/dsfr.css
-  sed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.css
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    gsed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.css
+  else
+    sed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.css
+  fi
 fi
 echo "event - @gouvfr/dsfr CSS file generated."
 

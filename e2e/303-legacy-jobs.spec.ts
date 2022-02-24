@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 import { JOB_STATE_LABEL } from '../common/constants'
 import { TEST_LEGACY_JOBS } from './constants'
 
-test.describe('Admin > Legacy Jobs', () => {
+test.skip('Admin > Legacy Jobs', () => {
   test.use({
     storageState: './e2e/states/administrator.json',
   })

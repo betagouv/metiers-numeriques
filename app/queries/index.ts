@@ -1,4 +1,5 @@
 import * as address from './address'
+import * as archivedJob from './archived-job'
 import * as contact from './contact'
 import * as file from './file'
 import * as job from './job'
@@ -12,6 +13,7 @@ import * as user from './user'
 
 export default {
   address,
+  archivedJob,
   contact,
   file,
   job,

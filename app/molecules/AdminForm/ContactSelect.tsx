@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { FieldWithAction } from '@app/atoms/FieldWithAction'
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { NewContactModal } from '@app/organisms/NewContactModal'
 import { Select } from '@singularity/core'
@@ -127,7 +127,7 @@ export function ContactSelect({
   return (
     <FieldWithAction onClick={openNewContactModal}>
       <Select
-        key={generateKeyFromValue(values[name])}
+        key={generateKeyFromValues(values[name])}
         defaultValue={defaultValue}
         error={maybeError}
         helper={helper}

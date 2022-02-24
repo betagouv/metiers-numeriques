@@ -33,10 +33,22 @@ const GlobalStyleCustom = createGlobalStyle`
     flex-grow: 1;
     min-height: 0;
     min-width: 0;
- }
+  }
+
+  body:after {
+    display: none;
+  }
 
   [href] {
     box-shadow: none;
+  }
+
+  textarea {
+    cursor: auto;
+
+    :focus {
+      outline: none;
+    }
   }
 `
 

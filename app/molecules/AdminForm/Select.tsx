@@ -1,4 +1,4 @@
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { Select as SuiSelect } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useMemo } from 'react'
@@ -66,7 +66,7 @@ export function Select({
 
   return (
     <SuiSelect
-      key={generateKeyFromValue(initialValues)}
+      key={generateKeyFromValues(initialValues)}
       cacheOptions={isAsync}
       defaultValue={defaultValue}
       error={maybeError}

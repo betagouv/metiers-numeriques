@@ -3,12 +3,20 @@ import { useFormikContext } from 'formik'
 
 type TextareaProps = {
   helper?: string
+  isAutoResizing?: boolean
   isDisabled?: boolean
   label?: string
   name: string
   placeholder?: string
 }
-export function Textarea({ helper, isDisabled = false, label, name, placeholder }: TextareaProps) {
+export function Textarea({
+  helper,
+  isAutoResizing = true,
+  isDisabled = false,
+  label,
+  name,
+  placeholder,
+}: TextareaProps) {
   const { errors, handleChange, isSubmitting, submitCount, touched, values } = useFormikContext<any>()
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
@@ -21,7 +29,7 @@ export function Textarea({ helper, isDisabled = false, label, name, placeholder 
       disabled={isDisabled || isSubmitting}
       error={maybeError}
       helper={helper}
-      isAutoResizing
+      isAutoResizing={isAutoResizing}
       label={label}
       name={name}
       onChange={handleChange}

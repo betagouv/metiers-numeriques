@@ -1,32 +1,24 @@
 import { useQuery } from '@apollo/client'
-import { FieldWithAction } from '@app/atoms/FieldWithAction'
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
-import { showApolloError } from '@app/helpers/showApolloError'
-import { NewProfessionModal } from '@app/organisms/NewProfessionModal'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FieldWithAction } from '../../atoms/FieldWithAction'
+import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
+import { showApolloError } from '../../helpers/showApolloError'
+import { NewProfessionModal } from '../../organisms/NewProfessionModal'
 import queries from '../../queries'
 
 type ProfessionSelectProps = {
   helper?: string
   isDisabled?: boolean
-  isMulti?: boolean
   label: string
   name: string
   placeholder?: string
 }
 
-export function ProfessionSelect({
-  helper,
-  isDisabled = false,
-  isMulti = false,
-  label,
-  name,
-  placeholder,
-}: ProfessionSelectProps) {
+export function ProfessionSelect({ helper, isDisabled = false, label, name, placeholder }: ProfessionSelectProps) {
   const $newProfessionId = useRef<string>()
   const [hasNewProfessionModal, setHasNewProfessionModal] = useState(false)
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
@@ -38,20 +30,14 @@ export function ProfessionSelect({
   const maybeError = hasError ? String(errors[name]) : undefined
 
   const defaultValue = useMemo(() => {
-    const valueOrValues: string | string[] | null | undefined = values[name]
+    const currentValue: string | null | undefined = values[name]
 
-    if (valueOrValues === undefined || valueOrValues === null) {
-      return valueOrValues
+    if (currentValue === undefined || currentValue === null) {
+      return currentValue
     }
 
-    if (Array.isArray(valueOrValues)) {
-      return valueOrValues
-        .map(value => options.find(option => option.value === value))
-        .filter(value => value !== undefined) as Common.App.SelectOption[]
-    }
-
-    return options.find(({ value }) => value === valueOrValues)
-  }, [values[name]])
+    return options.find(({ value }) => value === currentValue)
+  }, [options, values[name]])
 
   const closeNewProfessionModal = useCallback(() => {
     setHasNewProfessionModal(false)
@@ -111,15 +97,7 @@ export function ProfessionSelect({
       return
     }
 
-    if (isMulti) {
-      if (defaultValue === undefined || defaultValue === null) {
-        setFieldValue(name, [$newProfessionId.current])
-      } else {
-        setFieldValue(name, [...(defaultValue as Common.App.SelectOption<string>[]), $newProfessionId.current])
-      }
-    } else {
-      setFieldValue(name, $newProfessionId.current)
-    }
+    setFieldValue(name, $newProfessionId.current)
 
     $newProfessionId.current = undefined
   }, [getProfessionsListResult.data])
@@ -127,13 +105,12 @@ export function ProfessionSelect({
   return (
     <FieldWithAction onClick={openNewProfessionModal}>
       <Select
-        key={generateKeyFromValue(values[name])}
+        key={generateKeyFromValues(options, defaultValue)}
         defaultValue={defaultValue}
         error={maybeError}
         helper={helper}
         isClearable
         isDisabled={isControlledDisabled}
-        isMulti={isMulti}
         label={label}
         name={name}
         onChange={updateFormikValues}

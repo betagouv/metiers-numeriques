@@ -78,6 +78,28 @@ export const mutation = {
       return null
     }
   },
+
+  updateAddress: async (
+    _parent: undefined,
+    { id, input }: { id: string; input: Partial<Address> },
+  ): Promise<Address | null> => {
+    try {
+      const args: Prisma.AddressUpdateArgs = {
+        data: input,
+        where: {
+          id,
+        },
+      }
+
+      const data = await getPrisma().address.update(args)
+
+      return data
+    } catch (err) {
+      handleError(err, 'api/resolvers/addresses.ts > query.updateAddress()')
+
+      return null
+    }
+  },
 }
 
 export const query = {

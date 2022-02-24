@@ -2,6 +2,7 @@ import { GraphQLDateTime } from 'graphql-iso-date'
 import { GraphQLJSONObject } from 'graphql-type-json'
 
 import * as addresses from './addresses'
+import * as archivedJobs from './archived-jobs'
 import * as contacts from './contacts'
 import * as files from './files'
 import * as jobs from './jobs'
@@ -18,6 +19,7 @@ export default {
   JSONObject: GraphQLJSONObject,
   Mutation: {
     ...addresses.mutation,
+    ...archivedJobs.mutation,
     ...contacts.mutation,
     ...files.mutation,
     ...jobs.mutation,
@@ -31,6 +33,7 @@ export default {
   },
   Query: {
     ...addresses.query,
+    ...archivedJobs.query,
     ...contacts.query,
     ...files.query,
     ...jobs.query,

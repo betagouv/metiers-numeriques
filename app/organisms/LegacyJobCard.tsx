@@ -1,4 +1,4 @@
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import normalizeJobDescription from '@app/helpers/normalizeJobDescription'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
@@ -127,7 +127,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                   .filter(experience => experience.trim().length > 0)
                   .map(experience => (
                     <li
-                      key={generateKeyFromValue(`${job.id}-${experience}`)}
+                      key={generateKeyFromValues(`${job.id}-${experience}`)}
                       className="fr-tag fr-tag--sm"
                       style={{
                         backgroundColor: 'var(--background-flat-info)',
@@ -142,7 +142,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
                   .filter(openedToContractType => openedToContractType.trim().length > 0)
                   .map(openedToContractType => (
                     <li
-                      key={generateKeyFromValue(`${job.id}-${openedToContractType}`)}
+                      key={generateKeyFromValues(`${job.id}-${openedToContractType}`)}
                       className="fr-tag fr-tag--sm"
                       style={{
                         backgroundColor: 'var(--background-flat-info)',

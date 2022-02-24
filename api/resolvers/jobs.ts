@@ -303,6 +303,9 @@ export const query = {
       const paginationFilter = buildPrismaPaginationFilter(throttledPerPage, pageIndex)
 
       const andFilter: Prisma.Enumerable<Prisma.JobWhereInput> = {
+        expiredAt: {
+          gt: new Date(),
+        },
         state: JobState.PUBLISHED,
       }
       if (region !== undefined) {

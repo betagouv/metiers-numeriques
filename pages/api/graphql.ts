@@ -20,6 +20,15 @@ const permissions = shield({
   Mutation: {
     createAddress: permission.isAdministrator,
     deleteAddress: permission.isAdministrator,
+    updateAddress: permission.isAdministrator,
+
+    createArchivedJob: permission.isAdministrator,
+    deleteArchivedJob: permission.isAdministrator,
+    updateArchivedJob: permission.isAdministrator,
+
+    createContact: permission.isAdministrator,
+    deleteContact: permission.isAdministrator,
+    updateContact: permission.isAdministrator,
 
     createFile: permission.isAdministrator,
     deleteFile: permission.isAdministrator,
@@ -57,7 +66,11 @@ const permissions = shield({
     updateUser: permission.isAdministrator,
   },
   Query: {
+    getAddress: permission.isAdministrator,
     getAddresses: permission.isAdministrator,
+
+    getArchivedJob: permission.isAdministrator,
+    getArchivedJobs: permission.isAdministrator,
 
     getContact: permission.isAdministrator,
     getContacts: permission.isAdministrator,

@@ -3,7 +3,7 @@ import ExternalLink from '@app/atoms/ExternalLink'
 import Link from '@app/atoms/Link'
 import { SoftParagraph } from '@app/atoms/SoftParagraph'
 import { generateJobStructuredData } from '@app/helpers/generateJobStructuredData'
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { humanizeSeniority } from '@app/helpers/humanizeSeniority'
@@ -369,7 +369,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Localisation</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
                   {legacyJob.locations.map(location => (
-                    <p key={generateKeyFromValue(location)}>{location}</p>
+                    <p key={generateKeyFromValues(location)}>{location}</p>
                   ))}
                 </div>
               </div>

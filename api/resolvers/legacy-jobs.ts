@@ -194,6 +194,9 @@ export const query = {
 
       const andFilter: Record<string, Common.Pojo> = {
         isMigrated: false,
+        limitDate: {
+          gt: new Date(),
+        },
         state: JobState.PUBLISHED,
       }
       if (region !== undefined) {

@@ -1,4 +1,4 @@
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { useFormikContext } from 'formik'
 import dynamic from 'next/dynamic'
 import styled from 'styled-components'
@@ -87,7 +87,7 @@ export function Code({ isDisabled = false, label, name }: CodeProps) {
       <Label>{label}</Label>
       <Box isDisabled={isDisabled || isSubmitting}>
         <ReactAce
-          key={generateKeyFromValue(initialValues)}
+          key={generateKeyFromValues(initialValues)}
           defaultValue={values[name]}
           highlightActiveLine={false}
           maxLines={10}

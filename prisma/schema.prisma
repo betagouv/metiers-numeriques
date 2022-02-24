@@ -103,6 +103,24 @@ model Address {
   jobs Job[] @relation("JobAddress")
 }
 
+model ArchivedJob {
+  id                 String    @id @default(cuid())
+  sourceId           String    @unique
+  title              String
+  missionDescription String
+  profileDescription String?
+  recruiterName      String
+  region             String
+  slug               String    @unique
+  source             JobSource
+  createdAt          DateTime  @default(now())
+  expiredAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  profession   Profession @relation("ArchivedJobProfession", fields: [professionId], references: [id])
+  professionId String
+}
+
 model Contact {
   id        String   @id @default(cuid())
   name      String
@@ -291,7 +309,8 @@ model Profession {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  jobs Job[] @relation("JobProfession")
+  jobs         Job[]         @relation("JobProfession")
+  archivedJobs ArchivedJob[] @relation("ArchivedJobProfession")
 }
 
 model Recruiter {

@@ -5,7 +5,7 @@ import ky from 'ky-universal'
 import * as R from 'ramda'
 
 import { convertGeocodeJsonFeatureToPrismaAddress } from '../../helpers/convertGeocodeJsonFeatureToPrismaAddress'
-import generateKeyFromValue from '../../helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { getCountryFromCode } from '../../helpers/getCountryFromCode'
 import queries from '../../queries'
 
@@ -106,7 +106,7 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
 
   return (
     <Select
-      key={generateKeyFromValue(defaultValue)}
+      key={generateKeyFromValues(defaultValue)}
       defaultValue={defaultValue as any}
       error={maybeError}
       helper={helper}

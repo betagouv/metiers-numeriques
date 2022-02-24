@@ -4,7 +4,7 @@ import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useMemo } from 'react'
 
-import generateKeyFromValue from '../../helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import queries from '../../queries'
 
 type CountrySelectProps = {
@@ -47,7 +47,7 @@ export function CountrySelect({ helper, isDisabled = false, label, name, placeho
 
   return (
     <Select
-      key={generateKeyFromValue(values[name])}
+      key={generateKeyFromValues(values[name])}
       defaultValue={defaultValue}
       error={maybeError}
       helper={helper}

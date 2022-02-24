@@ -1,7 +1,7 @@
-import generateKeyFromValue from './generateKeyFromValue'
+import { generateKeyFromValues } from './generateKeyFromValues'
 
 export default function renderLegacyInstitutionSocialNetwork(url: string) {
-  const key = generateKeyFromValue(url)
+  const key = generateKeyFromValues(url)
 
   switch (true) {
     case url.search('dailymotion.com') !== -1:
