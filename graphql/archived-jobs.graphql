@@ -1,0 +1,44 @@
+# import Profession from "professions.graphql"
+
+scalar DateTime
+
+type ArchivedJob {
+  id: ID!
+  sourceId: String!
+
+  createdAt: DateTime
+  expiredAt: DateTime
+  missionDescription: String
+  profileDescription: String
+  recruiterName: String
+  region: String
+  slug: String
+  source: String
+  title: String
+  updatedAt: DateTime
+
+  profession: Profession
+}
+
+input ArchivedJobInput {
+  id: String
+  sourceId: String
+
+  expiredAt: DateTime
+  missionDescription: String
+  profileDescription: String
+  recruiterName: String
+  region: String
+  slug: String
+  source: String
+  title: String
+
+  professionId: String
+}
+
+type ArchivedJobsResult {
+  count: Int!
+  data: [ArchivedJob!]!
+  index: Int!
+  length: Int!
+}

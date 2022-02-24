@@ -22,69 +22,91 @@ async function synchronize() {
   ß.info('[scripts/dev/synchronize.js] Deleting old legacy jobs…')
   await prisma.legacyJob.deleteMany()
 
-  ß.info('[scripts/dev/synchronize.js] Deleting old legacy institutions…')
-  await prisma.legacyInstitution.deleteMany()
-
-  ß.info('[scripts/dev/synchronize.js] Deleting old files…')
-  await prisma.file.deleteMany()
-
   ß.info('[scripts/dev/synchronize.js] Deleting old legacy services…')
   await prisma.legacyService.deleteMany()
 
   ß.info('[scripts/dev/synchronize.js] Deleting old legacy entities…')
   await prisma.legacyEntity.deleteMany()
 
-  ß.info('[scripts/dev/synchronize.js] Fetching legacy entities…')
-  const {
-    data: {
-      getLegacyEntities: { data: legacyEntities },
-    },
-  } = await apollo.query({
-    query: gql`
-      query {
-        getLegacyEntities(pageIndex: 0, perPage: 1000) {
-          data {
-            id
+  ß.info('[scripts/dev/synchronize.js] Fetching legacy jobs…')
+  const getLegacyJobs = async (pageIndex = 0, previousLegacyJobs: any[] = []): Promise<any[]> => {
+    const {
+      data: {
+        getPublicLegacyJobs: { data: legacyJobs },
+      },
+    } = await apollo.query({
+      query: gql`
+        query {
+          getPublicLegacyJobs(pageIndex: ${pageIndex}, perPage: 10) {
+            data {
+              id
 
-            fullName
-            logoUrl
-            name
+              advantages
+              conditions
+              createdAt
+              department
+              entity
+              experiences
+              hiringProcess
+              limitDate
+              locations
+              mission
+              more
+              openedToContractTypes
+              profile
+              publicationDate
+              reference
+              salary
+              slug
+              source
+              state
+              tasks
+              team
+              teamInfo
+              title
+              toApply
+              updatedAt
+
+              legacyService {
+                id
+
+                fullName
+                name
+                url
+
+                legacyEntity {
+                  id
+
+                  fullName
+                  name
+                }
+              }
+            }
           }
         }
-      }
-    `,
-  })
+      `,
+    })
+
+    const allLegacyJobs = [...previousLegacyJobs, ...legacyJobs]
+    if (legacyJobs.length < 10) {
+      return allLegacyJobs
+    }
+
+    return getLegacyJobs(pageIndex + 1, allLegacyJobs)
+  }
+
+  const legacyJobs = await getLegacyJobs()
+
+  const legacyServices = R.uniqBy(R.prop('id'))(
+    legacyJobs.map(legacyJob => legacyJob.legacyService).filter(legacyService => legacyService !== null),
+  ) as any[]
+  const legacyEntities = R.uniqBy(R.prop('id'))(
+    legacyServices.map(legacyService => legacyService.legacyEntity).filter(legacyService => legacyService !== null),
+  )
 
   ß.info('[scripts/dev/synchronize.js] Saving new legacy entities…')
   await prisma.legacyEntity.createMany({
     data: omitTypenameProp(legacyEntities),
-  })
-
-  ß.info('[scripts/dev/synchronize.js] Fetching legacy services…')
-  const {
-    data: {
-      getLegacyServices: { data: legacyServices },
-    },
-  } = await apollo.query({
-    query: gql`
-      query {
-        getLegacyServices(pageIndex: 0, perPage: 1000) {
-          data {
-            id
-
-            fullName
-            name
-            region
-            shortName
-            url
-
-            legacyEntity {
-              id
-            }
-          }
-        }
-      }
-    `,
   })
 
   ß.info('[scripts/dev/synchronize.js] Saving new legacy services…')
@@ -95,157 +117,6 @@ async function synchronize() {
         legacyEntityId: legacyEntity?.id,
       })),
     ),
-  })
-
-  ß.info('[scripts/dev/synchronize.js] Fetching legacy files…')
-  const {
-    data: {
-      getFiles: { data: files },
-    },
-  } = await apollo.query({
-    query: gql`
-      query {
-        getFiles(pageIndex: 0, perPage: 1000) {
-          data {
-            id
-
-            createdAt
-            title
-            type
-            updatedAt
-            url
-          }
-        }
-      }
-    `,
-  })
-
-  ß.info('[scripts/dev/synchronize.js] Saving new legacy files…')
-  await prisma.file.createMany({
-    data: omitTypenameProp(files),
-  })
-
-  ß.info('[scripts/dev/synchronize.js] Fetching legacy institutions…')
-  const {
-    data: {
-      getLegacyInstitutions: { data: legacyInstitutions },
-    },
-  } = await apollo.query({
-    query: gql`
-      query {
-        getLegacyInstitutions(pageIndex: 0, perPage: 1000) {
-          data {
-            id
-
-            address
-            challenges
-            fullName
-            hiringProcess
-            isPublished
-            joinTeam
-            keyNumbers
-            logoFile {
-              id
-            }
-            missions
-            motivation
-            organization
-            profile
-            project
-            schedule
-            slug
-            socialNetworkUrls
-            testimonial
-            thumbnailFile {
-              id
-            }
-            title
-            value
-            websiteUrls
-
-            files {
-              legacyInstitutionId
-              file {
-                id
-              }
-              section
-              assignedAt
-            }
-          }
-        }
-      }
-    `,
-  })
-
-  ß.info('[scripts/dev/synchronize.js] Saving new legacy institutions…')
-  const filesOnLegacyInstitutions: any[] = []
-  await prisma.legacyInstitution.createMany({
-    data: omitTypenameProp(
-      legacyInstitutions.map(({ files, logoFile, thumbnailFile, ...rest }) => {
-        if (files !== null) {
-          filesOnLegacyInstitutions.push(...files)
-        }
-
-        return {
-          ...rest,
-          logoFileId: logoFile?.id,
-          thumbnailFileId: thumbnailFile?.id,
-        }
-      }),
-    ),
-  })
-  await prisma.filesOnLegacyInstitutions.createMany({
-    data: filesOnLegacyInstitutions.map(({ file, ...rest }) => ({
-      ...rest,
-      fileId: file.id,
-    })),
-  })
-
-  ß.info('[scripts/dev/synchronize.js] Fetching legacy jobs…')
-  const {
-    data: {
-      getLegacyJobs: { data: legacyJobs },
-    },
-  } = await apollo.query({
-    query: gql`
-      query {
-        getLegacyJobs(pageIndex: 0, perPage: 1000) {
-          data {
-            id
-
-            advantages
-            conditions
-            createdAt
-            department
-            entity
-            experiences
-            hiringProcess
-            limitDate
-            locations
-            mission
-            more
-            openedToContractTypes
-            profile
-            publicationDate
-            reference
-            salary
-            slug
-            source
-            state
-            tasks
-            team
-            teamInfo
-            title
-            toApply
-            updatedAt
-
-            legacyService {
-              id
-            }
-          }
-        }
-      }
-    `,
   })
 
   ß.info('[scripts/dev/synchronize.js] Saving new legacy jobs…')

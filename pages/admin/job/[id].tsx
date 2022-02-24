@@ -222,22 +222,22 @@ export default function AdminJobEditorPage() {
       return
     }
 
-    const newInitialValues: any = {
+    const initialValues: any = {
       ...getJobResult.data.getJob,
     }
 
-    newInitialValues.expiredAtAsString = normalizeDateForDateInput(newInitialValues.expiredAt)
+    initialValues.expiredAtAsString = normalizeDateForDateInput(initialValues.expiredAt)
 
-    newInitialValues.seniorityInYears = Math.ceil(newInitialValues.seniorityInMonths / 12)
+    initialValues.seniorityInYears = Math.ceil(initialValues.seniorityInMonths / 12)
 
-    newInitialValues.applicationContactIds = newInitialValues.applicationContacts.map(({ id }) => id)
-    newInitialValues.infoContactId = newInitialValues.infoContact.id
-    newInitialValues.professionId = newInitialValues.profession.id
-    newInitialValues.recruiterId = newInitialValues.recruiter.id
+    initialValues.applicationContactIds = initialValues.applicationContacts.map(({ id }) => id)
+    initialValues.infoContactId = initialValues.infoContact.id
+    initialValues.professionId = initialValues.profession.id
+    initialValues.recruiterId = initialValues.recruiter.id
 
-    newInitialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(newInitialValues.address)
+    initialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(initialValues.address)
 
-    setInitialValues(newInitialValues)
+    setInitialValues(initialValues)
     setIsLoading(false)
   }, [getJobResult.data])
 

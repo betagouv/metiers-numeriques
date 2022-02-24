@@ -7,7 +7,7 @@ import { Flex } from '@app/atoms/Flex'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { convertGeocodeJsonFeatureToPrismaAddress } from '@app/helpers/convertGeocodeJsonFeatureToPrismaAddress'
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
@@ -279,7 +279,7 @@ export default function AdminLegacyJobMigratorPage() {
           }}
         >
           <AdminForm
-            key={generateKeyFromValue(initialLegacyValues)}
+            key={generateKeyFromValues(initialLegacyValues)}
             initialValues={initialLegacyValues}
             onSubmit={() => undefined}
           >
@@ -313,7 +313,7 @@ export default function AdminLegacyJobMigratorPage() {
                 />
 
                 <Select
-                  key={generateKeyFromValue((initialLegacyValues as any).openedToContractTypesAsOptions)}
+                  key={generateKeyFromValues((initialLegacyValues as any).openedToContractTypesAsOptions)}
                   defaultValue={(initialLegacyValues as any).openedToContractTypesAsOptions}
                   isDisabled
                   isMulti
@@ -335,7 +335,7 @@ export default function AdminLegacyJobMigratorPage() {
 
               <Field>
                 <Select
-                  key={generateKeyFromValue((initialLegacyValues as any).locationsAsOptions)}
+                  key={generateKeyFromValues((initialLegacyValues as any).locationsAsOptions)}
                   defaultValue={(initialLegacyValues as any).locationsAsOptions}
                   isDisabled
                   isMulti
@@ -404,7 +404,7 @@ export default function AdminLegacyJobMigratorPage() {
           }}
         >
           <AdminForm
-            key={generateKeyFromValue(initialValues)}
+            key={generateKeyFromValues(initialValues)}
             initialValues={initialValues || {}}
             onSubmit={migrateAndGoToList}
             validationSchema={JobFormSchema}

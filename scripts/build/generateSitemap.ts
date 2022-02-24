@@ -31,6 +31,9 @@ async function generateSitemap() {
   ß.info('[scripts/build/generateSitemap.js] Fetching institutions…')
   const institutions = await getPrisma().legacyInstitution.findMany()
 
+  ß.info('[scripts/build/generateSitemap.js] Fetching archived jobs…')
+  const archivedJobs = await getPrisma().archivedJob.findMany()
+
   const sitemap = new SitemapStream({
     hostname: 'https://metiers.numerique.gouv.fr',
   })
@@ -61,6 +64,14 @@ async function generateSitemap() {
     })
   })
   ß.success(`[scripts/build/generateSitemap.js] ${institutions.length} institutions mapped.`)
+
+  ß.info('[scripts/build/generateSitemap.js] Mapping archived jobs…')
+  archivedJobs.forEach(({ slug }) => {
+    sitemap.write({
+      url: `/emploi/archive/${slug}`,
+    })
+  })
+  ß.success(`[scripts/build/generateSitemap.js] ${archivedJobs.length} archived jobs mapped.`)
 
   sitemap.end()
   setInterval(process.exit, 2000)

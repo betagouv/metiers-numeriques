@@ -1,5 +1,5 @@
 import getPrisma from '@api/helpers/getPrisma'
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import renderLegacyInstitutionFile from '@app/helpers/renderLegacyInstitutionFile'
 import renderLegacyInstitutionSocialNetwork from '@app/helpers/renderLegacyInstitutionSocialNetwork'
 import renderMarkdown from '@app/helpers/renderMarkdown'
@@ -232,7 +232,7 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
                 {institution.websiteUrls.length > 0 && (
                   <ul>
                     {institution.websiteUrls.map(websiteUrl => (
-                      <li key={generateKeyFromValue(websiteUrl)}>
+                      <li key={generateKeyFromValues(websiteUrl)}>
                         <a href={websiteUrl} rel="noopener noreferrer" target="_blank">
                           {websiteUrl}
                         </a>

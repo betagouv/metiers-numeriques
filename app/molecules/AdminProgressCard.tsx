@@ -1,4 +1,4 @@
-import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { Card } from '@singularity/core'
 import { Flex } from 'reflexbox'
 import styled from 'styled-components'
@@ -83,7 +83,7 @@ export const AdminProgressCard = ({ data, title }: AdminProgressCardProps) => (
           const percentage = Math.round((100 * count) / length)
 
           return (
-            <Flex key={generateKeyFromValue(title)} flexDirection="column" mt={3}>
+            <Flex key={generateKeyFromValues(title)} flexDirection="column" mt={3}>
               <Flex justifyContent="space-between">
                 <span>{`${count}/${length} ${title}`}</span>
                 <span>{percentage.toFixed(0)}%</span>

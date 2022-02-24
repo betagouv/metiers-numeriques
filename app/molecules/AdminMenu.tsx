@@ -163,6 +163,16 @@ export default function AdminMenu() {
               Fichiers
             </VerticalMenu.Item>
           </Link>
+          <Link href="/admin/archived-jobs">
+            <VerticalMenu.Item
+              isActive={
+                router.pathname === '/admin/archived-jobs' || router.pathname.startsWith('/admin/archived-job/')
+              }
+              isDark
+            >
+              Offres archivées
+            </VerticalMenu.Item>
+          </Link>
           <Link href="/admin/users">
             <VerticalMenu.Item
               isActive={router.pathname === '/admin/users' || router.pathname.startsWith('/admin/user/')}
