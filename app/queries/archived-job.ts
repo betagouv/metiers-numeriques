@@ -8,9 +8,18 @@ export const GET_ALL = gql`
         id
 
         expiredAt
+        isPublished
+        missionDescription
+        profileDescription
         slug
         source
         title
+
+        profession {
+          id
+
+          name
+        }
       }
       index
       length

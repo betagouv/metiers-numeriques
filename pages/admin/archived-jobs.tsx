@@ -5,14 +5,13 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
-import { JOB_SOURCE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Card, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Edit, Eye, Trash } from 'react-feather'
+import { Edit, ExternalLink, Eye, EyeOff, Save, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { ArchivedJob } from '@prisma/client'
@@ -20,20 +19,33 @@ import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
+    grow: 0.1,
+    key: 'source',
+    label: 'Source',
+  },
+  {
     key: 'title',
     label: 'Intitulé',
   },
   {
-    grow: 0.1,
-    key: 'source',
-    label: 'Source',
-    transform: ({ state }) => JOB_SOURCE_LABEL[state],
+    grow: 0.2,
+    key: 'profession.name',
+    label: 'Métier',
   },
   {
     grow: 0.15,
     key: 'expiredAt',
     label: 'Expirée le',
     transform: ({ expiredAt }) => humanizeDate(expiredAt),
+  },
+  {
+    IconOff: EyeOff,
+    IconOn: Eye,
+    key: 'isPublished',
+    label: 'Publication',
+    labelOff: 'Non publié',
+    labelOn: 'Publié',
+    type: 'boolean',
   },
 ]
 
@@ -71,11 +83,11 @@ export default function AdminArchivedJobListPage() {
         }
       : getArchivedJobsResult.data.getArchivedJobs
 
-  const closeDeletionModal = () => {
+  const closeDeletionModal = useCallback(() => {
     setHasDeletionModal(false)
-  }
+  }, [])
 
-  const confirmDeletion = async (id: string) => {
+  const confirmDeletion = useCallback(async (id: string) => {
     const archivedJob = R.find<ArchivedJob>(R.propEq('id', id))(archivedJobsResult.data)
     if (archivedJob === undefined) {
       return
@@ -84,9 +96,9 @@ export default function AdminArchivedJobListPage() {
     setSelectedId(id)
     setSelectedEntity(archivedJob.title)
     setHasDeletionModal(true)
-  }
+  }, [])
 
-  const deleteAndReload = async () => {
+  const deleteAndReload = useCallback(async () => {
     setHasDeletionModal(false)
 
     await deleteArchivedJob({
@@ -94,20 +106,46 @@ export default function AdminArchivedJobListPage() {
         id: selectedId,
       },
     })
-  }
+  }, [selectedId])
 
-  const goToEditor = (id: string) => {
+  const exportAsTxt = useCallback(
+    (id: string) => {
+      const archivedJob = R.find<ArchivedJob>(R.propEq('id', id))(archivedJobsResult.data)
+      if (archivedJob === undefined) {
+        return
+      }
+
+      let source = `data:text/plain;charset=utf-8,${archivedJob.title}\n\n${archivedJob.missionDescription}`
+      if (archivedJob.profileDescription !== null) {
+        source += `\n\n${archivedJob.profileDescription}`
+      }
+
+      const sourceAsUri = encodeURI(source)
+      const $downloadLink = document.createElement('a')
+      $downloadLink.setAttribute('href', sourceAsUri)
+      $downloadLink.setAttribute('download', `${archivedJob.slug}.txt`)
+      document.body.appendChild($downloadLink)
+
+      $downloadLink.click()
+    },
+    [archivedJobsResult.data],
+  )
+
+  const goToEditor = useCallback((id: string) => {
     router.push(`/admin/archived-job/${id}`)
-  }
+  }, [])
 
-  const goToPreview = (id: string) => {
-    const archivedJob = R.find<ArchivedJob>(R.propEq('id', id))(archivedJobsResult.data)
-    if (archivedJob === undefined) {
-      return
-    }
+  const goToPreview = useCallback(
+    (id: string) => {
+      const archivedJob = R.find<ArchivedJob>(R.propEq('id', id))(archivedJobsResult.data)
+      if (archivedJob === undefined) {
+        return
+      }
 
-    window.open(`/emploi/archive/${archivedJob.slug}`, '_blank')
-  }
+      window.open(`/emploi/archive/${archivedJob.slug}`, '_blank')
+    },
+    [archivedJobsResult.data],
+  )
 
   const query = useCallback(
     debounce(async (pageIndex: number) => {
@@ -137,9 +175,16 @@ export default function AdminArchivedJobListPage() {
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
     {
+      accent: 'warning',
+      action: exportAsTxt,
+      Icon: Save,
+      label: 'Prévisualiser cette offre',
+      type: 'action',
+    },
+    {
       accent: 'secondary',
       action: goToPreview,
-      Icon: Eye,
+      Icon: ExternalLink,
       label: 'Prévisualiser cette offre',
       type: 'action',
     },
@@ -162,7 +207,7 @@ export default function AdminArchivedJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres arhivées</Title>
+        <Title>Offres archivées</Title>
       </AdminHeader>
 
       <Card>

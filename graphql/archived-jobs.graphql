@@ -8,6 +8,7 @@ type ArchivedJob {
 
   createdAt: DateTime
   expiredAt: DateTime
+  isPublished: Boolean
   missionDescription: String
   profileDescription: String
   recruiterName: String
@@ -25,6 +26,7 @@ input ArchivedJobInput {
   sourceId: String
 
   expiredAt: DateTime
+  isPublished: Boolean
   missionDescription: String
   profileDescription: String
   recruiterName: String

@@ -1,12 +1,12 @@
 import { JobState } from '@prisma/client'
 
-import { REGION } from '../common/constants'
-
-export const TEST_LEGACY_ENTITIES = [
+export const TEST_CONTACTS = [
   {
-    fullName: 'Entity 1 Full Name',
-    logoUrl: 'https://example.com/entity-1-logo.svg',
-    name: '$$ Entity 1 Name',
+    email: 'contact.1@example.com',
+    name: '$$ Contact 1 Name',
+    notes: 'Contact 1 Notes.',
+    phone: '0123456789',
+    position: 'Contact 1 Position',
   },
 ]
 
@@ -14,16 +14,6 @@ export const TEST_LEGACY_JOBS = [
   {
     state: JobState.DRAFT,
     title: '$$ Job 1 Title',
-  },
-]
-
-export const TEST_LEGACY_SERVICES = [
-  {
-    $entity: TEST_LEGACY_ENTITIES[0].name,
-    fullName: 'Service 1 Full Name',
-    name: '$$ Service 1 Name',
-    region: REGION['Auvergne-Rhône-Alpes'],
-    websiteUrl: 'https://service-1.example.com',
   },
 ]
 

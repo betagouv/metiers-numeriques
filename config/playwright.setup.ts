@@ -20,7 +20,15 @@ export default async function globalSetup(config: FullConfig) {
 
   const prisma = getPrisma()
 
-  await prisma.legacyJob.deleteMany({
+  await prisma.address.deleteMany({
+    where: {
+      street: {
+        startsWith: '$$',
+      },
+    },
+  })
+
+  await prisma.archivedJob.deleteMany({
     where: {
       title: {
         startsWith: '$$',
@@ -28,7 +36,7 @@ export default async function globalSetup(config: FullConfig) {
     },
   })
 
-  await prisma.legacyService.deleteMany({
+  await prisma.contact.deleteMany({
     where: {
       name: {
         startsWith: '$$',
@@ -36,7 +44,31 @@ export default async function globalSetup(config: FullConfig) {
     },
   })
 
-  await prisma.legacyEntity.deleteMany({
+  await prisma.file.deleteMany({
+    where: {
+      title: {
+        startsWith: '$$',
+      },
+    },
+  })
+
+  await prisma.job.deleteMany({
+    where: {
+      title: {
+        startsWith: '$$',
+      },
+    },
+  })
+
+  await prisma.profession.deleteMany({
+    where: {
+      name: {
+        startsWith: '$$',
+      },
+    },
+  })
+
+  await prisma.recruiter.deleteMany({
     where: {
       name: {
         startsWith: '$$',

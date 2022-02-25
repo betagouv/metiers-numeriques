@@ -115,6 +115,9 @@ export const query = {
       const whereFilter = buildPrismaWhereFilter(['title'], query, andFilter)
 
       const args: Prisma.ArchivedJobFindManyArgs = {
+        include: {
+          profession: true,
+        },
         orderBy: {
           expiredAt: 'asc',
         },

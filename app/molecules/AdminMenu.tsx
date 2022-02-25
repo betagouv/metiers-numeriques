@@ -116,32 +116,6 @@ export default function AdminMenu() {
               Institutions
             </VerticalMenu.Item>
           </Link>
-          <Link href="/admin/legacy-entities">
-            <VerticalMenu.Item
-              isActive={
-                router.pathname === '/admin/legacy-entities' || router.pathname.startsWith('/admin/legacy-entity/')
-              }
-              isDark
-              style={{
-                textDecoration: 'line-through',
-              }}
-            >
-              Entités
-            </VerticalMenu.Item>
-          </Link>
-          <Link href="/admin/legacy-services">
-            <VerticalMenu.Item
-              isActive={
-                router.pathname === '/admin/legacy-services' || router.pathname.startsWith('/admin/legacy-service/')
-              }
-              isDark
-              style={{
-                textDecoration: 'line-through',
-              }}
-            >
-              Services
-            </VerticalMenu.Item>
-          </Link>
         </VerticalMenu>
 
         <MenuTitle>ADMINISTRATION</MenuTitle>
