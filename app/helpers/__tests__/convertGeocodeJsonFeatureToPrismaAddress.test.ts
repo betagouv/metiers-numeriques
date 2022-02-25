@@ -42,4 +42,41 @@ describe('app/helpers/convertGeocodeJsonFeatureToPrismaAddress()', () => {
       street: '10 Rue Lecourbe',
     })
   })
+
+  test(`with a Corse feature`, () => {
+    const feature: Common.GeocodeJsonFeature = {
+      geometry: {
+        coordinates: [8.73236, 41.91793],
+        type: 'Point',
+      },
+      properties: {
+        city: 'Ajaccio',
+        citycode: '2A004',
+        context: '2A, Corse-du-Sud, Corse',
+        housenumber: '22',
+        id: '2a004_0680_00022',
+        importance: 0.66883,
+        label: '22 Cours Grandval 20000 Ajaccio',
+        name: '22 Cours Grandval',
+        postcode: '20000',
+        score: 0.49716636363636363,
+        street: 'Cours Grandval',
+        type: 'housenumber',
+        x: 1176160.41,
+        y: 6108094.64,
+      },
+      type: 'Feature',
+    }
+
+    const result = convertGeocodeJsonFeatureToPrismaAddress(feature)
+
+    expect(result).toStrictEqual({
+      city: 'Ajaccio',
+      country: 'FR',
+      postalCode: '20000',
+      region: 'Corse',
+      sourceId: '2a004_0680_00022',
+      street: '22 Cours Grandval',
+    })
+  })
 })
