@@ -124,7 +124,7 @@ export default function AdminLegacyJobMigratorPage() {
     variables: {
       pageIndex: 0,
       perPage: 1,
-      source: JobSource.PEP,
+      source: JobSource.SKB,
     },
   })
   const getLegacyServicesListResult = useQuery(queries.legacyService.GET_LIST)
