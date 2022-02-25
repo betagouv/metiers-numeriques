@@ -27,10 +27,9 @@ export const GET_ALL_PUBLIC = gql`
         id
 
         contractTypes
-        expiredAt
         missionDescription
+        seniorityInMonths
         slug
-        state
         title
         updatedAt
 
