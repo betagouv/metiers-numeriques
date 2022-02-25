@@ -1,18 +1,14 @@
 import getPrisma from '../../api/helpers/getPrisma'
 import handleError from '../../common/helpers/handleError'
-import { initializeLegacyJobsState } from './01-initialize-legacy-jobs-state'
-import { makeLegacyJobsUpdatedAtUnique } from './02-make-legacy-jobs-updatedAt-unique'
-import { normalizeLegacyServicesRegion } from './03-normalize-legacy-services-region'
-import { cleanLegacyJobsEmailLinks } from './04-clean-legacy-jobs-email-links'
+import { initializeProfessions } from './01-initialize-professions'
+import { migrateNetworkJobsToInsfrastructure } from './FX-migrate-network-jobs-to-infrastructure'
 
 async function seed() {
   const prisma = getPrisma()
 
   try {
-    await initializeLegacyJobsState(prisma)
-    await makeLegacyJobsUpdatedAtUnique(prisma)
-    await normalizeLegacyServicesRegion(prisma)
-    await cleanLegacyJobsEmailLinks(prisma)
+    await initializeProfessions(prisma)
+    await migrateNetworkJobsToInsfrastructure(prisma)
   } catch (err) {
     handleError(err, 'prisma/seeds/index.ts > seed()')
   } finally {

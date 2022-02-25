@@ -56,16 +56,19 @@
       }
     },
     {
-      "files": ["./public/**/*.js"],
-      "env": {
-        "browser": true,
-        "node": false
-      }
-    },
-    {
       "files": ["./pages/**/*.tsx"],
       "rules": {
         "react/prop-types": "off"
+      }
+    },
+    {
+      "files": ["./prisma/**/*.ts"],
+      "env": {
+        "browser": false,
+        "node": true
+      },
+      "rules": {
+        "no-console": ["error", { "allow": ["error"] }]
       }
     },
     {
