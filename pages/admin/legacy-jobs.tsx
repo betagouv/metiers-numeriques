@@ -6,7 +6,7 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import queries from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_SOURCE_LABEL, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { Button, Card, Select, Table, TextInput } from '@singularity/core'
+import { Card, Select, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import { useCallback, useRef } from 'react'
@@ -79,10 +79,6 @@ export default function AdminLegacyJobListPage() {
         }
       : getLegacyJobsResult.data.getLegacyJobs
 
-  const goToEditor = (id: string) => {
-    router.push(`/admin/legacy-job/${id}`)
-  }
-
   const goToMigrator = (id: string) => {
     router.push(`/admin/legacy-job/migrate/${id}`)
   }
@@ -136,10 +132,6 @@ export default function AdminLegacyJobListPage() {
     <>
       <AdminHeader>
         <Title>Offres [LEGACY]</Title>
-
-        <Button onClick={() => goToEditor('archiver')} size="small">
-          Démarrer l’archiveur
-        </Button>
       </AdminHeader>
 
       <Card>

@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Edit, Eye, Trash } from 'react-feather'
+import { Edit, ExternalLink, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Job } from '@prisma/client'
@@ -155,7 +155,7 @@ export default function AdminJobListPage() {
     {
       accent: 'secondary',
       action: goToPreview,
-      Icon: Eye,
+      Icon: ExternalLink,
       label: 'Prévisualiser cette offre',
       type: 'action',
     },

@@ -107,6 +107,7 @@ model ArchivedJob {
   id                 String    @id @default(cuid())
   sourceId           String    @unique
   title              String
+  isPublished        Boolean   @default(true)
   missionDescription String
   profileDescription String?
   recruiterName      String

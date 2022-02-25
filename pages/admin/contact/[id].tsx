@@ -68,7 +68,7 @@ export default function AdminContactEditorPage() {
   const saveAndGoToList = async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<Contact> = R.pick(['firstName', 'email', 'lastName', 'note', 'phone'])(values)
+    const input: Partial<Contact> = R.pick(['email', 'name', 'note', 'phone'])(values)
 
     const options: MutationFunctionOptions = {
       variables: {
