@@ -7,7 +7,9 @@ export const GET_ALL = gql`
       data {
         id
 
+        aiLabel
         name
+        description
 
         _count {
           jobs
@@ -34,7 +36,9 @@ export const GET_ONE = gql`
     getProfession(id: $id) {
       id
 
+      aiLabel
       name
+      description
     }
   }
 `

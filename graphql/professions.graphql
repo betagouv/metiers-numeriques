@@ -3,7 +3,9 @@ scalar DateTime
 type Profession {
   id: ID!
 
+  aiLabel: String
   createdAt: DateTime
+  description: String
   name: String
   updatedAt: DateTime
 
@@ -15,6 +17,8 @@ type ProfessionCount {
 }
 
 input ProfessionInput {
+  aiLabel: String
+  description: String
   name: String
 }
 

@@ -67,7 +67,9 @@ describe('app/helpers/generateJobStructuredData()', () => {
       perksDescription: "25 jours de congés et 17 jours de RTT par an / Jusqu'à 2 jours de télétravail/semaine",
       processDescription: null,
       profession: {
+        aiLabel: '',
         createdAt: '2022-02-10T07:39:33.835Z' as unknown as Date,
+        description: '',
         id: 'ckzgo7arv0145zcj7nc28ln1f',
         name: 'Intra',
         updatedAt: '2022-02-10T07:39:33.836Z' as unknown as Date,

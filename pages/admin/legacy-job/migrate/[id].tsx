@@ -10,6 +10,7 @@ import { convertGeocodeJsonFeatureToPrismaAddress } from '@app/helpers/convertGe
 import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
+import { slugify } from '@app/helpers/slugify'
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
@@ -23,7 +24,6 @@ import { useRouter } from 'next/router'
 import { JobFormSchema } from 'pages/admin/job/[id]'
 import * as R from 'ramda'
 import { useCallback, useEffect, useState } from 'react'
-import slugify from 'slugify'
 
 import type { Job, JobState, Prisma } from '@prisma/client'
 

@@ -1,6 +1,10 @@
 module.exports = {
   clearMocks: true,
-  collectCoverageFrom: ['<rootDir>/{api,app,common}/{helpers,hooks,libs}/**/*.ts'],
+  collectCoverageFrom: [
+    '<rootDir>/{api,app,common}/{helpers,hooks,libs}/**/*.ts',
+    '!<rootDir>/api/libs/file.ts',
+    '!<rootDir>/api/libs/googleCloud.ts',
+  ],
   globals: {
     'ts-jest': {
       tsconfig: './tsconfig.json',

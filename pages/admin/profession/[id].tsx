@@ -13,7 +13,8 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { Profession } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
-  name: Yup.string().required(`Le nom est obligatoire.`),
+  aiLabel: Yup.string().nullable().required(`L’étiquette IA est obligatoire.`),
+  name: Yup.string().nullable().required(`Le nom est obligatoire.`),
 })
 
 export default function AdminProfessionEditorPage() {
@@ -67,7 +68,7 @@ export default function AdminProfessionEditorPage() {
   const saveAndGoToList = async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<Profession> = R.pick(['name'])(values)
+    const input: Partial<Profession> = R.pick(['aiLabel', 'description', 'name'])(values)
 
     const options: MutationFunctionOptions = {
       variables: {
@@ -96,6 +97,14 @@ export default function AdminProfessionEditorPage() {
         <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+          </Field>
+
+          <Field>
+            <AdminForm.TextInput isDisabled={isLoading} label="Description" name="description" />
+          </Field>
+
+          <Field>
+            <AdminForm.TextInput isDisabled={isLoading} label="Étiquette IA *" name="aiLabel" />
           </Field>
 
           <Field>
