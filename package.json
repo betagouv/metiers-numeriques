@@ -110,7 +110,7 @@
     "@types/mailchimp__mailchimp_marketing": "3.0.3",
     "@types/markdown-it": "12.2.3",
     "@types/node": "17.0.16",
-    "@types/ramda": "0.28.0",
+    "@types/ramda": "0.28.1",
     "@types/react": "17.0.39",
     "@types/reflexbox": "4.0.4",
     "@types/sha1": "1.1.3",
