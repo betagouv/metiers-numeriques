@@ -161,6 +161,15 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               </div>
             )}
 
+            {job.contextDescription && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3">
+                  <h3>Contexte</h3>
+                </div>
+                <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.contextDescription)}</div>
+              </div>
+            )}
+
             {job.perksDescription && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-col-md-3">
