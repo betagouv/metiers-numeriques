@@ -157,7 +157,7 @@ export const JobApplicationModal = ({ job, onDone }: JobApplicationModalProps) =
                 <NewsletterBox className="fr-modal__footer">
                   {!hasJustSubscribed && (
                     <Form initialValues={{}} onSubmit={createLead} validationSchema={FormSchema}>
-                      <Form.TextInput label="E-mail" name="email" placeholder="hari.seldon@42.fr" type="email" />
+                      <Form.TextInput label="E-mail" name="email" type="email" />
                       <Form.Submit>TENEZ-MOI INFORMÉ·E !</Form.Submit>
                     </Form>
                   )}
