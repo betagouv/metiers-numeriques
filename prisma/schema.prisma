@@ -191,12 +191,11 @@ model Job {
   applicationContacts Contact[]  @relation("JobApplicationContacts")
   infoContact         Contact    @relation("JobInfoContact", fields: [infoContactId], references: [id])
   infoContactId       String
+  leads               Lead[]     @relation("LeadJobSource")
   profession          Profession @relation("JobProfession", fields: [professionId], references: [id])
   professionId        String
   recruiter           Recruiter  @relation("JobRecruiter", fields: [recruiterId], references: [id])
   recruiterId         String
-
-  leads Lead[] @relation("LeadJobSource")
 }
 
 model Lead {

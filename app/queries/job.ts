@@ -20,8 +20,14 @@ export const GET_ALL = gql`
 `
 
 export const GET_ALL_PUBLIC = gql`
-  query GetPublicJobs($pageIndex: Int!, $perPage: Int!, $query: String, $region: String) {
-    getPublicJobs(pageIndex: $pageIndex, perPage: $perPage, query: $query, region: $region) {
+  query GetPublicJobs($pageIndex: Int!, $perPage: Int!, $professionId: String, $query: String, $region: String) {
+    getPublicJobs(
+      pageIndex: $pageIndex
+      perPage: $perPage
+      professionId: $professionId
+      query: $query
+      region: $region
+    ) {
       count
       data {
         id

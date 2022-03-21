@@ -1,6 +1,7 @@
 import classnames from 'classnames'
-import { ButtonHTMLAttributes } from 'react'
 import styled from 'styled-components'
+
+import type { ButtonHTMLAttributes } from 'react'
 
 const ACCENT_TABLE = {
   moutarde: {

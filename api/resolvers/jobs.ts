@@ -4,9 +4,6 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 import { JobState, LegacyJob } from '@prisma/client'
 import dayjs from 'dayjs'
-import * as R from 'ramda'
-
-import { query as legacyJobsQuery } from './legacy-jobs'
 
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Address, Contact, Job, Prisma, Profession, Recruiter } from '@prisma/client'
@@ -290,13 +287,12 @@ export const query = {
   getPublicJobs: async (
     obj,
     queryArgs: GetAllArgs & {
+      professionId?: string
       region?: string
     },
   ): Promise<GetAllResponse<JobFromGetPublicJobs | LegacyJob>> => {
     try {
-      const legacyJobsResult = await legacyJobsQuery.getPublicLegacyJobs(obj, queryArgs)
-
-      const { pageIndex, perPage, query, region } = queryArgs
+      const { pageIndex, perPage, professionId, query, region } = queryArgs
 
       const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
 
@@ -307,6 +303,9 @@ export const query = {
           gt: new Date(),
         },
         state: JobState.PUBLISHED,
+      }
+      if (professionId !== undefined) {
+        andFilter.professionId = professionId
       }
       if (region !== undefined) {
         andFilter.address = { region }
@@ -328,15 +327,9 @@ export const query = {
         ...whereFilter,
       }
 
-      const jobslength = await getPrisma().job.count(whereFilter)
-      const jobsData = (await getPrisma().job.findMany(args)) as unknown as JobFromGetPublicJobs[]
-      const length = legacyJobsResult.length + jobslength
+      const length = await getPrisma().job.count(whereFilter)
+      const data = (await getPrisma().job.findMany(args)) as unknown as JobFromGetPublicJobs[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
-
-      const data = R.pipe(
-        R.sort(R.descend(R.prop('updatedAt') as any)),
-        R.slice(0, perPage) as any,
-      )([...jobsData, ...legacyJobsResult.data]) as Array<JobFromGetPublicJobs | LegacyJob>
 
       return {
         count,
@@ -345,7 +338,7 @@ export const query = {
         length,
       }
     } catch (err) {
-      handleError(err, 'api/resolvers/legacy-jobs.ts > query.getLegacyJobs()')
+      handleError(err, 'api/resolvers/jobs.ts > query.getPublicJobs()')
 
       return {
         count: 1,

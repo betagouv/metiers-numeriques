@@ -1,8 +1,8 @@
 import getPrisma from '@api/helpers/getPrisma'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
+import { FilterRadio } from '@app/atoms/FilterRadio'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { JobCard } from '@app/organisms/JobCard'
-import { LegacyJobCard } from '@app/organisms/LegacyJobCard'
 import queries from '@app/queries'
 import { REGIONS_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
@@ -10,12 +10,41 @@ import handleError from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
-import * as R from 'ramda'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { JobWithRelation } from '@app/organisms/JobCard'
-import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
+import type { Profession } from '@prisma/client'
+
+const FiltersBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  > label {
+    height: 17.75vw;
+    margin: 0 0 1vw;
+    width: 17.75vw;
+  }
+  > label:nth-child(5n + 1) {
+    margin-left: 0;
+  }
+
+  > label:last-child {
+    margin-right: 0;
+  }
+
+  @media screen and (min-width: 1248px) {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    > label {
+      height: 7.5rem;
+      width: 7.5rem;
+    }
+  }
+`
 
 const INITIAL_VARIABLES = {
   pageIndex: 0,
@@ -23,22 +52,23 @@ const INITIAL_VARIABLES = {
 }
 
 type JobListPageProps = {
-  initialJobs: Array<JobWithRelation | LegacyJobWithRelation>
+  initialJobs: JobWithRelation[]
+  initialProfessions: Profession[]
 }
-export default function JobListPage({ initialJobs }: JobListPageProps) {
+export default function JobListPage({ initialJobs, initialProfessions }: JobListPageProps) {
+  const $isFirstLoad = useRef<boolean>(true)
   const $regionSelect = useRef<HTMLSelectElement>(null)
   const $searchInput = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [jobs, setJobs] = useState(initialJobs)
+  const [selectedProfessionId, setSelectedProfessionId] = useState<string | undefined>()
 
-  const getJobsResult = useQuery<
+  const [getJobs, getJobsResult] = useLazyQuery<
     {
-      getPublicJobs: GetAllResponse<JobWithRelation | LegacyJobWithRelation>
+      getPublicJobs: GetAllResponse<JobWithRelation>
     },
     any
-  >(queries.job.GET_ALL_PUBLIC, {
-    variables: INITIAL_VARIABLES,
-  })
+  >(queries.job.GET_ALL_PUBLIC)
 
   const jobsResult =
     getJobsResult.loading || getJobsResult.error || getJobsResult.data === undefined
@@ -47,6 +77,13 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
           length: Infinity,
         }
       : getJobsResult.data.getPublicJobs
+
+  const hasMoreJobs = jobsResult.length > jobs.length
+  const nextPageIndex = jobsResult.index + 1
+  const pageTitle = 'Liste des offres d’emploi numériques de l’État | metiers.numerique.gouv.fr'
+  const pageDescription =
+    'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
+    'et les administrations territoriales.'
 
   const query = useCallback(
     debounce(async (pageIndex: number) => {
@@ -60,11 +97,14 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
       const query = define($searchInput.current.value)
       const region = define($regionSelect.current.value)
 
-      const newOrAdditionalJobsResult = await getJobsResult.refetch({
-        ...INITIAL_VARIABLES,
-        pageIndex,
-        query,
-        region,
+      const newOrAdditionalJobsResult = await getJobs({
+        variables: {
+          ...INITIAL_VARIABLES,
+          pageIndex,
+          professionId: selectedProfessionId,
+          query,
+          region,
+        },
       })
 
       setIsLoading(false)
@@ -72,6 +112,10 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
       if (newOrAdditionalJobsResult.error) {
         handleError(newOrAdditionalJobsResult.error, 'pages/emplois.tsx > query()')
 
+        return
+      }
+
+      if (newOrAdditionalJobsResult.data === undefined) {
         return
       }
 
@@ -84,15 +128,26 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
         setJobs([...jobs, ...newOrAdditionalJobs])
       }
     }, 500),
-    [jobs],
+    [jobs, selectedProfessionId],
   )
 
-  const hasMoreJobs = jobsResult.length > jobs.length
-  const nextPageIndex = jobsResult.index + 1
-  const pageTitle = 'Liste des offres d’emploi numériques de l’État | metiers.numerique.gouv.fr'
-  const pageDescription =
-    'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
-    'et les administrations territoriales.'
+  const selectProfessionId = useCallback((professionId: string) => {
+    setSelectedProfessionId(professionId)
+  }, [])
+
+  const unselectProfessionId = useCallback(() => {
+    setSelectedProfessionId(undefined)
+  }, [])
+
+  useEffect(() => {
+    if ($isFirstLoad.current) {
+      $isFirstLoad.current = false
+
+      return
+    }
+
+    query(0)
+  }, [selectedProfessionId])
 
   return (
     <>
@@ -105,7 +160,7 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
       </Head>
 
       <div className="fr-container fr-mt-2w fr-mb-2w" id="offres-de-mission">
-        <div className="fr-grid-row fr-py-2w">
+        <div className="fr-grid-row">
           <div className="fr-col-12 fr-col-md-7">
             <label className="fr-label" htmlFor="JobsSearchInput">
               Métier
@@ -137,6 +192,23 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
             </div>
           </div>
         </div>
+        <div className="fr-grid-row fr-py-2w">
+          <div className="fr-col-12">
+            <FiltersBox>
+              {initialProfessions.map(profession => (
+                <FilterRadio
+                  key={profession.id}
+                  defaultChecked={profession.id === selectedProfessionId}
+                  label={profession.name}
+                  name="professionId"
+                  onCheck={selectProfessionId}
+                  onUncheck={unselectProfessionId}
+                  value={profession.id}
+                />
+              ))}
+            </FiltersBox>
+          </div>
+        </div>
 
         <div className="fr-grid-row">
           {jobs.length === 0 && (
@@ -151,13 +223,9 @@ export default function JobListPage({ initialJobs }: JobListPageProps) {
             </div>
           )}
 
-          {jobs.map(job => {
-            if (!R.isNil((job as any).missionDescription)) {
-              return <JobCard key={job.id} job={job as JobWithRelation} />
-            }
-
-            return <LegacyJobCard key={job.id} job={job as LegacyJobWithRelation} />
-          })}
+          {jobs.map(job => (
+            <JobCard key={job.id} job={job} />
+          ))}
 
           {isLoading && (
             <div
@@ -210,33 +278,22 @@ export async function getStaticProps() {
     },
   })
 
-  const initialLegacyJobs = await prisma.legacyJob.findMany({
-    include: {
-      legacyService: {
-        include: {
-          legacyEntity: true,
-        },
-      },
-    },
+  const initialProfessions = await prisma.profession.findMany({
     orderBy: {
-      updatedAt: 'desc',
+      name: 'asc',
     },
-    take: INITIAL_VARIABLES.perPage,
-    where: {
-      isMigrated: false,
-      state: JobState.PUBLISHED,
+    select: {
+      id: true,
+      name: true,
     },
   })
 
-  const initialData = R.pipe(
-    R.sort(R.descend(R.prop('updatedAt') as any)),
-    R.slice(0, INITIAL_VARIABLES.perPage) as any,
-    R.map(stringifyDeepDates),
-  )([...initialJobs, ...initialLegacyJobs])
+  const normalizedIinitialJobs = initialJobs.map(stringifyDeepDates)
 
   return {
     props: {
-      initialJobs: initialData,
+      initialJobs: normalizedIinitialJobs,
+      initialProfessions,
     },
     revalidate: 300,
   }
