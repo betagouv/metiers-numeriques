@@ -91,7 +91,7 @@ jobs:
       - name: Cache
         if: ${{ always() }}
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         # https://playwright.dev/docs/ci#directories-to-cache
         with:
           path: |
