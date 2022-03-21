@@ -54,6 +54,7 @@ type Query {
   getPublicJobs(
     pageIndex: Int!
     perPage: Int!
+    professionId: String
     query: String
     region: String
   ): PublicJobsResult!
