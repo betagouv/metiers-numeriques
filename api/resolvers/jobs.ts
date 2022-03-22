@@ -2,10 +2,10 @@ import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilte
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
 import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
-import { JobState, LegacyJob } from '@prisma/client'
+import { JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
 
-import type { GetAllArgs, GetAllResponse } from './types'
+import type { Context, GetAllArgs, GetAllResponse } from './types'
 import type { Address, Contact, Job, Prisma, Profession, Recruiter } from '@prisma/client'
 
 export type JobFromGetOne = Job & {
@@ -219,11 +219,15 @@ export const query = {
     }: GetAllArgs & {
       state?: JobState
     },
+    context: Context,
   ): Promise<GetAllResponse<JobFromGetJobs>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
       const andFilter: Record<string, Common.Pojo> = {}
+      if (context.user.role === UserRole.RECRUITER) {
+        andFilter.recruiterId = context.user.recruiterId
+      }
       if (state !== undefined) {
         andFilter.state = state
       }
@@ -290,7 +294,7 @@ export const query = {
       professionId?: string
       region?: string
     },
-  ): Promise<GetAllResponse<JobFromGetPublicJobs | LegacyJob>> => {
+  ): Promise<GetAllResponse<JobFromGetPublicJobs>> => {
     try {
       const { pageIndex, perPage, professionId, query, region } = queryArgs
 

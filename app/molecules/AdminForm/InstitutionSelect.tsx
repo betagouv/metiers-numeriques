@@ -8,7 +8,7 @@ import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { showApolloError } from '../../helpers/showApolloError'
 import queries from '../../queries'
 
-type ProfessionSelectProps = {
+type InstitutionSelectProps = {
   helper?: string
   isDisabled?: boolean
   label: string
@@ -16,14 +16,14 @@ type ProfessionSelectProps = {
   placeholder?: string
 }
 
-export function ProfessionSelect({ helper, isDisabled = false, label, name, placeholder }: ProfessionSelectProps) {
-  const $newProfessionId = useRef<string>()
+export function InstitutionSelect({ helper, isDisabled = false, label, name, placeholder }: InstitutionSelectProps) {
+  const $newInstitutionId = useRef<string>()
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getProfessionsListResult = useQuery(queries.profession.GET_LIST)
+  const getInstitutionsListResult = useQuery(queries.institution.GET_LIST)
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
-  const isControlledDisabled = getProfessionsListResult.loading || isDisabled || isSubmitting
+  const isControlledDisabled = getInstitutionsListResult.loading || isDisabled || isSubmitting
   const maybeError = hasError ? String(errors[name]) : undefined
 
   const defaultValue = useMemo(() => {
@@ -57,31 +57,31 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
   }
 
   useEffect(() => {
-    if (getProfessionsListResult.loading) {
+    if (getInstitutionsListResult.loading) {
       return
     }
 
-    if (getProfessionsListResult.error) {
-      showApolloError(getProfessionsListResult.error)
+    if (getInstitutionsListResult.error) {
+      showApolloError(getInstitutionsListResult.error)
 
       return
     }
 
-    const newProfessionsAsOptions = R.map(({ id, name }) => ({
+    const newInstitutionsAsOptions = R.map(({ id, name }) => ({
       label: name,
       value: id,
-    }))(getProfessionsListResult.data.getProfessionsList)
+    }))(getInstitutionsListResult.data.getInstitutionsList)
 
-    setOptions(newProfessionsAsOptions)
+    setOptions(newInstitutionsAsOptions)
 
-    if ($newProfessionId.current === undefined) {
+    if ($newInstitutionId.current === undefined) {
       return
     }
 
-    setFieldValue(name, $newProfessionId.current)
+    setFieldValue(name, $newInstitutionId.current)
 
-    $newProfessionId.current = undefined
-  }, [getProfessionsListResult.data])
+    $newInstitutionId.current = undefined
+  }, [getInstitutionsListResult.data])
 
   return (
     <Select

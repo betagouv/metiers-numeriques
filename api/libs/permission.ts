@@ -1,5 +1,4 @@
-import { USER_ROLE } from '@common/constants'
-import { User } from '@prisma/client'
+import { User, UserRole } from '@prisma/client'
 import { AuthenticationError, ForbiddenError } from 'apollo-server-micro'
 import { rule } from 'graphql-shield'
 
@@ -14,7 +13,21 @@ class Permission {
         return new AuthenticationError('Unauthorized.')
       }
 
-      if (user.role !== USER_ROLE.ADMINISTRATOR) {
+      if (user.role !== UserRole.ADMINISTRATOR) {
+        return new ForbiddenError('Forbidden.')
+      }
+
+      return true
+    })
+  }
+
+  public get isAdministratorOrManager(): Rule {
+    return this.setRule(user => {
+      if (user === undefined) {
+        return new AuthenticationError('Unauthorized.')
+      }
+
+      if (![UserRole.ADMINISTRATOR, UserRole.RECRUITER].includes(user.role)) {
         return new ForbiddenError('Forbidden.')
       }
 

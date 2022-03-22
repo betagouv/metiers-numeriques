@@ -19,18 +19,23 @@ import type { TableColumnProps } from '@singularity/core/contents/Table/types'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
+    grow: 0.2,
     key: 'firstName',
     label: 'Prénom',
   },
   {
+    grow: 0.2,
     key: 'lastName',
     label: 'Nom',
   },
   {
-    key: 'email',
-    label: 'Email',
+    grow: 0.35,
+    isSortable: true,
+    key: 'recruiter.name',
+    label: 'Recruteur',
   },
   {
+    grow: 0.25,
     key: 'role',
     label: 'Rôle',
     transform: ({ role }) => USER_ROLE_LABEL[role],
@@ -178,8 +183,6 @@ export default function AdminUserListPage() {
         <Table
           columns={columns}
           data={usersResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={usersResult.count}

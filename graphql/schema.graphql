@@ -2,6 +2,7 @@
 # import ArchivedJob, ArchivedJobInput, ArchivedJobsResult from "archived-jobs.graphql"
 # import Contact, ContactInput, ContactsResult from "contacts.graphql"
 # import File, FileInput, FilesResult from "files.graphql"
+# import Institution, InstitutionInput, InstitutionsResult, PublicInstitutionsResult from "institutions.graphql"
 # import Job, JobInput, JobsResult, PublicJobsResult from "jobs.graphql"
 # import LegacyEntity, LegacyEntityInput, LegacyEntitiesResult from "legacy-entities.graphql"
 # import LegacyService, LegacyServiceInput, LegacyServicesResult from "legacy-services.graphql"
@@ -41,6 +42,20 @@ type Query {
     query: String
     perPage: Int
   ): FilesResult!
+
+  getInstitution(id: String!): Institution
+  getInstitutions(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): InstitutionsResult!
+  getInstitutionsList: [Institution!]!
+  getAllInstitutions: [Institution!]!
+  getPublicInstitutions(
+    pageIndex: Int!
+    perPage: Int!
+    query: String
+  ): PublicInstitutionsResult!
 
   getJob(id: String!): Job
   getJobs(
@@ -139,6 +154,10 @@ type Mutation {
   createFile(input: FileInput!): File
   deleteFile(id: String!): File
   updateFile(id: String!, input: FileInput!): File
+
+  createInstitution(input: InstitutionInput!): Institution
+  deleteInstitution(id: String!): Institution
+  updateInstitution(id: String!, input: InstitutionInput!): Institution
 
   createJob(input: JobInput!): Job
   deleteJob(id: String!): Job

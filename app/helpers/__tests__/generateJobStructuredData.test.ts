@@ -79,6 +79,7 @@ describe('app/helpers/generateJobStructuredData()', () => {
         createdAt: '2022-01-28T16:39:59.897Z' as unknown as Date,
         fullName: null,
         id: 'ckyyms87t0279a0j7esc6vpfe',
+        institutionId: null,
         logoFileId: null,
         name: 'Recruteur B',
         parentId: null,

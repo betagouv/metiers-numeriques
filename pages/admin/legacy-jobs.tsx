@@ -144,8 +144,6 @@ export default function AdminLegacyJobListPage() {
         <Table
           columns={columns}
           data={legacyJobsResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={legacyJobsResult.count}

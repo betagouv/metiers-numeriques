@@ -18,7 +18,7 @@ const GRAPHQL_SCHEMA_PATH = path.join(process.cwd(), 'graphql/schema.graphql')
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 const permissions = shield({
   Mutation: {
-    createAddress: permission.isAdministrator,
+    createAddress: permission.isAdministratorOrManager,
     deleteAddress: permission.isAdministrator,
     updateAddress: permission.isAdministrator,
 
@@ -26,7 +26,7 @@ const permissions = shield({
     deleteArchivedJob: permission.isAdministrator,
     updateArchivedJob: permission.isAdministrator,
 
-    createContact: permission.isAdministrator,
+    createContact: permission.isAdministratorOrManager,
     deleteContact: permission.isAdministrator,
     updateContact: permission.isAdministrator,
 
@@ -34,9 +34,9 @@ const permissions = shield({
     deleteFile: permission.isAdministrator,
     updateFile: permission.isAdministrator,
 
-    createJob: permission.isAdministrator,
+    createJob: permission.isAdministratorOrManager,
     deleteJob: permission.isAdministrator,
-    updateJob: permission.isAdministrator,
+    updateJob: permission.isAdministratorOrManager,
 
     createLegacyJob: permission.isAdministrator,
     deleteLegacyJob: permission.isAdministrator,
@@ -74,13 +74,19 @@ const permissions = shield({
 
     getContact: permission.isAdministrator,
     getContacts: permission.isAdministrator,
-    getContactsList: permission.isAdministrator,
+    getContactsList: permission.isAdministratorOrManager,
 
     getFile: permission.isAdministrator,
     getFiles: permission.isAdministrator,
 
-    getJob: permission.isAdministrator,
-    getJobs: permission.isAdministrator,
+    getInstitution: permission.isAdministrator,
+    getInstitutions: permission.isAdministrator,
+    getInstitutionsList: permission.isAdministrator,
+    getAllInstitutions: permission.isAdministrator,
+    getPublicInstitutions: permission.isPublic,
+
+    getJob: permission.isAdministratorOrManager,
+    getJobs: permission.isAdministratorOrManager,
     getJobsList: permission.isAdministrator,
     getAllJobs: permission.isAdministrator,
     getPublicJobs: permission.isPublic,
@@ -103,7 +109,7 @@ const permissions = shield({
 
     getProfession: permission.isAdministrator,
     getProfessions: permission.isAdministrator,
-    getProfessionsList: permission.isAdministrator,
+    getProfessionsList: permission.isAdministratorOrManager,
 
     getRecruiter: permission.isAdministrator,
     getRecruiters: permission.isAdministrator,

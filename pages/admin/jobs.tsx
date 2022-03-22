@@ -8,15 +8,16 @@ import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
+import { Job, UserRole } from '@prisma/client'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
+import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Edit, ExternalLink, Trash } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
-import type { Job } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
@@ -52,6 +53,7 @@ export default function AdminJobListPage() {
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
+  const auth = useAuth<Common.Auth.User>()
   const [deleteJob] = useMutation(queries.job.DELETE_ONE)
   const router = useRouter()
 
@@ -150,30 +152,37 @@ export default function AdminJobListPage() {
     showApolloError(getJobsResult.error)
   }, [getJobsResult.error])
 
-  const columns: TableColumnProps[] = [
-    ...BASE_COLUMNS,
-    {
-      accent: 'secondary',
-      action: goToPreview,
-      Icon: ExternalLink,
-      label: 'Prévisualiser cette offre',
-      type: 'action',
-    },
-    {
-      accent: 'primary',
-      action: goToEditor,
-      Icon: Edit,
-      label: 'Éditer cette offre',
-      type: 'action',
-    },
-    {
-      accent: 'danger',
-      action: confirmDeletion,
-      Icon: Trash,
-      label: 'Supprimer cette offre',
-      type: 'action',
-    },
-  ]
+  const columns: TableColumnProps[] = useMemo(() => {
+    const dynamicColumns: TableColumnProps[] = [
+      ...BASE_COLUMNS,
+      {
+        accent: 'secondary',
+        action: goToPreview,
+        Icon: ExternalLink,
+        label: 'Prévisualiser cette offre',
+        type: 'action',
+      },
+      {
+        accent: 'primary',
+        action: goToEditor,
+        Icon: Edit,
+        label: 'Éditer cette offre',
+        type: 'action',
+      },
+    ]
+
+    if (auth.user?.role === UserRole.ADMINISTRATOR) {
+      dynamicColumns.push({
+        accent: 'danger',
+        action: confirmDeletion,
+        Icon: Trash,
+        label: 'Supprimer cette offre',
+        type: 'action',
+      })
+    }
+
+    return dynamicColumns
+  }, [])
 
   return (
     <>
@@ -194,8 +203,6 @@ export default function AdminJobListPage() {
         <Table
           columns={columns}
           data={jobsResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={jobsResult.count}

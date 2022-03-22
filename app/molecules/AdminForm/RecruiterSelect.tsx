@@ -51,7 +51,7 @@ export function RecruiterSelect({
     }
 
     return options.find(({ value }) => value === valueOrValues)
-  }, [values[name]])
+  }, [options, values[name]])
 
   const closeNewRecruiterModal = useCallback(() => {
     setHasNewRecruiterModal(false)
@@ -127,7 +127,7 @@ export function RecruiterSelect({
   return (
     <FieldWithAction onClick={openNewRecruiterModal}>
       <Select
-        key={generateKeyFromValues(values[name])}
+        key={generateKeyFromValues(options, defaultValue)}
         defaultValue={defaultValue}
         error={maybeError}
         helper={helper}

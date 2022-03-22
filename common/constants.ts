@@ -1,6 +1,7 @@
+import { UserRole } from '@prisma/client'
 import * as R from 'ramda'
 
-import type { FileType, JobContractType, JobRemoteStatus, JobSource, JobState, UserRole } from '@prisma/client'
+import type { FileType, JobContractType, JobRemoteStatus, JobSource, JobState } from '@prisma/client'
 
 const mapLabelObjectToSelectOptions: <T extends string = string>(
   labelObject: Record<T, string>,
@@ -104,8 +105,6 @@ export const JOB_REMOTE_STATUSES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_
 export const JOB_STATE_LABEL: Record<JobState, string> = {
   DRAFT: 'Brouillon',
   PUBLISHED: 'Publiée',
-  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
-  ARCHIVED: 'Archivée',
 }
 
 export const JOB_STATES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_STATE_LABEL)
@@ -206,16 +205,11 @@ export const REGIONS_AS_OPTIONS: Common.App.SelectOption<keyof typeof REGION>[] 
   },
 ]
 
-export const USER_ROLE: Record<UserRole, UserRole> = {
-  ADMINISTRATOR: 'ADMINISTRATOR',
-  RECRUITER: 'RECRUITER',
-}
-
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
-  ADMINISTRATOR: 'Administeur·rice',
-  RECRUITER: 'Recruteur·se',
+  ADMINISTRATOR: 'Administration',
+  RECRUITER: 'Gestion',
 }
 
-export const USER_ROLES = Object.values(USER_ROLE)
+export const USER_ROLES = Object.values(UserRole)
 
 export const USER_ROLES_AS_OPTIONS = mapLabelObjectToSelectOptions(USER_ROLE_LABEL)

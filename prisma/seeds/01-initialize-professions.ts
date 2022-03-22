@@ -8,6 +8,7 @@ const INITIAL_PROFESSION_NAMES = [
   'Autres',
   'Développement',
   'Données',
+  'Gestion',
   'Infrastructure',
   'Projet / Produit',
   'Sécurité',
@@ -29,11 +30,12 @@ export async function initializeProfessions(prisma: PrismaClient) {
   const missingProfessions = mapNamesToProfessions(missingProfessionNames)
 
   if (missingProfessions.length > 0) {
-    ß.info('Initializing professions…')
-    await prisma.profession.createMany({
+    ß.info('Seeding missing professions…')
+    const { count } = await prisma.profession.createMany({
       data: missingProfessions,
+      skipDuplicates: true,
     })
 
-    ß.success('Professions initialized.')
+    ß.success(`${count} missing profession(s) seeded.`)
   }
 }

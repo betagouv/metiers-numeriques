@@ -9,6 +9,7 @@ import { ContactSelect } from './ContactSelect'
 import { CountrySelect } from './CountrySelect'
 import { Editor } from './Editor'
 // import { Image } from './Image'
+import { InstitutionSelect } from './InstitutionSelect'
 import { ProfessionSelect } from './ProfessionSelect'
 import { RecruiterSelect } from './RecruiterSelect'
 import { Select } from './Select'
@@ -61,6 +62,7 @@ export const AdminForm = Object.assign(_AdminForm, {
   CountrySelect,
   Editor,
   // Image,
+  InstitutionSelect,
   ProfessionSelect,
   RecruiterSelect,
   Select,

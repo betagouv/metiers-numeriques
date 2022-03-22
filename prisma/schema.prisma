@@ -59,7 +59,6 @@ enum JobRemoteStatus {
 }
 
 enum JobState {
-  ARCHIVED
   DRAFT
   PUBLISHED
 }
@@ -159,6 +158,17 @@ model FilesOnLegacyInstitutions {
   assignedAt          DateTime                 @default(now())
 
   @@id([legacyInstitutionId, fileId])
+}
+
+model Institution {
+  id        String   @id @default(cuid())
+  fullName  String?
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recruiters Recruiter[] @relation("RecruiterInstitution")
 }
 
 model Job {
@@ -323,12 +333,14 @@ model Recruiter {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  children Recruiter[] @relation("RecruiterFamily")
-  jobs     Job[]       @relation("JobRecruiter")
-  parent   Recruiter?  @relation("RecruiterFamily", fields: [parentId], references: [id])
-  parentId String?
+  children      Recruiter[]  @relation("RecruiterFamily")
+  institution   Institution? @relation("RecruiterInstitution", fields: [institutionId], references: [id])
+  institutionId String?
+  jobs          Job[]        @relation("JobRecruiter")
+  parent        Recruiter?   @relation("RecruiterFamily", fields: [parentId], references: [id])
+  parentId      String?
   // See User.recruiter comment
-  users    User[]      @relation("UserRecruiter")
+  users         User[]       @relation("UserRecruiter")
 }
 
 // https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma

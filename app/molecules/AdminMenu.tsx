@@ -1,3 +1,4 @@
+import { UserRole } from '@prisma/client'
 import { VerticalMenu } from '@singularity/core'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
@@ -46,7 +47,7 @@ const UserMenu = styled.div`
 
 export default function AdminMenu() {
   const router = useRouter()
-  const auth = useAuth()
+  const auth = useAuth<Common.Auth.User>()
 
   return (
     <Box>
@@ -57,14 +58,31 @@ export default function AdminMenu() {
               Tableau de bord
             </VerticalMenu.Item>
           </Link>
-          <Link href="/admin/contacts">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/contacts' || router.pathname.startsWith('/admin/contact/')}
-              isDark
-            >
-              Contacts
-            </VerticalMenu.Item>
-          </Link>
+
+          {auth.user?.role === UserRole.ADMINISTRATOR && (
+            <Link href="/admin/contacts">
+              <VerticalMenu.Item
+                isActive={router.pathname === '/admin/contacts' || router.pathname.startsWith('/admin/contact/')}
+                isDark
+              >
+                Contacts
+              </VerticalMenu.Item>
+            </Link>
+          )}
+
+          {auth.user?.role === UserRole.ADMINISTRATOR && (
+            <Link href="/admin/institutions">
+              <VerticalMenu.Item
+                isActive={
+                  router.pathname === '/admin/institutions' || router.pathname.startsWith('/admin/institution/')
+                }
+                isDark
+              >
+                Institutions
+              </VerticalMenu.Item>
+            </Link>
+          )}
+
           <Link href="/admin/jobs">
             <VerticalMenu.Item
               isActive={router.pathname === '/admin/jobs' || router.pathname.startsWith('/admin/job/')}
@@ -73,89 +91,101 @@ export default function AdminMenu() {
               Offres
             </VerticalMenu.Item>
           </Link>
-          <Link href="/admin/professions">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/professions' || router.pathname.startsWith('/admin/profession/')}
-              isDark
-            >
-              Métiers
-            </VerticalMenu.Item>
-          </Link>
-          <Link href="/admin/recruiters">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/recruiters' || router.pathname.startsWith('/admin/recruiter/')}
-              isDark
-            >
-              Recruteurs
-            </VerticalMenu.Item>
-          </Link>
+
+          {auth.user?.role === UserRole.ADMINISTRATOR && (
+            <Link href="/admin/professions">
+              <VerticalMenu.Item
+                isActive={router.pathname === '/admin/professions' || router.pathname.startsWith('/admin/profession/')}
+                isDark
+              >
+                Métiers
+              </VerticalMenu.Item>
+            </Link>
+          )}
+
+          {auth.user?.role === UserRole.ADMINISTRATOR && (
+            <Link href="/admin/recruiters">
+              <VerticalMenu.Item
+                isActive={router.pathname === '/admin/recruiters' || router.pathname.startsWith('/admin/recruiter/')}
+                isDark
+              >
+                Recruteurs
+              </VerticalMenu.Item>
+            </Link>
+          )}
         </VerticalMenu>
 
-        <MenuTitle>LEGACY</MenuTitle>
+        {auth.user?.role === UserRole.ADMINISTRATOR && (
+          <>
+            <MenuTitle>LEGACY</MenuTitle>
 
-        <VerticalMenu>
-          <Link href="/admin/legacy-jobs">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/legacy-jobs' || router.pathname.startsWith('/admin/legacy-job/')}
-              isDark
-              style={{
-                textDecoration: 'line-through',
-              }}
-            >
-              Offres
-            </VerticalMenu.Item>
-          </Link>
-          <Link href="/admin/legacy-institutions">
-            <VerticalMenu.Item
-              isActive={
-                router.pathname === '/admin/legacy-institutions' ||
-                router.pathname.startsWith('/admin/legacy-institution/')
-              }
-              isDark
-            >
-              Institutions
-            </VerticalMenu.Item>
-          </Link>
-        </VerticalMenu>
+            <VerticalMenu>
+              <Link href="/admin/legacy-jobs">
+                <VerticalMenu.Item
+                  isActive={
+                    router.pathname === '/admin/legacy-jobs' || router.pathname.startsWith('/admin/legacy-job/')
+                  }
+                  isDark
+                  style={{
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  Offres
+                </VerticalMenu.Item>
+              </Link>
+              <Link href="/admin/legacy-institutions">
+                <VerticalMenu.Item
+                  isActive={
+                    router.pathname === '/admin/legacy-institutions' ||
+                    router.pathname.startsWith('/admin/legacy-institution/')
+                  }
+                  isDark
+                >
+                  Institutions
+                </VerticalMenu.Item>
+              </Link>
+            </VerticalMenu>
 
-        <MenuTitle>ADMINISTRATION</MenuTitle>
+            <MenuTitle>ADMINISTRATION</MenuTitle>
 
-        <VerticalMenu>
-          <Link href="/admin/addresses">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/addresses' || router.pathname.startsWith('/admin/address/')}
-              isDark
-            >
-              Adresses
-            </VerticalMenu.Item>
-          </Link>
-          <Link href="/admin/files">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/files' || router.pathname.startsWith('/admin/file/')}
-              isDark
-            >
-              Fichiers
-            </VerticalMenu.Item>
-          </Link>
-          <Link href="/admin/archived-jobs">
-            <VerticalMenu.Item
-              isActive={
-                router.pathname === '/admin/archived-jobs' || router.pathname.startsWith('/admin/archived-job/')
-              }
-              isDark
-            >
-              Offres archivées
-            </VerticalMenu.Item>
-          </Link>
-          <Link href="/admin/users">
-            <VerticalMenu.Item
-              isActive={router.pathname === '/admin/users' || router.pathname.startsWith('/admin/user/')}
-              isDark
-            >
-              Utilisateur·rices
-            </VerticalMenu.Item>
-          </Link>
-        </VerticalMenu>
+            <VerticalMenu>
+              <Link href="/admin/addresses">
+                <VerticalMenu.Item
+                  isActive={router.pathname === '/admin/addresses' || router.pathname.startsWith('/admin/address/')}
+                  isDark
+                >
+                  Adresses
+                </VerticalMenu.Item>
+              </Link>
+              <Link href="/admin/files">
+                <VerticalMenu.Item
+                  isActive={router.pathname === '/admin/files' || router.pathname.startsWith('/admin/file/')}
+                  isDark
+                >
+                  Fichiers
+                </VerticalMenu.Item>
+              </Link>
+              <Link href="/admin/archived-jobs">
+                <VerticalMenu.Item
+                  isActive={
+                    router.pathname === '/admin/archived-jobs' || router.pathname.startsWith('/admin/archived-job/')
+                  }
+                  isDark
+                >
+                  Offres archivées
+                </VerticalMenu.Item>
+              </Link>
+              <Link href="/admin/users">
+                <VerticalMenu.Item
+                  isActive={router.pathname === '/admin/users' || router.pathname.startsWith('/admin/user/')}
+                  isDark
+                >
+                  Utilisateur·rices
+                </VerticalMenu.Item>
+              </Link>
+            </VerticalMenu>
+          </>
+        )}
       </div>
 
       <UserMenu>

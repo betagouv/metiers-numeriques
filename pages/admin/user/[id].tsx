@@ -31,40 +31,19 @@ export default function AdminUserEditorPage() {
   const router = useRouter()
   const { id } = router.query
 
-  // const isLoading = getUserResult.loading || updateUserResult.loading
-  // const user = isLoading || getUserResult.error ? {} : getUserResult.data.getUser
-  // const initialValues: any = R.pick(['email', 'firstName', 'lastName', 'isActive'])(user)
-  // initialValues.roleAsOption = {
-  //   label: USER_ROLE_LABEL[user.role],
-  //   value: user.role,
-  // }
   const [initialValues, setInitialValues] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [recruitersAsOptions, setRecruitersAsOptions] = useState<Common.App.SelectOption[]>([])
 
   const getUserResult = useQuery(queries.user.GET_ONE, {
     variables: {
       id,
     },
   })
-  const getRecruitersListResult = useQuery(queries.recruiter.GET_LIST)
   const [updateUser] = useMutation(queries.user.UPDATE_ONE)
 
   useEffect(() => {
-    if (!isLoading || getRecruitersListResult.loading || getRecruitersListResult.error) {
+    if (!isLoading) {
       return
-    }
-
-    if (recruitersAsOptions.length === 0) {
-      const newRecruitersAsOptions = R.pipe(
-        R.sortBy(R.prop('name')) as any,
-        R.map(({ id, name }) => ({
-          label: name,
-          value: id,
-        })),
-      )(getRecruitersListResult.data.getRecruitersList)
-
-      setRecruitersAsOptions(newRecruitersAsOptions)
     }
 
     if (getUserResult.loading || getUserResult.error) {
@@ -81,7 +60,7 @@ export default function AdminUserEditorPage() {
 
     setInitialValues(newInitialValues)
     setIsLoading(false)
-  }, [getUserResult, getRecruitersListResult, isLoading])
+  }, [getUserResult, isLoading])
 
   const goToList = () => {
     router.push('/admin/users')
@@ -139,12 +118,7 @@ export default function AdminUserEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Select
-              isDisabled={isLoading}
-              label="Recruteur"
-              name="recruiterId"
-              options={recruitersAsOptions}
-            />
+            <AdminForm.RecruiterSelect isDisabled={isLoading} label="Recruteur" name="recruiterId" placeholder="…" />
           </Field>
 
           <Field>

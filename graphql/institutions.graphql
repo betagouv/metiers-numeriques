@@ -1,0 +1,45 @@
+# import Recruiter from "recruiters.graphql"
+
+scalar DateTime
+
+type Institution {
+  id: ID!
+
+  createdAt: DateTime
+  fullName: String
+  name: String
+  slug: String
+  updatedAt: DateTime
+
+  recruiters: [Recruiter!]!
+}
+
+type PublicInstitution {
+  id: ID!
+
+  createdAt: DateTime
+  fullName: String
+  name: String
+  slug: String
+  updatedAt: DateTime
+}
+
+input InstitutionInput {
+  fullName: String
+  name: String
+  slug: String
+}
+
+type InstitutionsResult {
+  count: Int!
+  data: [Institution!]!
+  index: Int!
+  length: Int!
+}
+
+type PublicInstitutionsResult {
+  count: Int!
+  data: [PublicInstitution!]!
+  index: Int!
+  length: Int!
+}

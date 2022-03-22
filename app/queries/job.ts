@@ -57,34 +57,6 @@ export const GET_ALL_PUBLIC = gql`
           name
           websiteUrl
         }
-
-        ########################################
-        # Legacy fields
-
-        experiences
-        mission
-        openedToContractTypes
-        reference
-        # slug
-        source
-        # state
-        tasks
-        team
-        # title
-        # updatedAt
-
-        legacyService {
-          id
-
-          name
-          region
-
-          legacyEntity {
-            id
-
-            name
-          }
-        }
       }
       index
       length
