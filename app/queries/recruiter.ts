@@ -41,6 +41,11 @@ export const GET_ONE = gql`
       updatedAt
       websiteUrl
 
+      institution {
+        id
+
+        name
+      }
       logoFile {
         id
 

@@ -155,8 +155,6 @@ export default function AdminContactListPage() {
         <Table
           columns={columns}
           data={contactsResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={contactsResult.count}

@@ -88,10 +88,19 @@ export const query = {
       const args: Prisma.RecruiterFindUniqueArgs = {
         include: {
           children: true,
+          institution: true,
           jobs: true,
           logoFile: true,
           parent: true,
-          users: true,
+          users: {
+            select: {
+              email: true,
+              firstName: true,
+              id: true,
+              lastName: true,
+              role: true,
+            },
+          },
         },
         where: {
           id,

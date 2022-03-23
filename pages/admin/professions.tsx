@@ -145,8 +145,6 @@ export default function AdminProfessionListPage() {
         <Table
           columns={columns}
           data={professionsResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={professionsResult.count}

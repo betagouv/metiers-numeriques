@@ -79,9 +79,19 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
           property="og:description"
         />
         <meta content="/images/main-illu.png" property="og:image" />
+
+        {!isAdministrationSpace && (
+          <>
+            <link href="/dsfr.min.css" rel="stylesheet" />
+            <link href="/legacy.css" rel="stylesheet" />
+          </>
+        )}
       </Head>
 
       <ThemeProvider>
+        {isAdministrationSpace && <GlobalStyle />}
+        {isAdministrationSpace && <GlobalStyleCustom />}
+
         <AuthProvider Loader={Loader} privatePaths={PRIVATE_PATHS} SignInDialog={SignInDialog}>
           <WithGraphql>
             {!isAdministrationSpace && (
@@ -101,20 +111,15 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
             )}
 
             {isAdministrationSpace && (
-              <>
-                <GlobalStyle />
-                <GlobalStyleCustom />
+              <AdminBody>
+                <AdminMenu />
 
-                <AdminBody>
-                  <AdminMenu />
+                <AdminMain>
+                  <Component {...pageProps} />
 
-                  <AdminMain>
-                    <Component {...pageProps} />
-
-                    <AdminToaster />
-                  </AdminMain>
-                </AdminBody>
-              </>
+                  <AdminToaster />
+                </AdminMain>
+              </AdminBody>
             )}
           </WithGraphql>
         </AuthProvider>

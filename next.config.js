@@ -4,6 +4,9 @@ const { CI, NODE_ENV, npm_package_version: VERSION } = process.env
 const IS_PRODUCTION_AND_NOT_CI = NODE_ENV === 'production' && !CI
 
 const config = {
+  compiler: {
+    styledComponents: true,
+  },
   eslint: {
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-eslint
     ignoreDuringBuilds: true,

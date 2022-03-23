@@ -1,6 +1,7 @@
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
 import { AdminProgressCard } from '@app/molecules/AdminProgressCard'
+import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
 import { useAuth } from 'nexauth/client'
 import { useCallback, useEffect, useState } from 'react'
@@ -11,10 +12,14 @@ const createStatisticsWorker = createWorkerFactory(() => import('../../app/worke
 
 export default function AdminDashboardPage() {
   const [jobsStatisticsData, setJobsStatisticsData] = useState<AdminProgressCardDataProps[]>([])
-  const auth = useAuth()
+  const auth = useAuth<Common.Auth.User>()
   const statisticsWorker = useWorker(createStatisticsWorker)
 
   const loadJobsStatitics = useCallback(async () => {
+    if (auth.user === undefined || auth.user.role !== UserRole.ADMINISTRATOR) {
+      return
+    }
+
     const newJobsStatistics = await statisticsWorker.jobs(auth.state.accessToken)
     if (newJobsStatistics === undefined) {
       return
@@ -34,7 +39,7 @@ export default function AdminDashboardPage() {
     ]
 
     setJobsStatisticsData(newJobsStatisticsData)
-  }, [])
+  }, [auth.user])
 
   useEffect(() => {
     loadJobsStatitics()
@@ -50,7 +55,7 @@ export default function AdminDashboardPage() {
         <Title>Tableau de bord</Title>
       </AdminHeader>
 
-      <AdminProgressCard data={jobsStatisticsData} title="Offres" />
+      {auth.user?.role === UserRole.ADMINISTRATOR && <AdminProgressCard data={jobsStatisticsData} title="Offres" />}
     </>
   )
 }

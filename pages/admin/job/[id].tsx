@@ -3,6 +3,7 @@ import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
+import { SeparatorText } from '@app/atoms/SeparatorText'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
@@ -11,10 +12,11 @@ import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
-import { JobState } from '@prisma/client'
+import { JobState, UserRole } from '@prisma/client'
 import { Field } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
+import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useState } from 'react'
@@ -91,6 +93,7 @@ export default function AdminJobEditorPage() {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
+  const auth = useAuth<Common.Auth.User>()
 
   const getJobResult = useQuery<
     {
@@ -216,6 +219,7 @@ export default function AdminJobEditorPage() {
     if (isNew) {
       setInitialValues({
         expiredAtAsString: dayjs().add(2, 'months').format('YYYY-MM-DD'),
+        recruiterId: auth.user?.role === UserRole.RECRUITER ? auth.user?.recruiterId : null,
       })
       setIsLoading(false)
 
@@ -270,18 +274,38 @@ export default function AdminJobEditorPage() {
             <AdminForm.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
           </DoubleField>
 
-          <DoubleField>
-            <AdminForm.RecruiterSelect isDisabled={isLoading} label="Recruteur *" name="recruiterId" placeholder="…" />
+          {auth.user?.role === UserRole.ADMINISTRATOR && (
+            <DoubleField>
+              <AdminForm.RecruiterSelect
+                isDisabled={isLoading}
+                label="Recruteur *"
+                name="recruiterId"
+                placeholder="…"
+              />
 
-            <AdminForm.Select
-              isDisabled={isLoading}
-              isMulti
-              label="Types de contrat *"
-              name="contractTypes"
-              options={JOB_CONTRACT_TYPES_AS_OPTIONS}
-              placeholder="…"
-            />
-          </DoubleField>
+              <AdminForm.Select
+                isDisabled={isLoading}
+                isMulti
+                label="Types de contrat *"
+                name="contractTypes"
+                options={JOB_CONTRACT_TYPES_AS_OPTIONS}
+                placeholder="…"
+              />
+            </DoubleField>
+          )}
+
+          {auth.user?.role === UserRole.RECRUITER && (
+            <Field>
+              <AdminForm.Select
+                isDisabled={isLoading}
+                isMulti
+                label="Types de contrat *"
+                name="contractTypes"
+                options={JOB_CONTRACT_TYPES_AS_OPTIONS}
+                placeholder="…"
+              />
+            </Field>
+          )}
 
           <DoubleField>
             <AdminForm.TextInput
@@ -300,18 +324,32 @@ export default function AdminJobEditorPage() {
             />
           </DoubleField>
 
-          <DoubleField>
+          <Field>
             <AdminForm.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
+          </Field>
 
+          <Field>
+            <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
+          </Field>
+        </AdminCard>
+
+        <AdminCard>
+          <Subtitle>Questions</Subtitle>
+
+          <Field>
             <AdminForm.ContactSelect
               isDisabled={isLoading}
               label="Contact unique pour les questions *"
               name="infoContactId"
               placeholder="…"
             />
-          </DoubleField>
+          </Field>
+        </AdminCard>
 
-          <DoubleField>
+        <AdminCard>
+          <Subtitle>Candidature</Subtitle>
+
+          <Field>
             <AdminForm.ContactSelect
               isDisabled={isLoading}
               isMulti
@@ -319,18 +357,22 @@ export default function AdminJobEditorPage() {
               name="applicationContactIds"
               placeholder="…"
             />
+          </Field>
 
+          <SeparatorText>OU</SeparatorText>
+
+          <Field>
             <AdminForm.TextInput
               isDisabled={isLoading}
-              label="ou site officiel de candidature (URL) **"
+              label="site officiel de candidature (URL) **"
               name="applicationWebsiteUrl"
               type="url"
             />
-          </DoubleField>
-
-          <Field>
-            <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
           </Field>
+        </AdminCard>
+
+        <AdminCard>
+          <Subtitle>Mission</Subtitle>
 
           <Field>
             <AdminForm.Textarea
@@ -356,14 +398,14 @@ export default function AdminJobEditorPage() {
           <DoubleField>
             <AdminForm.TextInput
               isDisabled={isLoading}
-              label="Rémunération minimum (annuelle brute)"
+              label="Rémunération minimum (K€, annuel, brut)"
               name="salaryMin"
               type="number"
             />
 
             <AdminForm.TextInput
               isDisabled={isLoading}
-              label="Rémunération maximum (annuelle brute)"
+              label="Rémunération maximum (K€, annuel, brut)"
               name="salaryMax"
               type="number"
             />

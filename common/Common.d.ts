@@ -40,7 +40,7 @@ declare namespace Common {
   namespace Auth {
     import type { User as PrismaUser } from '@prisma/client'
 
-    type User = Pick<PrismaUser, 'email' | 'firstName' | 'id' | 'lastName' | 'role'>
+    type User = Pick<PrismaUser, 'email' | 'firstName' | 'id' | 'lastName' | 'recruiterId' | 'role'>
   }
 
   /**

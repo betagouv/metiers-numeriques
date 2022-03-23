@@ -1,3 +1,7 @@
+export type Context = {
+  user: Common.Auth.User
+}
+
 export type GetAllArgs = {
   pageIndex: number
   perPage: number

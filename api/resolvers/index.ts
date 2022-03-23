@@ -5,6 +5,7 @@ import * as addresses from './addresses'
 import * as archivedJobs from './archived-jobs'
 import * as contacts from './contacts'
 import * as files from './files'
+import * as institutions from './institutions'
 import * as jobs from './jobs'
 import * as legacyEntities from './legacy-entities'
 import * as legacyInstitutions from './legacy-institutions'
@@ -22,6 +23,7 @@ export default {
     ...archivedJobs.mutation,
     ...contacts.mutation,
     ...files.mutation,
+    ...institutions.mutation,
     ...jobs.mutation,
     ...legacyEntities.mutation,
     ...legacyInstitutions.mutation,
@@ -36,6 +38,7 @@ export default {
     ...archivedJobs.query,
     ...contacts.query,
     ...files.query,
+    ...institutions.query,
     ...jobs.query,
     ...legacyEntities.query,
     ...legacyInstitutions.query,

@@ -19,18 +19,21 @@ import type { Recruiter } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const FormSchema = Yup.object().shape({
+  fullName: Yup.string().nullable(),
+  institutionId: Yup.string().nullable(),
   name: Yup.string().required(`Le nom est obligatoire.`),
-  websiteUrl: Yup.string().url(`Cette URL est mal formatée.`),
+  websiteUrl: Yup.string().nullable().url(`Cette URL est mal formatée.`),
 })
 
 const JOB_LIST_COLUMNS: TableColumnProps[] = [
   {
+    grow: 0.45,
     isSortable: true,
     key: 'title',
     label: 'Intitulé',
   },
   {
-    grow: 0.1,
+    grow: 0.15,
     isSortable: true,
     key: 'state',
     label: 'État',
@@ -54,21 +57,25 @@ const JOB_LIST_COLUMNS: TableColumnProps[] = [
 
 const USER_LIST_COLUMNS: TableColumnProps[] = [
   {
+    grow: 0.25,
     isSortable: true,
     key: 'firstName',
     label: 'Prénom',
   },
   {
+    grow: 0.25,
     isSortable: true,
     key: 'lastName',
     label: 'Nom',
   },
   {
+    grow: 0.25,
     isSortable: true,
     key: 'email',
     label: 'Email',
   },
   {
+    grow: 0.25,
     isSortable: true,
     key: 'role',
     label: 'Rôle',
@@ -111,8 +118,12 @@ export default function AdminRecruiterEditorPage() {
       return
     }
 
-    const initialValues = {
+    const initialValues: any = {
       ...getRecruiterResult.data.getRecruiter,
+    }
+
+    if (initialValues.institution !== null) {
+      initialValues.institutionId = initialValues.institution.id
     }
 
     setInitialValues({ ...initialValues })
@@ -126,7 +137,7 @@ export default function AdminRecruiterEditorPage() {
   const saveAndGoToList = async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<Recruiter> = R.pick(['fullName', 'logoFileId', 'name', 'websiteUrl'])(values)
+    const input: Partial<Recruiter> = R.pick(['fullName', 'institutionId', 'logoFileId', 'name', 'websiteUrl'])(values)
 
     const options: MutationFunctionOptions = {
       variables: {
@@ -166,6 +177,10 @@ export default function AdminRecruiterEditorPage() {
           </Field>
 
           <Field>
+            <AdminForm.InstitutionSelect isDisabled={isLoading} label="Institution" name="institutionId" />
+          </Field>
+
+          <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Site (URL)" name="websiteUrl" type="url" />
           </Field>
 
@@ -178,28 +193,32 @@ export default function AdminRecruiterEditorPage() {
         </AdminForm>
       </AdminCard>
 
-      <AdminCard>
-        <Subtitle>Utilisateur·rices</Subtitle>
+      {!isNew && (
+        <AdminCard>
+          <Subtitle>Utilisateur·rices</Subtitle>
 
-        <Table
-          columns={USER_LIST_COLUMNS}
-          data={initialValues ? initialValues.users : []}
-          defaultSortedKey="lastName"
-          isLoading={isLoading}
-        />
-      </AdminCard>
+          <Table
+            columns={USER_LIST_COLUMNS}
+            data={initialValues ? initialValues.users : []}
+            defaultSortedKey="lastName"
+            isLoading={isLoading}
+          />
+        </AdminCard>
+      )}
 
-      <AdminCard>
-        <Subtitle>Offres</Subtitle>
+      {!isNew && (
+        <AdminCard>
+          <Subtitle>Offres</Subtitle>
 
-        <Table
-          columns={JOB_LIST_COLUMNS}
-          data={initialValues ? initialValues.jobs : []}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
-          isLoading={isLoading}
-        />
-      </AdminCard>
+          <Table
+            columns={JOB_LIST_COLUMNS}
+            data={initialValues ? initialValues.jobs : []}
+            defaultSortedKey="updatedAt"
+            defaultSortedKeyIsDesc
+            isLoading={isLoading}
+          />
+        </AdminCard>
+      )}
     </>
   )
 }

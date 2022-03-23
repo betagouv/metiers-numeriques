@@ -12,6 +12,12 @@ export const GET_ALL = gql`
         isActive
         lastName
         role
+
+        recruiter {
+          id
+
+          name
+        }
       }
       index
       length

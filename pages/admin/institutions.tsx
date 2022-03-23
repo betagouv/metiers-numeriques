@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
+import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { define } from '@common/helpers/define'
@@ -8,19 +9,21 @@ import { Button, Card, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Edit, Trash } from 'react-feather'
 
+import type { InstitutionFromGetAll } from '@api/resolvers/institutions'
 import type { GetAllResponse } from '@api/resolvers/types'
-import type { LegacyInstitution } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    key: 'title',
-    label: 'Nom court',
+    grow: 0.3,
+    key: 'name',
+    label: 'Nom',
   },
   {
+    grow: 0.7,
     key: 'fullName',
     label: 'Nom complet',
   },
@@ -28,20 +31,20 @@ const BASE_COLUMNS: TableColumnProps[] = [
 
 const PER_PAGE = 10
 
-export default function AdminLegacyInstitutionListPage() {
+export default function AdminInstitutionListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
-  const [deleteLegacyInstitution] = useMutation(queries.legacyInstitution.DELETE_ONE)
+  const [deleteInstitution] = useMutation(queries.institution.DELETE_ONE)
   const router = useRouter()
 
-  const getLegacyInstitutionsResult = useQuery<
+  const getInstitutionsResult = useQuery<
     {
-      getLegacyInstitutions: GetAllResponse<LegacyInstitution>
+      getInstitutions: GetAllResponse<InstitutionFromGetAll>
     },
     any
-  >(queries.legacyInstitution.GET_ALL, {
+  >(queries.institution.GET_ALL, {
     pollInterval: 500,
     variables: {
       pageIndex: 0,
@@ -49,36 +52,36 @@ export default function AdminLegacyInstitutionListPage() {
     },
   })
 
-  const isLoading = getLegacyInstitutionsResult.loading
-  const legacyInsititutionResult: GetAllResponse<LegacyInstitution> =
-    isLoading || getLegacyInstitutionsResult.error || getLegacyInstitutionsResult.data === undefined
+  const isLoading = getInstitutionsResult.loading
+  const institutionsResult: GetAllResponse<InstitutionFromGetAll> =
+    isLoading || getInstitutionsResult.error || getInstitutionsResult.data === undefined
       ? {
           count: 1,
           data: [],
           index: 0,
           length: 0,
         }
-      : getLegacyInstitutionsResult.data.getLegacyInstitutions
+      : getInstitutionsResult.data.getInstitutions
 
   const closeDeletionModal = () => {
     setHasDeletionModal(false)
   }
 
   const confirmDeletion = async (id: string) => {
-    const legacyInstitution = R.find<LegacyInstitution>(R.propEq('id', id))(legacyInsititutionResult.data)
-    if (legacyInstitution === undefined) {
+    const institution = R.find<InstitutionFromGetAll>(R.propEq('id', id))(institutionsResult.data)
+    if (institution === undefined) {
       return
     }
 
     setSelectedId(id)
-    setSelectedEntity(`${legacyInstitution.title} (${legacyInstitution.fullName})`)
+    setSelectedEntity(institution.name)
     setHasDeletionModal(true)
   }
 
   const deleteAndReload = async () => {
     setHasDeletionModal(false)
 
-    await deleteLegacyInstitution({
+    await deleteInstitution({
       variables: {
         id: selectedId,
       },
@@ -86,22 +89,33 @@ export default function AdminLegacyInstitutionListPage() {
   }
 
   const goToEditor = (id: string) => {
-    router.push(`/admin/legacy-institution/${id}`)
+    router.push(`/admin/institution/${id}`)
   }
 
-  const query = debounce(async (pageIndex: number) => {
-    if ($searchInput.current === null) {
+  const query = useCallback(
+    debounce(async (pageIndex: number) => {
+      if ($searchInput.current === null) {
+        return
+      }
+
+      const query = define($searchInput.current.value)
+
+      getInstitutionsResult.refetch({
+        pageIndex,
+        perPage: PER_PAGE,
+        query,
+      })
+    }, 250),
+    [],
+  )
+
+  useEffect(() => {
+    if (getInstitutionsResult.error === undefined) {
       return
     }
 
-    const query = define($searchInput.current.value)
-
-    getLegacyInstitutionsResult.refetch({
-      pageIndex,
-      perPage: PER_PAGE,
-      query,
-    })
-  }, 250)
+    showApolloError(getInstitutionsResult.error)
+  }, [getInstitutionsResult.error])
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
@@ -109,14 +123,14 @@ export default function AdminLegacyInstitutionListPage() {
       accent: 'primary',
       action: goToEditor,
       Icon: Edit,
-      label: 'Éditer cette institution [LEGACY]',
+      label: 'Éditer cette institution',
       type: 'action',
     },
     {
       accent: 'danger',
       action: confirmDeletion,
       Icon: Trash,
-      label: 'Supprimer cette institution [LEGACY]',
+      label: 'Supprimer cette institution',
       type: 'action',
     },
   ]
@@ -124,23 +138,23 @@ export default function AdminLegacyInstitutionListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Institutions [LEGACY]</Title>
+        <Title>Institutions</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter une institution [LEGACY]
+          Ajouter une institution
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une institution [LEGACY]" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une institution" />
 
         <Table
           columns={columns}
-          data={legacyInsititutionResult.data}
+          data={institutionsResult.data}
           isLoading={isLoading}
           onPageChange={query as any}
-          pageCount={legacyInsititutionResult.count}
-          pageIndex={legacyInsititutionResult.index}
+          pageCount={institutionsResult.count}
+          pageIndex={institutionsResult.index}
           perPage={PER_PAGE}
         />
       </Card>

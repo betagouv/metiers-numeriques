@@ -153,8 +153,6 @@ export default function AdminFileListPage() {
         <Table
           columns={columns}
           data={filesResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={filesResult.count}

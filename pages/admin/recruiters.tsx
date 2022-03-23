@@ -161,8 +161,6 @@ export default function AdminRecruiterListPage() {
         <Table
           columns={columns}
           data={recruitersResult.data}
-          defaultSortedKey="updatedAt"
-          defaultSortedKeyIsDesc
           isLoading={isLoading}
           onPageChange={query as any}
           pageCount={recruitersResult.count}

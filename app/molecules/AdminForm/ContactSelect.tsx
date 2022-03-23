@@ -51,7 +51,7 @@ export function ContactSelect({
     }
 
     return options.find(({ value }) => value === valueOrValues)
-  }, [values[name]])
+  }, [options, values[name]])
 
   const closeNewContactModal = useCallback(() => {
     setHasNewContactModal(false)
@@ -127,7 +127,7 @@ export function ContactSelect({
   return (
     <FieldWithAction onClick={openNewContactModal}>
       <Select
-        key={generateKeyFromValues(values[name])}
+        key={generateKeyFromValues(options, defaultValue)}
         defaultValue={defaultValue}
         error={maybeError}
         helper={helper}
