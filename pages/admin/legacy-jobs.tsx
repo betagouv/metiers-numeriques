@@ -131,7 +131,7 @@ export default function AdminLegacyJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres [LEGACY]</Title>
+        <Title>Offres d’emploi [LEGACY]</Title>
       </AdminHeader>
 
       <Card>

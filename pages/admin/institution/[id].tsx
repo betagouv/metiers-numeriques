@@ -216,7 +216,7 @@ export default function AdminInstitutionEditorPage() {
 
       {!isNew && (
         <AdminCard>
-          <Subtitle>Recruteurs</Subtitle>
+          <Subtitle>Services recruteurs</Subtitle>
 
           <Table
             columns={RECRUITER_LIST_COLUMNS}

@@ -151,7 +151,7 @@ export default function AdminArchivedJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Recruteur *" name="recruiterName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Service recruteur *" name="recruiterName" />
           </Field>
 
           <Field>

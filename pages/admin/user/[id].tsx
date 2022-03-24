@@ -118,7 +118,12 @@ export default function AdminUserEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.RecruiterSelect isDisabled={isLoading} label="Recruteur" name="recruiterId" placeholder="…" />
+            <AdminForm.RecruiterSelect
+              isDisabled={isLoading}
+              label="Service recruteur"
+              name="recruiterId"
+              placeholder="…"
+            />
           </Field>
 
           <Field>
