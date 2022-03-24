@@ -951,10 +951,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/poppins@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.5.2.tgz#6da10064b938e66055025122ef8fedc1bdfa3053"
-  integrity sha512-J0ri6LpKck+Bh7ltINNoI6ETvJbMM9vTWzFyVuAp67ybtGjVXPK3mPJFjJkDtmkE0FJ0nUupa5beO0+9tOXRTw==
+"@fontsource/poppins@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.5.3.tgz#0d50e7c48cac6dab2b76d7e711001256875cc2b0"
+  integrity sha512-YtJjTzPv5Zy3hdFGpm0D45yquJBGbOrY3obvf8RBkyCXC8NFT0EjWoUM9ZE4SXhvp5HYvKL1zl8JtLbVRRijSA==
 
 "@gouvfr/dsfr@1.3.1":
   version "1.3.1"
