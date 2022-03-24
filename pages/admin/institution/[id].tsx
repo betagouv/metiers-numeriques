@@ -95,7 +95,7 @@ export default function AdminInstitutionEditorPage() {
   const [updateInstitution] = useMutation(queries.institution.UPDATE_ONE)
 
   const users = useMemo(() => {
-    if (getInstitutionResult.data === undefined) {
+    if (isNew || getInstitutionResult.data === undefined) {
       return []
     }
 
