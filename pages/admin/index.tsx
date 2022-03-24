@@ -55,7 +55,9 @@ export default function AdminDashboardPage() {
         <Title>Tableau de bord</Title>
       </AdminHeader>
 
-      {auth.user?.role === UserRole.ADMINISTRATOR && <AdminProgressCard data={jobsStatisticsData} title="Offres" />}
+      {auth.user?.role === UserRole.ADMINISTRATOR && (
+        <AdminProgressCard data={jobsStatisticsData} title="Offres d’emploi" />
+      )}
     </>
   )
 }

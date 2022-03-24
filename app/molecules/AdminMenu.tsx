@@ -88,7 +88,7 @@ export default function AdminMenu() {
               isActive={router.pathname === '/admin/jobs' || router.pathname.startsWith('/admin/job/')}
               isDark
             >
-              Offres
+              Offres d’emploi
             </VerticalMenu.Item>
           </Link>
 
@@ -98,7 +98,7 @@ export default function AdminMenu() {
                 isActive={router.pathname === '/admin/professions' || router.pathname.startsWith('/admin/profession/')}
                 isDark
               >
-                Métiers
+                Secteurs d’activité
               </VerticalMenu.Item>
             </Link>
           )}
@@ -109,7 +109,7 @@ export default function AdminMenu() {
                 isActive={router.pathname === '/admin/recruiters' || router.pathname.startsWith('/admin/recruiter/')}
                 isDark
               >
-                Recruteurs
+                Services recruteurs
               </VerticalMenu.Item>
             </Link>
           )}
@@ -130,7 +130,7 @@ export default function AdminMenu() {
                     textDecoration: 'line-through',
                   }}
                 >
-                  Offres
+                  Offres d’emploi
                 </VerticalMenu.Item>
               </Link>
               <Link href="/admin/legacy-institutions">

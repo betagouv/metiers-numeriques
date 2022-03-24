@@ -187,16 +187,16 @@ export default function AdminJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres</Title>
+        <Title>Offres d’emploi</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter une offre
+          Ajouter une offre d’emploi
         </Button>
       </AdminHeader>
 
       <Card>
         <Flex>
-          <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre" />
+          <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre d’emploi" />
           <Select isClearable onChange={handleStateSelect} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
         </Flex>
 

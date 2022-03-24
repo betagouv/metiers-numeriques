@@ -148,15 +148,15 @@ export default function AdminRecruiterListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Recruteurs</Title>
+        <Title>Services recruteurs</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter un recruteur
+          Ajouter un service recruteur
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un recruteur" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un service recruteur" />
 
         <Table
           columns={columns}

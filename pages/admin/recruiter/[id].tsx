@@ -159,7 +159,7 @@ export default function AdminRecruiterEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau recruteur' : 'Édition d’un recruteur'}</Title>
+        <Title>{isNew ? 'Nouveau service recruteur' : 'Édition d’un service recruteur'}</Title>
       </AdminHeader>
 
       <AdminCard isFirst>
@@ -208,7 +208,7 @@ export default function AdminRecruiterEditorPage() {
 
       {!isNew && (
         <AdminCard>
-          <Subtitle>Offres</Subtitle>
+          <Subtitle>Offres d’emploi</Subtitle>
 
           <Table
             columns={JOB_LIST_COLUMNS}

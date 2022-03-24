@@ -132,15 +132,15 @@ export default function AdminProfessionListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Métiers</Title>
+        <Title>Secteurs d’activité</Title>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter un métier
+          Ajouter un secteur d’activité
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un métier" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un secteur d’activité" />
 
         <Table
           columns={columns}

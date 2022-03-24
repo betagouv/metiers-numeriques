@@ -248,7 +248,7 @@ export default function AdminJobEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle offre' : 'Édition d’une offre'}</Title>
+        <Title>{isNew ? 'Nouvelle offre d’emploi' : 'Édition d’une offre d’emploi'}</Title>
       </AdminHeader>
 
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
@@ -278,7 +278,7 @@ export default function AdminJobEditorPage() {
             <DoubleField>
               <AdminForm.RecruiterSelect
                 isDisabled={isLoading}
-                label="Recruteur *"
+                label="Service recruteur *"
                 name="recruiterId"
                 placeholder="…"
               />
@@ -325,7 +325,12 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <Field>
-            <AdminForm.ProfessionSelect isDisabled={isLoading} label="Métier *" name="professionId" placeholder="…" />
+            <AdminForm.ProfessionSelect
+              isDisabled={isLoading}
+              label="Secteurs d’activité *"
+              name="professionId"
+              placeholder="…"
+            />
           </Field>
 
           <Field>

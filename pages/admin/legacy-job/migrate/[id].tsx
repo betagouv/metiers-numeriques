@@ -431,7 +431,7 @@ export default function AdminLegacyJobMigratorPage() {
               <DoubleField>
                 <AdminForm.RecruiterSelect
                   isDisabled={isLoading}
-                  label="Recruteur *"
+                  label="Service recruteur *"
                   name="recruiterId"
                   placeholder="…"
                 />
@@ -466,7 +466,7 @@ export default function AdminLegacyJobMigratorPage() {
               <DoubleField>
                 <AdminForm.ProfessionSelect
                   isDisabled={isLoading}
-                  label="Métier *"
+                  label="Secteur d’activité *"
                   name="professionId"
                   placeholder="…"
                 />

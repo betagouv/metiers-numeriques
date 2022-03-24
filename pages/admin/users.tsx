@@ -32,7 +32,7 @@ const BASE_COLUMNS: TableColumnProps[] = [
     grow: 0.35,
     isSortable: true,
     key: 'recruiter.name',
-    label: 'Recruteur',
+    label: 'Service recruteur',
   },
   {
     grow: 0.25,
