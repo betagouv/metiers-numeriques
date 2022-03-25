@@ -55,6 +55,7 @@ type JobListPageProps = {
   initialJobs: JobWithRelation[]
   initialProfessions: Profession[]
 }
+
 export default function JobListPage({ initialJobs, initialProfessions }: JobListPageProps) {
   const $isFirstLoad = useRef<boolean>(true)
   const $regionSelect = useRef<HTMLSelectElement>(null)
