@@ -38,6 +38,9 @@ const permissions = shield({
     deleteJob: permission.isAdministrator,
     updateJob: permission.isAdministratorOrManager,
 
+    deleteLead: permission.isAdministrator,
+    updateLead: permission.isAdministrator,
+
     createLegacyJob: permission.isAdministrator,
     deleteLegacyJob: permission.isAdministrator,
     updateLegacyJob: permission.isAdministrator,
@@ -90,6 +93,9 @@ const permissions = shield({
     getJobsList: permission.isAdministrator,
     getAllJobs: permission.isAdministrator,
     getPublicJobs: permission.isPublic,
+
+    getLead: permission.isAdministrator,
+    getLeads: permission.isAdministrator,
 
     getLegacyEntity: permission.isAdministrator,
     getLegacyEntities: permission.isAdministrator,

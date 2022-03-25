@@ -117,38 +117,17 @@ export default function AdminMenu() {
 
         {auth.user?.role === UserRole.ADMINISTRATOR && (
           <>
-            <MenuTitle>LEGACY</MenuTitle>
-
-            <VerticalMenu>
-              <Link href="/admin/legacy-jobs">
-                <VerticalMenu.Item
-                  isActive={
-                    router.pathname === '/admin/legacy-jobs' || router.pathname.startsWith('/admin/legacy-job/')
-                  }
-                  isDark
-                  style={{
-                    textDecoration: 'line-through',
-                  }}
-                >
-                  Offres d’emploi
-                </VerticalMenu.Item>
-              </Link>
-              <Link href="/admin/legacy-institutions">
-                <VerticalMenu.Item
-                  isActive={
-                    router.pathname === '/admin/legacy-institutions' ||
-                    router.pathname.startsWith('/admin/legacy-institution/')
-                  }
-                  isDark
-                >
-                  Institutions
-                </VerticalMenu.Item>
-              </Link>
-            </VerticalMenu>
-
             <MenuTitle>ADMINISTRATION</MenuTitle>
 
             <VerticalMenu>
+              <Link href="/admin/leads">
+                <VerticalMenu.Item
+                  isActive={router.pathname === '/admin/leads' || router.pathname.startsWith('/admin/lead/')}
+                  isDark
+                >
+                  Abonné·es
+                </VerticalMenu.Item>
+              </Link>
               <Link href="/admin/addresses">
                 <VerticalMenu.Item
                   isActive={router.pathname === '/admin/addresses' || router.pathname.startsWith('/admin/address/')}
@@ -181,6 +160,35 @@ export default function AdminMenu() {
                   isDark
                 >
                   Utilisateur·rices
+                </VerticalMenu.Item>
+              </Link>
+            </VerticalMenu>
+
+            <MenuTitle>LEGACY</MenuTitle>
+
+            <VerticalMenu>
+              <Link href="/admin/legacy-jobs">
+                <VerticalMenu.Item
+                  isActive={
+                    router.pathname === '/admin/legacy-jobs' || router.pathname.startsWith('/admin/legacy-job/')
+                  }
+                  isDark
+                  style={{
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  Offres d’emploi
+                </VerticalMenu.Item>
+              </Link>
+              <Link href="/admin/legacy-institutions">
+                <VerticalMenu.Item
+                  isActive={
+                    router.pathname === '/admin/legacy-institutions' ||
+                    router.pathname.startsWith('/admin/legacy-institution/')
+                  }
+                  isDark
+                >
+                  Institutions
                 </VerticalMenu.Item>
               </Link>
             </VerticalMenu>

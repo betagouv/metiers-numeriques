@@ -1,3 +1,4 @@
+import { NewsletterBar } from '@app/organisms/NewletterBar'
 import Head from 'next/head'
 
 export default function HomePage() {
@@ -219,56 +220,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="newsletter home-bg--alt">
-          <div className="fr-container">
-            <div className="fr-grid-row fr-grid-row--center fr-grid-row--middle">
-              <div className="fr-col-md-5 fr-col-xs-6w fr-px-4w fr-my-5w">
-                <h2>Restons en contact</h2>
-                <p className="fr-text--md fr-mb-2v">
-                  Laissez-nous votre email, nous vous tiendrons au courant du lancement du site
-                  metiers.numerique.gouv.fr
-                </p>
-              </div>
-              <div className="fr-col-md-5 fr-col-xs-6w fr-px-6w fr-my-5w">
-                <form
-                  action="https://37514839.sibforms.com/serve/MUIEAOgcYYVkwK99rKzuk18o6wa3w6nhnGuj90p7o3BcsF_T99rnIirowA1TMeGdmqUoydZRSanzi2jiaWyf8xcRwgXHs4QwrxQV4c0N_D7tNnzG_9Zwg-ZSrDboWs-DGUaIr3FG1WkdjLAR7zjS06dNXHIwLXqRqVRh06n04HoebXTqZgLn1jG-XkVeTKhx1iKF9r9qkVglSxfx"
-                  id="newsletter"
-                  method="post"
-                >
-                  <input
-                    id="csrf_token"
-                    name="csrf_token"
-                    type="hidden"
-                    value="f78e2e104a5f4ef5e8408644c40f2d0a996d6b6e183eebb7c3ab437775be5295"
-                  />
-                  <div className="fr-input-group">
-                    <input
-                      autoComplete="off"
-                      className="fr-input"
-                      data-required="true"
-                      // id="EMAIL"
-                      id="subscribe-email"
-                      name="EMAIL"
-                      placeholder="e-mail"
-                      required
-                      type="email"
-                    />
-                    <button className="fr-btn btn-home" id="form-submit" name="subscribe" type="submit">
-                      S’inscrire
-                    </button>
-
-                    <br />
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label>
-                      <input className="input_replaced" id="OPT_IN" name="OPT_IN" required type="checkbox" value="1" />
-                      <span className="consent-text">J’accepte de recevoir des emails de metiers numérique</span>
-                    </label>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </section>
+        <NewsletterBar />
       </main>
     </>
   )

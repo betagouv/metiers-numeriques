@@ -7,6 +7,7 @@ import * as contacts from './contacts'
 import * as files from './files'
 import * as institutions from './institutions'
 import * as jobs from './jobs'
+import * as leads from './leads'
 import * as legacyEntities from './legacy-entities'
 import * as legacyInstitutions from './legacy-institutions'
 import * as legacyJobs from './legacy-jobs'
@@ -25,6 +26,7 @@ export default {
     ...files.mutation,
     ...institutions.mutation,
     ...jobs.mutation,
+    ...leads.mutation,
     ...legacyEntities.mutation,
     ...legacyInstitutions.mutation,
     ...legacyJobs.mutation,
@@ -40,6 +42,7 @@ export default {
     ...files.query,
     ...institutions.query,
     ...jobs.query,
+    ...leads.query,
     ...legacyEntities.query,
     ...legacyInstitutions.query,
     ...legacyJobs.query,

@@ -4,6 +4,7 @@ import * as contact from './contact'
 import * as file from './file'
 import * as institution from './institution'
 import * as job from './job'
+import * as lead from './lead'
 import * as legacyEntity from './legacy-entity'
 import * as legacyInstitution from './legacy-institution'
 import * as legacyJob from './legacy-job'
@@ -19,6 +20,7 @@ export default {
   file,
   institution,
   job,
+  lead,
   legacyEntity,
   legacyInstitution,
   legacyJob,
