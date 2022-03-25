@@ -36,7 +36,7 @@ const sentryWebpackPluginOptions = {
   debug: !IS_PRODUCTION_AND_NOT_CI,
   release: VERSION,
   silent: IS_PRODUCTION_AND_NOT_CI,
-  tracesSampleRate: 1,
+  tracesSampleRate: 0,
 }
 
 module.exports = IS_PRODUCTION_AND_NOT_CI ? withSentryConfig(config, sentryWebpackPluginOptions) : config

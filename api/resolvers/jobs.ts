@@ -6,7 +6,18 @@ import { JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
 
 import type { Context, GetAllArgs, GetAllResponse } from './types'
-import type { Address, Contact, Job, Prisma, Profession, Recruiter } from '@prisma/client'
+import type { Region } from '@common/constants'
+import type {
+  Address,
+  Contact,
+  Institution,
+  Job,
+  JobContractType,
+  JobRemoteStatus,
+  Prisma,
+  Profession,
+  Recruiter,
+} from '@prisma/client'
 
 export type JobFromGetOne = Job & {
   address: Address
@@ -23,7 +34,9 @@ export type JobFromGetPublicJobs = Job & {
   applicationContacts: Contact[]
   infoContact: Contact
   profession: Profession
-  recruiter: Recruiter
+  recruiter: Recruiter & {
+    institution: Institution
+  }
 }
 
 const PUBLIC_PER_PAGE_THROTTLE = 12
@@ -311,12 +324,16 @@ export const query = {
   getPublicJobs: async (
     obj,
     queryArgs: GetAllArgs & {
+      contractTypes?: JobContractType[]
+      institutionIds?: string[]
       professionId?: string
-      region?: string
+      region?: Region
+      remoteStatuses?: JobRemoteStatus[]
     },
   ): Promise<GetAllResponse<JobFromGetPublicJobs>> => {
     try {
-      const { pageIndex, perPage, professionId, query, region } = queryArgs
+      const { contractTypes, institutionIds, pageIndex, perPage, professionId, query, region, remoteStatuses } =
+        queryArgs
 
       const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
 
@@ -328,11 +345,30 @@ export const query = {
         },
         state: JobState.PUBLISHED,
       }
+      if (contractTypes !== undefined && contractTypes.length > 0) {
+        andFilter.contractTypes = {
+          hasSome: contractTypes,
+        }
+      }
+      if (institutionIds !== undefined && institutionIds.length > 0) {
+        andFilter.recruiter = {
+          institution: {
+            id: {
+              in: institutionIds,
+            },
+          },
+        }
+      }
       if (professionId !== undefined) {
         andFilter.professionId = professionId
       }
       if (region !== undefined) {
         andFilter.address = { region }
+      }
+      if (remoteStatuses !== undefined && remoteStatuses.length > 0) {
+        andFilter.remoteStatus = {
+          in: remoteStatuses,
+        }
       }
       const whereFilter = buildPrismaWhereFilter<JobFromGetPublicJobs>(['title'], query, andFilter)
 
@@ -342,7 +378,11 @@ export const query = {
           applicationContacts: true,
           infoContact: true,
           profession: true,
-          recruiter: true,
+          recruiter: {
+            include: {
+              institution: true,
+            },
+          },
         },
         orderBy: {
           updatedAt: 'desc',

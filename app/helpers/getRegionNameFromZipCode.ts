@@ -1,12 +1,12 @@
 import handleError from '@common/helpers/handleError'
 
-import type { REGION } from '@common/constants'
+import type { Region } from '@common/constants'
 
 const DEPARTEMENTS: Array<{
   name: string
   number: string
   postalCodeStart: string
-  regionName: keyof typeof REGION
+  regionName: keyof typeof Region
 }> = [
   {
     name: 'Ain',

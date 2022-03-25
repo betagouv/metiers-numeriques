@@ -22,7 +22,7 @@ export default function InstitutionListPage({ institutions }: InstitutionListPag
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <div className="fr-container fr-my-4w" id="ministeres">
+      <div className="fr-container fr-py-4w" id="ministeres">
         <div className="fr-grid-row fr-grid-row--center fr-grid-row--middle">
           <div className="fr-col-md-5 fr-col-xs-6">
             <h1>Découvrez toutes les entités numériques de l’État</h1>

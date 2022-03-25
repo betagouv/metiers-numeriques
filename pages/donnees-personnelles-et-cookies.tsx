@@ -10,7 +10,7 @@ export default function PrivacyPage() {
       </Head>
 
       <main id="contenu" role="main">
-        <div className="fr-container fr-my-4w">
+        <div className="fr-container fr-py-4w">
           <h1>Données personnelles et cookies</h1>
 
           <h2>Cookies déposés et opt-out</h2>

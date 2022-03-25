@@ -1,67 +1,78 @@
 import getPrisma from '@api/helpers/getPrisma'
 import { useLazyQuery } from '@apollo/client'
-import { FilterRadio } from '@app/atoms/FilterRadio'
+import { isObjectEmpty } from '@app/helpers/isObjectEmpty'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
+import { Loader } from '@app/molecules/Loader'
 import { JobCard } from '@app/organisms/JobCard'
+import { INITIAL_FILTER, JobFilterBar } from '@app/organisms/JobFilterBar'
 import queries from '@app/queries'
-import { REGIONS_AS_OPTIONS } from '@common/constants'
-import { define } from '@common/helpers/define'
 import handleError from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { JobWithRelation } from '@app/organisms/JobCard'
-import type { Profession } from '@prisma/client'
-
-const FiltersBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  > label {
-    height: 17.75vw;
-    margin: 0 0 1vw;
-    width: 17.75vw;
-  }
-  > label:nth-child(5n + 1) {
-    margin-left: 0;
-  }
-
-  > label:last-child {
-    margin-right: 0;
-  }
-
-  @media screen and (min-width: 1248px) {
-    flex-wrap: nowrap;
-    justify-content: space-between;
-
-    > label {
-      height: 7.5rem;
-      width: 7.5rem;
-    }
-  }
-`
+import type { Filter } from '@app/organisms/JobFilterBar'
+import type { Institution, Profession } from '@prisma/client'
 
 const INITIAL_VARIABLES = {
   pageIndex: 0,
   perPage: 10,
 }
 
+const JobListOuterBox = styled.div`
+  min-height: calc(100vh - 12rem);
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row-reverse;
+  }
+`
+
+const JobListInnerBox = styled.div`
+  @media screen and (min-width: 768px) {
+    flex-direction: row-reverse;
+  }
+`
+
+const CounterSentenceBox = styled.div`
+  display: flex;
+  line-height: 2;
+`
+
+const CounterButtonsBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
+const JobFilterBarBox = styled.div`
+  @media screen and (max-width: 767px) {
+    flex: none;
+    width: auto;
+  }
+`
+
 type JobListPageProps = {
+  initialInstitutions: Institution[]
   initialJobs: JobWithRelation[]
+  initialJobsLength: number
   initialProfessions: Profession[]
 }
-export default function JobListPage({ initialJobs, initialProfessions }: JobListPageProps) {
-  const $isFirstLoad = useRef<boolean>(true)
-  const $regionSelect = useRef<HTMLSelectElement>(null)
-  const $searchInput = useRef<HTMLInputElement>(null)
+export default function JobListPage({
+  initialInstitutions,
+  initialJobs,
+  initialJobsLength,
+  initialProfessions,
+}: JobListPageProps) {
+  const $hasFilter = useRef<boolean>(false)
+  const $jobsLength = useRef<number>(initialJobsLength)
+  const [jobFilterBarKey, setJobFilterBarKey] = useState<number>(1)
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [jobs, setJobs] = useState(initialJobs)
-  const [selectedProfessionId, setSelectedProfessionId] = useState<string | undefined>()
 
   const [getJobs, getJobsResult] = useLazyQuery<
     {
@@ -78,76 +89,112 @@ export default function JobListPage({ initialJobs, initialProfessions }: JobList
         }
       : getJobsResult.data.getPublicJobs
 
-  const hasMoreJobs = jobsResult.length > jobs.length
+  const jobsLengthSentence = useMemo(() => {
+    switch ($jobsLength.current) {
+      case 0:
+        if ($hasFilter.current) {
+          return 'Aucune offre d’emploi trouvée.'
+        }
+
+        return 'Aucune offre d’emploi n’est disponible pour le moment.'
+
+      case 1:
+        if ($hasFilter.current) {
+          return 'Une offre d’emploi trouvée.'
+        }
+
+        return 'Une offre d’emploi disponible.'
+
+      default:
+        if ($hasFilter.current) {
+          return `${$jobsLength.current} offres d’emploi trouvées.`
+        }
+
+        return `${$jobsLength.current} offres d’emploi disponibles.`
+    }
+  }, [$hasFilter.current, $jobsLength.current])
+  const hasMoreJobs = jobs.length > 0 && jobsResult.length > jobs.length
   const nextPageIndex = jobsResult.index + 1
   const pageTitle = 'Liste des offres d’emploi numériques de l’État | metiers.numerique.gouv.fr'
   const pageDescription =
     'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
     'et les administrations territoriales.'
 
+  const closeFilterModal = useCallback(() => {
+    setIsFilterModalOpen(false)
+  }, [])
+
+  const openFilterModal = useCallback(() => {
+    setIsFilterModalOpen(true)
+  }, [])
+
   const query = useCallback(
-    debounce(async (pageIndex: number) => {
-      if ($searchInput.current === null || $regionSelect.current === null) {
-        return
-      }
-
-      setIsLoading(true)
-
+    debounce(async (pageIndex: number, filter: Filter = INITIAL_FILTER) => {
       const isNewQuery = pageIndex === 0
-      const query = define($searchInput.current.value)
-      const region = define($regionSelect.current.value)
+
+      if (isNewQuery) {
+        setIsLoading(true)
+      } else {
+        setIsLoadingMore(true)
+      }
 
       const newOrAdditionalJobsResult = await getJobs({
         variables: {
           ...INITIAL_VARIABLES,
           pageIndex,
-          professionId: selectedProfessionId,
-          query,
-          region,
+          ...filter,
         },
       })
 
-      setIsLoading(false)
-
       if (newOrAdditionalJobsResult.error) {
         handleError(newOrAdditionalJobsResult.error, 'pages/emplois.tsx > query()')
+
+        if (isNewQuery) {
+          setIsLoading(false)
+        } else {
+          setIsLoadingMore(false)
+        }
 
         return
       }
 
       if (newOrAdditionalJobsResult.data === undefined) {
+        if (isNewQuery) {
+          setIsLoading(false)
+        } else {
+          setIsLoadingMore(false)
+        }
+
         return
       }
 
       const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getPublicJobs.data
 
-      setIsLoading(false)
+      $hasFilter.current = !isObjectEmpty(filter)
+      $jobsLength.current = newOrAdditionalJobsResult.data.getPublicJobs.length
+
+      if (isNewQuery) {
+        setIsLoading(false)
+      } else {
+        setIsLoadingMore(false)
+      }
+
       if (isNewQuery) {
         setJobs(newOrAdditionalJobs)
       } else {
         setJobs([...jobs, ...newOrAdditionalJobs])
       }
     }, 500),
-    [jobs, selectedProfessionId],
+    [jobs],
   )
 
-  const selectProfessionId = useCallback((professionId: string) => {
-    setSelectedProfessionId(professionId)
-  }, [])
-
-  const unselectProfessionId = useCallback(() => {
-    setSelectedProfessionId(undefined)
-  }, [])
+  const resetFilter = useCallback(() => {
+    setJobFilterBarKey(jobFilterBarKey + 1)
+  }, [jobFilterBarKey])
 
   useEffect(() => {
-    if ($isFirstLoad.current) {
-      $isFirstLoad.current = false
-
-      return
-    }
-
-    query(0)
-  }, [selectedProfessionId])
+    document.body.style.overflowY = isFilterModalOpen ? 'hidden' : 'auto'
+  }, [isFilterModalOpen])
 
   return (
     <>
@@ -159,100 +206,58 @@ export default function JobListPage({ initialJobs, initialProfessions }: JobList
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <div className="fr-container fr-mt-2w fr-mb-2w" id="offres-de-mission">
-        <div className="fr-grid-row">
-          <div className="fr-col-12 fr-col-md-7">
-            <label className="fr-label" htmlFor="JobsSearchInput">
-              Métier
-            </label>
-            <div className="fr-input-wrap fr-mt-1w fr-fi-search-line">
-              <input
-                ref={$searchInput}
-                className="fr-input"
-                id="JobsSearchInput"
-                onInput={() => query(0)}
-                type="text"
-              />
+      <div className="fr-container fr-pb-3w" id="offres-de-mission">
+        <JobListOuterBox className="fr-grid-row">
+          <JobFilterBarBox className="fr-col-12 fr-col-md-5">
+            <JobFilterBar
+              key={jobFilterBarKey}
+              institutions={initialInstitutions}
+              isModalOpen={isFilterModalOpen}
+              onChange={filter => query(0, filter)}
+              onModalClose={closeFilterModal}
+              professions={initialProfessions}
+            />
+          </JobFilterBarBox>
+
+          <JobListInnerBox className="fr-col-12 fr-col-md-7">
+            <div className="fr-grid-row fr-mt-3w fr-mb-1w">
+              <CounterSentenceBox className="fr-col-6 fr-col-md-8">{jobsLengthSentence}</CounterSentenceBox>
+              <CounterButtonsBox className="fr-col-6 fr-col-md-4">
+                {$hasFilter.current && (
+                  <button
+                    className="fr-btn fr-btn--secondary rf-btn--error fr-btn--icon-left fr-fi-close-line"
+                    onClick={resetFilter}
+                    type="button"
+                  >
+                    Réinitialiser
+                  </button>
+                )}
+
+                <button
+                  className="fr-btn fr-btn--secondary rf-hidden-md fr-ml-2w"
+                  onClick={openFilterModal}
+                  type="button"
+                >
+                  Filtres
+                </button>
+              </CounterButtonsBox>
             </div>
-          </div>
 
-          <div className="fr-col-12 fr-pt-2w fr-col-md-5 fr-pt-md-0 fr-pl-md-2w">
-            <label className="fr-label" htmlFor="JobsRegionSelect">
-              Région
-            </label>
-            <div className="fr-input-wrap fr-mt-1w">
-              <select ref={$regionSelect} className="fr-select" onChange={() => query(0)}>
-                <option value="">Toutes</option>
-                {REGIONS_AS_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-        <div className="fr-grid-row fr-py-2w">
-          <div className="fr-col-12">
-            <FiltersBox>
-              {initialProfessions.map(profession => (
-                <FilterRadio
-                  key={profession.id}
-                  defaultChecked={profession.id === selectedProfessionId}
-                  label={profession.name}
-                  name="professionId"
-                  onCheck={selectProfessionId}
-                  onUncheck={unselectProfessionId}
-                  value={profession.id}
-                />
-              ))}
-            </FiltersBox>
-          </div>
-        </div>
+            {isLoading && <Loader />}
 
-        <div className="fr-grid-row">
-          {jobs.length === 0 && (
-            <div
-              className="fr-py-4w"
-              style={{
-                textAlign: 'center',
-                width: '100%',
-              }}
-            >
-              <p>Il n’y a aucune offre disponible satisfaisant cette recherche.</p>
-            </div>
-          )}
+            {!isLoading && jobs.map(job => <JobCard key={job.id} job={job} />)}
 
-          {jobs.map(job => (
-            <JobCard key={job.id} job={job} />
-          ))}
+            {isLoadingMore && <Loader />}
 
-          {isLoading && (
-            <div
-              className="fr-my-4w"
-              style={{
-                textAlign: 'center',
-                width: '100%',
-              }}
-            >
-              <i
-                className="ri-loader-4-fill rotating"
-                style={{
-                  display: 'inline-block',
-                  fontSize: '2em',
-                }}
-              />
-            </div>
-          )}
-        </div>
-
-        {hasMoreJobs && (
-          <div className="fr-py-4w" id="LoadMoreSection">
-            <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
-              Afficher plus de résultats
-            </button>
-          </div>
-        )}
+            {!isLoading && !isLoadingMore && hasMoreJobs && (
+              <div className="fr-py-4w rf-text-center">
+                <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
+                  Afficher plus de résultats
+                </button>
+              </div>
+            )}
+          </JobListInnerBox>
+        </JobListOuterBox>
       </div>
     </>
   )
@@ -260,6 +265,29 @@ export default function JobListPage({ initialJobs, initialProfessions }: JobList
 
 export async function getStaticProps() {
   const prisma = getPrisma()
+
+  const whereFilter = {
+    where: {
+      AND: {
+        expiredAt: {
+          gt: new Date(),
+        },
+        state: JobState.PUBLISHED,
+      },
+    },
+  }
+
+  const initialJobsLength = await prisma.job.count(whereFilter)
+
+  const initialInstitutions = await prisma.institution.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
 
   const initialJobs = await prisma.job.findMany({
     include: {
@@ -273,9 +301,7 @@ export async function getStaticProps() {
       updatedAt: 'desc',
     },
     take: INITIAL_VARIABLES.perPage,
-    where: {
-      state: JobState.PUBLISHED,
-    },
+    ...whereFilter,
   })
 
   const initialProfessions = await prisma.profession.findMany({
@@ -292,7 +318,9 @@ export async function getStaticProps() {
 
   return {
     props: {
+      initialInstitutions,
       initialJobs: normalizedIinitialJobs,
+      initialJobsLength,
       initialProfessions,
     },
     revalidate: 300,
