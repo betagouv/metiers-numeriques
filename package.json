@@ -97,7 +97,7 @@
     "@ivangabriele/commitlint-config": "1.0.2",
     "@ivangabriele/eslint-config-typescript-react": "2.1.4",
     "@ivangabriele/prettier-config": "2.0.2",
-    "@playwright/test": "1.19.2",
+    "@playwright/test": "1.20.1",
     "@swc/core": "1.2.133",
     "@testing-library/react-hooks": "7.0.2",
     "@tsconfig/node16": "1.0.2",
