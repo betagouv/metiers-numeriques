@@ -35,12 +35,16 @@ const StyledForm = styled(FormikForm)`
 
 type FormProps<Values extends FormikValues = FormikValues, ExtraProps = {}> = FormikConfig<Values> &
   ExtraProps &
-  Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>
+  Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> & {
+    isInline?: boolean
+  }
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const _Form = ({
   children,
   initialErrors,
   initialValues,
+  isInline = false,
   onSubmit,
   validate,
   validationSchema,
@@ -54,9 +58,15 @@ const _Form = ({
     validate={validate}
     validationSchema={validationSchema}
   >
-    <StyledForm noValidate {...props}>
-      {children}
-    </StyledForm>
+    {isInline ? (
+      <FormikForm noValidate {...props}>
+        {children}
+      </FormikForm>
+    ) : (
+      <StyledForm noValidate {...props}>
+        {children}
+      </StyledForm>
+    )}
   </Formik>
 )
 

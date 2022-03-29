@@ -30,7 +30,7 @@ export default async function ApiPepEndpoint(req: NextApiRequest, res: NextApiRe
 
     const { email, jobId } = req.body
 
-    if (typeof email !== 'string' || typeof jobId !== 'string') {
+    if (typeof email !== 'string') {
       return handleError(new ApiError('Unprocessable Entity.', 422, true), ERROR_PATH, res)
     }
 

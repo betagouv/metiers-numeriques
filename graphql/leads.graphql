@@ -1,0 +1,30 @@
+# import Job from "jobs.graphql"
+
+scalar DateTime
+
+type Lead {
+  id: ID!
+
+  createdAt: DateTime
+  email: String
+  updatedAt: DateTime
+  withAlert: Boolean
+  withNewsletter: Boolean
+
+  fromJob: Job
+}
+
+input LeadInput {
+  email: String
+  withAlert: Boolean
+  withNewsletter: Boolean
+
+  fromJobId: String
+}
+
+type LeadsResult {
+  count: Int!
+  data: [Lead!]!
+  index: Int!
+  length: Int!
+}
