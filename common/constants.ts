@@ -104,6 +104,7 @@ export const JOB_REMOTE_STATUSES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_
 
 export const JOB_STATE_LABEL: Record<JobState, string> = {
   DRAFT: 'Brouillon',
+  FILLED: 'Pourvue',
   PUBLISHED: 'Publiée',
 }
 

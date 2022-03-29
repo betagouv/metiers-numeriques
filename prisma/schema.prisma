@@ -59,6 +59,7 @@ enum JobRemoteStatus {
 }
 
 enum JobState {
+  FILLED
   DRAFT
   PUBLISHED
 }
