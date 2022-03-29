@@ -22,22 +22,23 @@ import type { JobWithRelation } from '@app/organisms/JobCard'
 import type { LegacyJobWithRelation } from '@app/organisms/LegacyJobCard'
 import type { Job, LegacyJob } from '@prisma/client'
 
-const isJobExpired = (job: Job) => dayjs(job.expiredAt).isBefore(dayjs(), 'day')
+const isJobFilledOrExpired = (job: Job) =>
+  job.state === JobState.FILLED || dayjs(job.expiredAt).isBefore(dayjs(), 'day')
 const isLegacyJobExpired = (job: LegacyJob) => !job.isMigrated && dayjs(job.limitDate).isBefore(dayjs(), 'day')
 
 type JobPageProps =
   | {
       data: JobWithRelation
-      isExpired: boolean
+      isFilledOrExpired: boolean
       isNew: true
     }
   | {
       data: LegacyJobWithRelation
-      isExpired: boolean
+      isFilledOrExpired: boolean
       isNew: false
     }
 
-export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
+export default function JobPage({ data, isFilledOrExpired, isNew }: JobPageProps) {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
 
   const pageTitle = useMemo(() => `${data.title} | metiers.numerique.gouv.fr`, [])
@@ -69,8 +70,10 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           <meta content={pageTitle} property="og:title" />
           <meta content={pageDescription} property="og:description" />
 
-          {/* eslint-disable-next-line react/no-danger */}
-          {!isExpired && <script dangerouslySetInnerHTML={{ __html: structuredData }} type="application/ld+json" />}
+          {!isFilledOrExpired && (
+            //  eslint-disable-next-line react/no-danger
+            <script dangerouslySetInnerHTML={{ __html: structuredData }} type="application/ld+json" />
+          )}
         </Head>
 
         <div className="fr-container" id="job-detail">
@@ -78,7 +81,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             <h1>{job.title}</h1>
           </div>
 
-          {isExpired && (
+          {isFilledOrExpired && (
             <div className="fr-alert fr-alert--warning fr-my-2w">
               <p className="fr-alert__title">Cette offre a déjà été pourvue !</p>
               <p
@@ -93,7 +96,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
 
           <div className="fr-callout fr-px-0 fr-my-2w">
             <div className="fr-callout__text fr-text--lg">
-              {!isExpired && job.updatedAt && (
+              {!isFilledOrExpired && job.updatedAt && (
                 <div className="fr-grid-row fr-grid-row--gutters">
                   <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Mis à jour le</div>
                   <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{humanizeDate(job.updatedAt)}</div>
@@ -210,23 +213,25 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
               </div>
             )}
 
-            <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-12 fr-col-md-3" />
-              <div className="fr-col-12 fr-pt-4w fr-col-md-9">
-                <button
-                  className="fr-btn fr-btn--lg"
-                  onClick={openApplicationModal}
-                  style={{
-                    lineHeight: 1,
-                    minHeight: 'auto',
-                    padding: '0.75rem 2rem 1rem',
-                  }}
-                  type="button"
-                >
-                  POSTULER À CETTE OFFRE
-                </button>
+            {!isFilledOrExpired && (
+              <div className="fr-grid-row fr-grid-row--gutters">
+                <div className="fr-col-12 fr-col-md-3" />
+                <div className="fr-col-12 fr-pt-4w fr-col-md-9">
+                  <button
+                    className="fr-btn fr-btn--lg"
+                    onClick={openApplicationModal}
+                    style={{
+                      lineHeight: 1,
+                      minHeight: 'auto',
+                      padding: '0.75rem 2rem 1rem',
+                    }}
+                    type="button"
+                  >
+                    POSTULER À CETTE OFFRE
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -236,7 +241,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             backgroundColor: '#F0F0F0',
           }}
         >
-          {!isExpired && (
+          {!isFilledOrExpired && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">Si vous avez des questions</div>
               <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
@@ -260,7 +265,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             <div
               className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
               style={{
-                color: isExpired ? 'red' : 'inherit',
+                color: isFilledOrExpired ? 'red' : 'inherit',
                 fontWeight: 700,
               }}
             >
@@ -268,7 +273,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             </div>
           </div>
 
-          {!isExpired && job.processDescription && (
+          {!isFilledOrExpired && job.processDescription && (
             <div className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">Processus de recrutement</div>
               <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(job.processDescription)}</div>
@@ -308,7 +313,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           <h1>{legacyJob.title}</h1>
         </div>
 
-        {isExpired && (
+        {isFilledOrExpired && (
           <div className="fr-alert fr-alert--warning fr-my-2w">
             <p className="fr-alert__title">Cette offre a déjà été pourvue !</p>
             <p
@@ -323,7 +328,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
 
         <div className="fr-callout fr-px-0 fr-my-2w">
           <div className="fr-callout__text fr-text--lg">
-            {!isExpired && legacyJob.updatedAt && (
+            {!isFilledOrExpired && legacyJob.updatedAt && (
               <div className="fr-grid-row fr-grid-row--gutters">
                 <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Mis à jour le</div>
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
@@ -484,7 +489,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           backgroundColor: '#F0F0F0',
         }}
       >
-        {!isExpired && legacyJob.teamInfo && (
+        {!isFilledOrExpired && legacyJob.teamInfo && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Si vous avez des questions</p>
@@ -493,7 +498,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           </div>
         )}
 
-        {!isExpired && legacyJob.toApply && (
+        {!isFilledOrExpired && legacyJob.toApply && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Pour candidater</p>
@@ -509,7 +514,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           </div>
         )}
 
-        {!isExpired && legacyJob.more && (
+        {!isFilledOrExpired && legacyJob.more && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Pour en savoir plus</p>
@@ -526,7 +531,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
             <div
               className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
               style={{
-                color: isExpired ? 'red' : 'inherit',
+                color: isFilledOrExpired ? 'red' : 'inherit',
                 fontWeight: 700,
               }}
             >
@@ -535,7 +540,7 @@ export default function JobPage({ data, isExpired, isNew }: JobPageProps) {
           </div>
         )}
 
-        {!isExpired && legacyJob.hiringProcess && (
+        {!isFilledOrExpired && legacyJob.hiringProcess && (
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
               <p>Processus de recrutement</p>
@@ -570,7 +575,7 @@ export async function getStaticPaths() {
     },
   })
 
-  const nonExpiredJobs = jobs.filter(isJobExpired)
+  const nonExpiredJobs = jobs.filter(isJobFilledOrExpired)
 
   const legacyJobs = await prisma.legacyJob.findMany({
     where: {
@@ -615,19 +620,19 @@ export async function getStaticProps({ params: { slug } }) {
   })
 
   if (job !== null) {
-    if (job.state !== JobState.PUBLISHED) {
+    if (![JobState.FILLED, JobState.PUBLISHED].includes(job.state as any)) {
       return {
         notFound: true,
       }
     }
 
-    const isExpired = isJobExpired(job)
+    const isFilledOrExpired = isJobFilledOrExpired(job)
     const jobWithHumanDates = stringifyDeepDates(job)
 
     return {
       props: {
         data: jobWithHumanDates,
-        isExpired,
+        isFilledOrExpired,
         isNew: true,
       },
       revalidate: 300,
@@ -653,13 +658,13 @@ export async function getStaticProps({ params: { slug } }) {
     }
   }
 
-  const isExpired = isLegacyJobExpired(legacyJob)
+  const isFilledOrExpired = isLegacyJobExpired(legacyJob)
   const legacyJobWithHumanDates = stringifyDeepDates(legacyJob)
 
   return {
     props: {
       data: legacyJobWithHumanDates,
-      isExpired,
+      isFilledOrExpired,
       isNew: false,
     },
     revalidate: 300,
