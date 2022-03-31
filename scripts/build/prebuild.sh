@@ -9,4 +9,9 @@ export $(egrep -v '^(#|GOOGLECLOUD_CLIENT_PRIVATE_KEY|EDDSA_PRIVATE_KEY|NEXT_PUB
 yarn prisma generate
 yarn db:migrate
 yarn db:seed
+
+if [ "${WITH_DATA_SEED}" = 'true' ]; then
+  yarn dev:seed
+fi
+
 ts-node -r dotenv/config ./scripts/build/generateSitemap.ts
