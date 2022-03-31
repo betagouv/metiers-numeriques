@@ -37,6 +37,9 @@ async function seed() {
   })
   const prisma = getPrisma()
 
+  ß.info('[scripts/dev/seed.js] Deleting all refresh tokens…')
+  await prisma.refreshToken.deleteMany()
+
   ß.info('[scripts/dev/seed.js] Deleting all users…')
   await prisma.user.deleteMany()
 
