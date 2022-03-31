@@ -7,6 +7,12 @@ import * as R from 'ramda'
 
 import getPrisma from '../../api/helpers/getPrisma'
 
+const { NODE_ENV, WITH_DATA_SEED } = process.env
+
+if (NODE_ENV !== 'development' && WITH_DATA_SEED !== 'true') {
+  process.exit(1)
+}
+
 const BCRYPT_SALT_ROUNDS = 10
 const PRODUCTION_GRAPGQL_URL = 'https://metiers.numerique.gouv.fr/api/graphql'
 
@@ -170,14 +176,14 @@ async function seed() {
     R.map(R.omit(['address', 'applicationContacts', 'infoContact', 'profession', 'recruiter'])),
   )(rawJobs)
 
-  ß.info('[scripts/dev/seed.js] Creating first user (administrator: nemo@beta.gouv.fr / test)…')
+  ß.info('[scripts/dev/seed.js] Creating first user (administrator: admin@beta.gouv.fr / test)…')
   const password = await encrypt('test')
   await prisma.user.create({
     data: {
-      email: 'nemo@beta.gouv.fr',
-      firstName: 'Nemo',
+      email: 'admin@beta.gouv.fr',
+      firstName: 'Admin',
       isActive: true,
-      lastName: 'The Fish',
+      lastName: 'Test',
       password,
       role: UserRole.ADMINISTRATOR,
     },
