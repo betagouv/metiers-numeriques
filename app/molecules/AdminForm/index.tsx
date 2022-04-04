@@ -8,6 +8,7 @@ import { Code } from './Code'
 import { ContactSelect } from './ContactSelect'
 import { CountrySelect } from './CountrySelect'
 import { Editor } from './Editor'
+import { Error } from './Error'
 // import { Image } from './Image'
 import { InstitutionSelect } from './InstitutionSelect'
 import { ProfessionSelect } from './ProfessionSelect'
@@ -61,6 +62,7 @@ export const AdminForm = Object.assign(_AdminForm, {
   ContactSelect,
   CountrySelect,
   Editor,
+  Error,
   // Image,
   InstitutionSelect,
   ProfessionSelect,

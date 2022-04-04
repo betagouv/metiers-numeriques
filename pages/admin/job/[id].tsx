@@ -3,6 +3,7 @@ import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
+import { FieldGroup } from '@app/atoms/FieldGroup'
 import { SeparatorText } from '@app/atoms/SeparatorText'
 import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
@@ -61,12 +62,12 @@ export const JobFormSchema = Yup.object().shape(
     contractTypes: Yup.array(Yup.string().nullable())
       .required(`Au moins un type de contrat est obligatoire.`)
       .min(1, `Au moins un type de contrat est obligatoire.`),
-    expiredAtAsString: Yup.string().required(`La date d’expiration est obligatoire.`),
-    infoContactId: Yup.string().required(`Le contact "questions" est obligatoire.`),
-    missionDescription: Yup.string().trim().required(`Décrire la mission est obligatoire.`),
-    professionId: Yup.string().required(`Le métier est obligatoire.`),
-    recruiterId: Yup.string().required(`Le recruteur est obligatoire.`),
-    remoteStatus: Yup.string().required(`Indiquer les possibilités de télétravail est obligatoire.`),
+    expiredAtAsString: Yup.string().nullable().required(`La date d’expiration est obligatoire.`),
+    infoContactId: Yup.string().nullable().required(`Le contact "questions" est obligatoire.`),
+    missionDescription: Yup.string().nullable().trim().required(`Décrire la mission est obligatoire.`),
+    professionId: Yup.string().nullable().required(`Le métier est obligatoire.`),
+    recruiterId: Yup.string().nullable().required(`Le recruteur est obligatoire.`),
+    remoteStatus: Yup.string().nullable().required(`Indiquer les possibilités de télétravail est obligatoire.`),
     salaryMax: Yup.number()
       .nullable()
       .integer(`La rémunération maximum doit être un nombre entier, en millier d'euros.`)
@@ -77,9 +78,9 @@ export const JobFormSchema = Yup.object().shape(
       .integer(`La rémunération minimum doit être un nombre entier, en millier d'euros.`)
       .min(10, `La rémunération minimum doit être un nombre entier, en millier d'euros.`)
       .max(200, `La rémunération minimum doit être un nombre entier, en millier d'euros.`),
-    seniorityInYears: Yup.number().required(`Le nombre d’années d’expérience requises est obligatoire.`),
-    state: Yup.string().required(`L’état est obligatoire.`),
-    title: Yup.string().required(`L’intitulé est obligatoire.`),
+    seniorityInYears: Yup.number().nullable().required(`Le nombre d’années d’expérience requises est obligatoire.`),
+    state: Yup.string().nullable().required(`L’état est obligatoire.`),
+    title: Yup.string().nullable().required(`L’intitulé est obligatoire.`),
   },
   [['applicationContactIds', 'applicationWebsiteUrl']],
 )
@@ -401,19 +402,25 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <DoubleField>
-            <AdminForm.TextInput
-              isDisabled={isLoading}
-              label="Rémunération minimum (K€, annuel, brut)"
-              name="salaryMin"
-              type="number"
-            />
+            <FieldGroup>
+              <AdminForm.TextInput
+                isDisabled={isLoading}
+                label="Rémunération anuelle brut minimum"
+                name="salaryMin"
+                type="number"
+              />
+              <span>K€</span>
+            </FieldGroup>
 
-            <AdminForm.TextInput
-              isDisabled={isLoading}
-              label="Rémunération maximum (K€, annuel, brut)"
-              name="salaryMax"
-              type="number"
-            />
+            <FieldGroup>
+              <AdminForm.TextInput
+                isDisabled={isLoading}
+                label="Rémunération anuelle brut maximum"
+                name="salaryMax"
+                type="number"
+              />
+              <span>K€</span>
+            </FieldGroup>
           </DoubleField>
 
           <Field>
@@ -485,6 +492,8 @@ export default function AdminJobEditorPage() {
         </AdminCard>
 
         <AdminCard>
+          <AdminForm.Error />
+
           <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
             Annuler
           </AdminForm.Cancel>
