@@ -6,7 +6,7 @@ import { getUser } from 'nexauth'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const ERROR_PATH = 'pages/api/pep.js'
+const ERROR_PATH = 'pages/api/pep'
 
 export default async function ApiPepEndpoint(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {

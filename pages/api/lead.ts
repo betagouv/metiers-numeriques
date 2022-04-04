@@ -6,7 +6,7 @@ import mailchimpMarketing from '@mailchimp/mailchimp_marketing'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const { MAILCHIMP_API_KEY, MAILCHIMP_NEWSLETTER_LIST_ID, MAILCHIMP_SERVER } = process.env
-const ERROR_PATH = 'pages/api/pep.js'
+const ERROR_PATH = 'pages/api/lead'
 
 mailchimpMarketing.setConfig({
   apiKey: MAILCHIMP_API_KEY,

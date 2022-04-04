@@ -174,7 +174,7 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
       path: '/api/graphql',
     })(req, res)
   } catch (err) {
-    handleError(err, 'pages/api/graphql.js', res)
+    handleError(err, 'pages/api/graphql', res)
   }
 }
 

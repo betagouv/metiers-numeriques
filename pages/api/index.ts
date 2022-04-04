@@ -5,7 +5,7 @@ import ApiError from '../../api/libs/ApiError'
 import { RequestWithPrisma } from '../../api/types'
 
 const { npm_package_version: VERSION } = process.env
-const ERROR_PATH = 'pages/api/auth/IndexController()'
+const ERROR_PATH = 'pages/api/index'
 
 async function IndexController(req: RequestWithPrisma, res: NextApiResponse) {
   if (req.method !== 'GET') {
