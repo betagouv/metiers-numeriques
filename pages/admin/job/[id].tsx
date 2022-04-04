@@ -486,7 +486,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Processus de recrutement"
               name="processDescription"
-              placeholder="En une seule phrase si possible."
+              placeholder="Exemple : le processus se déroulera sur 1 mois avec 4 entretiens."
             />
           </Field>
         </AdminCard>
