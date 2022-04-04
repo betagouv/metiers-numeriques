@@ -7,11 +7,11 @@ const StyledAnchor = styled.a`
   --blend: none;
 `
 
-type LinkButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string
 }
 
-export default function Link({ children, href, ...props }: LinkButtonProps) {
+export default function Link({ children, href, ...props }: LinkProps) {
   return (
     <NextLink href={href}>
       <StyledAnchor href={href} {...props}>
