@@ -25,9 +25,9 @@ export default function HomePage() {
                 co-construisons ensemble l’État Numérique de demain !
               </p>
               <div className="fr-mt-4w">
-                <a className="fr-btn fr-btn--secondary btn-home--secondary" href="/institutions">
+                {/* <a className="fr-btn fr-btn--secondary btn-home--secondary" href="/institutions">
                   Découvrir
-                </a>
+                </a> */}
                 <a className="fr-btn btn-home" href="/emplois">
                   Candidater
                 </a>
