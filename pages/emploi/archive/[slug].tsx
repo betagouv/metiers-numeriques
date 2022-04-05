@@ -4,7 +4,6 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import Head from 'next/head'
-import * as R from 'ramda'
 import { useMemo } from 'react'
 
 import type { ArchivedJob } from '@prisma/client'
@@ -109,28 +108,7 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
   )
 }
 
-export async function getStaticPaths() {
-  const prisma = getPrisma()
-
-  const archivedJobs = await prisma.archivedJob.findMany({
-    include: {
-      profession: true,
-    },
-  })
-
-  const slugs = R.pipe(R.map(R.prop('slug')), R.uniq)(archivedJobs)
-
-  const paths = slugs.map(slug => ({
-    params: { slug },
-  }))
-
-  return {
-    fallback: 'blocking',
-    paths,
-  }
-}
-
-export async function getStaticProps({ params: { slug } }) {
+export async function getServerSideProps({ params: { slug } }) {
   const prisma = getPrisma()
 
   const archivedJob = await prisma.archivedJob.findUnique({

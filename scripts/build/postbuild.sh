@@ -24,4 +24,5 @@ echo "info  - Dependencies left:"
 ls -la ./node_modules
 
 echo "info  - Directories sizes:"
+du -sh .[^.]*
 du -sh *
