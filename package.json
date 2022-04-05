@@ -100,7 +100,7 @@
     "@ivangabriele/eslint-config-typescript-react": "2.1.4",
     "@ivangabriele/prettier-config": "2.0.2",
     "@playwright/test": "1.20.2",
-    "@swc/core": "1.2.133",
+    "@swc/core": "1.2.163",
     "@testing-library/react-hooks": "7.0.2",
     "@tsconfig/node16": "1.0.2",
     "@types/bcryptjs": "2.4.2",
