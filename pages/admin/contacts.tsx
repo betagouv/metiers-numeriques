@@ -49,6 +49,7 @@ export default function AdminContactListPage() {
     },
     any
   >(queries.contact.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

@@ -20,7 +20,9 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
   const $newProfessionId = useRef<string>()
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getProfessionsListResult = useQuery(queries.profession.GET_LIST)
+  const getProfessionsListResult = useQuery(queries.profession.GET_LIST, {
+    fetchPolicy: 'no-cache',
+  })
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const isControlledDisabled = getProfessionsListResult.loading || isDisabled || isSubmitting

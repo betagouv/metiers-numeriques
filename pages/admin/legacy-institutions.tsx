@@ -42,6 +42,7 @@ export default function AdminLegacyInstitutionListPage() {
     },
     any
   >(queries.legacyInstitution.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

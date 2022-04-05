@@ -31,7 +31,9 @@ export function ContactSelect({
   const [hasNewContactModal, setHasNewContactModal] = useState(false)
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getContactsListResult = useQuery(queries.contact.GET_LIST)
+  const getContactsListResult = useQuery(queries.contact.GET_LIST, {
+    fetchPolicy: 'no-cache',
+  })
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const isControlledDisabled = getContactsListResult.loading || isDisabled || isSubmitting

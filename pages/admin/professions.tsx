@@ -39,6 +39,7 @@ export default function AdminProfessionListPage() {
     },
     any
   >(queries.profession.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

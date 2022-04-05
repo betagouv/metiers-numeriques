@@ -20,7 +20,9 @@ export function InstitutionSelect({ helper, isDisabled = false, label, name, pla
   const $newInstitutionId = useRef<string>()
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getInstitutionsListResult = useQuery(queries.institution.GET_LIST)
+  const getInstitutionsListResult = useQuery(queries.institution.GET_LIST, {
+    fetchPolicy: 'no-cache',
+  })
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const isControlledDisabled = getInstitutionsListResult.loading || isDisabled || isSubmitting

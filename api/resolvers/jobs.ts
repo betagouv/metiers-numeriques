@@ -224,7 +224,7 @@ export const query = {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
-      const andFilter: Record<string, Common.Pojo> = {}
+      const andFilter: Prisma.Enumerable<Prisma.JobWhereInput> = {}
       if (context.user.role === UserRole.RECRUITER) {
         andFilter.recruiterId = context.user.recruiterId
       }
