@@ -36,8 +36,6 @@ enum JobContractType {
   CONTRACT_WORKER
   // Freelance
   FREELANCER
-  // Temps plein
-  FULL_TIME
   // Stagiaire
   INTERN
   // VIA (VIE)

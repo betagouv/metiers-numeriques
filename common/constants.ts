@@ -73,10 +73,9 @@ export const FILE_TYPE: Record<FileTypeKey, FileTypeValue> = {
 export const JOB_CONTRACT_TYPE_LABEL: Record<JobContractType, string> = {
   CONTRACT_WORKER: 'Contractuel',
   FREELANCER: 'Freelance',
-  FULL_TIME: 'Temps plein',
   INTERN: 'Stage',
   INTERNATIONAL_VOLUNTEER: 'VIA (VIE)',
-  NATIONAL_CIVIL_SERVANT: 'Fonction publique',
+  NATIONAL_CIVIL_SERVANT: 'Fonctionnaire',
   PART_TIME: 'Temps partiel',
   PERMANENT: 'CDI',
   TEMPORARY: 'CDD',
@@ -94,8 +93,8 @@ export const JOB_SOURCE_LABEL: Record<JobSource, string> = {
 export const JOB_SOURCES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_SOURCE_LABEL)
 
 export const JOB_REMOTE_STATUS_LABEL: Record<JobRemoteStatus, string> = {
-  FULL: 'Oui',
-  PARTIAL: 'Partiellement',
+  FULL: 'Total',
+  PARTIAL: 'Partiel',
   // eslint-disable-next-line sort-keys-fix/sort-keys-fix
   NONE: 'Non',
 }
@@ -110,7 +109,7 @@ export const JOB_STATE_LABEL: Record<JobState, string> = {
 
 export const JOB_STATES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_STATE_LABEL)
 
-export enum REGION {
+export enum Region {
   'Auvergne-Rhône-Alpes' = 'Auvergne-Rhône-Alpes',
   'Bourgogne-Franche-Comté' = 'Bourgogne-Franche-Comté',
   'Bretagne' = 'Bretagne',
@@ -131,7 +130,7 @@ export enum REGION {
   'Île-de-France' = 'Île-de-France',
 }
 
-export const REGIONS_AS_OPTIONS: Common.App.SelectOption<keyof typeof REGION>[] = [
+export const REGIONS_AS_OPTIONS: Common.App.SelectOption<keyof typeof Region>[] = [
   {
     label: `Auvergne-Rhône-Alpes`,
     value: `Auvergne-Rhône-Alpes`,

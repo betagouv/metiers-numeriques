@@ -11,7 +11,7 @@ export default function NotFoundPage() {
       </Head>
 
       <main>
-        <div className="fr-container fr-my-4w">
+        <div className="fr-container fr-py-4w">
           <div
             className="fr-grid-row"
             style={{

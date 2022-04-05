@@ -9,7 +9,7 @@ export default function LegalNoticesPage() {
         <title>{pageTitle}</title>
       </Head>
       <main id="contenu" role="main">
-        <div className="fr-container fr-my-4w">
+        <div className="fr-container fr-py-4w">
           <h1>Mentions légales</h1>
 
           <h2>Éditeur de la Plateforme</h2>

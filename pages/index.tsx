@@ -15,7 +15,7 @@ export default function HomePage() {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <main className="fr-mt-4w" id="contenu" role="main">
+      <main className="fr-pt-4w" id="contenu" role="main">
         <div className="fr-container">
           <div className="fr-grid-row fr-grid-row--center fr-grid-row--middle">
             <div className="fr-col-md-5 fr-col-xs-6w fr-px-6w fr-my-5w">

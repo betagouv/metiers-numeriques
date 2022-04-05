@@ -17,9 +17,6 @@ type EmploymentType =
 
 const getEmploymenTypeFromContractType = (contractType: JobContractType): EmploymentType => {
   switch (contractType) {
-    case 'FULL_TIME':
-      return 'FULL_TIME'
-
     case 'PART_TIME':
       return 'PART_TIME'
 
@@ -42,5 +39,11 @@ const getEmploymenTypeFromContractType = (contractType: JobContractType): Employ
 }
 
 export function normalizeEmploymentType(contractTypes: JobContractType[]): EmploymentType[] {
-  return R.uniq(contractTypes.map(getEmploymenTypeFromContractType))
+  const employmentTypes = R.uniq(contractTypes.map(getEmploymenTypeFromContractType))
+
+  if (!employmentTypes.includes('FULL_TIME') && !employmentTypes.includes('PART_TIME')) {
+    employmentTypes.push('FULL_TIME')
+  }
+
+  return employmentTypes
 }

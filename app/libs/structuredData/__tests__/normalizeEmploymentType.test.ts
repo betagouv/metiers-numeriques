@@ -7,17 +7,23 @@ describe('libs/structuredData.normalizeEmploymentType()', () => {
     const contractTypes: JobContractType[] = [
       'CONTRACT_WORKER',
       'FREELANCER',
-      'FULL_TIME',
       'INTERN',
       'INTERNATIONAL_VOLUNTEER',
       'NATIONAL_CIVIL_SERVANT',
-      'PART_TIME',
       'PERMANENT',
       'TEMPORARY',
     ]
 
     const result = structuredData.normalizeEmploymentType(contractTypes)
 
-    expect(result).toMatchObject(['CONTRACTOR', 'FULL_TIME', 'INTERN', 'VOLUNTEER', 'OTHER', 'PART_TIME', 'TEMPORARY'])
+    expect(result).toMatchObject(['CONTRACTOR', 'INTERN', 'VOLUNTEER', 'OTHER', 'TEMPORARY', 'FULL_TIME'])
+  })
+
+  test(`with a part time`, () => {
+    const contractTypes: JobContractType[] = ['CONTRACT_WORKER', 'PART_TIME']
+
+    const result = structuredData.normalizeEmploymentType(contractTypes)
+
+    expect(result).toMatchObject(['CONTRACTOR', 'PART_TIME'])
   })
 })

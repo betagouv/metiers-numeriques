@@ -122,7 +122,7 @@ describe('app/helpers/generateJobStructuredData()', () => {
       datePosted: '2022-02-10',
       description:
         "Vous pilotez le développement de Tchap, la messagerie instantanée de l’État utilisée par 250 000 agents publics. Votre objectif ? L'impact du produit auprès de ses utilisateurs.",
-      employmentType: ['CONTRACTOR', 'OTHER'],
+      employmentType: ['CONTRACTOR', 'OTHER', 'FULL_TIME'],
       hiringOrganization: {
         '@type': 'Organization',
         name: 'Recruteur B',

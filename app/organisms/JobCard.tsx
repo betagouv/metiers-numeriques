@@ -152,7 +152,7 @@ export function JobCard({ job }: JobCardProps) {
           </div>
 
           <div
-            className="hidden-md-flex"
+            className="rf-hidden-md-flex"
             style={{
               alignItems: 'flex-end',
               justifyContent: 'flex-end',

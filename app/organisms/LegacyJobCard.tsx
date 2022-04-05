@@ -157,7 +157,7 @@ export function LegacyJobCard({ job }: LegacyJobCardProps) {
           </div>
 
           <div
-            className="hidden-md-flex"
+            className="rf-hidden-md-flex"
             style={{
               alignItems: 'flex-end',
               justifyContent: 'space-between',

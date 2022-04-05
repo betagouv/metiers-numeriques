@@ -8,13 +8,13 @@ import { Brand } from './Brand'
 import { Toolbar } from './Toolbar'
 
 const StyledHeader = styled.header`
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+
   @media screen and (min-width: 992px) {
     box-shadow: none;
   }
-
-  /* .fr-header__body-row {
-    flex-grow: 1;
-  } */
 `
 
 const HeaderMenu = styled.div`

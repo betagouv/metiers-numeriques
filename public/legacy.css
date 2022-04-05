@@ -1,4 +1,6 @@
-/* Global*/
+/*******************************************************************************
+  Global
+*/
 
 body {
   font-family: 'Marianne', sans-serif;
@@ -25,33 +27,10 @@ body {
   }
 }
 
-main .fr-btn {
-  padding: 0.375rem 1.5rem 0.625rem;
-}
-main .fr-btn::before {
-  margin-top: 0.25rem;
-}
-main .fr-btn.fr-btn--sm {
-  padding-bottom: 0.4rem;
-}
-main .fr-btn.fr-btn--sm::before {
-  margin-top: 0.15rem;
-}
-
-main .fr-input {
-  padding: 0.375rem 0.75rem 0.625rem;
-}
+/* Elements */
 
 main code {
   background-color: #eeeeee;
-}
-
-main .fr-card__img {
-  filter: brightness(90%);
-  background: white;
-}
-main .fr-card__img img {
-  object-fit: contain;
 }
 
 main p {
@@ -65,8 +44,184 @@ main * > p:not(:first-child) {
   margin: 1rem 0 0 0;
 }
 
+/* Helpers */
+
 .rf-centered {
   text-align: center;
+}
+
+/* Button */
+
+main .fr-btn {
+  padding: 0.375rem 1.5rem 0.625rem;
+}
+main .fr-btn::before {
+  margin-top: 0.25rem;
+}
+main .fr-btn.fr-btn--sm {
+  padding: 0.2rem 1rem 0.3rem;
+}
+main .fr-btn.fr-btn--sm::before {
+  margin-top: 0.15rem;
+}
+
+main .fr-btn.fr-btn--secondary.rf-btn--error {
+  box-shadow: inset 0 0 0 1px var(--border-action-high-warning);
+  color: var(--border-action-high-warning);
+}
+
+/* Card */
+
+main .fr-card__img {
+  filter: brightness(90%);
+  background: white;
+}
+main .fr-card__img img {
+  object-fit: contain;
+}
+
+/* Header */
+
+.fr-header {
+  border-bottom: solid 1px var(--border-default-grey);
+  box-shadow: none;
+}
+@media screen and (min-width: 992px) {
+  .fr-header {
+    border-bottom: 0;
+  }
+}
+
+/* Input */
+
+main .fr-input {
+  box-shadow: none;
+  padding: 0.375rem 0.75rem 0.625rem;
+}
+main .fr-input-wrap[class*=' fr-fi-']:before,
+main .fr-input-wrap[class*=' fr-icon-']:before,
+main .fr-input-wrap[class^='fr-fi-']:before,
+main .fr-input-wrap[class^='fr-icon-']:before {
+  bottom: 0.75rem;
+  font-size: 1rem !important;
+  margin: auto;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+}
+
+/*******************************************************************************
+  Pages
+*/
+
+/* Home */
+
+.home-bg--alt {
+  background-color: var(--g100);
+}
+
+/* Contact*/
+
+.newsletter {
+  text-align: left;
+}
+
+.consent-text {
+  font-size: x-small;
+}
+
+.no-link a {
+  box-shadow: none;
+}
+
+/*******************************************************************************
+  Helpers
+*/
+
+.rf-hidden {
+  display: none;
+}
+.rf-hidden-sm {
+  display: block;
+}
+@media screen and (min-width: 576px) {
+  .rf-hidden-sm {
+    display: none;
+  }
+}
+.rf-hidden-sm-flex {
+  display: flex;
+}
+@media screen and (min-width: 576px) {
+  .rf-hidden-sm-flex {
+    display: none;
+  }
+}
+.rf-hidden-md {
+  display: block;
+}
+@media screen and (min-width: 768px) {
+  .rf-hidden-md {
+    display: none;
+  }
+}
+.rf-hidden-md-flex {
+  display: flex;
+}
+@media screen and (min-width: 768px) {
+  .rf-hidden-md-flex {
+    display: none;
+  }
+}
+.rf-hidden-lg {
+  display: block;
+}
+@media screen and (min-width: 992px) {
+  .rf-hidden-lg {
+    display: none;
+  }
+}
+.rf-hidden-lg-flex {
+  display: flex;
+}
+@media screen and (min-width: 992px) {
+  .rf-hidden-lg-flex {
+    display: none;
+  }
+}
+.rf-hidden-xl {
+  display: block;
+}
+@media screen and (min-width: 1440px) {
+  .rf-hidden-xl {
+    display: none;
+  }
+}
+.rf-hidden-xl-flex {
+  display: flex;
+}
+@media screen and (min-width: 1440px) {
+  .rf-hidden-xl-flex {
+    display: none;
+  }
+}
+
+.rf-text-left {
+  text-align: left;
+}
+.rf-text-center {
+  text-align: center;
+}
+.rf-text-right {
+  text-align: right;
+}
+
+/*******************************************************************************
+  Miscelaneous
+*/
+
+#crisp-chatbox {
+  z-index: 1;
 }
 
 .rf-bg--alt,
@@ -88,26 +243,6 @@ p.rf-hint-text {
   color: var(--g600);
   font-size: large;
   letter-spacing: 1px;
-}
-
-/* Landing page */
-
-.home-bg--alt {
-  background-color: var(--g100);
-}
-
-/* Contact*/
-
-.newsletter {
-  text-align: left;
-}
-
-.consent-text {
-  font-size: x-small;
-}
-
-.no-link a {
-  box-shadow: none;
 }
 
 /* Medias */
@@ -202,10 +337,6 @@ p.rf-hint-text {
   animation: rotating 2s linear infinite;
 }
 
-.hidden {
-  display: none;
-}
-
 #Institution ul,
 #job-detail ul {
   margin: 0;
@@ -276,27 +407,6 @@ p.rf-hint-text {
 
 #job-detail-header p {
   font-weight: 700;
-}
-
-#LoadMoreSection {
-  text-align: center;
-}
-
-.hidden-md {
-  display: none;
-}
-@media screen and (min-width: 768px) {
-  .hidden-md {
-    display: block;
-  }
-}
-.hidden-md-flex {
-  display: none;
-}
-@media screen and (min-width: 768px) {
-  .hidden-md-flex {
-    display: flex;
-  }
 }
 
 #Institution .SocialNetworkParagraph {
