@@ -82,22 +82,25 @@ export default function AdminJobListPage() {
         }
       : getJobsResult.data.getJobs
 
-  const closeDeletionModal = () => {
+  const closeDeletionModal = useCallback(() => {
     setHasDeletionModal(false)
-  }
+  }, [])
 
-  const confirmDeletion = async (id: string) => {
-    const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
-    if (job === undefined) {
-      return
-    }
+  const confirmDeletion = useCallback(
+    async (id: string) => {
+      const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
+      if (job === undefined) {
+        return
+      }
 
-    setSelectedId(id)
-    setSelectedEntity(job.title)
-    setHasDeletionModal(true)
-  }
+      setSelectedId(id)
+      setSelectedEntity(job.title)
+      setHasDeletionModal(true)
+    },
+    [jobsResult.data],
+  )
 
-  const deleteAndReload = async () => {
+  const deleteAndReload = useCallback(async () => {
     setHasDeletionModal(false)
 
     await deleteJob({
@@ -105,26 +108,30 @@ export default function AdminJobListPage() {
         id: selectedId,
       },
     })
-  }
+  }, [])
 
-  const goToEditor = (id: string) => {
+  const goToEditor = useCallback((id: string) => {
     router.push(`/admin/job/${id}`)
-  }
+  }, [])
 
-  const goToPreview = (id: string) => {
-    const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
-    if (job === undefined) {
-      return
-    }
+  const goToPreview = useCallback(
+    (id: string) => {
+      const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
 
-    window.open(`/emploi/${job.slug}`, '_blank')
-  }
+      if (job === undefined) {
+        return
+      }
 
-  const handleStateSelect = (option: Common.App.SelectOption | null): void => {
+      window.open(`/emploi/${job.slug}`)
+    },
+    [jobsResult.data],
+  )
+
+  const handleStateSelect = useCallback((option: Common.App.SelectOption | null): void => {
     $state.current = option !== null ? option.value : ''
 
     query(0)
-  }
+  }, [])
 
   const query = useCallback(
     debounce(async (pageIndex: number) => {
@@ -183,7 +190,7 @@ export default function AdminJobListPage() {
     }
 
     return dynamicColumns
-  }, [])
+  }, [jobsResult.data])
 
   return (
     <>
