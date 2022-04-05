@@ -1,19 +1,12 @@
-import AdminBody from '@app/atoms/AdminBody'
-import AdminMain from '@app/atoms/AdminMain'
 import { WithGraphql } from '@app/hocs/WithGraphql'
-import { AdminLoader } from '@app/molecules/AdminLoader'
-import AdminMenu from '@app/molecules/AdminMenu'
-import { AdminToaster } from '@app/molecules/AdminToaster'
 import { Footer } from '@app/organisms/Footer'
 import { Header } from '@app/organisms/Header'
-import SignInDialog from '@app/organisms/SignInDialog'
 import { CrispScript } from '@app/scripts/CrispScript'
 import { MatomoScript } from '@app/scripts/MatomoScript'
-import { GlobalStyle, ThemeProvider } from '@singularity/core'
-import { AuthProvider } from 'nexauth/client'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
 
 import '@fontsource/poppins/300.css'
 import '@fontsource/poppins/400.css'
@@ -21,47 +14,26 @@ import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/700.css'
 import 'remixicon/fonts/remixicon.css'
 
-const GlobalStyleCustom = createGlobalStyle`
-  html, body {
-    height: 100%;
-  }
-
-  body,
-  #__next {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    min-height: 0;
-    min-width: 0;
-  }
-
-  body:after {
-    display: none;
-  }
-
-  [href] {
-    box-shadow: none;
-  }
-
-  textarea {
-    cursor: auto;
-
-    :focus {
-      outline: none;
-    }
-  }
-`
+const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper), {
+  ssr: false,
+})
 
 const WebsiteMain = styled.main`
   background-color: #f5f5f5;
 `
 
-const PRIVATE_PATHS = [/^\/admin($|\/)/]
-
 export default function MetiersNumeriquesApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
 
   const isAdministrationSpace = router.pathname === '/admin' || router.pathname.startsWith('/admin/')
+
+  if (isAdministrationSpace) {
+    return (
+      <DynamicAdminWrapper>
+        <Component {...pageProps} />
+      </DynamicAdminWrapper>
+    )
+  }
 
   return (
     <>
@@ -85,42 +57,20 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <meta content="/images/main-illu.png" property="og:image" />
       </Head>
 
-      <ThemeProvider>
-        {isAdministrationSpace && <GlobalStyle />}
-        {isAdministrationSpace && <GlobalStyleCustom />}
+      <WithGraphql>
+        <>
+          <Header />
+          <WebsiteMain>
+            <Component {...pageProps} />
+          </WebsiteMain>
+          <Footer />
 
-        <AuthProvider Loader={AdminLoader} privatePaths={PRIVATE_PATHS} SignInDialog={SignInDialog}>
-          <WithGraphql>
-            {!isAdministrationSpace && (
-              <>
-                <Header />
-                <WebsiteMain>
-                  {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                  <Component {...pageProps} />
-                </WebsiteMain>
-                <Footer />
-
-                <>
-                  <MatomoScript />
-                  <CrispScript />
-                </>
-              </>
-            )}
-
-            {isAdministrationSpace && (
-              <AdminBody>
-                <AdminMenu />
-
-                <AdminMain>
-                  <Component {...pageProps} />
-
-                  <AdminToaster />
-                </AdminMain>
-              </AdminBody>
-            )}
-          </WithGraphql>
-        </AuthProvider>
-      </ThemeProvider>
+          <>
+            <MatomoScript />
+            <CrispScript />
+          </>
+        </>
+      </WithGraphql>
     </>
   )
 }
