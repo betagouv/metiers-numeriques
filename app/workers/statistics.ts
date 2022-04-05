@@ -1,7 +1,11 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
+import { JobState } from '@prisma/client'
 import dayjs from 'dayjs'
+import * as R from 'ramda'
 
-import type { Job, LegacyJob } from '@prisma/client'
+import { matomo } from '../libs/matomo'
+
+import type { Job } from '@prisma/client'
 
 const GET_ALL_JOBS = gql`
   query GetAllJobs {
@@ -9,40 +13,27 @@ const GET_ALL_JOBS = gql`
       id
 
       expiredAt
+      state
     }
   }
 `
 
-const GET_ALL_LEGACY_JOBS = gql`
-  query GetAllLegacyJobs {
-    getAllLegacyJobs {
-      id
+const isJobActive = (job: Job) => job.state === JobState.PUBLISHED && !dayjs(job.expiredAt).isBefore(dayjs(), 'day')
+const filterActiveJobs: (job: Job[]) => Job[] = R.filter(isJobActive)
 
-      isMigrated
-      limitDate
-    }
-  }
-`
+export type Statistics = {
+  activeJobsCount: number | undefined
+  newApplicationsCount: number | undefined
+  newVisitsCount: number | undefined
+}
 
-const isJobExpired = (job: Job) => dayjs(job.expiredAt).isBefore(dayjs(), 'day')
-const isLegacyJobExpired = (job: LegacyJob) => !job.isMigrated && dayjs(job.limitDate).isBefore(dayjs(), 'day')
-const isLegacyJobMigrated = (job: LegacyJob) => job.isMigrated
-
-export async function jobs(accessToken?: string): Promise<
-  | {
-      expired: {
-        count: number
-        length: number
-      }
-      migrated: {
-        count: number
-        length: number
-      }
-    }
-  | undefined
-> {
+export async function get(accessToken?: string): Promise<Statistics> {
   if (accessToken === undefined) {
-    return undefined
+    return {
+      activeJobsCount: undefined,
+      newApplicationsCount: undefined,
+      newVisitsCount: undefined,
+    }
   }
 
   const client = new ApolloClient({
@@ -58,24 +49,14 @@ export async function jobs(accessToken?: string): Promise<
   } = await client.query({
     query: GET_ALL_JOBS,
   })
-  const {
-    data: { getAllLegacyJobs: legacyJobs },
-  } = await client.query({
-    query: GET_ALL_LEGACY_JOBS,
-  })
 
-  const expiredJobs = jobs.filter(isJobExpired)
-  const expiredLegacyJobs = legacyJobs.filter(isLegacyJobExpired)
-  const migratedLegacyJobs = legacyJobs.filter(isLegacyJobMigrated)
+  const activeJobs = filterActiveJobs(jobs)
+  const newApplicationsCount = await matomo.getApplicationsCount()
+  const newVisitsCount = await matomo.getVisitsCount()
 
   return {
-    expired: {
-      count: expiredJobs.length + expiredLegacyJobs.length,
-      length: jobs.length + legacyJobs.length - migratedLegacyJobs.length,
-    },
-    migrated: {
-      count: migratedLegacyJobs.length,
-      length: legacyJobs.length,
-    },
+    activeJobsCount: activeJobs.length,
+    newApplicationsCount,
+    newVisitsCount,
   }
 }

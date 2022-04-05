@@ -1,50 +1,44 @@
 import AdminHeader from '@app/atoms/AdminHeader'
+import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
-import { AdminProgressCard } from '@app/molecules/AdminProgressCard'
+import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
 import { useAuth } from 'nexauth/client'
 import { useCallback, useEffect, useState } from 'react'
+import { Send, Users } from 'react-feather'
 
-import type { AdminProgressCardDataProps } from '@app/molecules/AdminProgressCard'
+import type { Statistics } from '@app/workers/statistics'
 
 const createStatisticsWorker = createWorkerFactory(() => import('../../app/workers/statistics'))
 
 export default function AdminDashboardPage() {
-  const [jobsStatisticsData, setJobsStatisticsData] = useState<AdminProgressCardDataProps[]>([])
+  const [statistics, setStatistics] = useState<Statistics>({
+    activeJobsCount: undefined,
+    newApplicationsCount: undefined,
+    newVisitsCount: undefined,
+  })
   const auth = useAuth<Common.Auth.User>()
   const statisticsWorker = useWorker(createStatisticsWorker)
 
-  const loadJobsStatitics = useCallback(async () => {
+  const updateStatitics = useCallback(async () => {
     if (auth.user === undefined || auth.user.role !== UserRole.ADMINISTRATOR) {
       return
     }
 
-    const newJobsStatistics = await statisticsWorker.jobs(auth.state.accessToken)
-    if (newJobsStatistics === undefined) {
-      return
-    }
+    const newStatistics = await statisticsWorker.get(auth.state.accessToken)
 
-    const newJobsStatisticsData: AdminProgressCardDataProps[] = [
-      {
-        count: newJobsStatistics.migrated.count,
-        length: newJobsStatistics.migrated.length,
-        title: 'offres migrées',
-      },
-      {
-        count: newJobsStatistics.expired.count,
-        length: newJobsStatistics.expired.length,
-        title: 'offres expirées',
-      },
-    ]
-
-    setJobsStatisticsData(newJobsStatisticsData)
+    setStatistics({ ...newStatistics })
   }, [auth.user])
 
   useEffect(() => {
-    loadJobsStatitics()
+    updateStatitics()
+
+    const timerId = setInterval(updateStatitics, 5000)
 
     return () => {
+      clearInterval(timerId)
+
       terminate(statisticsWorker)
     }
   }, [])
@@ -55,9 +49,11 @@ export default function AdminDashboardPage() {
         <Title>Tableau de bord</Title>
       </AdminHeader>
 
-      {auth.user?.role === UserRole.ADMINISTRATOR && (
-        <AdminProgressCard data={jobsStatisticsData} title="Offres d’emploi" />
-      )}
+      <Flex>
+        <AdminFigure Icon={Users} label="Visites (30J)" value={statistics.newVisitsCount} />
+        <AdminFigure Icon={Send} label="Candidatures (30J)" value={statistics.newApplicationsCount} />
+        <AdminFigure Icon={Send} label="Offres Actives" value={statistics.activeJobsCount} />
+      </Flex>
     </>
   )
 }
