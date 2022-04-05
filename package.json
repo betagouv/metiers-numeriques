@@ -63,7 +63,7 @@
     "graphql-type-json": "0.3.2",
     "js-cookie": "3.0.1",
     "ky": "0.29.0",
-    "ky-universal": "0.10.0",
+    "ky-universal": "0.10.1",
     "lodash.debounce": "4.0.8",
     "markdown-it": "12.3.2",
     "micro": "9.3.4",
