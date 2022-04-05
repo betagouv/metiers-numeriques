@@ -75,14 +75,14 @@ export function Header() {
               >
                 Les offres d’emplois
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 aria-current={router.pathname === '/institutions' ? 'page' : undefined}
                 className="fr-nav__link"
                 href="/institutions"
                 onClick={closeMenu}
               >
                 Les institutions
-              </NavLink>
+              </NavLink> */}
             </ul>
           </nav>
         </div>

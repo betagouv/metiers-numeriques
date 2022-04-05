@@ -5,6 +5,7 @@ import renderLegacyInstitutionSocialNetwork from '@app/helpers/renderLegacyInsti
 import renderMarkdown from '@app/helpers/renderMarkdown'
 import uncapitalizeFirstLetter from '@app/helpers/uncapitalizeFirstLetter'
 import { LegacyInstitutionSection } from '@prisma/client'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs'
 import Head from 'next/head'
 import * as R from 'ramda'
@@ -328,34 +329,38 @@ export async function getStaticProps({ params: { slug } }) {
   }
 
   return {
-    props: {
-      institution: {
-        ...institution,
-        files: institution.files.map(file => ({
-          ...file,
-          assignedAt: dayjs(file.assignedAt).toISOString(),
-          file: {
-            ...file.file,
-            createdAt: dayjs(file.file.createdAt).toISOString(),
-            updatedAt: dayjs(file.file.updatedAt).toISOString(),
-          },
-        })),
-        logoFile: institution.logoFile
-          ? {
-              ...institution.logoFile,
-              createdAt: dayjs(institution.logoFile.createdAt).toISOString(),
-              updatedAt: dayjs(institution.logoFile.updatedAt).toISOString(),
-            }
-          : null,
-        thumbnailFile: institution.thumbnailFile
-          ? {
-              ...institution.thumbnailFile,
-              createdAt: dayjs(institution.thumbnailFile.createdAt).toISOString(),
-              updatedAt: dayjs(institution.thumbnailFile.updatedAt).toISOString(),
-            }
-          : null,
-      },
-    },
-    revalidate: 300,
+    notFound: true,
   }
+
+  // return {
+  //   props: {
+  //     institution: {
+  //       ...institution,
+  //       files: institution.files.map(file => ({
+  //         ...file,
+  //         assignedAt: dayjs(file.assignedAt).toISOString(),
+  //         file: {
+  //           ...file.file,
+  //           createdAt: dayjs(file.file.createdAt).toISOString(),
+  //           updatedAt: dayjs(file.file.updatedAt).toISOString(),
+  //         },
+  //       })),
+  //       logoFile: institution.logoFile
+  //         ? {
+  //             ...institution.logoFile,
+  //             createdAt: dayjs(institution.logoFile.createdAt).toISOString(),
+  //             updatedAt: dayjs(institution.logoFile.updatedAt).toISOString(),
+  //           }
+  //         : null,
+  //       thumbnailFile: institution.thumbnailFile
+  //         ? {
+  //             ...institution.thumbnailFile,
+  //             createdAt: dayjs(institution.thumbnailFile.createdAt).toISOString(),
+  //             updatedAt: dayjs(institution.thumbnailFile.updatedAt).toISOString(),
+  //           }
+  //         : null,
+  //     },
+  //   },
+  //   revalidate: 300,
+  // }
 }

@@ -28,8 +28,8 @@ async function generateSitemap() {
   })
   const allJobs = R.uniqBy(R.prop('slug'))([...jobs, ...legacyJobs])
 
-  ß.info('[scripts/build/generateSitemap.js] Fetching institutions…')
-  const institutions = await getPrisma().legacyInstitution.findMany()
+  // ß.info('[scripts/build/generateSitemap.js] Fetching institutions…')
+  // const institutions = await getPrisma().legacyInstitution.findMany()
 
   ß.info('[scripts/build/generateSitemap.js] Fetching archived jobs…')
   const archivedJobs = await getPrisma().archivedJob.findMany()
@@ -57,13 +57,13 @@ async function generateSitemap() {
   })
   ß.success(`[scripts/build/generateSitemap.js] ${allJobs.length} jobs mapped.`)
 
-  ß.info('[scripts/build/generateSitemap.js] Mapping institutions…')
-  institutions.forEach(({ slug }) => {
-    sitemap.write({
-      url: `/institution/${slug}`,
-    })
-  })
-  ß.success(`[scripts/build/generateSitemap.js] ${institutions.length} institutions mapped.`)
+  // ß.info('[scripts/build/generateSitemap.js] Mapping institutions…')
+  // institutions.forEach(({ slug }) => {
+  //   sitemap.write({
+  //     url: `/institution/${slug}`,
+  //   })
+  // })
+  // ß.success(`[scripts/build/generateSitemap.js] ${institutions.length} institutions mapped.`)
 
   ß.info('[scripts/build/generateSitemap.js] Mapping archived jobs…')
   archivedJobs.forEach(({ slug }) => {
