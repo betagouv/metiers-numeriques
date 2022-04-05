@@ -10,12 +10,13 @@ import { JOB_STATE_LABEL, USER_ROLE_LABEL } from '@common/constants'
 import { Field, Table } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Edit, ExternalLink } from 'react-feather'
 import * as Yup from 'yup'
 
 import type { RecruiterFromGetOne } from '@api/resolvers/recruiters'
 import type { MutationFunctionOptions } from '@apollo/client'
-import type { Recruiter } from '@prisma/client'
+import type { Job, Recruiter } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const FormSchema = Yup.object().shape({
@@ -103,6 +104,52 @@ export default function AdminRecruiterEditorPage() {
   const [createRecruiter] = useMutation(queries.recruiter.CREATE_ONE)
   const [updateRecruiter] = useMutation(queries.recruiter.UPDATE_ONE)
 
+  const goToJobEditor = useCallback((id: string) => {
+    router.push(`/admin/job/${id}`)
+  }, [])
+
+  const goToJobPreview = useCallback(
+    (id: string) => {
+      if (initialValues === undefined) {
+        return
+      }
+
+      const job = R.find<Job>(R.propEq('id', id))(initialValues.jobs)
+      if (job === undefined) {
+        return
+      }
+
+      window.open(`/emploi/${job.slug}`)
+    },
+    [initialValues],
+  )
+
+  const goToList = useCallback(() => {
+    router.push('/admin/recruiters')
+  }, [])
+
+  const saveAndGoToList = useCallback(async (values: any) => {
+    setIsLoading(true)
+
+    const input: Partial<Recruiter> = R.pick(['fullName', 'institutionId', 'logoFileId', 'name', 'websiteUrl'])(values)
+
+    const options: MutationFunctionOptions = {
+      variables: {
+        id,
+        input,
+      },
+    }
+
+    if (isNew) {
+      await createRecruiter(options)
+    } else {
+      await updateRecruiter(options)
+      await getRecruiterResult.refetch()
+    }
+
+    goToList()
+  }, [])
+
   useEffect(() => {
     if (!isLoading || getRecruiterResult.loading || getRecruiterResult.error) {
       return
@@ -130,31 +177,26 @@ export default function AdminRecruiterEditorPage() {
     setIsLoading(false)
   }, [getRecruiterResult, isLoading, isNew])
 
-  const goToList = () => {
-    router.push('/admin/recruiters')
-  }
-
-  const saveAndGoToList = async (values: any) => {
-    setIsLoading(true)
-
-    const input: Partial<Recruiter> = R.pick(['fullName', 'institutionId', 'logoFileId', 'name', 'websiteUrl'])(values)
-
-    const options: MutationFunctionOptions = {
-      variables: {
-        id,
-        input,
+  const jobListColumns: TableColumnProps[] = useMemo(
+    () => [
+      ...JOB_LIST_COLUMNS,
+      {
+        accent: 'secondary',
+        action: goToJobPreview,
+        Icon: ExternalLink,
+        label: 'Prévisualiser cette offre',
+        type: 'action',
       },
-    }
-
-    if (isNew) {
-      await createRecruiter(options)
-    } else {
-      await updateRecruiter(options)
-      await getRecruiterResult.refetch()
-    }
-
-    goToList()
-  }
+      {
+        accent: 'primary',
+        action: goToJobEditor,
+        Icon: Edit,
+        label: 'Éditer cette offre',
+        type: 'action',
+      },
+    ],
+    [initialValues],
+  )
 
   return (
     <>
@@ -211,7 +253,7 @@ export default function AdminRecruiterEditorPage() {
           <Subtitle>Offres d’emploi</Subtitle>
 
           <Table
-            columns={JOB_LIST_COLUMNS}
+            columns={jobListColumns}
             data={initialValues ? initialValues.jobs : []}
             defaultSortedKey="updatedAt"
             defaultSortedKeyIsDesc

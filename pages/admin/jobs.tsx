@@ -117,7 +117,6 @@ export default function AdminJobListPage() {
   const goToPreview = useCallback(
     (id: string) => {
       const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
-
       if (job === undefined) {
         return
       }
