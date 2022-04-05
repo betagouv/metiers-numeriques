@@ -226,7 +226,27 @@ export const query = {
 
       const andFilter: Prisma.Enumerable<Prisma.JobWhereInput> = {}
       if (context.user.role === UserRole.RECRUITER) {
-        andFilter.recruiterId = context.user.recruiterId
+        const { recruiterId } = context.user
+        const institution = await getPrisma().institution.findFirst({
+          include: {
+            recruiters: true,
+          },
+          where: {
+            recruiters: {
+              some: {
+                id: recruiterId,
+              },
+            },
+          },
+        })
+        if (institution === null) {
+          throw new Error(`Recruiter not found (id: ${recruiterId}).`)
+        }
+
+        const recruiterIds = institution.recruiters.map(recruiter => recruiter.id)
+        andFilter.recruiterId = {
+          in: recruiterIds,
+        }
       }
       if (state !== undefined) {
         andFilter.state = state
