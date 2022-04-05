@@ -31,7 +31,9 @@ export function RecruiterSelect({
   const [hasNewRecruiterModal, setHasNewRecruiterModal] = useState(false)
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getRecruitersListResult = useQuery(queries.recruiter.GET_LIST)
+  const getRecruitersListResult = useQuery(queries.recruiter.GET_LIST, {
+    fetchPolicy: 'no-cache',
+  })
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const isControlledDisabled = getRecruitersListResult.loading || isDisabled || isSubmitting

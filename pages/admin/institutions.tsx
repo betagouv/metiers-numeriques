@@ -45,6 +45,7 @@ export default function AdminInstitutionListPage() {
     },
     any
   >(queries.institution.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

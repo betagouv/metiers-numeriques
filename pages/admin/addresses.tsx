@@ -61,6 +61,7 @@ export default function AdminAddressListPage() {
     },
     any
   >(queries.address.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

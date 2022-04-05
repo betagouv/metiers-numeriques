@@ -1,11 +1,9 @@
-import { useQuery } from '@apollo/client'
 import countriesAsOptions from '@common/data/countriesAsOptions.json'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useMemo } from 'react'
 
 import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
-import queries from '../../queries'
 
 type CountrySelectProps = {
   helper?: string
@@ -17,10 +15,9 @@ type CountrySelectProps = {
 
 export function CountrySelect({ helper, isDisabled = false, label, name, placeholder }: CountrySelectProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getCountrysListResult = useQuery(queries.contact.GET_LIST)
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
-  const isControlledDisabled = getCountrysListResult.loading || isDisabled || isSubmitting
+  const isControlledDisabled = isDisabled || isSubmitting
   const maybeError = hasError ? String(errors[name]) : undefined
 
   const defaultValue = useMemo(() => {

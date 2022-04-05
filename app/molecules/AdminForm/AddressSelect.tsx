@@ -22,7 +22,9 @@ type AddressSelectProps = {
 export function AddressSelect({ helper, isDisabled = false, label, name }: AddressSelectProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
-  const [getAddresses] = useLazyQuery(queries.address.GET_ALL)
+  const [getAddresses] = useLazyQuery(queries.address.GET_ALL, {
+    fetchPolicy: 'no-cache',
+  })
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined

@@ -56,6 +56,7 @@ export default function AdminLeadListPage() {
     },
     any
   >(queries.lead.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

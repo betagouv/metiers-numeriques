@@ -55,6 +55,7 @@ export default function AdminRecruiterListPage() {
     },
     any
   >(queries.recruiter.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,

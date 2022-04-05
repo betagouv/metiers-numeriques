@@ -59,6 +59,7 @@ export default function AdminUserListPage() {
     },
     any
   >(queries.user.GET_ALL, {
+    nextFetchPolicy: 'no-cache',
     pollInterval: 500,
     variables: {
       pageIndex: 0,
@@ -97,7 +98,7 @@ export default function AdminUserListPage() {
 
     await deleteUser({
       variables: {
-        userId: selectedId,
+        id: selectedId,
       },
     })
   }

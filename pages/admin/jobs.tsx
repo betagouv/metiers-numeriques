@@ -63,7 +63,8 @@ export default function AdminJobListPage() {
     },
     any
   >(queries.job.GET_ALL, {
-    pollInterval: 5000,
+    nextFetchPolicy: 'no-cache',
+    pollInterval: 500,
     variables: {
       pageIndex: 0,
       perPage: PER_PAGE,
