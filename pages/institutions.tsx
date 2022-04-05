@@ -1,5 +1,6 @@
 import getPrisma from '@api/helpers/getPrisma'
 import InstitutionCard from '@app/organisms/InstitutionCard'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs'
 import Head from 'next/head'
 
@@ -53,6 +54,7 @@ export default function InstitutionListPage({ institutions }: InstitutionListPag
 export async function getStaticProps() {
   const prisma = getPrisma()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const institutions = await prisma.legacyInstitution.findMany({
     include: {
       logoFile: true,
@@ -64,25 +66,29 @@ export async function getStaticProps() {
   })
 
   return {
-    props: {
-      institutions: institutions.map(institution => ({
-        ...institution,
-        logoFile: institution.logoFile
-          ? {
-              ...institution.logoFile,
-              createdAt: dayjs(institution.logoFile.createdAt).toISOString(),
-              updatedAt: dayjs(institution.logoFile.updatedAt).toISOString(),
-            }
-          : null,
-        thumbnailFile: institution.thumbnailFile
-          ? {
-              ...institution.logoFile,
-              createdAt: dayjs(institution.thumbnailFile.createdAt).toISOString(),
-              updatedAt: dayjs(institution.thumbnailFile.updatedAt).toISOString(),
-            }
-          : null,
-      })),
-    },
-    revalidate: 300,
+    notFound: true,
   }
+
+  // return {
+  //   props: {
+  //     institutions: institutions.map(institution => ({
+  //       ...institution,
+  //       logoFile: institution.logoFile
+  //         ? {
+  //             ...institution.logoFile,
+  //             createdAt: dayjs(institution.logoFile.createdAt).toISOString(),
+  //             updatedAt: dayjs(institution.logoFile.updatedAt).toISOString(),
+  //           }
+  //         : null,
+  //       thumbnailFile: institution.thumbnailFile
+  //         ? {
+  //             ...institution.logoFile,
+  //             createdAt: dayjs(institution.thumbnailFile.createdAt).toISOString(),
+  //             updatedAt: dayjs(institution.thumbnailFile.updatedAt).toISOString(),
+  //           }
+  //         : null,
+  //     })),
+  //   },
+  //   revalidate: 300,
+  // }
 }
