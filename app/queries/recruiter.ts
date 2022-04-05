@@ -56,6 +56,7 @@ export const GET_ONE = gql`
         id
 
         expiredAt
+        slug
         state
         title
         updatedAt
