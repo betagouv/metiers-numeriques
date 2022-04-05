@@ -20,4 +20,8 @@ find ./node_modules \
   -exec rm -Rf {} +
 echo "event - Useless dependencies directories deleted."
 
+echo "info  - Dependencies left:"
 ls -la ./node_modules
+
+echo "info  - Directories sizes:"
+du -sh *

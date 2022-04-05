@@ -5,7 +5,6 @@ import { useMemo } from 'react'
 type WithGraphqlProps = {
   children: any
 }
-
 export function WithGraphql({ children }: WithGraphqlProps) {
   const auth = useAuth()
 

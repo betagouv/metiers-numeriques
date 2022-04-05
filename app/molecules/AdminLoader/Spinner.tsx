@@ -9,7 +9,7 @@ const Box = styled.div`
 `
 
 const Arc = styled.div`
-  border-bottom: 2px solid ${p => p.theme.color.primary.default};
+  border-bottom: 2px solid gray;
   border-radius: 50%;
   content: '';
   height: 100%;
