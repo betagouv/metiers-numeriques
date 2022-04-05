@@ -27,6 +27,10 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
 
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false)
+  }, [])
+
   const headerMenuClassName = classnames('fr-header__menu', 'fr-modal', {
     'fr-modal--opened': isMenuOpen,
   })
@@ -55,13 +59,19 @@ export function Header() {
           <div className="fr-header__menu-links" />
           <nav aria-label="Menu principal" className="fr-nav" role="navigation">
             <ul className="fr-nav__list">
-              <NavLink aria-current={router.pathname === '/' ? 'page' : undefined} className="fr-nav__link" href="/">
+              <NavLink
+                aria-current={router.pathname === '/' ? 'page' : undefined}
+                className="fr-nav__link"
+                href="/"
+                onClick={closeMenu}
+              >
                 Accueil
               </NavLink>
               <NavLink
                 aria-current={router.pathname === '/emplois' ? 'page' : undefined}
                 className="fr-nav__link"
                 href="/emplois"
+                onClick={closeMenu}
               >
                 Les offres d’emplois
               </NavLink>
@@ -69,6 +79,7 @@ export function Header() {
                 aria-current={router.pathname === '/institutions' ? 'page' : undefined}
                 className="fr-nav__link"
                 href="/institutions"
+                onClick={closeMenu}
               >
                 Les institutions
               </NavLink>
