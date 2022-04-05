@@ -159,7 +159,7 @@ export const query = {
           recruiters: true,
         },
         orderBy: {
-          updatedAt: 'desc',
+          name: 'asc',
         },
         ...paginationFilter,
         ...whereFilter,
