@@ -69,6 +69,7 @@
     "micro": "9.3.4",
     "nexauth": "2.0.2",
     "next": "canary",
+    "numeral": "2.0.6",
     "prisma": "3.10.0",
     "push.js": "1.0.12",
     "ramda": "0.28.0",
