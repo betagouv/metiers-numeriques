@@ -8,18 +8,12 @@ const MAX_PER_PAGE = 100
 export default function buildPrismaPaginationFilter(
   perPage: number,
   pageIndex: number,
-  options: {
-    noThrottle?: boolean
-  } = {
-    noThrottle: false,
-  },
 ): {
   skip?: number
   take: number
 } {
   try {
-    const maxPerPage = options.noThrottle ? Infinity : MAX_PER_PAGE
-    const safePerPage = Number.isInteger(perPage) && perPage >= 1 && perPage <= maxPerPage ? perPage : 1
+    const safePerPage = Number.isInteger(perPage) && perPage >= 1 && perPage <= MAX_PER_PAGE ? perPage : 1
     const safePageIndex = Number.isInteger(pageIndex) && pageIndex >= 0 && Number.isFinite(pageIndex) ? pageIndex : 0
     const skip = safePageIndex * safePerPage
 

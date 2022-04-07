@@ -6,6 +6,7 @@ import * as R from 'ramda'
 
 import { matomo } from '../libs/matomo'
 
+import type { InstitutionFromGetOne, RecruiterWithJobsAndUsers } from '@api/resolvers/institutions'
 import type { Institution, Job } from '@prisma/client'
 
 const GET_ALL_JOBS = gql`
@@ -19,6 +20,8 @@ const GET_ALL_JOBS = gql`
   }
 `
 
+const aggregateInstitutionJobs = (institution: InstitutionFromGetOne) =>
+  R.pipe(R.prop('recruiters'), R.map<RecruiterWithJobsAndUsers, Job[]>(R.prop('jobs')), R.flatten)(institution)
 const isJobActive = (job: Job) => job.state === JobState.PUBLISHED && !dayjs(job.expiredAt).isBefore(dayjs(), 'day')
 const filterActiveJobs: (job: Job[]) => Job[] = R.filter(isJobActive)
 
@@ -84,19 +87,6 @@ export async function getLocal(accessToken?: string, recruiterId?: string): Prom
   })
 
   const {
-    data: {
-      getJobs: { data: jobs },
-    },
-  } = await client.query({
-    query: queries.job.GET_ALL,
-    variables: {
-      pageIndex: 0,
-      perPage: 1000,
-    },
-  })
-  const activeJobs = filterActiveJobs(jobs)
-
-  const {
     data: { getRecruiter: recruiter },
   } = await client.query({
     query: queries.recruiter.GET_ONE,
@@ -104,6 +94,17 @@ export async function getLocal(accessToken?: string, recruiterId?: string): Prom
       id: recruiterId,
     },
   })
+
+  const {
+    data: { getInstitution: institution },
+  } = await client.query({
+    query: queries.institution.GET_ONE,
+    variables: {
+      id: recruiter.institution.id,
+    },
+  })
+  const jobs = aggregateInstitutionJobs(institution)
+  const activeJobs = filterActiveJobs(jobs)
 
   return {
     activeJobsCount: activeJobs.length,

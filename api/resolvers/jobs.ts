@@ -235,9 +235,7 @@ export const query = {
     context: Context,
   ): Promise<GetAllResponse<JobFromGetJobs>> => {
     try {
-      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex, {
-        noThrottle: true,
-      })
+      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
       const andFilter: Prisma.Enumerable<Prisma.JobWhereInput> = {}
       if (context.user.role === UserRole.RECRUITER) {
