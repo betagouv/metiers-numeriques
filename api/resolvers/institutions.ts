@@ -4,14 +4,15 @@ import getPrisma from '@api/helpers/getPrisma'
 import handleError from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { Institution, Prisma, Recruiter, User } from '@prisma/client'
+import type { Institution, Job, Prisma, Recruiter, User } from '@prisma/client'
 
-export type RecruiterWithUsers = Recruiter & {
+export type RecruiterWithJobsAndUsers = Recruiter & {
+  jobs: Job[]
   users: User[]
 }
 
 export type InstitutionFromGetOne = Institution & {
-  recruiters: RecruiterWithUsers[]
+  recruiters: RecruiterWithJobsAndUsers[]
 }
 
 export type InstitutionFromGetAll = Institution & {
@@ -118,6 +119,7 @@ export const query = {
         include: {
           recruiters: {
             include: {
+              jobs: true,
               users: {
                 select: {
                   email: true,

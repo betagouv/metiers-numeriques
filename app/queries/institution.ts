@@ -41,6 +41,15 @@ export const GET_ONE = gql`
         fullName
         name
 
+        jobs {
+          id
+
+          expiredAt
+          slug
+          state
+          title
+          updatedAt
+        }
         users {
           id
 

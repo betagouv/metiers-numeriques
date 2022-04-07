@@ -82,7 +82,7 @@ const permissions = shield({
     getFile: permission.isAdministrator,
     getFiles: permission.isAdministrator,
 
-    getInstitution: permission.isAdministrator,
+    getInstitution: permission.isAdministratorOrManager,
     getInstitutions: permission.isAdministrator,
     getInstitutionsList: permission.isAdministrator,
     getAllInstitutions: permission.isAdministrator,
