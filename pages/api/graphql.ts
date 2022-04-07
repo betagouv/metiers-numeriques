@@ -90,8 +90,7 @@ const permissions = shield({
 
     getJob: permission.isAdministratorOrManager,
     getJobs: permission.isAdministratorOrManager,
-    getJobsList: permission.isAdministrator,
-    getAllJobs: permission.isAdministrator,
+    getAllJobs: permission.isAdministratorOrManager,
     getPublicJobs: permission.isPublic,
 
     getLead: permission.isAdministrator,
@@ -117,7 +116,7 @@ const permissions = shield({
     getProfessions: permission.isAdministrator,
     getProfessionsList: permission.isAdministratorOrManager,
 
-    getRecruiter: permission.isAdministrator,
+    getRecruiter: permission.isAdministratorOrManager,
     getRecruiters: permission.isAdministrator,
     getRecruitersList: permission.isAdministrator,
 
