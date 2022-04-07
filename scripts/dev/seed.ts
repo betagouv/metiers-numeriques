@@ -3,6 +3,7 @@ import { UserRole } from '@prisma/client'
 import bcryptjs from 'bcryptjs'
 import ß from 'bhala'
 import fetch from 'cross-fetch'
+import cuid from 'cuid'
 import * as R from 'ramda'
 
 import getPrisma from '../../api/helpers/getPrisma'
@@ -179,7 +180,7 @@ async function seed() {
     R.map(R.omit(['address', 'applicationContacts', 'infoContact', 'profession', 'recruiter'])),
   )(rawJobs)
 
-  ß.info('[scripts/dev/seed.js] Creating first user (administrator: admin@beta.gouv.fr / test)…')
+  ß.info('[scripts/dev/seed.js] Creating test account (admin@beta.gouv.fr / test)…')
   const password = await encrypt('test')
   await prisma.user.create({
     data: {
@@ -189,6 +190,33 @@ async function seed() {
       lastName: 'Test',
       password,
       role: UserRole.ADMINISTRATOR,
+    },
+  })
+
+  ß.info('[scripts/dev/seed.js] Creating test account (recruiter@beta.gouv.fr / test)…')
+  const institutionId = cuid()
+  await prisma.institution.create({
+    data: {
+      id: institutionId,
+      name: 'Test Institution',
+      slug: `test-institution-${institutionId}`,
+    },
+  })
+  const recruiter = await prisma.recruiter.create({
+    data: {
+      institutionId,
+      name: 'Test Service',
+    },
+  })
+  await prisma.user.create({
+    data: {
+      email: 'recruiter@beta.gouv.fr',
+      firstName: 'Recruiter',
+      isActive: true,
+      lastName: 'Test',
+      password,
+      recruiterId: recruiter.id,
+      role: UserRole.RECRUITER,
     },
   })
 

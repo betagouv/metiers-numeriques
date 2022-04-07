@@ -1,34 +1,45 @@
 import AdminHeader from '@app/atoms/AdminHeader'
-import { Flex } from '@app/atoms/Flex'
+import { Subtitle } from '@app/atoms/Subtitle'
 import Title from '@app/atoms/Title'
 import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
 import { useAuth } from 'nexauth/client'
 import { useCallback, useEffect, useState } from 'react'
-import { Send, Users } from 'react-feather'
+import { Briefcase, Send, Users } from 'react-feather'
+import { Flex } from 'reflexbox'
 
-import type { Statistics } from '@app/workers/statistics'
+import type { GlobalStatistics, LocalStatistics } from '@app/workers/statistics'
 
 const createStatisticsWorker = createWorkerFactory(() => import('../../app/workers/statistics'))
 
 export default function AdminDashboardPage() {
-  const [statistics, setStatistics] = useState<Statistics>({
+  const [globalStatistics, setGlobalStatistics] = useState<GlobalStatistics>({
     activeJobsCount: undefined,
     newApplicationsCount: undefined,
     newVisitsCount: undefined,
+  })
+  const [localStatistics, setLocalStatistics] = useState<LocalStatistics>({
+    activeJobsCount: undefined,
+    institution: undefined,
   })
   const auth = useAuth<Common.Auth.User>()
   const statisticsWorker = useWorker(createStatisticsWorker)
 
   const updateStatitics = useCallback(async () => {
-    if (auth.user === undefined || auth.user.role !== UserRole.ADMINISTRATOR) {
+    if (auth.user === undefined) {
       return
     }
 
-    const newStatistics = await statisticsWorker.get(auth.state.accessToken)
+    const newStatistics = await statisticsWorker.getGlobal(auth.state.accessToken)
 
-    setStatistics({ ...newStatistics })
+    setGlobalStatistics({ ...newStatistics })
+
+    if (auth.user.role === UserRole.RECRUITER) {
+      const newLocalStatistics = await statisticsWorker.getLocal(auth.state.accessToken, auth.user.recruiterId)
+
+      setLocalStatistics({ ...newLocalStatistics })
+    }
   }, [auth.user])
 
   useEffect(() => {
@@ -43,17 +54,33 @@ export default function AdminDashboardPage() {
     }
   }, [])
 
+  if (auth.user === undefined) {
+    return null
+  }
+
   return (
     <>
       <AdminHeader>
         <Title>Tableau de bord</Title>
       </AdminHeader>
 
+      <Subtitle isFirst noBorder>
+        Global
+      </Subtitle>
       <Flex>
-        <AdminFigure Icon={Users} label="Visites (30J)" value={statistics.newVisitsCount} />
-        <AdminFigure Icon={Send} label="Candidatures (30J)" value={statistics.newApplicationsCount} />
-        <AdminFigure Icon={Send} label="Offres Actives" value={statistics.activeJobsCount} />
+        <AdminFigure Icon={Briefcase} label="Offres Actives" value={globalStatistics.activeJobsCount} />
+        <AdminFigure Icon={Send} label="Candidatures (30J)" value={globalStatistics.newApplicationsCount} />
+        <AdminFigure Icon={Users} label="Visites (30J)" value={globalStatistics.newVisitsCount} />
       </Flex>
+
+      {auth.user.role === UserRole.RECRUITER && localStatistics.institution !== undefined && (
+        <>
+          <Subtitle noBorder>{localStatistics.institution.name}</Subtitle>
+          <Flex>
+            <AdminFigure Icon={Briefcase} label="Offres Actives" value={localStatistics.activeJobsCount} />
+          </Flex>
+        </>
+      )}
     </>
   )
 }

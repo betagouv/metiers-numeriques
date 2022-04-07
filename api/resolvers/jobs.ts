@@ -235,7 +235,9 @@ export const query = {
     context: Context,
   ): Promise<GetAllResponse<JobFromGetJobs>> => {
     try {
-      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
+      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex, {
+        noThrottle: true,
+      })
 
       const andFilter: Prisma.Enumerable<Prisma.JobWhereInput> = {}
       if (context.user.role === UserRole.RECRUITER) {
@@ -300,24 +302,6 @@ export const query = {
         index: 0,
         length: 0,
       }
-    }
-  },
-
-  getJobsList: async (): Promise<Job[]> => {
-    try {
-      const args: Prisma.JobFindManyArgs = {
-        orderBy: {
-          updatedAt: 'desc',
-        },
-      }
-
-      const data = await getPrisma().job.findMany(args)
-
-      return data
-    } catch (err) {
-      handleError(err, 'api/resolvers/jobs.ts > query.getJobsList()')
-
-      return []
     }
   },
 

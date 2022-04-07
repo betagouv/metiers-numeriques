@@ -5,8 +5,8 @@ import { AdminCard } from '../atoms/AdminCard'
 import { Flex } from '../atoms/Flex'
 
 const Box = styled.div`
-  margin: 0 1rem 1rem 0;
   max-width: 20rem;
+  padding-right: 1rem;
   width: 33.33%;
 `
 
