@@ -59,6 +59,9 @@ async function seed() {
   ß.info('[scripts/dev/seed.js] Deleting all recruiters…')
   await prisma.recruiter.deleteMany()
 
+  ß.info('[scripts/dev/seed.js] Deleting all institutions…')
+  await prisma.institution.deleteMany()
+
   ß.info('[scripts/dev/seed.js] Fetching jobs…')
   const getJobs = async (pageIndex = 0, previousJobs: any[] = []): Promise<any[]> => {
     const {
