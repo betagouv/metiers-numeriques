@@ -2,20 +2,20 @@ import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
 import { Title } from '@app/atoms/Title'
-import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { Job, UserRole } from '@prisma/client'
+import { Job, JobState, UserRole } from '@prisma/client'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
+import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Edit, ExternalLink, Trash } from 'react-feather'
+import { CheckCircle, Edit, ExternalLink, Trash, XCircle } from 'react-feather'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { TableColumnProps } from '@singularity/core'
@@ -32,16 +32,15 @@ const BASE_COLUMNS: TableColumnProps[] = [
     transform: ({ state }) => JOB_STATE_LABEL[state],
   },
   {
-    grow: 0.15,
-    key: 'expiredAt',
-    label: 'Expire le',
-    transform: ({ expiredAt }) => humanizeDate(expiredAt),
-  },
-  {
-    grow: 0.15,
-    key: 'updatedAt',
+    IconOff: XCircle,
+    IconOn: CheckCircle,
+    key: 'isActive',
     label: 'MàJ le',
-    transform: ({ updatedAt }) => humanizeDate(updatedAt),
+    labelOff: 'Offre pourvue, expirée ou non publiée',
+    labelOn: 'Offre active',
+    transform: ({ expiredAt, state }) => dayjs(expiredAt).isAfter(dayjs()) && state === JobState.PUBLISHED,
+    type: 'boolean',
+    withTooltip: true,
   },
 ]
 
