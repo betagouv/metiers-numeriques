@@ -1,6 +1,11 @@
 version: "3.9"
 
 services:
+  cache:
+    container_name: metiers_numeriques_cache
+    image: redis:6
+    restart: always
+
   db:
     container_name: metiers_numeriques_db
     image: postgres:14
