@@ -63,28 +63,29 @@ jobs:
     env:
       DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
       DOMAIN_URL: http://localhost:3000
-      # EDDSA_PRIVATE_KEY: ${{ secrets.EDDSA_PRIVATE_KEY }}
-      # NEXT_PUBLIC_EDDSA_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EDDSA_PUBLIC_KEY }}
       NODE_ENV: production
-      # SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      # SENTRY_ENVIRONMENT: ci
-      # SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-      # SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      REDIS_URL: redis://localhost:6379
     services:
-      postgres:
+      cache:
+        image: redis:6
+        ports:
+          - 6379:6379
+        options: >-
+          --entrypoint redis-server
+      db:
         image: postgres:14
         env:
           POSTGRES_DB: metiers_numeriques
           POSTGRES_USER: test_db_user
           POSTGRES_PASSWORD: test_db_password
+        ports:
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - name: Checkout
         uses: actions/checkout@v3

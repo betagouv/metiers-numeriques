@@ -1,6 +1,10 @@
 version: "3.9"
 
 services:
+  cache:
+    ports:
+      - ${REDIS_PORT}:6379
+
   db:
     ports:
       - ${POSTGRE_PORT}:5432

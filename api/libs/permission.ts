@@ -1,12 +1,27 @@
 import { User, UserRole } from '@prisma/client'
 import { AuthenticationError, ForbiddenError } from 'apollo-server-micro'
+import { createRateLimitRule, RedisStore } from 'graphql-rate-limit'
 import { rule } from 'graphql-shield'
 
+import getRedis from '../helpers/getRedis'
+
 import type { GraphQLObjectType, GraphQLResolveInfo } from 'graphql'
+import type { GraphQLRateLimitConfig } from 'graphql-rate-limit'
 import type { Rule } from 'graphql-shield/dist/rules'
 import type { IRuleFunction, IRuleResult } from 'graphql-shield/dist/types'
 
 class Permission {
+  private rateLimitRule: any
+
+  constructor() {
+    const rateLimitDirectiveOptions: GraphQLRateLimitConfig = {
+      formatError: ({ fieldName }) => `Rate limit reached. Too many ${fieldName} calls.`,
+      identifyContext: ctx => ctx?.request?.ipAddress || ctx?.id,
+      store: new RedisStore(getRedis()),
+    }
+    this.rateLimitRule = createRateLimitRule(rateLimitDirectiveOptions)
+  }
+
   public get isAdministrator(): Rule {
     return this.setRule(user => {
       if (user === undefined) {
@@ -50,7 +65,10 @@ class Permission {
   }
 
   public get isPublic(): Rule {
-    return this.setRule(() => true)
+    return this.rateLimitRule({
+      max: 3,
+      window: '1s',
+    })
   }
 
   private setRule(
