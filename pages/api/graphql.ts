@@ -1,3 +1,4 @@
+import { getApiSecretFromNextRequest } from '@api/helpers/getApiSecretFromNextRequest'
 import permission from '@api/libs/permission'
 import resolvers from '@api/resolvers'
 import handleError from '@common/helpers/handleError'
@@ -157,9 +158,11 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
 
       __GRAPHQL_SERVER.apolloServer = new ApolloServer({
         context: async ({ req }: { req: NextApiRequest }) => {
+          const apiSecret = getApiSecretFromNextRequest(req)
           const user = await getUser(req)
 
           return {
+            apiSecret,
             user,
           }
         },

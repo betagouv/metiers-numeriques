@@ -61,6 +61,7 @@ jobs:
     name: E2E Test
     runs-on: ubuntu-latest
     env:
+      API_SECRET: test
       DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
       DOMAIN_URL: http://localhost:3000
       NODE_ENV: production
