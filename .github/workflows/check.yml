@@ -122,7 +122,7 @@ jobs:
         run: yarn test:e2e
       - name: Archive failed tests trace
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: |
