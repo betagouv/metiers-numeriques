@@ -10,6 +10,8 @@ import type { GraphQLRateLimitConfig } from 'graphql-rate-limit'
 import type { Rule } from 'graphql-shield/dist/rules'
 import type { IRuleFunction, IRuleResult } from 'graphql-shield/dist/types'
 
+const { API_SECRET } = process.env
+
 class Permission {
   private rateLimitRule: any
 
@@ -23,12 +25,12 @@ class Permission {
   }
 
   public get isAdministrator(): Rule {
-    return this.setRule(user => {
-      if (user === undefined) {
+    return this.setRule((_paren, _args, ctx) => {
+      if (ctx.user === undefined) {
         return new AuthenticationError('Unauthorized.')
       }
 
-      if (user.role !== UserRole.ADMINISTRATOR) {
+      if (ctx.user.role !== UserRole.ADMINISTRATOR) {
         return new ForbiddenError('Forbidden.')
       }
 
@@ -37,12 +39,12 @@ class Permission {
   }
 
   public get isAdministratorOrManager(): Rule {
-    return this.setRule(user => {
-      if (user === undefined) {
+    return this.setRule((_parent, _args, ctx) => {
+      if (ctx.user === undefined) {
         return new AuthenticationError('Unauthorized.')
       }
 
-      if (![UserRole.ADMINISTRATOR, UserRole.RECRUITER].includes(user.role)) {
+      if (![UserRole.ADMINISTRATOR, UserRole.RECRUITER].includes(ctx.user.role)) {
         return new ForbiddenError('Forbidden.')
       }
 
@@ -51,12 +53,12 @@ class Permission {
   }
 
   public get isMe(): Rule {
-    return this.setRule((user, args, info: GraphQLResolveInfo) => {
-      if (user === undefined) {
+    return this.setRule((_parent, args, ctx, info: GraphQLResolveInfo) => {
+      if (ctx.user === undefined) {
         return new AuthenticationError('Unauthorized.')
       }
 
-      if ((info.returnType as GraphQLObjectType).name !== 'User' || user.id !== args.id) {
+      if ((info.returnType as GraphQLObjectType).name !== 'User' || ctx.user.id !== args.id) {
         return new ForbiddenError('Forbidden.')
       }
 
@@ -65,27 +67,42 @@ class Permission {
   }
 
   public get isPublic(): Rule {
-    return this.rateLimitRule({
-      max: 3,
-      window: '1s',
-    })
+    const rule = async (parent, args, ctx, info) => {
+      if (ctx.apiSecret === API_SECRET) {
+        return true
+      }
+
+      const throttle = this.rateLimitRule({
+        max: 3,
+        window: '1s',
+      })
+
+      return throttle.func(parent, ctx, args, info)
+    }
+
+    return this.setRule(rule as any)
   }
 
   private setRule(
     ruleHandler: (
-      user: Common.Auth.User | undefined,
+      parent: any,
       args: Record<string, any>,
+      ctx: {
+        apiSecret: string | undefined
+        user: Common.Auth.User | undefined
+      },
       info: GraphQLResolveInfo,
     ) => IRuleResult,
   ): Rule {
     const ruler: IRuleFunction = async (
-      _parent,
+      parent,
       args,
       ctx: {
-        user?: Common.Auth.User
+        apiSecret
+        user
       },
       info,
-    ) => ruleHandler(ctx.user, args, info)
+    ) => ruleHandler(parent, args, ctx, info)
 
     return rule({ cache: 'contextual' })(ruler)
   }

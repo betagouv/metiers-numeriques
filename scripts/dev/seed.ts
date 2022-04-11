@@ -8,7 +8,7 @@ import * as R from 'ramda'
 
 import getPrisma from '../../api/helpers/getPrisma'
 
-const { NODE_ENV, WITH_DATA_SEED } = process.env
+const { NODE_ENV, PROD_API_SECRET, WITH_DATA_SEED } = process.env
 
 if (NODE_ENV !== 'development' && WITH_DATA_SEED !== 'true') {
   process.exit(1)
@@ -29,8 +29,15 @@ const omitTypenameProp: (record: any) => any = R.omit(['__typename'])
 const deduplicateById: (records: any[]) => any[] = R.uniqBy(R.prop('id'))
 
 async function seed() {
+  if (PROD_API_SECRET === undefined) {
+    throw new Error('`PROD_API_SECRET` is undefined.')
+  }
+
   const apollo = new ApolloClient({
     cache: new InMemoryCache(),
+    headers: {
+      'x-api-secret': PROD_API_SECRET,
+    },
     link: new HttpLink({
       fetch,
       uri: PRODUCTION_GRAPGQL_URL,
