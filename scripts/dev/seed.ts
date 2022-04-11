@@ -35,11 +35,11 @@ async function seed() {
 
   const apollo = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      'x-api-secret': PROD_API_SECRET,
-    },
     link: new HttpLink({
       fetch,
+      headers: {
+        'x-api-secret': PROD_API_SECRET,
+      },
       uri: PRODUCTION_GRAPGQL_URL,
     }),
   })
