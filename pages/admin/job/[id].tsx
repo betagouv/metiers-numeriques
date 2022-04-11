@@ -13,21 +13,21 @@ import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
-import { JobState, UserRole } from '@prisma/client'
+import { JobContractType, JobRemoteStatus, JobState, UserRole } from '@prisma/client'
 import { Field } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import slugify from 'slugify'
 import * as Yup from 'yup'
 
 import type { JobFromGetOne } from '@api/resolvers/jobs'
 import type { MutationFunctionOptions } from '@apollo/client'
-import type { Job, JobContractType, Prisma } from '@prisma/client'
+import type { Job, Prisma } from '@prisma/client'
 
 type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seniorityInMonths'> & {
   addressAsPrismaAddress: Prisma.AddressCreateInput
@@ -87,9 +87,10 @@ export const JobFormSchema = Yup.object().shape(
 
 export default function AdminJobEditorPage() {
   const router = useRouter()
-  const { id } = router.query
+  const id = router.query.id as string
   const isNew = id === 'new'
 
+  const $id = useRef<string | undefined>(isNew ? undefined : id)
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -114,10 +115,8 @@ export default function AdminJobEditorPage() {
     router.push('/admin/jobs')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: JobFormData) => {
+  const save = useCallback(async (values: JobFormData) => {
     try {
-      setIsLoading(true)
-
       const input: Partial<Job> = R.pick([
         'applicationContactIds',
         'applicationWebsiteUrl',
@@ -142,45 +141,57 @@ export default function AdminJobEditorPage() {
         'title',
       ])(values)
 
-      if (isNew) {
+      if (typeof input.title !== 'string' || input.title.trim().length === 0) {
+        return
+      }
+
+      if ($id.current === undefined) {
         input.id = cuid()
       }
       if (isNew || input.state === JobState.DRAFT) {
         input.slug = slugify(`${input.title}-${input.id}`)
       }
 
-      if (values.addressAsPrismaAddress.id === undefined) {
-        const newAddressResult = await createAddress({
-          variables: {
-            input: values.addressAsPrismaAddress,
-          },
-        })
-        if (newAddressResult.errors) {
-          throw new Error(`Cannot create address: ${JSON.stringify(values?.addressAsPrismaAddress)}.`)
-        }
+      if (values.addressAsPrismaAddress !== undefined) {
+        if (values.addressAsPrismaAddress.id === undefined) {
+          const newAddressResult = await createAddress({
+            variables: {
+              input: values.addressAsPrismaAddress,
+            },
+          })
+          if (newAddressResult.errors) {
+            throw new Error(`Cannot create address: ${JSON.stringify(values?.addressAsPrismaAddress)}.`)
+          }
 
-        input.addressId = newAddressResult.data.createAddress.id
-      } else {
-        input.addressId = values.addressAsPrismaAddress.id
+          input.addressId = newAddressResult.data.createAddress.id
+        } else {
+          input.addressId = values.addressAsPrismaAddress.id
+        }
       }
 
       input.expiredAt = dayjs(values.expiredAtAsString).toDate()
       input.seniorityInMonths = values.seniorityInYears * 12
 
+      if (input.missionDescription === undefined) {
+        input.missionDescription = ''
+      }
+
       const options: MutationFunctionOptions = {
         variables: {
-          id,
+          id: $id.current || input.id,
           input,
         },
       }
 
-      if (isNew) {
+      if ($id.current === undefined) {
         const createJobResult = await createJob(options)
         if (createJobResult.data.createJob === null) {
           toast.error('La requête GraphQL de création a échoué.')
 
           return
         }
+
+        $id.current = input.id
       } else {
         const updateJobResult = await updateJob(options)
         if (updateJobResult.data.updateJob === null) {
@@ -191,10 +202,23 @@ export default function AdminJobEditorPage() {
 
         await getJobResult.refetch()
       }
+    } catch (err) {
+      handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
+      toast.error(String(err))
+    }
+  }, [])
+
+  const saveAndGoToList = useCallback(async (values: JobFormData) => {
+    try {
+      setIsLoading(false)
+
+      await save(values)
 
       goToList()
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
+
+      setIsLoading(false)
     }
   }, [])
 
@@ -219,8 +243,13 @@ export default function AdminJobEditorPage() {
 
     if (isNew) {
       setInitialValues({
+        contractTypes: [JobContractType.NATIONAL_CIVIL_SERVANT, JobContractType.CONTRACT_WORKER],
         expiredAtAsString: dayjs().add(2, 'months').format('YYYY-MM-DD'),
         recruiterId: auth.user?.role === UserRole.RECRUITER ? auth.user?.recruiterId : null,
+        remoteStatus: JobRemoteStatus.NONE,
+        seniorityInYears: 0,
+        state: JobState.DRAFT,
+        title: 'Nouvelle offre d’emploi',
       })
       setIsLoading(false)
 
@@ -236,11 +265,19 @@ export default function AdminJobEditorPage() {
     initialValues.seniorityInYears = Math.ceil(initialValues.seniorityInMonths / 12)
 
     initialValues.applicationContactIds = initialValues.applicationContacts.map(({ id }) => id)
-    initialValues.infoContactId = initialValues.infoContact.id
-    initialValues.professionId = initialValues.profession.id
-    initialValues.recruiterId = initialValues.recruiter.id
+    if (initialValues.infoContact !== null) {
+      initialValues.infoContactId = initialValues.infoContact.id
+    }
+    if (initialValues.profession !== null) {
+      initialValues.professionId = initialValues.profession.id
+    }
+    if (initialValues.recruiter !== null) {
+      initialValues.recruiterId = initialValues.recruiter.id
+    }
 
-    initialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(initialValues.address)
+    if (initialValues.address !== null) {
+      initialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(initialValues.address)
+    }
 
     setInitialValues(initialValues)
     setIsLoading(false)
@@ -256,6 +293,8 @@ export default function AdminJobEditorPage() {
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
       <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={JobFormSchema}>
+        <AdminForm.AutoSave onChange={save} />
+
         <AdminCard isFirst>
           <Subtitle>Informations essentielles</Subtitle>
 

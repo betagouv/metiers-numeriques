@@ -93,6 +93,8 @@ export default function AdminJobListPage() {
         return
       }
 
+      console.log(id)
+
       setSelectedId(id)
       setSelectedEntity(job.title)
       setHasDeletionModal(true)
@@ -108,7 +110,7 @@ export default function AdminJobListPage() {
         id: selectedId,
       },
     })
-  }, [])
+  }, [selectedId])
 
   const goToEditor = useCallback((id: string) => {
     router.push(`/admin/job/${id}`)
