@@ -2,6 +2,7 @@ import { Formik, Form as FormikForm } from 'formik'
 import styled from 'styled-components'
 
 import { AddressSelect } from './AddressSelect'
+import { AutoSave } from './AutoSave'
 import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { Code } from './Code'
@@ -56,6 +57,7 @@ const _AdminForm = ({
 
 export const AdminForm = Object.assign(_AdminForm, {
   AddressSelect,
+  AutoSave,
   Cancel,
   Checkbox,
   Code,

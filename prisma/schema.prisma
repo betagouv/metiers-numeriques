@@ -195,16 +195,16 @@ model Job {
   expiredAt                  DateTime
   updatedAt                  DateTime
 
-  address             Address    @relation("JobAddress", fields: [addressId], references: [id])
-  addressId           String
-  applicationContacts Contact[]  @relation("JobApplicationContacts")
-  infoContact         Contact    @relation("JobInfoContact", fields: [infoContactId], references: [id])
-  infoContactId       String
-  leads               Lead[]     @relation("LeadJobSource")
-  profession          Profession @relation("JobProfession", fields: [professionId], references: [id])
-  professionId        String
-  recruiter           Recruiter  @relation("JobRecruiter", fields: [recruiterId], references: [id])
-  recruiterId         String
+  address             Address?    @relation("JobAddress", fields: [addressId], references: [id])
+  addressId           String?
+  applicationContacts Contact[]   @relation("JobApplicationContacts")
+  infoContact         Contact?    @relation("JobInfoContact", fields: [infoContactId], references: [id])
+  infoContactId       String?
+  leads               Lead[]      @relation("LeadJobSource")
+  profession          Profession? @relation("JobProfession", fields: [professionId], references: [id])
+  professionId        String?
+  recruiter           Recruiter?  @relation("JobRecruiter", fields: [recruiterId], references: [id])
+  recruiterId         String?
 }
 
 model Lead {
