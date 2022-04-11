@@ -106,6 +106,7 @@ export function JobCard({ job }: JobCardProps) {
                   href={`/emploi/${job.slug}`}
                   onAuxClick={trackJobOpening}
                   onClick={trackJobOpening}
+                  target="_blank"
                 >
                   {job.title}
                 </Link>
@@ -163,6 +164,7 @@ export function JobCard({ job }: JobCardProps) {
               href={`/emploi/${job.slug}`}
               onAuxClick={trackJobOpening}
               onClick={trackJobOpening}
+              target="_blank"
             >
               Lire l’offre d’emploi
             </Link>
