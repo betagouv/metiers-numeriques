@@ -42,7 +42,7 @@
     "@graphql-tools/schema": "8.3.5",
     "@mailchimp/mailchimp_marketing": "3.0.74",
     "@prisma/client": "3.10.0",
-    "@sentry/nextjs": "6.17.3",
+    "@sentry/nextjs": "6.19.6",
     "@shopify/react-web-worker": "4.0.4",
     "@singularity/core": "3.0.4",
     "@socialgouv/matomo-next": "1.2.2",
