@@ -84,10 +84,13 @@ export const JOB_CONTRACT_TYPE_LABEL: Record<JobContractType, string> = {
 export const JOB_CONTRACT_TYPES_AS_OPTIONS = sortSelectOptions(mapLabelObjectToSelectOptions(JOB_CONTRACT_TYPE_LABEL))
 
 export const JOB_SOURCE_LABEL: Record<JobSource, string> = {
-  MNB: 'Interne',
-  MNN: 'Notion',
-  PEP: 'PEP',
-  SKB: 'Seekube',
+  CDLD: 'Civils de la Défense',
+  MDN: 'Métiers du Numérique',
+  PEP: 'Place de l’emploi public',
+  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+  MNB: 'LEGACY',
+  MNN: 'LEGACY / Notion',
+  SKB: 'LEGACY / Seekube)',
 }
 
 export const JOB_SOURCES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_SOURCE_LABEL)

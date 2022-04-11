@@ -5,7 +5,7 @@ import { createWriteStream } from 'fs'
 import * as R from 'ramda'
 import { SitemapStream } from 'sitemap'
 
-import getPrisma from '../../api/helpers/getPrisma'
+import { getPrisma } from '../../api/helpers/getPrisma'
 
 const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', '/emplois', '/institutions', '/mentions-legales']
 

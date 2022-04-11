@@ -5,7 +5,7 @@
  */
 
 import { ApolloError } from '@apollo/client'
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { GraphQLError } from 'graphql'
 import { toast } from 'react-hot-toast'
 

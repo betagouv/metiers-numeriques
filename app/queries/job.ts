@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetJobs($pageIndex: Int!, $perPage: Int!, $query: String, $state: String) {
-    getJobs(pageIndex: $pageIndex, perPage: $perPage, query: $query, state: $state) {
+  query GetJobs($pageIndex: Int!, $perPage: Int!, $query: String, $source: String, $state: String) {
+    getJobs(pageIndex: $pageIndex, perPage: $perPage, query: $query, source: $source, state: $state) {
       count
       data {
         id
@@ -97,6 +97,8 @@ export const GET_ONE = gql`
       salaryMin
       seniorityInMonths
       slug
+      source
+      sourceUrl
       state
       tasksDescription
       teamDescription

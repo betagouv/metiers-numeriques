@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { toast } from 'react-hot-toast'
 
 import { convertErrorToPojo } from './convertErrorToPojo'

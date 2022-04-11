@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file, no-console */
 
-import ApiError from '@api/libs/ApiError'
+import { ApiError } from '@api/libs/ApiError'
 import * as Sentry from '@sentry/nextjs'
 import ß from 'bhala'
 
@@ -9,7 +9,7 @@ import type { NextApiResponse } from 'next'
 jest.unmock('../handleError')
 
 // eslint-disable-next-line import/first, import/order
-import handleError from '../handleError'
+import { handleError } from '../handleError'
 
 describe('common/helpers/handleError()', () => {
   const originalProcessEnv = process.env

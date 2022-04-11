@@ -1,4 +1,4 @@
-import getPrisma from '@api/helpers/getPrisma'
+import { getPrisma } from '@api/helpers/getPrisma'
 import Link from '@app/atoms/Link'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 
 import { convertErrorToPojo } from '../convertErrorToPojo'
 

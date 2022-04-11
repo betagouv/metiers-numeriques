@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations, @typescript-eslint/no-use-before-define */
 
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 
 import type { FilesOnLegacyInstitutionsWithRelation } from '@app/organisms/InstitutionCard'
 

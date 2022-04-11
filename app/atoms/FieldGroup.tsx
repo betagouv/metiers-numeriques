@@ -12,6 +12,17 @@ export const FieldGroup = styled(Field)`
     border-top-right-radius: 0;
   }
 
+  > button {
+    border: 0;
+    cursor: pointer;
+    font-size: inherit;
+    line-height: inherit;
+
+    :hover {
+      background-color: ${p => p.theme.color.secondary.background};
+    }
+  }
+  > button,
   > span {
     align-self: flex-start;
     background-color: ${p => p.theme.color.list.odd};

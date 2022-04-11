@@ -1,5 +1,5 @@
 import { ButtonAsLink } from '@app/atoms/ButtonAsLink'
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { Dialog, Field } from '@singularity/core'
 import { NexauthError, useAuth } from 'nexauth/client'
 import { useState } from 'react'

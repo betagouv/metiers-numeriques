@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import sha1 from 'sha1'
 
 export function generateKeyFromValues(...values: any[]): string {

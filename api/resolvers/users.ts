@@ -1,7 +1,7 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import getPrisma from '@api/helpers/getPrisma'
-import handleError from '@common/helpers/handleError'
+import { getPrisma } from '@api/helpers/getPrisma'
+import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 
 import type { GetAllArgs, GetAllResponse } from './types'

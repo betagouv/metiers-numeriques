@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import React from 'react'
 import rehypeReact from 'rehype-react'
 import remarkParse from 'remark-parse'

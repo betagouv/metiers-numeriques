@@ -1,5 +1,5 @@
-import getPrisma from '../../api/helpers/getPrisma'
-import handleError from '../../common/helpers/handleError'
+import { getPrisma } from '../../api/helpers/getPrisma'
+import { handleError } from '../../common/helpers/handleError'
 import { initializeProfessions } from './01-initialize-professions'
 import { updateInstitutionsSlug } from './02-update-institutions-slug'
 
