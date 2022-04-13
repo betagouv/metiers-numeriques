@@ -22,7 +22,7 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { Institution } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
-type InstitutionFormData = Pick<Institution, 'fullName' | 'name'>
+type InstitutionFormData = Pick<Institution, 'name'>
 
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
   {
@@ -199,10 +199,6 @@ export default function AdminInstitutionEditorPage() {
         >
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
-          </Field>
-
-          <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
           </Field>
 
           <Field>

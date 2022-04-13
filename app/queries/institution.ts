@@ -7,7 +7,6 @@ export const GET_ALL = gql`
       data {
         id
 
-        fullName
         name
       }
       index
@@ -21,7 +20,6 @@ export const GET_LIST = gql`
     getInstitutionsList {
       id
 
-      fullName
       name
     }
   }
@@ -32,7 +30,6 @@ export const GET_ONE = gql`
     getInstitution(id: $id) {
       id
 
-      fullName
       name
 
       recruiters {

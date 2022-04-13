@@ -6,7 +6,6 @@ type Institution {
   id: ID!
 
   createdAt: DateTime
-  fullName: String
   name: String
   slug: String
   updatedAt: DateTime
@@ -18,7 +17,6 @@ type PublicInstitution {
   id: ID!
 
   createdAt: DateTime
-  fullName: String
   name: String
   slug: String
   updatedAt: DateTime
