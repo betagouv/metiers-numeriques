@@ -18,14 +18,8 @@ import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    grow: 0.3,
     key: 'name',
     label: 'Nom',
-  },
-  {
-    grow: 0.7,
-    key: 'fullName',
-    label: 'Nom complet',
   },
 ]
 

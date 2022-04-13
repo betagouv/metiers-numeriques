@@ -161,7 +161,6 @@ model FilesOnLegacyInstitutions {
 
 model Institution {
   id        String   @id @default(cuid())
-  fullName  String?
   name      String   @unique
   slug      String   @unique
   createdAt DateTime @default(now())

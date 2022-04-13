@@ -154,7 +154,7 @@ export const query = {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
-      const whereFilter = buildPrismaWhereFilter<InstitutionFromGetAll>(['fullName', 'name'], query)
+      const whereFilter = buildPrismaWhereFilter<InstitutionFromGetAll>(['name'], query)
 
       const args: Prisma.InstitutionFindManyArgs = {
         include: {
@@ -215,7 +215,7 @@ export const query = {
 
       const paginationFilter = buildPrismaPaginationFilter(throttledPerPage, pageIndex)
 
-      const whereFilter = buildPrismaWhereFilter<InstitutionFromGetAllPublic>(['fullName', 'name'], query)
+      const whereFilter = buildPrismaWhereFilter<InstitutionFromGetAllPublic>(['name'], query)
 
       const args = {
         include: {
