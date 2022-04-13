@@ -11,6 +11,7 @@ import { USER_ROLE_LABEL } from '@common/constants'
 import handleError from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
 import { Field, Table } from '@singularity/core'
+import cuid from 'cuid'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -115,8 +116,9 @@ export default function AdminInstitutionEditorPage() {
       } = R.pick(['fullName', 'name'])(values)
 
       if (isNew) {
-        input.slug = slugify(input.name, input.id)
+        input.id = cuid()
       }
+      input.slug = slugify(input.name, input.id)
 
       const options: MutationFunctionOptions = {
         variables: {
