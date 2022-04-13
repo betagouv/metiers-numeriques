@@ -117,7 +117,10 @@ export function ContactSelect({
       if (defaultValue === undefined || defaultValue === null) {
         setFieldValue(name, [$newContactId.current])
       } else {
-        setFieldValue(name, [...(defaultValue as Common.App.SelectOption<string>[]), $newContactId.current])
+        setFieldValue(name, [
+          ...(defaultValue as Common.App.SelectOption<string>[]).map(({ value }) => value),
+          $newContactId.current,
+        ])
       }
     } else {
       setFieldValue(name, $newContactId.current)
