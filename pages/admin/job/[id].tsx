@@ -149,7 +149,7 @@ export default function AdminJobEditorPage() {
         input.id = cuid()
       }
       if (isNew || input.state === JobState.DRAFT) {
-        input.slug = slugify(`${input.title}-${input.id}`)
+        input.slug = slugify(`${input.title}-${input.id || $id.current}`)
       }
 
       if (values.addressAsPrismaAddress !== undefined) {
