@@ -9,12 +9,12 @@ import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
 import handleError from '@common/helpers/handleError'
+import { slugify } from '@common/helpers/slugify'
 import { Field, Table } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import slugify from 'slugify'
 import * as Yup from 'yup'
 
 import type { InstitutionFromGetOne } from '@api/resolvers/institutions'
@@ -115,7 +115,7 @@ export default function AdminInstitutionEditorPage() {
       } = R.pick(['fullName', 'name'])(values)
 
       if (isNew) {
-        input.slug = slugify(input.name)
+        input.slug = slugify(input.name, input.id)
       }
 
       const options: MutationFunctionOptions = {

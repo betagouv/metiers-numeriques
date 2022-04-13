@@ -5,13 +5,13 @@ import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInpu
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, REGIONS_AS_OPTIONS } from '@common/constants'
+import { slugify } from '@common/helpers/slugify'
 import { Card, Field } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
-import slugify from 'slugify'
 import * as Yup from 'yup'
 
 import type { MutationFunctionOptions } from '@apollo/client'
@@ -91,7 +91,9 @@ export default function AdminArchivedJobEditorPage() {
   const saveAndGoToList = async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<ArchivedJob> = R.pick([
+    const input: Partial<ArchivedJob> & {
+      title: string
+    } = R.pick([
       'missionDescription',
       'professionId',
       'profileDescription',
@@ -100,11 +102,11 @@ export default function AdminArchivedJobEditorPage() {
       'source',
       'sourceId',
       'title',
-    ])(values)
+    ])(values) as any
 
     if (isNew) {
       input.id = cuid()
-      input.slug = slugify(`${input.title}-${input.id}`)
+      input.slug = slugify(input.title, input.id)
     }
 
     input.expiredAt = dayjs(values.expiredAtAsString).toDate()

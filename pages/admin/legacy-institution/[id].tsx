@@ -3,11 +3,11 @@ import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
+import { slugify } from '@common/helpers/slugify'
 import { Card, Field } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
-import slugify from 'slugify'
 import { v4 as uuid } from 'uuid'
 import * as Yup from 'yup'
 
@@ -59,7 +59,9 @@ export default function AdminLegacyInstitutionEditorPage() {
   const saveAndGoToList = async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<LegacyInstitution> = R.pick([
+    const input: Partial<LegacyInstitution> & {
+      title: string
+    } = R.pick([
       'address',
       'challenges',
       'fullName',
@@ -75,11 +77,11 @@ export default function AdminLegacyInstitutionEditorPage() {
       'testimonial',
       'title',
       'value',
-    ])(values)
+    ])(values) as any
 
     if (isNew) {
       input.id = uuid()
-      input.slug = slugify(`${input.title}-${input.id}`)
+      input.slug = slugify(input.title, input.id)
     }
 
     const options: MutationFunctionOptions = {

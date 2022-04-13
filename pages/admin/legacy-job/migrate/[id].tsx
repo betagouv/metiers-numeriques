@@ -14,6 +14,7 @@ import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
+import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobRemoteStatus } from '@prisma/client'
 import { Field, Select, TextInput } from '@singularity/core'
 import cuid from 'cuid'
@@ -23,7 +24,6 @@ import { useRouter } from 'next/router'
 import { JobFormSchema } from 'pages/admin/job/[id]'
 import * as R from 'ramda'
 import { useCallback, useEffect, useState } from 'react'
-import slugify from 'slugify'
 
 import type { Job, JobState, Prisma } from '@prisma/client'
 
@@ -99,7 +99,9 @@ export default function AdminLegacyJobMigratorPage() {
         throw new Error(`Cannot create address: ${JSON.stringify(values?.addressAsPrismaAddress)}.`)
       }
 
-      const input: Partial<Job> = R.pick([
+      const input: Partial<Job> & {
+        title: string
+      } = R.pick([
         'applicationContactIds',
         'applicationWebsiteUrl',
         'contractTypes',
@@ -121,10 +123,10 @@ export default function AdminLegacyJobMigratorPage() {
         'teamDescription',
         'title',
         'updatedAt',
-      ])(values)
+      ])(values) as any
 
       input.id = cuid()
-      input.slug = slugify(`${input.title}-${input.id}`)
+      input.slug = slugify(input.title, input.id)
       input.addressId = newAddressResult.data.createAddress.id
       input.expiredAt = dayjs(values.expiredAtAsString).toDate()
       input.seniorityInMonths = values.seniorityInYears * 12

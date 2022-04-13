@@ -13,6 +13,7 @@ import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import handleError from '@common/helpers/handleError'
+import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobRemoteStatus, JobState, UserRole } from '@prisma/client'
 import { Field } from '@singularity/core'
 import cuid from 'cuid'
@@ -22,7 +23,6 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import slugify from 'slugify'
 import * as Yup from 'yup'
 
 import type { JobFromGetOne } from '@api/resolvers/jobs'
@@ -149,7 +149,7 @@ export default function AdminJobEditorPage() {
         input.id = cuid()
       }
       if (isNew || input.state === JobState.DRAFT) {
-        input.slug = slugify(`${input.title}-${input.id || $id.current}`)
+        input.slug = slugify(input.title, input.id || $id.current)
       }
 
       if (values.addressAsPrismaAddress !== undefined) {
