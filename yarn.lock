@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@apollo/client@3.5.9":
-  version "3.5.9"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.9.tgz#306c1f8453d56dbb4ff1afaaaf16b3b719db696c"
-  integrity sha512-Qq3OE3GpyPG2fYXBzi1n4QXcKZ11c6jHdrXK2Kkn9SD+vUymSrllXsldqnKUK9tslxKqkKzNrkCXkLv7PxwfSQ==
+"@apollo/client@3.5.10":
+  version "3.5.10"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.10.tgz#43463108a6e07ae602cca0afc420805a19339a71"
+  integrity sha512-tL3iSpFe9Oldq7gYikZK1dcYxp1c01nlSwtsMz75382HcI6fvQXyFXUCJTTK3wgO2/ckaBvRGw7VqjFREdVoRw==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@wry/context" "^0.6.0"
@@ -3627,7 +3627,14 @@ dayjs@1.10.8:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.8.tgz#267df4bc6276fcb33c04a6735287e3f429abec41"
   integrity sha512-wbNwDfBHHur9UOzNUjeKUOJ0fCb0a52Wx0xInmQ7Y8FstyajiV1NmK1e00cxsr9YrE9r7yAChE0VvpuY5Rnlow==
 
-debug@4, debug@4.3.3, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
+debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
+  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+  dependencies:
+    ms "2.1.2"
+
+debug@4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
@@ -3647,13 +3654,6 @@ debug@^3.1.0, debug@^3.2.7:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
-
-debug@^4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
-  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
-  dependencies:
-    ms "2.1.2"
 
 decamelize-keys@^1.1.0:
   version "1.1.0"
@@ -5135,10 +5135,10 @@ into-stream@^3.1.0:
     from2 "^2.1.1"
     p-is-promise "^1.1.0"
 
-ioredis@5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-5.0.3.tgz#5a742a03128a9924f98b957c8721720b4165b3ab"
-  integrity sha512-hKxywVypoGGUJDyfnMufO0VNkuIaQufo2/PJ5SOYBKWgf4+gCnZEPaBPle615k08euY9/B9DKytVtwZROF7HaA==
+ioredis@5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-5.0.4.tgz#0d4abfd818adfc5ef5029fddac4b8f503a1433b7"
+  integrity sha512-qFJw3MnPNsJF1lcIOP3vztbsasOXK3nDdNAgjQj7t7/Bn/w10PGchTOpqylQNxjzPbLoYDu34LjeJtSWiKBntQ==
   dependencies:
     "@ioredis/commands" "^1.1.1"
     cluster-key-slot "^1.1.0"
@@ -5998,10 +5998,10 @@ ky-universal@0.10.1:
     abort-controller "^3.0.0"
     node-fetch "^3.2.2"
 
-ky@0.29.0:
-  version "0.29.0"
-  resolved "https://registry.yarnpkg.com/ky/-/ky-0.29.0.tgz#292fd7faf7fc25bb9ca977dc1c704607829f52c3"
-  integrity sha512-01TBSOqlHmLfcQhHseugGHLxPtU03OyZWaLDWt5MfzCkijG6xWFvAQPhKVn0cR2MMjYvBP9keQ8A3+rQEhLO5g==
+ky@0.30.0:
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/ky/-/ky-0.30.0.tgz#a3d293e4f6c4604a9a4694eceb6ce30e73d27d64"
+  integrity sha512-X/u76z4JtDVq10u1JA5UQfatPxgPaVDMYTrgHyiTpGN2z4TMEJkIHsoSBBSg9SWZEIXTKsi9kHgiQ9o3Y/4yog==
 
 language-subtag-registry@~0.3.2:
   version "0.3.21"
