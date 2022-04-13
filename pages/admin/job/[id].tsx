@@ -521,7 +521,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.TextInput
+            <AdminForm.Textarea
               isDisabled={isLoading}
               label="Processus de recrutement"
               name="processDescription"
