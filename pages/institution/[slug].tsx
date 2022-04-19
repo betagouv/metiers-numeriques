@@ -1,4 +1,4 @@
-import getPrisma from '@api/helpers/getPrisma'
+import { getPrisma } from '@api/helpers/getPrisma'
 import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import renderLegacyInstitutionFile from '@app/helpers/renderLegacyInstitutionFile'
 import renderLegacyInstitutionSocialNetwork from '@app/helpers/renderLegacyInstitutionSocialNetwork'

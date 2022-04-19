@@ -2,7 +2,7 @@ import AwsSdkS3 from 'aws-sdk/clients/s3'
 import download from 'download'
 
 import { FILE_TYPE } from '../../common/constants'
-import handleError from '../../common/helpers/handleError'
+import { handleError } from '../../common/helpers/handleError'
 
 import type { FileTypeKey, FileTypeValue } from '../../common/constants'
 

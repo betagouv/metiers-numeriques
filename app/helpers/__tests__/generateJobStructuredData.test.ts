@@ -83,6 +83,7 @@ describe('app/helpers/generateJobStructuredData()', () => {
         logoFileId: null,
         name: 'Recruteur B',
         parentId: null,
+        source: 'MDN',
         updatedAt: '2022-01-28T16:39:59.898Z' as unknown as Date,
         websiteUrl: null,
       },
@@ -92,6 +93,8 @@ describe('app/helpers/generateJobStructuredData()', () => {
       salaryMin: 50,
       seniorityInMonths: 0,
       slug: "IntrapreneurIntrapreneuse-de-la-messagerie-instantanee-de-l'Etat-ckzgo7z0c0000386gl7uv1q4j",
+      source: 'MDN',
+      sourceUrl: null,
       state: 'PUBLISHED',
       tasksDescription:
         '- Superviser l’amélioration continue de Tchap, les outils et l’organisation de l’équipe pour gagner en efficacité\n- Définir les prochaines fonctionnalités et gérer chaque étape de conception\n- Mettre en place les bonnes pratiques favorables à la qualité de la conception et du code\n- Accompagner la montée en sécurité et fiabilité de Tchap\n- Aider l’équipe à progresser sur l’état de l’art de la gestion opérationnelle (automatisation, sauvegarde de donnée, sécurité informatique)',

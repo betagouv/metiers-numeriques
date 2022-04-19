@@ -2,7 +2,7 @@
 
 import dotenv from 'dotenv'
 
-import getPrisma from '../api/helpers/getPrisma'
+import { getPrisma } from '../api/helpers/getPrisma'
 import { TEST_USERS } from '../e2e/constants'
 
 import type { FullConfig } from '@playwright/test'

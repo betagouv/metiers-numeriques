@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { Button, Field, Modal, TextInput } from '@singularity/core'
 import { KeyboardEventHandler, useRef, useState } from 'react'
 import * as Yup from 'yup'

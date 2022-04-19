@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 
 import type { LegacyJob } from '@prisma/client'
 import type { ReactElement } from 'react'

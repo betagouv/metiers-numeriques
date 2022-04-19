@@ -1,10 +1,10 @@
 import { useLazyQuery } from '@apollo/client'
+import { convertGeocodeJsonFeatureToPrismaAddress } from '@common/helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import ky from 'ky-universal'
 import * as R from 'ramda'
 
-import { convertGeocodeJsonFeatureToPrismaAddress } from '../../helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { getCountryFromCode } from '../../helpers/getCountryFromCode'
 import queries from '../../queries'

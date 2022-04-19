@@ -25,6 +25,8 @@ type Job {
   salaryMin: Int
   seniorityInMonths: Int
   slug: String
+  source: String
+  sourceUrl: String
   state: String
   tasksDescription: String
   teamDescription: String

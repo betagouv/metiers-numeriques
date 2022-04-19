@@ -4,12 +4,14 @@
 set -e
 
 # Load .env file
-export $(egrep -v '^(#|GOOGLECLOUD_CLIENT_PRIVATE_KEY|EDDSA_PRIVATE_KEY|NEXT_PUBLIC_EDDSA_PUBLIC_KEY)' ./.env | xargs)
+export $(egrep -v '^(#|GOOGLECLOUD_CLIENT_PRIVATE_KEY|EDDSA_PRIVATE_KEY|NEXT_PUBLIC_EDDSA_PUBLIC_KEY)' ./.env | xargs) > /dev/null
+
+beginsWith() { case $2 in "$1"*) true;; *) false;; esac; }
 
 echo "info  - Generating @gouvfr/dsfr CSS file…"
 rm -f ./public/dsfr.min.css
 cp ./node_modules/@gouvfr/dsfr/dist/dsfr/dsfr.min.css ./public/dsfr.min.css
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if beginsWith "darwin" "$OSTYPE"; then
   gsed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.min.css
 else
   sed -i 's/..\/fonts/\/fonts/g' ./public/dsfr.min.css

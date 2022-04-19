@@ -62,7 +62,7 @@
       }
     },
     {
-      "files": ["./prisma/**/*.ts"],
+      "files": ["./prisma/**/*.ts", "./workers/**/*.mjs"],
       "env": {
         "browser": false,
         "node": true

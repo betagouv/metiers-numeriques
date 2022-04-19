@@ -1,7 +1,7 @@
 import { getApiSecretFromNextRequest } from '@api/helpers/getApiSecretFromNextRequest'
 import permission from '@api/libs/permission'
 import resolvers from '@api/resolvers'
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { loadSchema } from '@graphql-tools/load'
 import { makeExecutableSchema } from '@graphql-tools/schema'

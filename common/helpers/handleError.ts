@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs'
 import ß from 'bhala'
 import { NextApiResponse } from 'next'
 
-import ApiError from '../../api/libs/ApiError'
+import { ApiError } from '../../api/libs/ApiError'
 
 Sentry.init({
   tracesSampler: event => {
@@ -119,4 +119,4 @@ function handleError(error: any, path: string, isFinalOrRes?: boolean | NextApiR
   return undefined as never
 }
 
-export default handleError
+export { handleError }

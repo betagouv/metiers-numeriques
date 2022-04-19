@@ -1,7 +1,11 @@
 {
-  "name": "metiers-numeriques",
+  "name": "Métiers Numériques",
   "formation": {
     "web": {
+      "amount": 1,
+      "size": "S"
+    },
+    "pep": {
       "amount": 1,
       "size": "S"
     }

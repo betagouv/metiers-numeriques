@@ -1,4 +1,4 @@
-import getPrisma from '@api/helpers/getPrisma'
+import { getPrisma } from '@api/helpers/getPrisma'
 import { User } from '@prisma/client'
 import { Nexauth, PrismaAdapter } from 'nexauth'
 

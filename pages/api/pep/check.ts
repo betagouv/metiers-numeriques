@@ -1,16 +1,26 @@
-import ApiError from '@api/libs/ApiError'
-import handleError from '@common/helpers/handleError'
+import { ApiError } from '@api/libs/ApiError'
+import { handleError } from '@common/helpers/handleError'
 import { UserRole } from '@prisma/client'
 import ky from 'ky-universal'
 import { getUser } from 'nexauth'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const ERROR_PATH = 'pages/api/pep.js'
+const { API_SECRET } = process.env
+const ERROR_PATH = 'pages/api/pep/check.js'
 
-export default async function ApiPepEndpoint(req: NextApiRequest, res: NextApiResponse) {
+export default async function ApiPepCheckEndpoint(req: NextApiRequest, res: NextApiResponse) {
+  if (API_SECRET === undefined) {
+    throw new Error('`API_SECRET` is undefined.')
+  }
   if (req.method !== 'GET') {
     return handleError(new ApiError('Method not allowed.', 405, true), ERROR_PATH, res)
+  }
+  if (req.headers['x-api-secret'] === undefined) {
+    return handleError(new ApiError('Unauthorized.', 401, true), ERROR_PATH, res)
+  }
+  if (req.headers['x-api-secret'] !== API_SECRET) {
+    return handleError(new ApiError('Forbidden.', 403, true), ERROR_PATH, res)
   }
 
   const user = await getUser<Common.Auth.User>(req)

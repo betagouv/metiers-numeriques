@@ -25,9 +25,15 @@ enum FileType {
 }
 
 enum JobSource {
+  // Civils de la Défense
+  CDLD
+  // Métiers du Numérique
+  MDN
+  // Place de l'emploi public
+  PEP
+  // TODO Remove those Job Sources once legacy jobs are gone.
   MNB
   MNN
-  PEP
   SKB
 }
 
@@ -189,6 +195,11 @@ model Job {
   salaryMin                  Int?
   seniorityInMonths          Int               @default(0)
   slug                       String            @unique
+  source                     JobSource         @default(MDN)
+  // This should be a nullable unique but it's a planned Prisma feature for now:
+  // https://github.com/prisma/prisma/issues/3387
+  // TODO Follow nullable unique Prisma feature progress and implement it once ready.
+  sourceUrl                  String?
   state                      JobState          @default(DRAFT)
   createdAt                  DateTime          @default(now())
   expiredAt                  DateTime
@@ -322,14 +333,15 @@ model Profession {
 }
 
 model Recruiter {
-  id         String   @id @default(cuid())
-  name       String
+  id         String    @id @default(cuid())
+  name       String    @unique
   fullName   String?
-  logoFile   File?    @relation("RecruiterLogoFile", fields: [logoFileId], references: [id])
-  logoFileId String?  @unique
+  logoFile   File?     @relation("RecruiterLogoFile", fields: [logoFileId], references: [id])
+  logoFileId String?   @unique
+  source     JobSource @default(MDN)
   websiteUrl String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   children      Recruiter[]  @relation("RecruiterFamily")
   institution   Institution? @relation("RecruiterInstitution", fields: [institutionId], references: [id])

@@ -5,6 +5,6 @@ const __PRISMA = {
   prismaInstance: new PrismaClient(),
 }
 
-export default function getPrisma(): PrismaClient {
+export function getPrisma(): PrismaClient {
   return __PRISMA.prismaInstance
 }

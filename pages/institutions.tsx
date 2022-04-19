@@ -1,4 +1,4 @@
-import getPrisma from '@api/helpers/getPrisma'
+import { getPrisma } from '@api/helpers/getPrisma'
 import InstitutionCard from '@app/organisms/InstitutionCard'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs'

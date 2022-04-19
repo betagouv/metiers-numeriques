@@ -1,4 +1,4 @@
-import getPrisma from '@api/helpers/getPrisma'
+import { getPrisma } from '@api/helpers/getPrisma'
 import ExternalLink from '@app/atoms/ExternalLink'
 import Link from '@app/atoms/Link'
 import { SoftParagraph } from '@app/atoms/SoftParagraph'
@@ -77,7 +77,7 @@ export default function JobPage({ data, isFilledOrExpired, isNew }: JobPageProps
         </Head>
 
         <div className="fr-container" id="job-detail">
-          <div className="fr-mb-4w fr-mt-6w">
+          <div className="fr-pb-4w fr-pt-6w">
             <h1>{job.title}</h1>
           </div>
 
@@ -236,7 +236,7 @@ export default function JobPage({ data, isFilledOrExpired, isNew }: JobPageProps
         </div>
 
         <div
-          className="fr-container fr-py-4w fr-text--lg"
+          className="fr-container fr-py-4w fr-text--lg fr-my-0"
           style={{
             backgroundColor: '#F0F0F0',
           }}

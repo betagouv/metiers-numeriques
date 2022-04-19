@@ -1,7 +1,7 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { NextApiResponse } from 'next'
 
-import ApiError from '../../api/libs/ApiError'
+import { ApiError } from '../../api/libs/ApiError'
 import { RequestWithPrisma } from '../../api/types'
 
 const { npm_package_version: VERSION } = process.env

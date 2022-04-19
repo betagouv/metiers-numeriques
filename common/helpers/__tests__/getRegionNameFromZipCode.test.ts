@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import getRegionNameFromZipCode from '../getRegionNameFromZipCode'
+import { getRegionNameFromZipCode } from '../getRegionNameFromZipCode'
 
 describe('app/helpers/getRegionNameFromZipCode()', () => {
   test(`with "1234"`, () => {

@@ -1,6 +1,6 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from './handleError'
 
-import type { Region } from '@common/constants'
+import type { Region } from '../constants'
 
 const DEPARTEMENTS: Array<{
   name: string
@@ -616,7 +616,7 @@ const DEPARTEMENTS: Array<{
   },
 ]
 
-export default function getRegionNameFromZipCode(zipCode: string): string | undefined {
+export function getRegionNameFromZipCode(zipCode: string): string | undefined {
   try {
     if (zipCode.length < 4 || zipCode.length > 5) {
       return

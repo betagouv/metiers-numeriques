@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { UserRole } from '@prisma/client'
 
-import getPrisma from '../api/helpers/getPrisma'
+import { getPrisma } from '../api/helpers/getPrisma'
 import { TEST_USERS } from './constants'
 
 const { CI } = process.env

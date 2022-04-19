@@ -1,7 +1,7 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import getPrisma from '@api/helpers/getPrisma'
-import handleError from '@common/helpers/handleError'
+import { getPrisma } from '@api/helpers/getPrisma'
+import { handleError } from '@common/helpers/handleError'
 import { JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
 
@@ -14,6 +14,7 @@ import type {
   Job,
   JobContractType,
   JobRemoteStatus,
+  JobSource,
   Prisma,
   Profession,
   Recruiter,
@@ -228,8 +229,10 @@ export const query = {
       pageIndex,
       perPage,
       query,
+      source,
       state,
     }: GetAllArgs & {
+      source?: JobSource
       state?: JobState
     },
     context: Context,
@@ -260,6 +263,9 @@ export const query = {
         andFilter.recruiterId = {
           in: recruiterIds,
         }
+      }
+      if (source !== undefined) {
+        andFilter.source = source
       }
       if (state !== undefined) {
         andFilter.state = state

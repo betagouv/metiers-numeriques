@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 
 import type { NextApiRequest } from 'next'
 

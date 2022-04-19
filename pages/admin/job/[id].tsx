@@ -12,9 +12,9 @@ import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
-import { JobContractType, JobRemoteStatus, JobState, UserRole } from '@prisma/client'
+import { JobContractType, JobRemoteStatus, JobSource, JobState, UserRole } from '@prisma/client'
 import { Field } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
@@ -115,6 +115,14 @@ export default function AdminJobEditorPage() {
     router.push('/admin/jobs')
   }, [])
 
+  const goToSource = useCallback(() => {
+    if (initialValues === undefined || initialValues.sourceUrl === null || initialValues.sourceUrl === undefined) {
+      return
+    }
+
+    window.open(initialValues.sourceUrl)
+  }, [initialValues])
+
   const save = useCallback(async (values: JobFormData) => {
     try {
       const input: Partial<Job> = R.pick([
@@ -169,7 +177,7 @@ export default function AdminJobEditorPage() {
         }
       }
 
-      input.expiredAt = dayjs(values.expiredAtAsString).toDate()
+      input.expiredAt = dayjs(values.expiredAtAsString).startOf('day').toDate()
       input.seniorityInMonths = values.seniorityInYears * 12
 
       if (input.missionDescription === undefined) {
@@ -529,6 +537,22 @@ export default function AdminJobEditorPage() {
             />
           </Field>
         </AdminCard>
+
+        {auth.user?.role === UserRole.ADMINISTRATOR && initialValues?.source !== JobSource.MDN && (
+          <AdminCard>
+            <Subtitle>Références internes</Subtitle>
+
+            <Field>
+              <AdminForm.TextInput isDisabled label="Source" name="source" />
+            </Field>
+            <FieldGroup>
+              <AdminForm.TextInput isDisabled label="Source (URL)" name="sourceUrl" />
+              <button onClick={goToSource} type="button">
+                🔗
+              </button>
+            </FieldGroup>
+          </AdminCard>
+        )}
 
         <AdminCard>
           <AdminForm.Error />

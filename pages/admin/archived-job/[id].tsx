@@ -109,7 +109,7 @@ export default function AdminArchivedJobEditorPage() {
       input.slug = slugify(input.title, input.id)
     }
 
-    input.expiredAt = dayjs(values.expiredAtAsString).toDate()
+    input.expiredAt = dayjs(values.expiredAtAsString).startOf('day').toDate()
 
     const options: MutationFunctionOptions = {
       variables: {

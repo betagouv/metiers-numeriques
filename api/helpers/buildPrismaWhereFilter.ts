@@ -1,5 +1,5 @@
 import { define } from '@common/helpers/define'
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 
 const buildNativeStatements = <T extends Record<string, any>>(fields: Array<keyof T>, searchQuery: string) =>

@@ -12,6 +12,7 @@ describe('libs/structuredData.normalizeOrganization()', () => {
       logoFileId: null,
       name: `Grand Besançon Métropole`,
       parentId: null,
+      source: 'MDN',
       updatedAt: new Date(),
       websiteUrl: null,
     }
@@ -33,6 +34,7 @@ describe('libs/structuredData.normalizeOrganization()', () => {
       logoFileId: null,
       name: `Grand Besançon Métropole`,
       parentId: null,
+      source: 'MDN',
       updatedAt: new Date(),
       websiteUrl: '',
     }
@@ -54,6 +56,7 @@ describe('libs/structuredData.normalizeOrganization()', () => {
       logoFileId: null,
       name: `Ministère de l’économie, des finances et de la relance`,
       parentId: null,
+      source: 'MDN',
       updatedAt: new Date(),
       websiteUrl: `https://www.economie.gouv.fr`,
     }

@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 
 export function isObjectEmpty(obj: Common.Pojo): boolean {

@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 
 export default function uncapitalizeFirstLetter(text: string | null): string {
   try {

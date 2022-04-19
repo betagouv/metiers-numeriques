@@ -1,4 +1,4 @@
-import handleError from '@common/helpers/handleError'
+import { handleError } from '@common/helpers/handleError'
 import ky from 'ky-universal'
 import { useMemo, useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'

@@ -6,7 +6,7 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
-import { JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
+import { JOB_SOURCES_AS_OPTIONS, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Job, UserRole } from '@prisma/client'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
@@ -49,6 +49,7 @@ const PER_PAGE = 10
 
 export default function AdminJobListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
+  const $source = useRef('')
   const $state = useRef('')
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
@@ -126,6 +127,12 @@ export default function AdminJobListPage() {
     [jobsResult.data],
   )
 
+  const handleSourceSelect = useCallback((option: Common.App.SelectOption | null): void => {
+    $source.current = option !== null ? option.value : ''
+
+    query(0)
+  }, [])
+
   const handleStateSelect = useCallback((option: Common.App.SelectOption | null): void => {
     $state.current = option !== null ? option.value : ''
 
@@ -140,11 +147,13 @@ export default function AdminJobListPage() {
 
       const query = define($searchInput.current.value)
       const state = define($state.current)
+      const source = define($source.current)
 
       await getJobsResult.refetch({
         pageIndex,
         perPage: PER_PAGE,
         query,
+        source,
         state,
       })
     }, 250),
@@ -204,6 +213,7 @@ export default function AdminJobListPage() {
       <Card>
         <Flex>
           <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre d’emploi" />
+          <Select isClearable onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
           <Select isClearable onChange={handleStateSelect} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
         </Flex>
 

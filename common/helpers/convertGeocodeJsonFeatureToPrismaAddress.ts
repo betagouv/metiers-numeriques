@@ -1,16 +1,15 @@
-import handleError from '@common/helpers/handleError'
-
-import getRegionNameFromZipCode from './getRegionNameFromZipCode'
+import { getRegionNameFromZipCode } from './getRegionNameFromZipCode'
+import { handleError } from './handleError'
 
 import type { Prisma } from '@prisma/client'
 
 export function convertGeocodeJsonFeatureToPrismaAddress({
   properties,
-}: Common.GeocodeJsonFeature): Prisma.AddressCreateInput | undefined {
+}: Common.GeocodeJsonFeature): Prisma.AddressCreateInput {
   try {
     const region = getRegionNameFromZipCode(properties.postcode)
     if (region === undefined) {
-      return
+      throw new Error(`Could not find region for zip code ${properties.postcode}.`)
     }
 
     const { city } = properties
@@ -28,6 +27,6 @@ export function convertGeocodeJsonFeatureToPrismaAddress({
       street,
     }
   } catch (err) {
-    handleError(err, 'app/helpers/convertGeocodeJsonFeatureToPrismaAddress()')
+    return handleError(err, 'app/helpers/convertGeocodeJsonFeatureToPrismaAddress()') as never
   }
 }
