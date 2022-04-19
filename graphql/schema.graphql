@@ -138,6 +138,7 @@ type Query {
     pageIndex: Int!
     perPage: Int!
     query: String
+    source: String
   ): RecruitersResult!
   getRecruitersList: [Recruiter!]!
 

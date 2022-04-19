@@ -1,11 +1,13 @@
 import { useQuery, useMutation } from '@apollo/client'
 import AdminHeader from '@app/atoms/AdminHeader'
+import { Flex } from '@app/atoms/Flex'
 import Title from '@app/atoms/Title'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
+import { JOB_SOURCES_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { Button, Card, Table, TextInput } from '@singularity/core'
+import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -43,6 +45,7 @@ const PER_PAGE = 10
 
 export default function AdminRecruiterListPage() {
   const $searchInput = useRef<HTMLInputElement>(null)
+  const $source = useRef('')
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
@@ -74,22 +77,25 @@ export default function AdminRecruiterListPage() {
         }
       : getRecruitersResult.data.getRecruiters
 
-  const closeDeletionModal = () => {
+  const closeDeletionModal = useCallback(() => {
     setHasDeletionModal(false)
-  }
+  }, [])
 
-  const confirmDeletion = async (id: string) => {
-    const recruiter = R.find<RecruiterFromGetAll>(R.propEq('id', id))(recruitersResult.data)
-    if (recruiter === undefined) {
-      return
-    }
+  const confirmDeletion = useCallback(
+    async (id: string) => {
+      const recruiter = R.find<RecruiterFromGetAll>(R.propEq('id', id))(recruitersResult.data)
+      if (recruiter === undefined) {
+        return
+      }
 
-    setSelectedId(id)
-    setSelectedEntity(recruiter.name)
-    setHasDeletionModal(true)
-  }
+      setSelectedId(id)
+      setSelectedEntity(recruiter.name)
+      setHasDeletionModal(true)
+    },
+    [recruitersResult.data],
+  )
 
-  const deleteAndReload = async () => {
+  const deleteAndReload = useCallback(async () => {
     setHasDeletionModal(false)
 
     await deleteRecruiter({
@@ -97,11 +103,17 @@ export default function AdminRecruiterListPage() {
         id: selectedId,
       },
     })
-  }
+  }, [selectedId])
 
-  const goToEditor = (id: string) => {
+  const goToEditor = useCallback((id: string) => {
     router.push(`/admin/recruiter/${id}`)
-  }
+  }, [])
+
+  const handleSourceSelect = useCallback((option: Common.App.SelectOption | null): void => {
+    $source.current = option !== null ? option.value : ''
+
+    query(0)
+  }, [])
 
   const query = useCallback(
     debounce(async (pageIndex: number) => {
@@ -110,11 +122,13 @@ export default function AdminRecruiterListPage() {
       }
 
       const query = define($searchInput.current.value)
+      const source = define($source.current)
 
       getRecruitersResult.refetch({
         pageIndex,
         perPage: PER_PAGE,
         query,
+        source,
       })
     }, 250),
     [],
@@ -157,7 +171,10 @@ export default function AdminRecruiterListPage() {
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un service recruteur" />
+        <Flex>
+          <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un service recruteur" />
+          <Select isClearable onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
+        </Flex>
 
         <Table
           columns={columns}

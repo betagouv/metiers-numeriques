@@ -322,38 +322,23 @@ export default function AdminJobEditorPage() {
             <AdminForm.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
           </DoubleField>
 
-          {auth.user?.role === UserRole.ADMINISTRATOR && (
-            <DoubleField>
-              <AdminForm.RecruiterSelect
-                isDisabled={isLoading}
-                label="Service recruteur *"
-                name="recruiterId"
-                placeholder="…"
-              />
+          <DoubleField>
+            <AdminForm.RecruiterSelect
+              isDisabled={isLoading}
+              label="Service recruteur *"
+              name="recruiterId"
+              placeholder="…"
+            />
 
-              <AdminForm.Select
-                isDisabled={isLoading}
-                isMulti
-                label="Types de contrat *"
-                name="contractTypes"
-                options={JOB_CONTRACT_TYPES_AS_OPTIONS}
-                placeholder="…"
-              />
-            </DoubleField>
-          )}
-
-          {auth.user?.role === UserRole.RECRUITER && (
-            <Field>
-              <AdminForm.Select
-                isDisabled={isLoading}
-                isMulti
-                label="Types de contrat *"
-                name="contractTypes"
-                options={JOB_CONTRACT_TYPES_AS_OPTIONS}
-                placeholder="…"
-              />
-            </Field>
-          )}
+            <AdminForm.Select
+              isDisabled={isLoading}
+              isMulti
+              label="Types de contrat *"
+              name="contractTypes"
+              options={JOB_CONTRACT_TYPES_AS_OPTIONS}
+              placeholder="…"
+            />
+          </DoubleField>
 
           <DoubleField>
             <AdminForm.TextInput
