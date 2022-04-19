@@ -3,7 +3,7 @@ import { JobSource } from '@prisma/client'
 import type { PrismaClient } from '@prisma/client'
 
 export async function getRecruiterIdFromName(prisma: PrismaClient, recruiterName: string): Promise<string> {
-  const existingRecruiter = await prisma.recruiter.findUnique({
+  const existingRecruiter = await prisma.recruiter.findFirst({
     where: {
       name: recruiterName,
     },

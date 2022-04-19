@@ -335,7 +335,7 @@ model Profession {
 
 model Recruiter {
   id         String    @id @default(cuid())
-  name       String    @unique
+  name       String
   fullName   String?
   logoFile   File?     @relation("RecruiterLogoFile", fields: [logoFileId], references: [id])
   logoFileId String?   @unique

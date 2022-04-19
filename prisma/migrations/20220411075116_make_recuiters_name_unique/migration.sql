@@ -5,4 +5,4 @@
 
 */
 -- CreateIndex
-CREATE UNIQUE INDEX "Recruiter_name_key" ON "Recruiter"("name");
+-- CREATE UNIQUE INDEX "Recruiter_name_key" ON "Recruiter"("name");
