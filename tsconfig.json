@@ -24,7 +24,7 @@
     "target": "es5"
   },
   "exclude": [".next/*", "node_modules/*"],
-  "include": ["**/*.js", "**/*.mjs", "**/*.ts", "**/*.tsx", "next-env.d.ts", "workers/pep/index.mts"],
+  "include": ["**/*.js", "**/*.mjs", "**/*.ts", "**/*.tsx", "next-env.d.ts"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
