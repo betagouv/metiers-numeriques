@@ -119,7 +119,7 @@ const permissions = shield({
 
     getRecruiter: permission.isAdministratorOrManager,
     getRecruiters: permission.isAdministrator,
-    getRecruitersList: permission.isAdministrator,
+    getRecruitersList: permission.isAdministratorOrManager,
 
     getUser: or(permission.isAdministrator, permission.isMe),
     getUsers: permission.isAdministrator,

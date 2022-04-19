@@ -4,7 +4,7 @@ import { getPrisma } from '@api/helpers/getPrisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
-import type { File, Job, Prisma, Recruiter, User } from '@prisma/client'
+import type { File, Job, JobSource, Prisma, Recruiter, User } from '@prisma/client'
 
 export type RecruiterFromGetAll = Recruiter & {
   _count: {
@@ -119,11 +119,23 @@ export const query = {
 
   getRecruiters: async (
     _parent: undefined,
-    { pageIndex, perPage, query }: GetAllArgs,
+    {
+      pageIndex,
+      perPage,
+      query,
+      source,
+    }: GetAllArgs & {
+      source?: JobSource
+    },
   ): Promise<GetAllResponse<RecruiterFromGetAll>> => {
     try {
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter<Recruiter>(['fullName', 'name'], query)
+
+      const andFilter: Prisma.Enumerable<Prisma.RecruiterWhereInput> = {}
+      if (source !== undefined) {
+        andFilter.source = source
+      }
+      const whereFilter = buildPrismaWhereFilter<Recruiter>(['fullName', 'name'], query, andFilter)
 
       const args: Prisma.RecruiterFindManyArgs = {
         include: {

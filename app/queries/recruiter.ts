@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL = gql`
-  query GetRecruiters($pageIndex: Int!, $perPage: Int!, $query: String) {
-    getRecruiters(pageIndex: $pageIndex, perPage: $perPage, query: $query) {
+  query GetRecruiters($pageIndex: Int!, $perPage: Int!, $query: String, $source: String) {
+    getRecruiters(pageIndex: $pageIndex, perPage: $perPage, query: $query, source: $source) {
       count
       data {
         id
@@ -38,6 +38,7 @@ export const GET_ONE = gql`
       createdAt
       fullName
       name
+      source
       updatedAt
       websiteUrl
 

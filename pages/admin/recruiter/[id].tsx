@@ -7,6 +7,7 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL, USER_ROLE_LABEL } from '@common/constants'
+import { JobSource } from '@prisma/client'
 import { Field, Table } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -211,7 +212,11 @@ export default function AdminRecruiterEditorPage() {
           </Field> */}
 
           <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+            <AdminForm.TextInput
+              isDisabled={isLoading || initialValues?.source === JobSource.PEP}
+              label="Nom *"
+              name="name"
+            />
           </Field>
 
           <Field>

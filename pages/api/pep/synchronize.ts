@@ -145,7 +145,10 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
       if ($recruiter.length === 0) {
         continue
       }
-      const recruiterName = $recruiter.text().replace(/^.*:/, '').trim()
+      const recruiterName = $recruiter
+        .text()
+        .replace(/employeur\s*:/i, '')
+        .trim()
       job.recruiterId = await getRecruiterIdFromName(prisma, recruiterName)
 
       const $address = $root('ul.fr-grid-row > li:nth-child(3)')

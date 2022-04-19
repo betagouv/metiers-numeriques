@@ -11,6 +11,7 @@ type Recruiter {
   createdAt: DateTime
   name: String
   fullName: String
+  source: String
   updatedAt: DateTime
   websiteUrl: String
 
