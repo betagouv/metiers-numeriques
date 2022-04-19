@@ -12,6 +12,7 @@ import queries from '../../queries'
 
 type RecruiterSelectProps = {
   helper?: string
+  institutionId?: string
   isDisabled?: boolean
   isMulti?: boolean
   label: string
@@ -21,6 +22,7 @@ type RecruiterSelectProps = {
 
 export function RecruiterSelect({
   helper,
+  institutionId,
   isDisabled = false,
   isMulti = false,
   label,
@@ -33,6 +35,9 @@ export function RecruiterSelect({
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
   const getRecruitersListResult = useQuery(queries.recruiter.GET_LIST, {
     fetchPolicy: 'no-cache',
+    variables: {
+      institutionId,
+    },
   })
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])

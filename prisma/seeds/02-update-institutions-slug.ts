@@ -9,11 +9,14 @@ export async function updateInstitutionsSlug(prisma: PrismaClient) {
 
   ß.info('Updating institutions slug…')
   for (const institution of institutions) {
-    prisma.institution.update({
+    // eslint-disable-next-line no-await-in-loop
+    await prisma.institution.update({
       data: {
         slug: slugify(institution.name, institution.id),
       },
-      where: { id: institution.id },
+      where: {
+        id: institution.id,
+      },
     })
   }
 

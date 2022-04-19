@@ -75,8 +75,8 @@ export const GET_ONE = gql`
 `
 
 export const GET_LIST = gql`
-  query GetRecruitersList {
-    getRecruitersList {
+  query GetRecruitersList($institutionId: String) {
+    getRecruitersList(institutionId: $institutionId) {
       id
 
       name

@@ -70,8 +70,8 @@ export type LocalStatistics = {
   institution: Institution | undefined
 }
 
-export async function getLocal(accessToken?: string, recruiterId?: string): Promise<LocalStatistics> {
-  if (accessToken === undefined || recruiterId === undefined) {
+export async function getLocal(accessToken?: string, institutionId?: string): Promise<LocalStatistics> {
+  if (accessToken === undefined || institutionId === undefined) {
     return {
       activeJobsCount: undefined,
       institution: undefined,
@@ -87,20 +87,11 @@ export async function getLocal(accessToken?: string, recruiterId?: string): Prom
   })
 
   const {
-    data: { getRecruiter: recruiter },
-  } = await client.query({
-    query: queries.recruiter.GET_ONE,
-    variables: {
-      id: recruiterId,
-    },
-  })
-
-  const {
     data: { getInstitution: institution },
   } = await client.query({
     query: queries.institution.GET_ONE,
     variables: {
-      id: recruiter.institution.id,
+      id: institutionId,
     },
   })
   const jobs = aggregateInstitutionJobs(institution)
@@ -108,6 +99,6 @@ export async function getLocal(accessToken?: string, recruiterId?: string): Prom
 
   return {
     activeJobsCount: activeJobs.length,
-    institution: { ...recruiter.institution },
+    institution,
   }
 }

@@ -7,12 +7,12 @@ export default Nexauth<User>({
     prismaInstance: getPrisma(),
   }),
   config: {
-    accessTokenPublicUserProps: ['email', 'firstName', 'id', 'lastName', 'recruiterId', 'role'],
+    accessTokenPublicUserProps: ['email', 'firstName', 'id', 'institutionId', 'lastName', 'recruiterId', 'role'],
     firstUserDefaultProps: {
       isActive: true,
       role: 'ADMINISTRATOR',
     },
     logInConditions: [user => user.isActive],
-    newUserAllowedProps: ['email', 'firstName', 'lastName', 'password', 'recruiterId'],
+    newUserAllowedProps: ['email', 'firstName', 'lastName', 'password'],
   },
 })

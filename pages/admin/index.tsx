@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
     setGlobalStatistics({ ...newStatistics })
 
     if (auth.user.role === UserRole.RECRUITER) {
-      const newLocalStatistics = await statisticsWorker.getLocal(auth.state.accessToken, auth.user.recruiterId)
+      const newLocalStatistics = await statisticsWorker.getLocal(auth.state.accessToken, auth.user.institutionId)
 
       setLocalStatistics({ ...newLocalStatistics })
     }
