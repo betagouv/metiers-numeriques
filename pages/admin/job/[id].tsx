@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
+import { AdminFloatingButton } from '@app/atoms/AdminFloatingButton'
 import AdminHeader from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { FieldGroup } from '@app/atoms/FieldGroup'
@@ -91,6 +92,7 @@ export default function AdminJobEditorPage() {
   const isNew = id === 'new'
 
   const $id = useRef<string | undefined>(isNew ? undefined : id)
+  const $slug = useRef<string | undefined>()
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -114,6 +116,14 @@ export default function AdminJobEditorPage() {
   const goToList = useCallback(() => {
     router.push('/admin/jobs')
   }, [])
+
+  const goToPreview = useCallback(() => {
+    if ($slug.current === undefined) {
+      return
+    }
+
+    window.open(`/emploi/preview/${$slug.current}`, '_blank')
+  }, [$slug.current])
 
   const goToSource = useCallback(() => {
     if (initialValues === undefined || initialValues.sourceUrl === null || initialValues.sourceUrl === undefined) {
@@ -153,11 +163,10 @@ export default function AdminJobEditorPage() {
         return
       }
 
-      if ($id.current === undefined) {
-        input.id = cuid()
-      }
-      if (isNew || input.state === JobState.DRAFT) {
+      input.id = $id.current === undefined ? cuid() : $id.current
+      if (input.state === JobState.DRAFT) {
         input.slug = slugify(input.title, input.id || $id.current)
+        $slug.current = input.slug
       }
 
       if (values.addressAsPrismaAddress !== undefined) {
@@ -295,6 +304,8 @@ export default function AdminJobEditorPage() {
     <>
       <AdminHeader>
         <Title>{isNew ? 'Nouvelle offre d’emploi' : 'Édition d’une offre d’emploi'}</Title>
+
+        <AdminFloatingButton onClick={goToPreview}>Prévisualiser</AdminFloatingButton>
       </AdminHeader>
 
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}

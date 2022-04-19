@@ -1,6 +1,7 @@
-import { ButtonHTMLAttributes } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
+
+import type { ButtonHTMLAttributes } from 'react'
 
 const StyledButton = styled.button`
   line-height: 0;
