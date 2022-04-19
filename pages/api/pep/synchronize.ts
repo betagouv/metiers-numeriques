@@ -8,6 +8,7 @@ import { getRecruiterIdFromName } from '@api/helpers/getRecruiterIdFromName'
 import { loadPageAsCheerioInstance } from '@api/helpers/loadPageAsCheerioInstance'
 import { normalizePepProfession } from '@api/helpers/normalizePepProfession'
 import { ApiError } from '@api/libs/ApiError'
+import { extractPepChapterFromMainContent } from '@app/helpers/extractPepChapterFromMainContent'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobSource } from '@prisma/client'
@@ -125,20 +126,38 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
 
       const $root = await loadPageAsCheerioInstance(job.sourceUrl)
 
-      const $missionDescription = $root("h2:contains('Vos missions en quelques mots')")
-      if ($missionDescription.length === 0 || $missionDescription.next().length === 0) {
+      const $missionDescriptionTitle = $root("h2:contains('Vos missions en quelques mots')")
+      if ($missionDescriptionTitle.length === 0) {
         continue
       }
-      job.missionDescription = convertHtmlToMarkdown(($missionDescription.next().html() as string).trim())
-
-      const $profileDescription = $root("h2:contains('Profil recherché')")
-      if ($profileDescription.length === 1 && $profileDescription.next().length === 1) {
-        job.profileDescription = convertHtmlToMarkdown(($profileDescription.next().html() as string).trim())
+      const mainContentAsHtml = $missionDescriptionTitle.parent().html()
+      if (mainContentAsHtml === null) {
+        continue
       }
 
-      const $teamDescription = $root('.fr-col-lg-5 > h2')
-      if ($teamDescription.length === 1 && $teamDescription.parent().next().length === 1) {
-        job.teamDescription = convertHtmlToMarkdown(($teamDescription.parent().next().html() as string).trim())
+      const missionDescriptionAsHtml = extractPepChapterFromMainContent(
+        mainContentAsHtml,
+        'Vos missions en quelques mots',
+      )
+      if (missionDescriptionAsHtml === undefined) {
+        continue
+      }
+      job.missionDescription = convertHtmlToMarkdown(missionDescriptionAsHtml)
+
+      const profileDescriptionAsHtml = extractPepChapterFromMainContent(mainContentAsHtml, 'Profil recherché')
+      if (profileDescriptionAsHtml !== undefined) {
+        job.profileDescription = convertHtmlToMarkdown(profileDescriptionAsHtml)
+      }
+
+      const teamDescriptionTitleSelector = "h2:contains('Qui sommes nous ?')"
+      const $teamDescriptionTitle = $root(teamDescriptionTitleSelector)
+      if ($teamDescriptionTitle.length === 1 && $teamDescriptionTitle.parent().next().length === 1) {
+        const teamDescriptionAsHtml = $teamDescriptionTitle.parent().next().html()
+        if (teamDescriptionAsHtml === null) {
+          continue
+        }
+
+        job.teamDescription = convertHtmlToMarkdown(teamDescriptionAsHtml)
       }
 
       const $recruiter = $root('ul.fr-grid-row > li:nth-child(2)')

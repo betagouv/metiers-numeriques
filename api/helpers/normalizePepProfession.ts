@@ -23,6 +23,7 @@ export function normalizePepProfession(professions: Profession[], pepProfession:
   switch (pepProfession) {
     case 'Architecte technique':
     case 'Conceptrice / Concepteur':
+    case 'Urbaniste des systèmes d’information':
       return getProfessionIdFromName('Architecture')
 
     case 'Développeuse / Développeur':
