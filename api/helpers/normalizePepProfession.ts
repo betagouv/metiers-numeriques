@@ -66,6 +66,7 @@ export function normalizePepProfession(professions: Profession[], pepProfession:
       return getProfessionIdFromName('Sécurité')
 
     case "Chargée / Chargé de relation sur l'offre de services SI":
+    case "Pilote en traitement d'incidents informatiques":
     case 'Technicienne / Technicien poste de travail et maintenance':
     case 'Technicienne / Technicien support utilisateurs':
       return getProfessionIdFromName('Support')
