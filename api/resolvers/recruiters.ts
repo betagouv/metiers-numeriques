@@ -175,12 +175,30 @@ export const query = {
     }
   },
 
-  getRecruitersList: async (): Promise<Recruiter[]> => {
+  getRecruitersList: async (
+    _parent: undefined,
+    {
+      institutionId,
+    }: {
+      institutionId?: string
+    },
+  ): Promise<Recruiter[]> => {
     try {
+      const andFilter: Prisma.Enumerable<Prisma.RecruiterWhereInput> = {
+        institutionId:
+          typeof institutionId === 'string'
+            ? institutionId
+            : {
+                not: null,
+              },
+      }
+      const whereFilter = buildPrismaWhereFilter<Recruiter>(['fullName', 'name'], undefined, andFilter)
+
       const args: Prisma.RecruiterFindManyArgs = {
         orderBy: {
           name: 'asc',
         },
+        ...whereFilter,
       }
 
       const data = await getPrisma().recruiter.findMany(args)

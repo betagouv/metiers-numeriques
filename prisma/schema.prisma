@@ -173,6 +173,7 @@ model Institution {
   updatedAt DateTime @updatedAt
 
   recruiters Recruiter[] @relation("RecruiterInstitution")
+  users      User[]      @relation("UserInstitution")
 }
 
 model Job {
@@ -378,6 +379,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  institution   Institution?   @relation("UserInstitution", fields: [institutionId], references: [id])
+  institutionId String?
   // TODO Wait for "Field does not exist on enclosing type." Prisma issue resolution.
   // https://github.com/prisma/prisma/issues/9553
   recruiter     Recruiter?     @relation("UserRecruiter", fields: [recruiterId], references: [id])

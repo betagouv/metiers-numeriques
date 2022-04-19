@@ -140,7 +140,7 @@ type Query {
     query: String
     source: String
   ): RecruitersResult!
-  getRecruitersList: [Recruiter!]!
+  getRecruitersList(institutionId: String): [Recruiter!]!
 
   getUser(id: String!): User
   getUsers(

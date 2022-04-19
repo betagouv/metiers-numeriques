@@ -23,6 +23,8 @@ type PublicInstitution {
 }
 
 input InstitutionInput {
+  id: String
+
   fullName: String
   name: String
   slug: String

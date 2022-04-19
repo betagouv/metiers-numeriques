@@ -37,10 +37,28 @@ export const mutation = {
     }
   },
 
-  updateUser: async (_parent: undefined, { id, input }: { id: string; input: User }): Promise<User | null> => {
+  updateUser: async (_parent: undefined, { id, input }: { id: string; input: Partial<User> }): Promise<User | null> => {
     try {
+      let institutionId: string | null = null
+      if (typeof input.recruiterId === 'string') {
+        const recruiter = await getPrisma().recruiter.findUnique({
+          where: {
+            id: input.recruiterId,
+          },
+        })
+
+        if (recruiter === null) {
+          throw new Error(`Recruiter with id "${input.recruiterId}" not found.`)
+        }
+
+        institutionId = recruiter.institutionId
+      }
+
       const args: Prisma.UserUpdateArgs = {
-        data: input,
+        data: {
+          ...input,
+          institutionId,
+        },
         where: {
           id,
         },

@@ -335,6 +335,7 @@ export default function AdminJobEditorPage() {
 
           <DoubleField>
             <AdminForm.RecruiterSelect
+              institutionId={auth.user?.institutionId}
               isDisabled={isLoading}
               label="Service recruteur *"
               name="recruiterId"
