@@ -5,6 +5,10 @@
       "amount": 1,
       "size": "S"
     },
+    "bot": {
+      "amount": 1,
+      "size": "S"
+    },
     "pep": {
       "amount": 1,
       "size": "S"

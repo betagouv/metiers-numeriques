@@ -13,5 +13,3 @@ yarn db:seed
 if [ "${WITH_DATA_SEED}" = 'true' ]; then
   yarn dev:seed
 fi
-
-ts-node -r dotenv/config ./scripts/build/generateSitemap.ts
