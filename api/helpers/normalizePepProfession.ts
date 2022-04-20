@@ -65,6 +65,7 @@ export function normalizePepProfession(professions: Profession[], pepProfession:
     case 'Responsable Sécurité des Systèmes d’Information - RSSI':
       return getProfessionIdFromName('Sécurité')
 
+    case "Analyste en traitement d'incidents informatiques":
     case "Chargée / Chargé de relation sur l'offre de services SI":
     case "Pilote en traitement d'incidents informatiques":
     case 'Technicienne / Technicien poste de travail et maintenance':
@@ -74,6 +75,7 @@ export function normalizePepProfession(professions: Profession[], pepProfession:
     case 'Assistante / Assistant fonctionnel':
     case 'Chargée / Chargé de référencement':
     case 'Conseillère / Conseiller en systèmes d’information':
+    case 'Déléguée / Délégué à la protection des données numériques':
     case 'Responsable d’applications':
     case 'Responsable d’études SI':
     case 'Responsable du système d’information « métier »':
