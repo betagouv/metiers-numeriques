@@ -51,7 +51,7 @@
     "@singularity/core": "3.0.4",
     "@socialgouv/matomo-next": "1.2.2",
     "apollo-server-micro": "3.6.7",
-    "aws-sdk": "2.1062.0",
+    "aws-sdk": "2.1116.0",
     "bhala": "2.1.0",
     "cheerio": "1.0.0-rc.10",
     "classnames": "2.3.1",
