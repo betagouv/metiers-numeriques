@@ -74,7 +74,7 @@
     "lodash.debounce": "4.0.8",
     "micro": "9.3.4",
     "nexauth": "2.0.2",
-    "next": "canary",
+    "next": "12.1.5",
     "numeral": "2.0.6",
     "prisma": "3.10.0",
     "ramda": "0.28.0",
