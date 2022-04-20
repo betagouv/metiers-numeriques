@@ -16,9 +16,9 @@
 
 ### Requirements
 
-- [Node.js](https://nodejs.org)
-- [Yarn](https://yarnpkg.com/getting-started/install)
-- [Docker](https://www.docker.com/get-started)
+- [Node.js](https://nodejs.org) v18 (with npm v8)
+- [Yarn](https://yarnpkg.com/getting-started/install) v1.22
+- [Docker](https://www.docker.com/get-started) >= v20
 
 ### First Setup
 
