@@ -23,7 +23,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const { API_SECRET, DOMAIN_URL } = process.env
 const BASE_URL = 'https://place-emploi-public.gouv.fr'
 const SCRIPT_PATH = 'pages/api/pep/synchronize.js'
-const MAX_PEP_JOBS_INDEX_DEPTH = DOMAIN_URL === 'https://metiers.numerique.gouv.fr' ? 20 : 2
+const MAX_PEP_JOBS_INDEX_DEPTH =
+  DOMAIN_URL !== undefined &&
+  ['https://metiers.numerique.gouv.fr', 'https://dinum-metiers-num-staging.osc-fr1.scalingo.io'].includes(DOMAIN_URL)
+    ? 20
+    : 2
 const MAX_PEP_JOBS_PER_CALL = 10
 
 const prisma = getPrisma()
