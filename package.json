@@ -48,7 +48,7 @@
     "@prisma/client": "3.12.0",
     "@sentry/nextjs": "6.19.6",
     "@shopify/react-web-worker": "4.0.4",
-    "@singularity/core": "3.0.4",
+    "@singularity/core": "4.0.2",
     "@socialgouv/matomo-next": "1.2.2",
     "apollo-server-micro": "3.6.7",
     "aws-sdk": "2.1116.0",
@@ -136,13 +136,5 @@
   "resolutions": {
     "nth-check": ">=2.0.1"
   },
-  "prettier": "@ivangabriele/prettier-config",
-  "bugs": {
-    "url": "https://github.com/betagouv/metiers-numeriques/issues"
-  },
-  "homepage": "https://github.com/betagouv/metiers-numeriques#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/betagouv/metiers-numeriques.git"
-  }
+  "prettier": "@ivangabriele/prettier-config"
 }

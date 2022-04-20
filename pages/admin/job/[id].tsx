@@ -425,7 +425,7 @@ export default function AdminJobEditorPage() {
           <Subtitle>Mission</Subtitle>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Mission *"
               name="missionDescription"
@@ -468,7 +468,7 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="L'équipe"
               name="teamDescription"
@@ -477,7 +477,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Avantages"
               name="perksDescription"
@@ -490,7 +490,7 @@ export default function AdminJobEditorPage() {
           <Subtitle>Informations complémentaires</Subtitle>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Contexte"
               name="contextDescription"
@@ -499,7 +499,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Profil idéal de candidat·e"
               name="profileDescription"
@@ -517,7 +517,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Conditions particulières"
               name="particularitiesDescription"
@@ -526,7 +526,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Processus de recrutement"
               name="processDescription"

@@ -1751,23 +1751,22 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@singularity/core@3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-3.0.4.tgz#2e1ff3957b60325457a2986ccd287a88aedba333"
-  integrity sha512-MGR+Is0p69DEbMZuRzz6lG5vsleFdB4uVriTmceGCW3NefY5n4wQRKHoTcEsnJGv8VxAC+IMD1//OsziCJIC0Q==
+"@singularity/core@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.0.2.tgz#aa8e60006bca893e9d2de6faf0633935e1bf3cee"
+  integrity sha512-a3ULd8O6h3yImaVX/JAYH6TNwtv9gHD8NRT3VhUBv9olw6pWyHvkvFuw60Aa2JZA5QSc75FRR41SIOSBXlPMIg==
   dependencies:
     better-prop-types "1.1.1"
-    is-hotkey "0.2.0"
     ramda "0.28.0"
-    react-select "5.2.2"
+    react-select "5.3.0"
     remark-parse "10.0.1"
-    remark-slate "1.8.5"
+    remark-slate "1.8.6"
     sha1 "1.1.1"
-    slate "0.72.8"
+    slate "0.77.2"
     slate-history "0.66.0"
-    slate-react "0.72.9"
-    tslib "2.3.1"
-    unified "10.1.1"
+    slate-react "0.77.3"
+    tslib "2.4.0"
+    unified "10.1.2"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -5344,11 +5343,6 @@ is-glob@^4.0.0, is-glob@^4.0.1, is-glob@^4.0.3:
   dependencies:
     is-extglob "^2.1.1"
 
-is-hotkey@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/is-hotkey/-/is-hotkey-0.2.0.tgz#1835a68171a91e5c9460869d96336947c8340cef"
-  integrity sha512-UknnZK4RakDmTgz4PI1wIph5yxSs/mvChWs9ifnlXsKuXgWmOkY/hAE0H/k2MIqH0RlRye0i1oC07MCRSD28Mw==
-
 is-hotkey@^0.1.6:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/is-hotkey/-/is-hotkey-0.1.8.tgz#6b1f4b2d0e5639934e20c05ed24d623a21d36d25"
@@ -7561,10 +7555,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-select@5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.2.2.tgz#3d5edf0a60f1276fd5f29f9f90a305f0a25a5189"
-  integrity sha512-miGS2rT1XbFNjduMZT+V73xbJEeMzVkJOz727F6MeAr2hKE0uUSA8Ff7vD44H32x2PD3SRB6OXTY/L+fTV3z9w==
+react-select@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.3.0.tgz#dc77c1f95e1037ec4cb01c5e5d6272d80be8d3f6"
+  integrity sha512-GM6Fbv1+X+kb3e5Fc4oNeyOJkCIesY/D4NBiReKlGY4RxoeztFYm3J0KREgwMaIKQqwTiuLqTlpUBY3SYw5goQ==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
@@ -7745,10 +7739,10 @@ remark-rehype@10.1.0:
     mdast-util-to-hast "^12.1.0"
     unified "^10.0.0"
 
-remark-slate@1.8.5:
-  version "1.8.5"
-  resolved "https://registry.yarnpkg.com/remark-slate/-/remark-slate-1.8.5.tgz#034de7972283b0107ff2a684563bb0ed0a50da7f"
-  integrity sha512-pOFsn4Si8q1PWgNapcX2sxSkU1VUSx64oPO1L3n2mxiFsCQmzXK/bFrc8Neb2NJ59jLnetIkTjA5ULisqAjHbQ==
+remark-slate@1.8.6:
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/remark-slate/-/remark-slate-1.8.6.tgz#a5b4dc1c83ab6cf59a064d425976fc26bdb43b6e"
+  integrity sha512-1Gmt5MGw25MRVP+0xTXqw9JQDWfRNWujD4YFCPg036a9DZYhn7mLFjM6jreHB+9hKa6RCMOm5thiXznAmdn8Ug==
   dependencies:
     "@types/escape-html" "^1.0.0"
     escape-html "^1.0.3"
@@ -8031,10 +8025,10 @@ slate-history@0.66.0:
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@0.72.9:
-  version "0.72.9"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.72.9.tgz#b05dd533bd29dd2d4796b614a8d8e01f214bb714"
-  integrity sha512-FEsqB+D1R/h+w1eCtHH367Krw2X7vju2GjMRL/d0bUiCRXlV50J9I9TJizvi7aaZyqBY8BypCuIiq9nNmsulCA==
+slate-react@0.77.3:
+  version "0.77.3"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.77.3.tgz#6882bc22f501d503f90015925bcbdce3f7462a16"
+  integrity sha512-j7DeGHJMwePT6OeCX/nqkTXcrbo0599UyBQsP+knoqlrW/SRLuyCrj4rgOo6hbahOLlTR6wvKshW9p6KAs+uJA==
   dependencies:
     "@types/is-hotkey" "^0.1.1"
     "@types/lodash" "^4.14.149"
@@ -8045,10 +8039,10 @@ slate-react@0.72.9:
     scroll-into-view-if-needed "^2.2.20"
     tiny-invariant "1.0.6"
 
-slate@0.72.8:
-  version "0.72.8"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.72.8.tgz#5a018edf24e45448655293a68bfbcf563aa5ba81"
-  integrity sha512-/nJwTswQgnRurpK+bGJFH1oM7naD5qDmHd89JyiKNT2oOKD8marW0QSBtuFnwEbL5aGCS8AmrhXQgNOsn4osAw==
+slate@0.77.2:
+  version "0.77.2"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.77.2.tgz#ba66ac32d96f5e6f6793a53727930248ec2279fc"
+  integrity sha512-raG/eyYyRDThz+r/opUD+wxWxwXQi4fH0ViZh41x8qBu8uOPMTBYl10RA7KsF8IK48DS207uPrvWGGBsnMCLwg==
   dependencies:
     immer "^9.0.6"
     is-plain-object "^5.0.0"
@@ -8691,15 +8685,20 @@ tsconfig-paths@^3.11.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@2.3.1, tslib@^2, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0, tslib@~2.3.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
-  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+tslib@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
+
+tslib@^2, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0, tslib@~2.3.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
 tslib@~2.0.1:
   version "2.0.3"
@@ -8804,19 +8803,6 @@ unbzip2-stream@^1.0.9:
   dependencies:
     buffer "^5.2.1"
     through "^2.3.8"
-
-unified@10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/unified/-/unified-10.1.1.tgz#345e349e3ab353ab612878338eb9d57b4dea1d46"
-  integrity sha512-v4ky1+6BN9X3pQrOdkFIPWAaeDsHPE1svRDxq7YpTc2plkIqFMwukfqM+l0ewpP9EfwARlt9pPFAeWYhHm8X9w==
-  dependencies:
-    "@types/unist" "^2.0.0"
-    bail "^2.0.0"
-    extend "^3.0.0"
-    is-buffer "^2.0.0"
-    is-plain-obj "^4.0.0"
-    trough "^2.0.0"
-    vfile "^5.0.0"
 
 unified@10.1.2, unified@^10.0.0:
   version "10.1.2"

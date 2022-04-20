@@ -116,7 +116,7 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
       isClearable
       isDisabled={isDisabled || isSubmitting}
       label={label}
-      loadOptions={queryAddress}
+      loadOptions={queryAddress as any}
       name={name}
       onChange={updateFormikValues as any}
       placeholder={placeholder}
