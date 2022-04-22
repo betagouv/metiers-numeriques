@@ -1,8 +1,9 @@
+import { ButtonAsLink } from '@app/atoms/ButtonAsLink'
 import { UserRole } from '@prisma/client'
 import { VerticalMenu } from '@singularity/core'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
-import { LogOut } from 'react-feather'
+import { useMemo } from 'react'
 import styled from 'styled-components'
 
 import Link from '../atoms/Link'
@@ -33,21 +34,11 @@ const MenuTitle = styled.h4`
   padding: ${p => p.theme.padding.layout.small} 0;
 `
 
-const UserMenu = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  svg {
-    cursor: pointer;
-  }
-  svg:hover {
-    fill: white;
-  }
-`
-
 export default function AdminMenu() {
   const router = useRouter()
   const auth = useAuth<Common.Auth.User>()
+
+  const isAdmin = useMemo(() => auth.user?.role === UserRole.ADMINISTRATOR, [auth.user])
 
   return (
     <Box>
@@ -59,7 +50,7 @@ export default function AdminMenu() {
             </VerticalMenu.Item>
           </Link>
 
-          {auth.user?.role === UserRole.ADMINISTRATOR && (
+          {isAdmin && (
             <Link href="/admin/contacts">
               <VerticalMenu.Item
                 isActive={router.pathname === '/admin/contacts' || router.pathname.startsWith('/admin/contact/')}
@@ -70,7 +61,7 @@ export default function AdminMenu() {
             </Link>
           )}
 
-          {auth.user?.role === UserRole.ADMINISTRATOR && (
+          {isAdmin && (
             <Link href="/admin/institutions">
               <VerticalMenu.Item
                 isActive={
@@ -92,7 +83,7 @@ export default function AdminMenu() {
             </VerticalMenu.Item>
           </Link>
 
-          {auth.user?.role === UserRole.ADMINISTRATOR && (
+          {isAdmin && (
             <Link href="/admin/professions">
               <VerticalMenu.Item
                 isActive={router.pathname === '/admin/professions' || router.pathname.startsWith('/admin/profession/')}
@@ -103,7 +94,7 @@ export default function AdminMenu() {
             </Link>
           )}
 
-          {auth.user?.role === UserRole.ADMINISTRATOR && (
+          {isAdmin && (
             <Link href="/admin/recruiters">
               <VerticalMenu.Item
                 isActive={router.pathname === '/admin/recruiters' || router.pathname.startsWith('/admin/recruiter/')}
@@ -115,11 +106,11 @@ export default function AdminMenu() {
           )}
         </VerticalMenu>
 
-        {auth.user?.role === UserRole.ADMINISTRATOR && (
-          <>
-            <MenuTitle>ADMINISTRATION</MenuTitle>
+        <MenuTitle>ADMINISTRATION</MenuTitle>
 
-            <VerticalMenu>
+        <VerticalMenu>
+          {isAdmin && (
+            <>
               <Link href="/admin/leads">
                 <VerticalMenu.Item
                   isActive={router.pathname === '/admin/leads' || router.pathname.startsWith('/admin/lead/')}
@@ -162,8 +153,16 @@ export default function AdminMenu() {
                   Utilisateur·rices
                 </VerticalMenu.Item>
               </Link>
-            </VerticalMenu>
+            </>
+          )}
 
+          <ButtonAsLink onClick={auth.logOut}>
+            <VerticalMenu.Item isDark>Déconnexion</VerticalMenu.Item>
+          </ButtonAsLink>
+        </VerticalMenu>
+
+        {isAdmin && (
+          <>
             <MenuTitle>LEGACY</MenuTitle>
 
             <VerticalMenu>
@@ -195,10 +194,6 @@ export default function AdminMenu() {
           </>
         )}
       </div>
-
-      <UserMenu>
-        <LogOut onClick={auth.logOut} />
-      </UserMenu>
     </Box>
   )
 }
