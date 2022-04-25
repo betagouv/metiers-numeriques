@@ -5,7 +5,7 @@ import JobPage, { isJobFilledOrExpired } from '../[slug]'
 
 export default JobPage
 
-export async function getServerSideProps({ params: { slug } }) {
+export async function getServerSideProps({ params: { id } }) {
   const prisma = getPrisma()
 
   const job = await prisma.job.findUnique({
@@ -17,7 +17,7 @@ export async function getServerSideProps({ params: { slug } }) {
       recruiter: true,
     },
     where: {
-      slug,
+      id,
     },
   })
 

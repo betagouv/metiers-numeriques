@@ -75,16 +75,8 @@ export const mutation = {
         throw new Error('`displayName` can’t be null.')
       }
 
-      const controlledInput =
-        input.displayName !== undefined
-          ? {
-              ...input,
-              name: input.displayName,
-            }
-          : input
-
       const args: Prisma.RecruiterUpdateArgs = {
-        data: controlledInput,
+        data: input,
         where: {
           id,
         },

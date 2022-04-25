@@ -20,7 +20,7 @@ export function Editor({ helper, isDisabled = false, label, name, placeholder }:
 
   return (
     <MarkdownEditor
-      defaultValue={values[name]}
+      defaultValue={values[name] || ''}
       error={maybeError}
       helper={helper}
       isDisabled={isDisabled || isSubmitting}

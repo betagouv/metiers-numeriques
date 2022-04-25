@@ -115,17 +115,9 @@ export default function AdminJobListPage() {
     router.push(`/admin/job/${id}`)
   }, [])
 
-  const goToPreview = useCallback(
-    (id: string) => {
-      const job = R.find<Job>(R.propEq('id', id))(jobsResult.data)
-      if (job === undefined) {
-        return
-      }
-
-      window.open(`/emploi/${job.slug}`)
-    },
-    [jobsResult.data],
-  )
+  const goToPreview = useCallback((id: string) => {
+    window.open(`/emploi/preview/${id}`)
+  }, [])
 
   const handleSourceSelect = useCallback((option: Common.App.SelectOption | null): void => {
     $source.current = option !== null ? option.value : ''
