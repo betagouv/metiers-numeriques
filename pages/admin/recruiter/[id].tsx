@@ -224,6 +224,14 @@ export default function AdminRecruiterEditorPage() {
           </Field>
 
           <Field>
+            <AdminForm.TextInput isDisabled label="Nom unique" name="name" />
+          </Field>
+
+          <Field>
+            <AdminForm.TextInput isDisabled label="Nom complet (LEGACY)" name="fullName" />
+          </Field>
+
+          <Field>
             <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
             </AdminForm.Cancel>
