@@ -68,7 +68,7 @@ export function JobCard({ job }: JobCardProps) {
                     {job.recruiter.displayName}
                   </a>
                 )}
-                {!job.recruiter.websiteUrl && !job.recruiter.displayName}
+                {!job.recruiter.websiteUrl && job.recruiter.displayName}
               </p>
 
               <p

@@ -147,6 +147,7 @@ async function seed() {
                 id
 
                 createdAt
+                displayName
                 name
                 fullName
                 name
@@ -156,8 +157,10 @@ async function seed() {
                 institution {
                   id
 
+                  createdAt
                   name
                   slug
+                  updatedAt
                 }
               }
             }
