@@ -3,7 +3,7 @@ import { AuthenticationError, ForbiddenError } from 'apollo-server-micro'
 import { createRateLimitRule, RedisStore } from 'graphql-rate-limit'
 import { rule } from 'graphql-shield'
 
-import getRedis from '../helpers/getRedis'
+import { getRedis } from '../helpers/getRedis'
 
 import type { GraphQLObjectType, GraphQLResolveInfo } from 'graphql'
 import type { GraphQLRateLimitConfig } from 'graphql-rate-limit'

@@ -20,15 +20,13 @@ import type { Job } from '@prisma/client'
 import type { Cheerio, CheerioAPI } from 'cheerio'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const { API_SECRET, DOMAIN_URL } = process.env
+// const { API_SECRET, NODE_ENV } = process.env
+const { API_SECRET } = process.env
 const BASE_URL = 'https://place-emploi-public.gouv.fr'
+// const IS_PROD = NODE_ENV === 'production'
 const SCRIPT_PATH = 'pages/api/pep/synchronize.js'
-const MAX_PEP_JOBS_INDEX_DEPTH =
-  DOMAIN_URL !== undefined &&
-  ['https://metiers.numerique.gouv.fr', 'https://dinum-metiers-num-staging.osc-fr1.scalingo.io'].includes(DOMAIN_URL)
-    ? 20
-    : 2
-const MAX_PEP_JOBS_PER_CALL = 10
+const MAX_PEP_JOBS_INDEX_DEPTH = 20
+const MAX_PEP_JOBS_PER_CALL = 2
 
 const prisma = getPrisma()
 
@@ -55,6 +53,8 @@ async function getJobList(
       const title = selectInJobCard($root, index, 'h3').text().trim()
       const sourceUrl = (selectInJobCard($root, index, 'h3 a').attr('href') as string).trim()
       if (title === undefined || sourceUrl === undefined) {
+        ß.error(`[${SCRIPT_PATH}] \`title\` or \`sourceUrl\` is undefined.`)
+
         continue
       }
       const existingJob = await prisma.job.findFirst({
@@ -132,10 +132,14 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
 
       const $missionDescriptionTitle = $root("h2:contains('Vos missions en quelques mots')")
       if ($missionDescriptionTitle.length === 0) {
+        ß.error(`[${SCRIPT_PATH}] Unable to find mission description at ${job.sourceUrl} …`)
+
         continue
       }
       const mainContentAsHtml = $missionDescriptionTitle.parent().html()
       if (mainContentAsHtml === null) {
+        ß.error(`[${SCRIPT_PATH}] Unable to find mission description parent at ${job.sourceUrl}.`)
+
         continue
       }
 
@@ -144,6 +148,8 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
         'Vos missions en quelques mots',
       )
       if (missionDescriptionAsHtml === undefined) {
+        ß.error(`[${SCRIPT_PATH}] Unable to extract mission description ${job.sourceUrl}.`)
+
         continue
       }
       job.missionDescription = convertHtmlToMarkdown(missionDescriptionAsHtml)
@@ -158,6 +164,8 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
       if ($teamDescriptionTitle.length === 1 && $teamDescriptionTitle.parent().next().length === 1) {
         const teamDescriptionAsHtml = $teamDescriptionTitle.parent().next().html()
         if (teamDescriptionAsHtml === null) {
+          ß.error(`[${SCRIPT_PATH}] Unable to find team description at ${job.sourceUrl}.`)
+
           continue
         }
 
@@ -166,6 +174,8 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
 
       const $recruiter = $root('ul.fr-grid-row > li:nth-child(2)')
       if ($recruiter.length === 0) {
+        ß.error(`[${SCRIPT_PATH}] Unable to find recruiter at ${job.sourceUrl}.`)
+
         continue
       }
       const recruiterName = $recruiter
@@ -175,15 +185,14 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
       job.recruiterId = await getRecruiterIdFromName(prisma, recruiterName)
 
       const $address = $root('ul.fr-grid-row > li:nth-child(3)')
-      if ($address.length === 0) {
-        continue
+      if ($address.length === 1) {
+        const pepAddress = $address.text().trim()
+        const addressId = await getAddressIdFromPepAddress(prisma, pepAddress)
+
+        if (addressId !== undefined) {
+          job.addressId = addressId
+        }
       }
-      const pepAddress = $address.text().trim()
-      const addressId = await getAddressIdFromPepAddress(prisma, pepAddress)
-      if (addressId === undefined) {
-        continue
-      }
-      job.addressId = addressId
 
       const $expiredAt = $root('p.ic.ic--info')
       job.expiredAt =
@@ -193,6 +202,8 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
 
       const $pepProfession = $root(".fr-accordion button:contains('Métier référence')").parent().next()
       if ($pepProfession.length === 0) {
+        ß.error(`[${SCRIPT_PATH}] Unable to find profession at ${job.sourceUrl}.`)
+
         continue
       }
       const pepProfession = $pepProfession.text().trim()
