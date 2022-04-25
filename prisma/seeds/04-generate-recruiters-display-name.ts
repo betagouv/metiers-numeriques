@@ -21,7 +21,6 @@ export async function generateRecruitersDisplayName(prisma: PrismaClient) {
     await prisma.recruiter.update({
       data: {
         displayName: name,
-        name,
       },
       where: {
         id: recruiter.id,
