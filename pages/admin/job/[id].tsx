@@ -473,7 +473,7 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Textarea
+            <AdminForm.Editor
               isDisabled={isLoading}
               label="Tâches"
               name="tasksDescription"
