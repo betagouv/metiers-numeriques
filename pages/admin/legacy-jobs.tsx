@@ -123,6 +123,7 @@ export default function AdminLegacyJobListPage() {
       accent: 'warning',
       action: goToMigrator,
       Icon: Sunrise,
+      key: 'migrate',
       label: 'Migrer cette offre [LEGACY]',
       type: 'action',
       withTooltip: true,

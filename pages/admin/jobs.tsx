@@ -175,6 +175,7 @@ export default function AdminJobListPage() {
         accent: 'secondary',
         action: goToPreview,
         Icon: ExternalLink,
+        key: 'preview',
         label: 'Prévisualiser cette offre',
         type: 'action',
       },
@@ -182,6 +183,7 @@ export default function AdminJobListPage() {
         accent: 'primary',
         action: goToEditor,
         Icon: Edit,
+        key: 'edit',
         label: 'Éditer cette offre',
         type: 'action',
       },
@@ -192,6 +194,7 @@ export default function AdminJobListPage() {
         accent: 'danger',
         action: confirmDeletion,
         Icon: Trash,
+        key: 'delete',
         label: 'Supprimer cette offre',
         type: 'action',
       })
