@@ -65,13 +65,10 @@ export function JobCard({ job }: JobCardProps) {
                 <i className="ri-building-fill fr-mr-2w" />
                 {job.recruiter.websiteUrl && (
                   <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                    {job.recruiter.fullName && <acronym title={job.recruiter.fullName}>{job.recruiter.name}</acronym>}
+                    {job.recruiter.displayName}
                   </a>
                 )}
-                {!job.recruiter.websiteUrl && job.recruiter.fullName && (
-                  <acronym title={job.recruiter.fullName}>{job.recruiter.name}</acronym>
-                )}
-                {!job.recruiter.websiteUrl && !job.recruiter.fullName && job.recruiter.name}
+                {!job.recruiter.websiteUrl && !job.recruiter.displayName}
               </p>
 
               <p

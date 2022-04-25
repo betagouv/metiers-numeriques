@@ -7,11 +7,8 @@ export const GET_ALL = gql`
       data {
         id
 
-        createdAt
-        fullName
-        name
+        displayName
         updatedAt
-        websiteUrl
 
         logoFile {
           id
@@ -36,6 +33,7 @@ export const GET_ONE = gql`
       id
 
       createdAt
+      displayName
       fullName
       name
       source
@@ -79,7 +77,7 @@ export const GET_LIST = gql`
     getRecruitersList(institutionId: $institutionId) {
       id
 
-      name
+      displayName
     }
   }
 `

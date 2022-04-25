@@ -27,8 +27,15 @@ export const mutation = {
     { input }: { input: Prisma.RecruiterCreateInput },
   ): Promise<Recruiter | null> => {
     try {
+      if (typeof input.displayName !== 'string') {
+        throw new Error('`displayName` is required.')
+      }
+
       const args: Prisma.RecruiterCreateArgs = {
-        data: input,
+        data: {
+          ...input,
+          name: input.displayName,
+        },
       }
 
       const data = await getPrisma().recruiter.create(args)
@@ -64,8 +71,20 @@ export const mutation = {
     { id, input }: { id: string; input: Partial<Recruiter> },
   ): Promise<Recruiter | null> => {
     try {
+      if (input.displayName === null) {
+        throw new Error('`displayName` can’t be null.')
+      }
+
+      const controlledInput =
+        input.displayName !== undefined
+          ? {
+              ...input,
+              name: input.displayName,
+            }
+          : input
+
       const args: Prisma.RecruiterUpdateArgs = {
-        data: input,
+        data: controlledInput,
         where: {
           id,
         },

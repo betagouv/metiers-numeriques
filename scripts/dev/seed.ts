@@ -152,6 +152,13 @@ async function seed() {
                 name
                 updatedAt
                 websiteUrl
+
+                institution {
+                  id
+
+                  name
+                  slug
+                }
               }
             }
           }
@@ -171,7 +178,22 @@ async function seed() {
 
   const addresses = R.pipe(R.map(R.prop('address')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
   const professions = R.pipe(R.map(R.prop('profession')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
-  const recruiters = R.pipe(R.map(R.prop('recruiter')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
+  const recruiters: any[] = R.pipe(
+    R.map(R.prop('recruiter')),
+    deduplicateById,
+    R.map((rawRecruiter: any) => ({
+      ...rawRecruiter,
+      institutionId: rawRecruiter.institution !== null ? rawRecruiter.institution.id : null,
+    })),
+    R.map(omitTypenameProp),
+    R.map(R.omit(['institution'])),
+  )(rawJobs)
+  const institutions = R.pipe(
+    R.map(R.path(['recruiter', 'institution'])),
+    R.reject(R.isNil),
+    deduplicateById,
+    R.map(omitTypenameProp),
+  )(rawJobs)
 
   const applicationContacts = R.pipe(R.map(R.prop('applicationContacts')), R.unnest)(rawJobs)
   const infoContacts = R.map(R.prop('infoContact'))(rawJobs)
@@ -214,6 +236,7 @@ async function seed() {
   })
   const recruiter = await prisma.recruiter.create({
     data: {
+      displayName: 'Test Service',
       institutionId,
       name: 'Test Service',
     },
@@ -243,6 +266,11 @@ async function seed() {
   ß.info('[scripts/dev/seed.js] Seeding local database with production professions…')
   await prisma.profession.createMany({
     data: professions,
+  })
+
+  ß.info('[scripts/dev/seed.js] Seeding local database with production institutions…')
+  await prisma.institution.createMany({
+    data: institutions,
   })
 
   ß.info('[scripts/dev/seed.js] Seeding local database with production recruiters…')

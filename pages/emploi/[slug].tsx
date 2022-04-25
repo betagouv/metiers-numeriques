@@ -100,10 +100,10 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
                 <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
                   {job.recruiter.websiteUrl && (
                     <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                      {job.recruiter.fullName || job.recruiter.name}
+                      {job.recruiter.displayName}
                     </a>
                   )}
-                  {!job.recruiter.websiteUrl && (job.recruiter.fullName || job.recruiter.name)}
+                  {!job.recruiter.websiteUrl && job.recruiter.displayName}
                 </div>
               </div>
             )}

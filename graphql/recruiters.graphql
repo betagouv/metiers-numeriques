@@ -9,6 +9,7 @@ type Recruiter {
   id: ID!
 
   createdAt: DateTime
+  displayName: String
   name: String
   fullName: String
   source: String
@@ -29,8 +30,9 @@ type RecruiterCount {
 }
 
 input RecruiterInput {
-  name: String
+  displayName: String
   fullName: String
+  name: String
   websiteUrl: String
 
   logoFileId: String

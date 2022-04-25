@@ -10,6 +10,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import queries from '../../queries'
 
+import type { Recruiter } from '@prisma/client'
+
 type RecruiterSelectProps = {
   helper?: string
   institutionId?: string
@@ -33,7 +35,9 @@ export function RecruiterSelect({
   const [hasNewRecruiterModal, setHasNewRecruiterModal] = useState(false)
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getRecruitersListResult = useQuery(queries.recruiter.GET_LIST, {
+  const getRecruitersListResult = useQuery<{
+    getRecruitersList: Recruiter[]
+  }>(queries.recruiter.GET_LIST, {
     fetchPolicy: 'no-cache',
     variables: {
       institutionId,
@@ -107,8 +111,12 @@ export function RecruiterSelect({
       return
     }
 
-    const newRecruitersAsOptions = R.map(({ id, name }) => ({
-      label: name,
+    if (getRecruitersListResult.data === undefined) {
+      return
+    }
+
+    const newRecruitersAsOptions = R.map(({ displayName, id }: Recruiter) => ({
+      label: String(displayName),
       value: id,
     }))(getRecruitersListResult.data.getRecruitersList)
 

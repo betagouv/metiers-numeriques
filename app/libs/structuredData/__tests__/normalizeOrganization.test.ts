@@ -6,6 +6,7 @@ describe('libs/structuredData.normalizeOrganization()', () => {
   test(`with no {websiteUrl}`, () => {
     const recruiter: Recruiter = {
       createdAt: new Date(),
+      displayName: null,
       fullName: null,
       id: '',
       institutionId: null,
@@ -28,6 +29,7 @@ describe('libs/structuredData.normalizeOrganization()', () => {
   test(`with an empty {websiteUrl}`, () => {
     const recruiter: Recruiter = {
       createdAt: new Date(),
+      displayName: null,
       fullName: null,
       id: '',
       institutionId: null,
@@ -50,6 +52,7 @@ describe('libs/structuredData.normalizeOrganization()', () => {
   test(`with a non-empty {websiteUrl}`, () => {
     const recruiter: Recruiter = {
       createdAt: new Date(),
+      displayName: null,
       fullName: null,
       id: '',
       institutionId: null,

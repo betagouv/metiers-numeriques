@@ -8,6 +8,8 @@ import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { showApolloError } from '../../helpers/showApolloError'
 import queries from '../../queries'
 
+import type { Profession } from '@prisma/client'
+
 type ProfessionSelectProps = {
   helper?: string
   isDisabled?: boolean
@@ -20,7 +22,9 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
   const $newProfessionId = useRef<string>()
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getProfessionsListResult = useQuery(queries.profession.GET_LIST, {
+  const getProfessionsListResult = useQuery<{
+    getProfessionsList: Profession[]
+  }>(queries.profession.GET_LIST, {
     fetchPolicy: 'no-cache',
   })
 
@@ -66,6 +70,9 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
     if (getProfessionsListResult.error) {
       showApolloError(getProfessionsListResult.error)
 
+      return
+    }
+    if (getProfessionsListResult.data === undefined) {
       return
     }
 

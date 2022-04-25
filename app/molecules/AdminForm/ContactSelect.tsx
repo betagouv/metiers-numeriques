@@ -10,6 +10,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import queries from '../../queries'
 
+import type { Contact } from '@prisma/client'
+
 type ContactSelectProps = {
   helper?: string
   isDisabled?: boolean
@@ -31,7 +33,9 @@ export function ContactSelect({
   const [hasNewContactModal, setHasNewContactModal] = useState(false)
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
-  const getContactsListResult = useQuery(queries.contact.GET_LIST, {
+  const getContactsListResult = useQuery<{
+    getContactsList: Contact[]
+  }>(queries.contact.GET_LIST, {
     fetchPolicy: 'no-cache',
   })
 
@@ -99,6 +103,9 @@ export function ContactSelect({
     if (getContactsListResult.error) {
       showApolloError(getContactsListResult.error)
 
+      return
+    }
+    if (getContactsListResult.data === undefined) {
       return
     }
 

@@ -7,37 +7,34 @@ import { DeletionModal } from '@app/organisms/DeletionModal'
 import queries from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
+import { JobSource } from '@prisma/client'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Edit, Trash } from 'react-feather'
+import { Edit, Lock, Trash, Unlock } from 'react-feather'
 
 import type { RecruiterFromGetAll } from '@api/resolvers/recruiters'
 import type { GetAllResponse } from '@api/resolvers/types'
+import type { Recruiter } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
   {
-    grow: 0.3,
-    key: 'name',
+    grow: 0.6,
+    key: 'displayName',
     label: 'Nom',
   },
   {
-    grow: 0.6,
-    key: 'fullName',
-    label: 'Nom complet',
-  },
-  {
-    grow: 0.1,
+    grow: 0.2,
     key: '_count.jobs',
-    label: 'O',
+    label: 'Offres',
   },
   {
-    grow: 0.1,
+    grow: 0.2,
     key: '_count.users',
-    label: 'U',
+    label: 'Utilisateur·rices',
   },
 ]
 
@@ -89,7 +86,7 @@ export default function AdminRecruiterListPage() {
       }
 
       setSelectedId(id)
-      setSelectedEntity(recruiter.name)
+      setSelectedEntity(String(recruiter.displayName))
       setHasDeletionModal(true)
     },
     [recruitersResult.data],
@@ -144,6 +141,17 @@ export default function AdminRecruiterListPage() {
 
   const columns: TableColumnProps[] = [
     ...BASE_COLUMNS,
+    {
+      IconOff: Unlock,
+      IconOn: Lock,
+      key: 'isLocked',
+      label: 'Verrou',
+      labelOff: 'Ce recruteur n’est pas verrouillé',
+      labelOn: 'Ce recruteur est verrouillé car il a été généré automatiquement',
+      transform: ({ source }: Recruiter) => source === JobSource.PEP,
+      type: 'boolean',
+      withTooltip: true,
+    },
     {
       accent: 'primary',
       action: goToEditor,
