@@ -7,15 +7,12 @@ export async function generateRecruitersDisplayName(prisma: PrismaClient) {
 
   ß.info('Generating recruiters display name…')
   for (const recruiter of recruiters) {
-    if (recruiter.displayName !== null) {
+    if (recruiter.displayName !== 'null') {
       // eslint-disable-next-line no-continue
       continue
     }
 
-    const name =
-      recruiter.fullName === null || recruiter.fullName.trim().length === 0
-        ? String(recruiter.fullName)
-        : recruiter.name
+    const { name } = recruiter
 
     // eslint-disable-next-line no-await-in-loop
     await prisma.recruiter.update({
