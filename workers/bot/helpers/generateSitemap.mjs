@@ -63,5 +63,4 @@ export async function generateSitemap() {
   ß.success(`[bot] ${archivedJobs.length} archived jobs mapped.`)
 
   sitemap.end()
-  setInterval(process.exit, 2000)
 }
