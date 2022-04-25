@@ -130,7 +130,7 @@ export default function AdminRecruiterEditorPage() {
   const saveAndGoToList = useCallback(async (values: any) => {
     setIsLoading(true)
 
-    const input: Partial<Recruiter> = R.pick(['fullName', 'institutionId', 'logoFileId', 'name', 'websiteUrl'])(values)
+    const input: Partial<Recruiter> = R.pick(['displayName', 'institutionId', 'logoFileId', 'websiteUrl'])(values)
 
     const options: MutationFunctionOptions = {
       variables: {

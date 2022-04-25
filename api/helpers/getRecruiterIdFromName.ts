@@ -15,6 +15,7 @@ export async function getRecruiterIdFromName(prisma: PrismaClient, recruiterName
 
   const newRecruiter = await prisma.recruiter.create({
     data: {
+      displayName: recruiterName,
       name: recruiterName,
       source: JobSource.PEP,
     },

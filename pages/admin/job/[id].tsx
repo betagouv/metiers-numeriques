@@ -15,9 +15,8 @@ import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
-import { JobContractType, JobRemoteStatus, JobSource, JobState, UserRole } from '@prisma/client'
+import { JobContractType, JobSource, JobState, UserRole } from '@prisma/client'
 import { Field } from '@singularity/core'
-import cuid from 'cuid'
 import dayjs from 'dayjs'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
@@ -89,9 +88,7 @@ export const JobFormSchema = Yup.object().shape(
 export default function AdminJobEditorPage() {
   const router = useRouter()
   const id = router.query.id as string
-  const isNew = id === 'new'
 
-  const $id = useRef<string | undefined>(isNew ? undefined : id)
   const $slug = useRef<string | undefined>()
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
   const [isError, setIsError] = useState(false)
@@ -110,7 +107,6 @@ export default function AdminJobEditorPage() {
     },
   })
   const [createAddress] = useMutation(queries.address.CREATE_ONE)
-  const [createJob] = useMutation(queries.job.CREATE_ONE)
   const [updateJob] = useMutation(queries.job.UPDATE_ONE)
 
   const goToList = useCallback(() => {
@@ -118,12 +114,8 @@ export default function AdminJobEditorPage() {
   }, [])
 
   const goToPreview = useCallback(() => {
-    if ($slug.current === undefined) {
-      return
-    }
-
-    window.open(`/emploi/preview/${$slug.current}`, '_blank')
-  }, [$slug.current])
+    window.open(`/emploi/preview/${id}`, '_blank')
+  }, [])
 
   const goToSource = useCallback(() => {
     if (initialValues === undefined || initialValues.sourceUrl === null || initialValues.sourceUrl === undefined) {
@@ -163,9 +155,8 @@ export default function AdminJobEditorPage() {
         return
       }
 
-      input.id = $id.current === undefined ? cuid() : $id.current
       if (input.state === JobState.DRAFT) {
-        input.slug = slugify(input.title, input.id || $id.current)
+        input.slug = slugify(input.title, id)
         $slug.current = input.slug
       }
 
@@ -195,30 +186,19 @@ export default function AdminJobEditorPage() {
 
       const options: MutationFunctionOptions = {
         variables: {
-          id: $id.current || input.id,
+          id,
           input,
         },
       }
 
-      if ($id.current === undefined) {
-        const createJobResult = await createJob(options)
-        if (createJobResult.data.createJob === null) {
-          toast.error('La requête GraphQL de création a échoué.')
+      const updateJobResult = await updateJob(options)
+      if (updateJobResult.data.updateJob === null) {
+        toast.error('La requête GraphQL de modification a échoué.')
 
-          return
-        }
-
-        $id.current = input.id
-      } else {
-        const updateJobResult = await updateJob(options)
-        if (updateJobResult.data.updateJob === null) {
-          toast.error('La requête GraphQL de modification a échoué.')
-
-          return
-        }
-
-        await getJobResult.refetch()
+        return
       }
+
+      await getJobResult.refetch()
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
       toast.error(String(err))
@@ -258,21 +238,6 @@ export default function AdminJobEditorPage() {
       return
     }
 
-    if (isNew) {
-      setInitialValues({
-        contractTypes: [JobContractType.NATIONAL_CIVIL_SERVANT, JobContractType.CONTRACT_WORKER],
-        expiredAtAsString: dayjs().add(2, 'months').format('YYYY-MM-DD'),
-        recruiterId: auth.user?.role === UserRole.RECRUITER ? auth.user?.recruiterId : null,
-        remoteStatus: JobRemoteStatus.NONE,
-        seniorityInYears: 0,
-        state: JobState.DRAFT,
-        title: 'Nouvelle offre d’emploi',
-      })
-      setIsLoading(false)
-
-      return
-    }
-
     const initialValues: any = {
       ...getJobResult.data.getJob,
     }
@@ -303,7 +268,7 @@ export default function AdminJobEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle offre d’emploi' : 'Édition d’une offre d’emploi'}</Title>
+        <Title>Édition d’une offre d’emploi</Title>
 
         <AdminFloatingButton onClick={goToPreview}>Prévisualiser</AdminFloatingButton>
       </AdminHeader>
@@ -557,7 +522,7 @@ export default function AdminJobEditorPage() {
           <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
             Annuler
           </AdminForm.Cancel>
-          <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
+          <AdminForm.Submit isDisabled={isLoading}>Mettre à jour</AdminForm.Submit>
         </AdminCard>
       </AdminForm>
     </>
