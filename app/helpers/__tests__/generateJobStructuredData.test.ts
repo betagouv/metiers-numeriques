@@ -77,6 +77,7 @@ describe('app/helpers/generateJobStructuredData()', () => {
         '- Vous avez un diplôme de niveau bac+5 en informatique \n- Vous connaissez l’état de l’art de l’administration de système d’information et de produit numérique\n- Vous maitrisez un ou plusieurs domaines parmi : développement backend, développement frontend, administration système ou développement mobile\n- Vous savez faire des faire des revues de codes dans un des langages utilisés sur Tchap : Kotlin, Swift, Python ou JS',
       recruiter: {
         createdAt: '2022-01-28T16:39:59.897Z' as unknown as Date,
+        displayName: null,
         fullName: null,
         id: 'ckyyms87t0279a0j7esc6vpfe',
         institutionId: null,

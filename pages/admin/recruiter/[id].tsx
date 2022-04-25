@@ -7,7 +7,6 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminForm } from '@app/molecules/AdminForm'
 import queries from '@app/queries'
 import { JOB_STATE_LABEL, USER_ROLE_LABEL } from '@common/constants'
-import { JobSource } from '@prisma/client'
 import { Field, Table } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -21,9 +20,8 @@ import type { Job, Recruiter } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const FormSchema = Yup.object().shape({
-  fullName: Yup.string().nullable(),
+  displayName: Yup.string().nullable().required(`Le nom est obligatoire.`),
   institutionId: Yup.string().nullable(),
-  name: Yup.string().required(`Le nom est obligatoire.`),
   websiteUrl: Yup.string().nullable().url(`Cette URL est mal formatée.`),
 })
 
@@ -214,15 +212,7 @@ export default function AdminRecruiterEditorPage() {
           </Field> */}
 
           <Field>
-            <AdminForm.TextInput
-              isDisabled={isLoading || initialValues?.source === JobSource.PEP}
-              label="Nom *"
-              name="name"
-            />
-          </Field>
-
-          <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Nom complet" name="fullName" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="displayName" />
           </Field>
 
           <Field>

@@ -65,8 +65,7 @@ export const GET_ALL_PUBLIC = gql`
         recruiter {
           id
 
-          fullName
-          name
+          displayName
           websiteUrl
         }
       }
