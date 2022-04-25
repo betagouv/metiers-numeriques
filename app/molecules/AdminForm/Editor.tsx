@@ -25,7 +25,7 @@ export function Editor({ helper, isDisabled = false, label, name, placeholder }:
       helper={helper}
       isDisabled={isDisabled || isSubmitting}
       label={label}
-      onInput={updateFormikValues as any}
+      onChange={updateFormikValues}
       placeholder={placeholder}
     />
   )

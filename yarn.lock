@@ -1751,10 +1751,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@singularity/core@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.0.2.tgz#aa8e60006bca893e9d2de6faf0633935e1bf3cee"
-  integrity sha512-a3ULd8O6h3yImaVX/JAYH6TNwtv9gHD8NRT3VhUBv9olw6pWyHvkvFuw60Aa2JZA5QSc75FRR41SIOSBXlPMIg==
+"@singularity/core@4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.0.3.tgz#b4cc7707f0d7d32ccc837b82bdf3ef3b1a9640c2"
+  integrity sha512-N7YYhdjgw/+onFSkJ27OPRO2eUxyiRfdvi+UMlfaC8qfRDOXndKmaY1sQPgvYHKj4TZHT0SWs0YZX1Mmj7Togg==
   dependencies:
     better-prop-types "1.1.1"
     ramda "0.28.0"
