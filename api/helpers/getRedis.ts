@@ -12,6 +12,6 @@ const __REDIS = {
   redisInstance: new Redis(REDIS_URL),
 }
 
-export default function getRedis(): Redis {
+export function getRedis(): Redis {
   return __REDIS.redisInstance
 }
