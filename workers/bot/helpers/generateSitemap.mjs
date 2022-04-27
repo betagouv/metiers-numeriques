@@ -27,6 +27,8 @@ export async function generateSitemap() {
     hostname: 'https://metiers.numerique.gouv.fr',
   })
 
+  await prisma.$disconnect()
+
   const writeStream = createWriteStream('./public/sitemap.xml')
   sitemap.pipe(writeStream)
 

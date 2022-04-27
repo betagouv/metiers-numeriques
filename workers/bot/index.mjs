@@ -12,7 +12,7 @@ export default async function BotJob() {
 
     ß.info('[bot] Done.')
   } catch (err) {
-    ß.error('[pep]', err)
+    ß.error(`[bot] ${err}`)
     console.error(err)
   }
 }
