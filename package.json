@@ -57,7 +57,7 @@
     "classnames": "2.3.1",
     "cron": "1.8.2",
     "cuid": "2.1.8",
-    "dayjs": "1.10.8",
+    "dayjs": "1.11.1",
     "dotenv": "16.0.0",
     "download": "8.0.0",
     "formik": "2.2.9",
