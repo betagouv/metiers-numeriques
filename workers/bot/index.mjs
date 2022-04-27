@@ -2,17 +2,13 @@
 
 import ß from 'bhala'
 
-import { generateSitemap } from './helpers/generateSitemap.mjs'
-
 export default async function BotJob() {
   try {
-    ß.info('[bot] Starting…')
+    ß.info('[workers/bot] Starting…')
 
-    await generateSitemap()
-
-    ß.info('[bot] Done.')
+    ß.info('[workers/bot] Done.')
   } catch (err) {
-    ß.error(`[bot] ${err}`)
+    ß.error(`[workers/bot] ${err}`)
     console.error(err)
   }
 }
