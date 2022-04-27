@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import Link from '@app/atoms/Link'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import renderMarkdown from '@app/helpers/renderMarkdown'
@@ -109,8 +109,6 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
 }
 
 export async function getServerSideProps({ params: { slug } }) {
-  const prisma = getPrisma()
-
   const archivedJob = await prisma.archivedJob.findUnique({
     include: {
       profession: true,

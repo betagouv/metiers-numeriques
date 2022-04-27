@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -9,7 +9,7 @@ import type { LegacyInstitution } from '@prisma/client'
 export const mutation = {
   createLegacyInstitution: (obj, { input }: { input: LegacyInstitution }) => {
     try {
-      return getPrisma().legacyInstitution.create({
+      return prisma.legacyInstitution.create({
         data: input,
       })
     } catch (err) {
@@ -17,14 +17,14 @@ export const mutation = {
     }
   },
   deleteLegacyInstitution: (obj, { id }: { id: string }) =>
-    getPrisma().legacyInstitution.delete({
+    prisma.legacyInstitution.delete({
       where: {
         id,
       },
     }),
 
   updateLegacyInstitution: (obj, { id, input }: { id: string; input: Partial<LegacyInstitution> }) =>
-    getPrisma().legacyInstitution.update({
+    prisma.legacyInstitution.update({
       data: input as any,
       where: {
         id,
@@ -46,7 +46,7 @@ export const query = {
             slug,
           }
 
-    const legacyInstitution = await getPrisma().legacyInstitution.findUnique({
+    const legacyInstitution = await prisma.legacyInstitution.findUnique({
       include: {
         files: {
           include: {
@@ -82,8 +82,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().legacyInstitution.count(whereFilter)
-      const data = await getPrisma().legacyInstitution.findMany(args)
+      const length = await prisma.legacyInstitution.count(whereFilter)
+      const data = await prisma.legacyInstitution.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

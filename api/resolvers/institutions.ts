@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -37,7 +37,7 @@ export const mutation = {
         data: input,
       }
 
-      const data = await getPrisma().institution.create(args)
+      const data = await prisma.institution.create(args)
 
       return data
     } catch (err) {
@@ -55,7 +55,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().institution.delete(args)
+      const data = await prisma.institution.delete(args)
 
       return data
     } catch (err) {
@@ -83,7 +83,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().institution.update(args)
+      const data = await prisma.institution.update(args)
 
       return data
     } catch (err) {
@@ -103,7 +103,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().institution.findMany(args)
+      const data = await prisma.institution.findMany(args)
 
       return data
     } catch (err) {
@@ -137,7 +137,7 @@ export const query = {
         },
       }
 
-      const data = (await getPrisma().institution.findUnique(args)) as unknown as InstitutionFromGetOne | null
+      const data = (await prisma.institution.findUnique(args)) as unknown as InstitutionFromGetOne | null
 
       return data
     } catch (err) {
@@ -167,8 +167,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().institution.count(whereFilter)
-      const data = (await getPrisma().institution.findMany(args)) as unknown as InstitutionFromGetAll[]
+      const length = await prisma.institution.count(whereFilter)
+      const data = (await prisma.institution.findMany(args)) as unknown as InstitutionFromGetAll[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -197,7 +197,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().institution.findMany(args)
+      const data = await prisma.institution.findMany(args)
 
       return data
     } catch (err) {
@@ -228,8 +228,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().institution.count(whereFilter)
-      const data = (await getPrisma().institution.findMany(args)) as unknown as InstitutionFromGetAllPublic[]
+      const length = await prisma.institution.count(whereFilter)
+      const data = (await prisma.institution.findMany(args)) as unknown as InstitutionFromGetAllPublic[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

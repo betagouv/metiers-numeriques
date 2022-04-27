@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -18,7 +18,7 @@ export const mutation = {
         },
       }
 
-      const existingData = await getPrisma().contact.findUnique(findUniqueArgs)
+      const existingData = await prisma.contact.findUnique(findUniqueArgs)
 
       if (existingData !== null) {
         return existingData
@@ -28,7 +28,7 @@ export const mutation = {
         data: input,
       }
 
-      const newData = await getPrisma().contact.create(createArgs)
+      const newData = await prisma.contact.create(createArgs)
 
       return newData
     } catch (err) {
@@ -46,7 +46,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().contact.delete(args)
+      const data = await prisma.contact.delete(args)
 
       return data
     } catch (err) {
@@ -68,7 +68,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().contact.update(args)
+      const data = await prisma.contact.update(args)
 
       return data
     } catch (err) {
@@ -88,7 +88,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().contact.findUnique(args)
+      const data = await prisma.contact.findUnique(args)
 
       return data
     } catch (err) {
@@ -114,8 +114,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().contact.count(whereFilter)
-      const data = await getPrisma().contact.findMany(args)
+      const length = await prisma.contact.count(whereFilter)
+      const data = await prisma.contact.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -144,7 +144,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().contact.findMany(args)
+      const data = await prisma.contact.findMany(args)
 
       return data
     } catch (err) {

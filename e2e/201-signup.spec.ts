@@ -1,15 +1,13 @@
 import { test, expect } from '@playwright/test'
 import { UserRole } from '@prisma/client'
 
-import { getPrisma } from '../api/helpers/getPrisma'
+import { prisma } from '../api/libs/prisma'
 import { TEST_USERS } from './constants'
 
 const { CI } = process.env
 const IS_CI = Boolean(CI)
 
 test.describe('Signup', () => {
-  const prisma = getPrisma()
-
   test('First User Signup', async ({ page }) => {
     const firstTestUser = TEST_USERS[0]
 

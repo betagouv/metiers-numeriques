@@ -3,11 +3,11 @@
 import { convertExpiredAtTextToDate } from '@api/helpers/convertExpiredAtTextToDate'
 import { convertHtmlToMarkdown } from '@api/helpers/convertHtmlToMarkdown'
 import { getAddressIdFromPepAddress } from '@api/helpers/getAddressIdFromPepAddress'
-import { getPrisma } from '@api/helpers/getPrisma'
 import { getRecruiterIdFromName } from '@api/helpers/getRecruiterIdFromName'
 import { loadPageAsCheerioInstance } from '@api/helpers/loadPageAsCheerioInstance'
 import { normalizePepProfession } from '@api/helpers/normalizePepProfession'
 import { ApiError } from '@api/libs/ApiError'
+import { prisma } from '@api/libs/prisma'
 import { extractPepChapterFromMainContent } from '@app/helpers/extractPepChapterFromMainContent'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
@@ -27,8 +27,6 @@ const BASE_URL = 'https://place-emploi-public.gouv.fr'
 const SCRIPT_PATH = 'pages/api/pep/synchronize.js'
 const MAX_PEP_JOBS_INDEX_DEPTH = 20
 const MAX_PEP_JOBS_PER_CALL = 2
-
-const prisma = getPrisma()
 
 const selectInJobCard = ($root: CheerioAPI, index: number, selector: string): Cheerio<any> =>
   $root(`.fr-grid-row .fr-col-12:nth-child(${index + 1}) .card.card--offer ${selector}`)

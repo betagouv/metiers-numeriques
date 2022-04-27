@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -38,7 +38,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().recruiter.create(args)
+      const data = await prisma.recruiter.create(args)
 
       return data
     } catch (err) {
@@ -56,7 +56,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().recruiter.delete(args)
+      const data = await prisma.recruiter.delete(args)
 
       return data
     } catch (err) {
@@ -82,7 +82,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().recruiter.update(args)
+      const data = await prisma.recruiter.update(args)
 
       return data
     } catch (err) {
@@ -118,7 +118,7 @@ export const query = {
         },
       }
 
-      const data = (await getPrisma().recruiter.findUnique(args)) as unknown as RecruiterFromGetOne | null
+      const data = (await prisma.recruiter.findUnique(args)) as unknown as RecruiterFromGetOne | null
 
       return data
     } catch (err) {
@@ -164,8 +164,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().recruiter.count(whereFilter)
-      const data = (await getPrisma().recruiter.findMany(args)) as unknown as RecruiterFromGetAll[]
+      const length = await prisma.recruiter.count(whereFilter)
+      const data = (await prisma.recruiter.findMany(args)) as unknown as RecruiterFromGetAll[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -212,7 +212,7 @@ export const query = {
         ...whereFilter,
       }
 
-      const data = await getPrisma().recruiter.findMany(args)
+      const data = await prisma.recruiter.findMany(args)
 
       return data
     } catch (err) {

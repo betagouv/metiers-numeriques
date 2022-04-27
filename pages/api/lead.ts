@@ -1,5 +1,5 @@
-import { getPrisma } from '@api/helpers/getPrisma'
 import { ApiError } from '@api/libs/ApiError'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import mailchimpMarketing from '@mailchimp/mailchimp_marketing'
 
@@ -12,7 +12,6 @@ mailchimpMarketing.setConfig({
   apiKey: MAILCHIMP_API_KEY,
   server: MAILCHIMP_SERVER,
 })
-const prisma = getPrisma()
 
 export default async function ApiPepEndpoint(req: NextApiRequest, res: NextApiResponse) {
   try {

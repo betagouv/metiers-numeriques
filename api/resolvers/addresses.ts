@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 
@@ -27,7 +27,7 @@ export const mutation = {
           },
         }
 
-        const existingData = await getPrisma().address.findFirst(findFirstArgs)
+        const existingData = await prisma.address.findFirst(findFirstArgs)
 
         if (existingData !== null) {
           return existingData
@@ -38,7 +38,7 @@ export const mutation = {
         data: input,
       }
 
-      const newData = await getPrisma().address.create(createArgs)
+      const newData = await prisma.address.create(createArgs)
 
       return newData
     } catch (err) {
@@ -63,13 +63,13 @@ export const mutation = {
         },
       }
 
-      const data = (await getPrisma().address.findUnique(args)) as unknown as AddressFromGetAddresses | null
+      const data = (await prisma.address.findUnique(args)) as unknown as AddressFromGetAddresses | null
 
       if (data === null || data._count.jobs > 0) {
         return null
       }
 
-      await getPrisma().address.delete(args)
+      await prisma.address.delete(args)
 
       return data
     } catch (err) {
@@ -91,7 +91,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().address.update(args)
+      const data = await prisma.address.update(args)
 
       return data
     } catch (err) {
@@ -111,7 +111,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().address.findUnique(args)
+      const data = await prisma.address.findUnique(args)
 
       return data
     } catch (err) {
@@ -147,8 +147,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().address.count(whereFilter)
-      const data = (await getPrisma().address.findMany(args)) as unknown as AddressFromGetAddresses[]
+      const length = await prisma.address.count(whereFilter)
+      const data = (await prisma.address.findMany(args)) as unknown as AddressFromGetAddresses[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 
 import JobPage, { isJobFilledOrExpired } from '../[slug]'
@@ -6,8 +6,6 @@ import JobPage, { isJobFilledOrExpired } from '../[slug]'
 export default JobPage
 
 export async function getServerSideProps({ params: { id } }) {
-  const prisma = getPrisma()
-
   const job = await prisma.job.findUnique({
     include: {
       address: true,

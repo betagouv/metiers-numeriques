@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import InstitutionCard from '@app/organisms/InstitutionCard'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs'
@@ -52,8 +52,6 @@ export default function InstitutionListPage({ institutions }: InstitutionListPag
 }
 
 export async function getStaticProps() {
-  const prisma = getPrisma()
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const institutions = await prisma.legacyInstitution.findMany({
     include: {

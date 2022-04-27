@@ -6,7 +6,7 @@ import fetch from 'cross-fetch'
 import cuid from 'cuid'
 import * as R from 'ramda'
 
-import { getPrisma } from '../../api/helpers/getPrisma'
+import { prisma } from '../../api/libs/prisma'
 
 const { NODE_ENV, PROD_API_SECRET, WITH_DATA_SEED } = process.env
 
@@ -43,7 +43,6 @@ async function seed() {
       uri: PRODUCTION_GRAPGQL_URL,
     }),
   })
-  const prisma = getPrisma()
 
   ß.info('[scripts/dev/seed.ts] Deleting all refresh tokens…')
   await prisma.refreshToken.deleteMany()

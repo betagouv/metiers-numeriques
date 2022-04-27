@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
@@ -68,9 +68,9 @@ export const mutation = {
         data: controlledInput,
       }
 
-      const data = await getPrisma().job.create(args)
+      const data = await prisma.job.create(args)
 
-      await getPrisma().job.update({
+      await prisma.job.update({
         data: {
           applicationContacts: {
             connect: applicationContactsAsConnections,
@@ -97,7 +97,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().job.delete(args)
+      const data = await prisma.job.delete(args)
 
       return data
     } catch (err) {
@@ -120,7 +120,7 @@ export const mutation = {
     },
   ): Promise<Job | null> => {
     try {
-      await getPrisma().job.update({
+      await prisma.job.update({
         data: {
           applicationContacts: {
             set: [],
@@ -141,9 +141,9 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().job.update(args)
+      const data = await prisma.job.update(args)
 
-      await getPrisma().job.update({
+      await prisma.job.update({
         data: {
           applicationContacts: {
             set: [],
@@ -156,7 +156,7 @@ export const mutation = {
       const applicationContactsAsConnections = applicationContactIds.map(id => ({
         id,
       }))
-      await getPrisma().job.update({
+      await prisma.job.update({
         data: {
           applicationContacts: {
             connect: applicationContactsAsConnections,
@@ -188,7 +188,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().job.findMany(args)
+      const data = await prisma.job.findMany(args)
 
       return data
     } catch (err) {
@@ -213,7 +213,7 @@ export const query = {
         },
       }
 
-      const data = (await getPrisma().job.findUnique(args)) as unknown as JobFromGetOne | null
+      const data = (await prisma.job.findUnique(args)) as unknown as JobFromGetOne | null
 
       return data
     } catch (err) {
@@ -243,7 +243,7 @@ export const query = {
       const andFilter: Prisma.Enumerable<Prisma.JobWhereInput> = {}
       if (context.user.role === UserRole.RECRUITER) {
         const { recruiterId } = context.user
-        const institution = await getPrisma().institution.findFirst({
+        const institution = await prisma.institution.findFirst({
           include: {
             recruiters: true,
           },
@@ -287,8 +287,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().job.count(whereFilter)
-      const data = (await getPrisma().job.findMany(args)) as unknown as JobFromGetJobs[]
+      const length = await prisma.job.count(whereFilter)
+      const data = (await prisma.job.findMany(args)) as unknown as JobFromGetJobs[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -379,8 +379,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().job.count(whereFilter)
-      const data = (await getPrisma().job.findMany(args)) as unknown as JobFromGetPublicJobs[]
+      const length = await prisma.job.count(whereFilter)
+      const data = (await prisma.job.findMany(args)) as unknown as JobFromGetPublicJobs[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

@@ -3,7 +3,7 @@ import { AuthenticationError, ForbiddenError } from 'apollo-server-micro'
 import { createRateLimitRule, RedisStore } from 'graphql-rate-limit'
 import { rule } from 'graphql-shield'
 
-import { getRedis } from '../helpers/getRedis'
+import { redis } from './redis'
 
 import type { GraphQLObjectType, GraphQLResolveInfo } from 'graphql'
 import type { GraphQLRateLimitConfig } from 'graphql-rate-limit'
@@ -19,7 +19,7 @@ class Permission {
     const rateLimitDirectiveOptions: GraphQLRateLimitConfig = {
       formatError: ({ fieldName }) => `Rate limit reached. Too many ${fieldName} calls.`,
       identifyContext: ctx => ctx?.request?.ipAddress || ctx?.id,
-      store: new RedisStore(getRedis()),
+      store: new RedisStore(redis),
     }
     this.rateLimitRule = createRateLimitRule(rateLimitDirectiveOptions)
   }

@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import ExternalLink from '@app/atoms/ExternalLink'
 import Link from '@app/atoms/Link'
 import { SoftParagraph } from '@app/atoms/SoftParagraph'
@@ -293,8 +293,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
 }
 
 export async function getStaticPaths() {
-  const prisma = getPrisma()
-
   const jobs = await prisma.job.findMany({
     where: {
       NOT: {
@@ -318,8 +316,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const prisma = getPrisma()
-
   const job = await prisma.job.findUnique({
     include: {
       address: true,

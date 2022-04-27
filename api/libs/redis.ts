@@ -7,11 +7,6 @@ if (REDIS_URL === undefined) {
   process.exit(1)
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const __REDIS = {
-  redisInstance: new Redis(REDIS_URL),
-}
+const redis = new Redis(REDIS_URL)
 
-export function getRedis(): Redis {
-  return __REDIS.redisInstance
-}
+export { redis }

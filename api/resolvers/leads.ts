@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -15,7 +15,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().lead.delete(args)
+      const data = await prisma.lead.delete(args)
 
       return data
     } catch (err) {
@@ -34,7 +34,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().lead.update(args)
+      const data = await prisma.lead.update(args)
 
       return data
     } catch (err) {
@@ -57,7 +57,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().lead.findUnique(args)
+      const data = await prisma.lead.findUnique(args)
 
       return data
     } catch (err) {
@@ -94,8 +94,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().lead.count(whereFilter)
-      const data = await getPrisma().lead.findMany(args)
+      const length = await prisma.lead.count(whereFilter)
+      const data = await prisma.lead.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
