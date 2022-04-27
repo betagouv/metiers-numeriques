@@ -147,7 +147,6 @@ dist
 /public/fonts/*
 /public/dsfr.css
 /public/dsfr.min.css
-/public/sitemap.xml
 
 # Playwright traces
 /test-results

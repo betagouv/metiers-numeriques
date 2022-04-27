@@ -23,6 +23,12 @@ const config = {
     },
   ],
   reactStrictMode: true,
+  rewrites: () => [
+    {
+      destination: '/api/sitemap',
+      source: '/sitemap.xml',
+    },
+  ],
   // Disable source maps uoloading via SentryWebpackPlugin
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#disable-sentrywebpackplugin
   sentry: {
