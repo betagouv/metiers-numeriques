@@ -5,7 +5,7 @@ import type { PrismaClient } from '@prisma/client'
 export async function generateRecruitersDisplayName(prisma: PrismaClient) {
   const recruiters = await prisma.recruiter.findMany()
 
-  ß.info('Generating recruiters display name…')
+  ß.info('[prisma/seeds/04-generate-recruiters-display-name.ts] Generating recruiters display name…')
   for (const recruiter of recruiters) {
     if (recruiter.displayName !== 'null') {
       // eslint-disable-next-line no-continue
@@ -25,5 +25,5 @@ export async function generateRecruitersDisplayName(prisma: PrismaClient) {
     })
   }
 
-  ß.success(`Recruiters display name generated.`)
+  ß.success(`[prisma/seeds/04-generate-recruiters-display-name.ts] Recruiters display name generated.`)
 }

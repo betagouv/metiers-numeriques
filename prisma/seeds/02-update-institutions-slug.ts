@@ -7,7 +7,7 @@ import type { PrismaClient } from '@prisma/client'
 export async function updateInstitutionsSlug(prisma: PrismaClient) {
   const institutions = await prisma.institution.findMany()
 
-  ß.info('Updating institutions slug…')
+  ß.info('[prisma/seeds/02-update-institutions-slug.ts] Updating institutions slug…')
   for (const institution of institutions) {
     // eslint-disable-next-line no-await-in-loop
     await prisma.institution.update({
@@ -20,5 +20,5 @@ export async function updateInstitutionsSlug(prisma: PrismaClient) {
     })
   }
 
-  ß.success(`Institutions slug updated.`)
+  ß.success(`[prisma/seeds/02-update-institutions-slug.ts] Institutions slug updated.`)
 }

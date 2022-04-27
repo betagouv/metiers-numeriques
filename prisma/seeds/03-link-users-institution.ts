@@ -9,7 +9,7 @@ export async function linkUsersInstitution(prisma: PrismaClient) {
     },
   })
 
-  ß.info('Linking users institution…')
+  ß.info('[prisma/seeds/03-link-users-institution.ts] Linking users institution…')
   for (const user of users) {
     if (user.recruiter === null) {
       // eslint-disable-next-line no-continue
@@ -27,5 +27,5 @@ export async function linkUsersInstitution(prisma: PrismaClient) {
     })
   }
 
-  ß.success(`Users institution updated.`)
+  ß.success(`[prisma/seeds/03-link-users-institution.ts] Users institution updated.`)
 }

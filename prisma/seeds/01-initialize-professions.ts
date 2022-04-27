@@ -30,12 +30,12 @@ export async function initializeProfessions(prisma: PrismaClient) {
   const missingProfessions = mapNamesToProfessions(missingProfessionNames)
 
   if (missingProfessions.length > 0) {
-    ß.info('Seeding missing professions…')
+    ß.info('[prisma/seeds/01-initialize-professions.ts] Seeding missing professions…')
     const { count } = await prisma.profession.createMany({
       data: missingProfessions,
       skipDuplicates: true,
     })
 
-    ß.success(`${count} missing profession(s) seeded.`)
+    ß.success(`[prisma/seeds/01-initialize-professions.ts] ${count} missing profession(s) seeded.`)
   }
 }
