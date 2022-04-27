@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -26,7 +26,7 @@ export const mutation = {
         data: input,
       }
 
-      const data = await getPrisma().profession.create(args)
+      const data = await prisma.profession.create(args)
 
       return data
     } catch (err) {
@@ -44,7 +44,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().profession.delete(args)
+      const data = await prisma.profession.delete(args)
 
       return data
     } catch (err) {
@@ -66,7 +66,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().profession.update(args)
+      const data = await prisma.profession.update(args)
 
       return data
     } catch (err) {
@@ -89,7 +89,7 @@ export const query = {
         },
       }
 
-      const data = (await getPrisma().profession.findUnique(args)) as unknown as ProfessionFromGetOne | null
+      const data = (await prisma.profession.findUnique(args)) as unknown as ProfessionFromGetOne | null
 
       return data
     } catch (err) {
@@ -122,8 +122,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().profession.count(whereFilter)
-      const data = (await getPrisma().profession.findMany(args)) as unknown as ProfessionFromGetAll[]
+      const length = await prisma.profession.count(whereFilter)
+      const data = (await prisma.profession.findMany(args)) as unknown as ProfessionFromGetAll[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -152,7 +152,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().profession.findMany(args)
+      const data = await prisma.profession.findMany(args)
 
       return data
     } catch (err) {

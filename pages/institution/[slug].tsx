@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import renderLegacyInstitutionFile from '@app/helpers/renderLegacyInstitutionFile'
 import renderLegacyInstitutionSocialNetwork from '@app/helpers/renderLegacyInstitutionSocialNetwork'
@@ -292,7 +292,6 @@ export default function InstitutionPage({ institution }: InsitutionPageProps) {
 }
 
 export async function getStaticPaths() {
-  const prisma = getPrisma()
   const legacyInstitutions = await prisma.legacyInstitution.findMany()
 
   const paths = legacyInstitutions.map(({ slug }) => ({
@@ -306,7 +305,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const prisma = getPrisma()
   const institution = await prisma.legacyInstitution.findUnique({
     include: {
       files: {

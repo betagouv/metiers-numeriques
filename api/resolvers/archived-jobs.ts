@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -16,7 +16,7 @@ export const mutation = {
         data: input,
       }
 
-      const newData = await getPrisma().archivedJob.create(args)
+      const newData = await prisma.archivedJob.create(args)
 
       return newData
     } catch (err) {
@@ -34,7 +34,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().archivedJob.delete(args)
+      const data = await prisma.archivedJob.delete(args)
 
       return data
     } catch (err) {
@@ -56,7 +56,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().archivedJob.update(args)
+      const data = await prisma.archivedJob.update(args)
 
       return data
     } catch (err) {
@@ -79,7 +79,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().archivedJob.findUnique(args)
+      const data = await prisma.archivedJob.findUnique(args)
 
       return data
     } catch (err) {
@@ -125,8 +125,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().archivedJob.count(whereFilter)
-      const data = await getPrisma().archivedJob.findMany(args)
+      const length = await prisma.archivedJob.count(whereFilter)
+      const data = await prisma.archivedJob.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

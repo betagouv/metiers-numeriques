@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 
@@ -27,7 +27,7 @@ export const mutation = {
         },
       }
 
-      const data = omitPasswordIn(await getPrisma().user.delete(args)) as unknown as User
+      const data = omitPasswordIn(await prisma.user.delete(args)) as unknown as User
 
       return data
     } catch (err) {
@@ -41,7 +41,7 @@ export const mutation = {
     try {
       let institutionId: string | null = null
       if (typeof input.recruiterId === 'string') {
-        const recruiter = await getPrisma().recruiter.findUnique({
+        const recruiter = await prisma.recruiter.findUnique({
           where: {
             id: input.recruiterId,
           },
@@ -64,7 +64,7 @@ export const mutation = {
         },
       }
 
-      const data = omitPasswordIn(await getPrisma().user.update(args)) as unknown as User
+      const data = omitPasswordIn(await prisma.user.update(args)) as unknown as User
 
       return data
     } catch (err) {
@@ -87,7 +87,7 @@ export const query = {
         },
       }
 
-      const data = omitPasswordIn(await getPrisma().user.findUnique(args)) as unknown as UserFromGetOne
+      const data = omitPasswordIn(await prisma.user.findUnique(args)) as unknown as UserFromGetOne
 
       return data
     } catch (err) {
@@ -116,8 +116,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().user.count(whereFilter)
-      const data = omitPasswordFor(await getPrisma().user.findMany(args)) as unknown as UserFromGetAll[]
+      const length = await prisma.user.count(whereFilter)
+      const data = omitPasswordFor(await prisma.user.findMany(args)) as unknown as UserFromGetAll[]
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

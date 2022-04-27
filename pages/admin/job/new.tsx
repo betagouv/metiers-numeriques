@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import AdminHeader from '@app/atoms/AdminHeader'
 import Title from '@app/atoms/Title'
 import { slugify } from '@common/helpers/slugify'
@@ -15,8 +15,6 @@ export default function AdminJobNewPage() {
 }
 
 export async function getServerSideProps() {
-  const prisma = getPrisma()
-
   const id = cuid()
   const title = 'Nouvelle offre d’emploi'
   const slug = slugify(title, id)

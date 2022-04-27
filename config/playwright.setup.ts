@@ -2,7 +2,7 @@
 
 import dotenv from 'dotenv'
 
-import { getPrisma } from '../api/helpers/getPrisma'
+import { prisma } from '../api/libs/prisma'
 import { TEST_USERS } from '../e2e/constants'
 
 import type { FullConfig } from '@playwright/test'
@@ -17,8 +17,6 @@ export default async function globalSetup(config: FullConfig) {
   if (IS_CI) {
     return
   }
-
-  const prisma = getPrisma()
 
   await prisma.address.deleteMany({
     where: {

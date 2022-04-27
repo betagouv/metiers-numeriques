@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -8,19 +8,19 @@ import type { LegacyEntity, Prisma } from '@prisma/client'
 
 export const mutation = {
   createLegacyEntity: (obj, { input }: { input: LegacyEntity }) =>
-    getPrisma().legacyEntity.create({
+    prisma.legacyEntity.create({
       data: input,
     }),
 
   deleteLegacyEntity: (obj, { id }: { id: string }) =>
-    getPrisma().legacyEntity.delete({
+    prisma.legacyEntity.delete({
       where: {
         id,
       },
     }),
 
   updateLegacyEntity: (obj, { id, input }: { id: string; input: Partial<LegacyEntity> }) =>
-    getPrisma().legacyEntity.update({
+    prisma.legacyEntity.update({
       data: input,
       where: {
         id,
@@ -42,8 +42,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().legacyEntity.count(whereFilter)
-      const data = await getPrisma().legacyEntity.findMany(args)
+      const length = await prisma.legacyEntity.count(whereFilter)
+      const data = await prisma.legacyEntity.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -72,7 +72,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().legacyEntity.findMany(args)
+      const data = await prisma.legacyEntity.findMany(args)
 
       return data
     } catch (err) {
@@ -83,7 +83,7 @@ export const query = {
   },
 
   getLegacyEntity: (obj, { id }: { id: string }) =>
-    getPrisma().legacyEntity.findUnique({
+    prisma.legacyEntity.findUnique({
       where: {
         id,
       },

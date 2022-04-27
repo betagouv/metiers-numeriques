@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
 
@@ -12,7 +12,7 @@ const PUBLIC_PER_PAGE_THROTTLE = 12
 export const mutation = {
   createLegacyJob: async (obj, { input }: { input: LegacyJob }) => {
     try {
-      const result = await getPrisma().legacyJob.create({
+      const result = await prisma.legacyJob.create({
         data: input,
       })
 
@@ -26,7 +26,7 @@ export const mutation = {
 
   deleteLegacyJob: async (obj, { id }: { id: string }) => {
     try {
-      const result = await getPrisma().legacyJob.delete({
+      const result = await prisma.legacyJob.delete({
         where: {
           id,
         },
@@ -42,7 +42,7 @@ export const mutation = {
 
   updateLegacyJob: async (obj, { id, input }: { id: string; input: Partial<LegacyJob> }) => {
     try {
-      const result = await getPrisma().legacyJob.update({
+      const result = await prisma.legacyJob.update({
         data: input,
         where: {
           id,
@@ -67,7 +67,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().legacyJob.findMany(args)
+      const data = await prisma.legacyJob.findMany(args)
 
       return data
     } catch (err) {
@@ -88,7 +88,7 @@ export const query = {
               slug,
             }
 
-      const result = await getPrisma().legacyJob.findUnique({
+      const result = await prisma.legacyJob.findUnique({
         include: {
           legacyService: {
             include: {
@@ -154,8 +154,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().legacyJob.count(whereFilter)
-      const data = await getPrisma().legacyJob.findMany(args)
+      const length = await prisma.legacyJob.count(whereFilter)
+      const data = await prisma.legacyJob.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {
@@ -220,8 +220,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().legacyJob.count(whereFilter)
-      const data = await getPrisma().legacyJob.findMany(args)
+      const length = await prisma.legacyJob.count(whereFilter)
+      const data = await prisma.legacyJob.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

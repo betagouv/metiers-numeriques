@@ -1,6 +1,6 @@
 import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
 import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 
 import type { GetAllArgs, GetAllResponse } from './types'
@@ -13,7 +13,7 @@ export const mutation = {
         data: input,
       }
 
-      const data = await getPrisma().file.create(args)
+      const data = await prisma.file.create(args)
 
       return data
     } catch (err) {
@@ -31,7 +31,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().file.delete(args)
+      const data = await prisma.file.delete(args)
 
       return data
     } catch (err) {
@@ -50,7 +50,7 @@ export const mutation = {
         },
       }
 
-      const data = await getPrisma().file.update(args)
+      const data = await prisma.file.update(args)
 
       return data
     } catch (err) {
@@ -70,7 +70,7 @@ export const query = {
         },
       }
 
-      const data = await getPrisma().file.findUnique(args)
+      const data = await prisma.file.findUnique(args)
 
       return data
     } catch (err) {
@@ -93,8 +93,8 @@ export const query = {
         ...whereFilter,
       }
 
-      const length = await getPrisma().file.count(whereFilter)
-      const data = await getPrisma().file.findMany(args)
+      const length = await prisma.file.count(whereFilter)
+      const data = await prisma.file.findMany(args)
       const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
 
       return {

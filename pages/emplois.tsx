@@ -1,4 +1,4 @@
-import { getPrisma } from '@api/helpers/getPrisma'
+import { prisma } from '@api/libs/prisma'
 import { useLazyQuery } from '@apollo/client'
 import { isObjectEmpty } from '@app/helpers/isObjectEmpty'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
@@ -264,8 +264,6 @@ export default function JobListPage({
 }
 
 export async function getStaticProps() {
-  const prisma = getPrisma()
-
   const whereFilter = {
     where: {
       AND: {
