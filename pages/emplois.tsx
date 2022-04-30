@@ -197,7 +197,7 @@ export default function JobListPage({
   }, [isFilterModalOpen])
 
   return (
-    <>
+    <div className="fr-pb-4w">
       <Head>
         <title>{pageTitle}</title>
 
@@ -206,60 +206,58 @@ export default function JobListPage({
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <div className="fr-container fr-pb-3w" id="offres-de-mission">
-        <JobListOuterBox className="fr-grid-row">
-          <JobFilterBarBox className="fr-col-12 fr-col-md-5">
-            <JobFilterBar
-              key={jobFilterBarKey}
-              institutions={initialInstitutions}
-              isModalOpen={isFilterModalOpen}
-              onChange={filter => query(0, filter)}
-              onModalClose={closeFilterModal}
-              professions={initialProfessions}
-            />
-          </JobFilterBarBox>
+      <JobListOuterBox className="fr-grid-row">
+        <JobFilterBarBox className="fr-col-12 fr-col-md-5">
+          <JobFilterBar
+            key={jobFilterBarKey}
+            institutions={initialInstitutions}
+            isModalOpen={isFilterModalOpen}
+            onChange={filter => query(0, filter)}
+            onModalClose={closeFilterModal}
+            professions={initialProfessions}
+          />
+        </JobFilterBarBox>
 
-          <JobListInnerBox className="fr-col-12 fr-col-md-7">
-            <div className="fr-grid-row fr-mt-3w fr-mb-1w">
-              <CounterSentenceBox className="fr-col-6 fr-col-md-8">{jobsLengthSentence}</CounterSentenceBox>
-              <CounterButtonsBox className="fr-col-6 fr-col-md-4">
-                {$hasFilter.current && (
-                  <button
-                    className="fr-btn fr-btn--secondary rf-btn--error fr-btn--icon-left fr-fi-close-line"
-                    onClick={resetFilter}
-                    type="button"
-                  >
-                    Réinitialiser
-                  </button>
-                )}
-
+        <JobListInnerBox className="fr-col-12 fr-col-md-7">
+          <div className="fr-grid-row fr-mt-3w fr-mb-1w">
+            <CounterSentenceBox className="fr-col-6 fr-col-md-8">{jobsLengthSentence}</CounterSentenceBox>
+            <CounterButtonsBox className="fr-col-6 fr-col-md-4">
+              {$hasFilter.current && (
                 <button
-                  className="fr-btn fr-btn--secondary rf-hidden-md fr-ml-2w"
-                  onClick={openFilterModal}
+                  className="fr-btn fr-btn--secondary rf-btn--error fr-btn--icon-left fr-fi-close-line"
+                  onClick={resetFilter}
                   type="button"
                 >
-                  Filtres
+                  Réinitialiser
                 </button>
-              </CounterButtonsBox>
+              )}
+
+              <button
+                className="fr-btn fr-btn--secondary rf-hidden-md fr-ml-2w"
+                onClick={openFilterModal}
+                type="button"
+              >
+                Filtres
+              </button>
+            </CounterButtonsBox>
+          </div>
+
+          {isLoading && <Loader />}
+
+          {!isLoading && jobs.map(job => <JobCard key={job.id} job={job} />)}
+
+          {isLoadingMore && <Loader />}
+
+          {!isLoading && !isLoadingMore && hasMoreJobs && (
+            <div className="fr-py-4w rf-text-center">
+              <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
+                Afficher plus de résultats
+              </button>
             </div>
-
-            {isLoading && <Loader />}
-
-            {!isLoading && jobs.map(job => <JobCard key={job.id} job={job} />)}
-
-            {isLoadingMore && <Loader />}
-
-            {!isLoading && !isLoadingMore && hasMoreJobs && (
-              <div className="fr-py-4w rf-text-center">
-                <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
-                  Afficher plus de résultats
-                </button>
-              </div>
-            )}
-          </JobListInnerBox>
-        </JobListOuterBox>
-      </div>
-    </>
+          )}
+        </JobListInnerBox>
+      </JobListOuterBox>
+    </div>
   )
 }
 

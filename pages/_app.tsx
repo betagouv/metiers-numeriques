@@ -6,7 +6,6 @@ import { MatomoScript } from '@app/scripts/MatomoScript'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
 
 import '@fontsource/poppins/300.css'
 import '@fontsource/poppins/400.css'
@@ -17,10 +16,6 @@ import 'remixicon/fonts/remixicon.css'
 const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper), {
   ssr: false,
 })
-
-const WebsiteMain = styled.main`
-  background-color: #f5f5f5;
-`
 
 export default function MetiersNumeriquesApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
@@ -60,9 +55,9 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
       <WithGraphql>
         <>
           <Header />
-          <WebsiteMain>
+          <main className="fr-container">
             <Component {...pageProps} />
-          </WebsiteMain>
+          </main>
           <Footer />
 
           <>
