@@ -6,6 +6,8 @@ import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import Head from 'next/head'
 import { useMemo } from 'react'
 
+import { JobContent, JobInfo } from '../[slug]'
+
 import type { ArchivedJob } from '@prisma/client'
 
 type ArchivedJobPageProps = {
@@ -27,7 +29,7 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <div className="fr-container" id="job-detail">
+      <JobContent className="fr-container--fluid">
         <div className="fr-mb-4w fr-mt-6w">
           <h1>{archivedJob.title}</h1>
         </div>
@@ -58,34 +60,31 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
         </div>
 
         <div className="fr-my-4w" id="job-detail-main-fields">
-          <div className="fr-grid-row fr-grid-row--gutters">
+          <section className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-3">
-              <h3>Mission</h3>
+              <h2>Mission</h2>
             </div>
             <div className="fr-col-12 fr-col-md-9">{renderMarkdown(archivedJob.missionDescription)}</div>
-          </div>
+          </section>
 
           {archivedJob.profileDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Votre profil</h3>
+                <h2>Votre profil</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(archivedJob.profileDescription)}</div>
-            </div>
+            </section>
           )}
         </div>
-      </div>
+      </JobContent>
 
-      <div
-        className="fr-container fr-py-4w fr-text--lg"
-        style={{
-          backgroundColor: '#F0F0F0',
-        }}
-      >
-        <div className="fr-grid-row fr-grid-row--gutters">
-          <div className="fr-col-12 fr-col-md-3">Date Limite</div>
+      <JobInfo className="fr-container--fluid fr-mt-4w fr-mb-0 fr-text--lg">
+        <div className="fr-grid-row">
+          <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w">
+            Date Limite :
+          </div>
           <div
-            className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
+            className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-1w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w"
             style={{
               color: 'red',
               fontWeight: 700,
@@ -95,15 +94,15 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
           </div>
         </div>
 
-        <div className="fr-grid-row fr-grid-row--gutters" style={{ opacity: 0.65 }}>
-          <div className="fr-col-12 fr-col-md-3">
-            <p>Référence interne</p>
+        <div className="fr-grid-row" style={{ opacity: 0.65 }}>
+          <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w fr-pb-md-2w">
+            <p>Référence interne :</p>
           </div>
-          <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+          <div className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-3w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w fr-pb-md-2w">
             <code>{archivedJob.id.toUpperCase()}</code>
           </div>
         </div>
-      </div>
+      </JobInfo>
     </>
   )
 }
