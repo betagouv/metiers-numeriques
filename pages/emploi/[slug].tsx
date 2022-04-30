@@ -16,9 +16,74 @@ import dayjs from 'dayjs'
 import Head from 'next/head'
 import * as R from 'ramda'
 import { useCallback, useMemo, useState } from 'react'
+import styled from 'styled-components'
 
 import type { JobWithRelation } from '@app/organisms/JobCard'
 import type { Job } from '@prisma/client'
+
+export const JobContent = styled.div`
+  ul {
+    margin: 0;
+    padding-left: 0;
+  }
+  ol > li {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    padding-left: 1rem;
+  }
+  ul > li {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    list-style-type: none;
+    padding-left: 2.5rem;
+    position: relative;
+  }
+  ul > li::before {
+    border-color: #00a8a8;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    content: '';
+    display: block;
+    height: 1.15rem;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transform-origin: bottom left;
+    transform: rotate(40deg);
+    width: 0.65rem;
+  }
+  ul > li * {
+    font-size: inherit;
+    line-height: inherit;
+  }
+  ul > li > ul > li::before {
+    width: 0.625rem;
+  }
+
+  section {
+    h2 {
+      margin: 1.15rem 0 0 0;
+    }
+
+    .fr-col-md-9 {
+      padding-top: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      h2 {
+        margin: 0;
+      }
+
+      .fr-col-md-9 {
+        padding-top: 1.15rem;
+      }
+    }
+  }
+`
+
+export const JobInfo = styled.div`
+  background-color: #f0f0f0;
+`
 
 export const isJobFilledOrExpired = (job: Job) =>
   job.state === JobState.FILLED || dayjs(job.expiredAt).isBefore(dayjs(), 'day')
@@ -28,7 +93,6 @@ type JobPageProps = {
   isFilledOrExpired: boolean
   isPreview: boolean
 }
-
 export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageProps) {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
 
@@ -67,8 +131,8 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
         )}
       </Head>
 
-      <div className="fr-container" id="job-detail">
-        <div className="fr-pb-4w fr-pt-6w">
+      <JobContent className="fr-container--fluid">
+        <div className="fr-pt-6w">
           <h1>{job.title}</h1>
         </div>
 
@@ -133,81 +197,81 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               </div>
             )}
 
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Expérience requise</div>
               <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
                 <p>{humanizeSeniority(job.seniorityInMonths)}</p>
               </div>
-            </div>
+            </section>
           </div>
         </div>
 
-        <div className="fr-my-4w" id="job-detail-main-fields">
+        <div className="fr-my-4w">
           {job.missionDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Mission</h3>
+                <h2>Mission</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.missionDescription)}</div>
-            </div>
+            </section>
           )}
 
           {job.teamDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Équipe</h3>
+                <h2>Équipe</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.teamDescription)}</div>
-            </div>
+            </section>
           )}
 
           {job.contextDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Contexte</h3>
+                <h2>Contexte</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.contextDescription)}</div>
-            </div>
+            </section>
           )}
 
           {job.perksDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Avantages</h3>
+                <h2>Avantages</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.perksDescription)}</div>
-            </div>
+            </section>
           )}
 
           {job.tasksDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Votre rôle</h3>
+                <h2>Votre rôle</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.tasksDescription)}</div>
-            </div>
+            </section>
           )}
 
           {job.profileDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>Votre profil</h3>
+                <h2>Votre profil</h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.profileDescription)}</div>
-            </div>
+            </section>
           )}
 
           {job.particularitiesDescription && (
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <section className="fr-grid-row fr-grid-row--gutters">
               <div className="fr-col-12 fr-col-md-3">
-                <h3>
+                <h2>
                   Conditions particulières
                   <br />
                   du poste
-                </h3>
+                </h2>
               </div>
               <div className="fr-col-12 fr-col-md-9">{renderMarkdown(job.particularitiesDescription)}</div>
-            </div>
+            </section>
           )}
 
           {!isFilledOrExpired && (
@@ -220,7 +284,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
                   style={{
                     lineHeight: 1,
                     minHeight: 'auto',
-                    padding: '0.75rem 2rem 1rem',
+                    padding: '0.75rem 2rem 0.9rem',
                   }}
                   type="button"
                 >
@@ -230,18 +294,15 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
             </div>
           )}
         </div>
-      </div>
+      </JobContent>
 
-      <div
-        className="fr-container fr-py-4w fr-text--lg fr-my-0"
-        style={{
-          backgroundColor: '#F0F0F0',
-        }}
-      >
+      <JobInfo className="fr-container--fluid fr-mt-4w fr-mb-0 fr-text--lg">
         {!isFilledOrExpired && job.infoContact && (
-          <div className="fr-grid-row fr-grid-row--gutters">
-            <div className="fr-col-12 fr-col-md-3">Si vous avez des questions</div>
-            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+          <div className="fr-grid-row">
+            <div className="fr-col-12 fr-px-2w fr-pt-2w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w fr-pt-md-2w">
+              Envoyez vos questions à :
+            </div>
+            <div className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-1w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w fr-pt-md-2w">
               <SoftParagraph>
                 <strong>{job.infoContact.name}</strong>
               </SoftParagraph>
@@ -257,10 +318,12 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
           </div>
         )}
 
-        <div className="fr-grid-row fr-grid-row--gutters">
-          <div className="fr-col-12 fr-col-md-3">Date Limite</div>
+        <div className="fr-grid-row">
+          <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w">
+            Date Limite :
+          </div>
           <div
-            className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0"
+            className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-1w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w"
             style={{
               color: isFilledOrExpired ? 'red' : 'inherit',
               fontWeight: 700,
@@ -271,21 +334,25 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
         </div>
 
         {!isFilledOrExpired && job.processDescription && (
-          <div className="fr-grid-row fr-grid-row--gutters">
-            <div className="fr-col-12 fr-col-md-3">Processus de recrutement</div>
-            <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{renderMarkdown(job.processDescription)}</div>
+          <div className="fr-grid-row">
+            <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w">
+              Processus de recrutement :
+            </div>
+            <div className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-1w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w">
+              {renderMarkdown(job.processDescription)}
+            </div>
           </div>
         )}
 
-        <div className="fr-grid-row fr-grid-row--gutters" style={{ opacity: 0.65 }}>
-          <div className="fr-col-12 fr-col-md-3">
-            <p>Référence interne</p>
+        <div className="fr-grid-row" style={{ opacity: 0.65 }}>
+          <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w fr-pb-md-2w">
+            <p>Référence interne :</p>
           </div>
-          <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">
+          <div className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-3w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w fr-pb-md-2w">
             <code>{job.id.toUpperCase()}</code>
           </div>
         </div>
-      </div>
+      </JobInfo>
 
       {isApplicationModalOpen && <JobApplicationModal job={job} onDone={closeApplicationModal} />}
     </>
