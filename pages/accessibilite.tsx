@@ -53,8 +53,9 @@ export default function LegalNoticesPage() {
           <a
             aria-label="envoyer un email à contact-pep-accessibilite.dgafp@finances.gouv.fr depuis mon logiciel de messagerie"
             className="rf-text-no-wrap"
-            href="contact@metiers.numerique.gouv.fr"
+            href="mailto:contact@metiers.numerique.gouv.fr"
             rel="noopener noreferrer"
+            target="_blank"
           >
             <span aria-hidden="true" className="fr-fi-mail-line fr-fi--sm" /> contact@metiers.numerique.gouv.fr
           </a>{' '}
