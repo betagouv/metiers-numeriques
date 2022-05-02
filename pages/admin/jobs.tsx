@@ -26,7 +26,7 @@ const BASE_COLUMNS: TableColumnProps[] = [
     label: 'Intitulé',
   },
   {
-    grow: 0.1,
+    grow: 0.15,
     key: 'state',
     label: 'État',
     transform: ({ state }) => JOB_STATE_LABEL[state],
