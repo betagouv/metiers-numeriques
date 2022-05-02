@@ -103,7 +103,7 @@
     "@ivangabriele/prettier-config": "2.0.2",
     "@playwright/test": "1.20.2",
     "@swc/core": "1.2.163",
-    "@testing-library/react-hooks": "7.0.2",
+    "@testing-library/react-hooks": "8.0.0",
     "@tsconfig/node16": "1.0.2",
     "@types/bcryptjs": "2.4.2",
     "@types/cron": "1.7.3",
