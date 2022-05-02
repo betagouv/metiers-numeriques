@@ -11,18 +11,21 @@ import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
+import { StepBar } from '@app/molecules/StepBar'
 import queries from '@app/queries'
-import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
+import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobSource, JobState, UserRole } from '@prisma/client'
-import { Field } from '@singularity/core'
+import { Button, Field } from '@singularity/core'
 import dayjs from 'dayjs'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Briefcase, Globe, PenTool } from 'react-feather'
 import toast from 'react-hot-toast'
+import { Flex } from 'reflexbox'
 import * as Yup from 'yup'
 
 import type { JobFromGetOne } from '@api/resolvers/jobs'
@@ -38,7 +41,6 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   professionId: string
   recruiterId: string
   seniorityInYears: number
-  state: JobState
 }
 
 export const JobFormSchema = Yup.object().shape(
@@ -52,13 +54,16 @@ export const JobFormSchema = Yup.object().shape(
         .required(`Au moins un contact "candidatures" est obligatoire si le site de candidature n’est pas renseigné.`)
         .min(1, `Au moins un contact "candidatures" est obligatoire si le site de candidature n’est pas renseigné.`),
     }),
-    applicationWebsiteUrl: Yup.string().when('applicationContactIds', {
-      is: (applicationContactIds?: string[] | null) => !applicationContactIds || applicationContactIds.length === 0,
-      otherwise: Yup.string().nullable(),
-      then: Yup.string()
-        .required(`Le site de candidature est obligatoire si aucun contact "candidatures" n’est renseigné.`)
-        .url(`Cette URL est mal formatée.`),
-    }),
+    applicationWebsiteUrl: Yup.string()
+      .nullable()
+      .when('applicationContactIds', {
+        is: (applicationContactIds?: string[] | null) => !applicationContactIds || applicationContactIds.length === 0,
+        otherwise: Yup.string().nullable(),
+        then: Yup.string()
+          .nullable()
+          .required(`Le site de candidature est obligatoire si aucun contact "candidatures" n’est renseigné.`)
+          .url(`Cette URL est mal formatée.`),
+      }),
     contractTypes: Yup.array(Yup.string().nullable())
       .required(`Au moins un type de contrat est obligatoire.`)
       .min(1, `Au moins un type de contrat est obligatoire.`),
@@ -79,7 +84,6 @@ export const JobFormSchema = Yup.object().shape(
       .min(10, `La rémunération minimum doit être un nombre entier, en millier d'euros.`)
       .max(200, `La rémunération minimum doit être un nombre entier, en millier d'euros.`),
     seniorityInYears: Yup.number().nullable().required(`Le nombre d’années d’expérience requises est obligatoire.`),
-    state: Yup.string().nullable().required(`L’état est obligatoire.`),
     title: Yup.string().nullable().required(`L’intitulé est obligatoire.`),
   },
   [['applicationContactIds', 'applicationWebsiteUrl']],
@@ -89,6 +93,7 @@ export default function AdminJobEditorPage() {
   const router = useRouter()
   const id = router.query.id as string
 
+  const $state = useRef<JobState | undefined>()
   const $slug = useRef<string | undefined>()
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
   const [isError, setIsError] = useState(false)
@@ -198,6 +203,8 @@ export default function AdminJobEditorPage() {
         return
       }
 
+      $state.current = input.state
+
       await getJobResult.refetch()
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
@@ -209,14 +216,32 @@ export default function AdminJobEditorPage() {
     try {
       setIsLoading(false)
 
-      await save(values)
-
-      goToList()
+      await save({
+        ...values,
+        state: JobState.PUBLISHED,
+      })
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
 
       setIsLoading(false)
     }
+  }, [])
+
+  const updateState = useCallback(async (state: JobState) => {
+    setIsLoading(true)
+
+    await updateJob({
+      variables: {
+        id,
+        input: {
+          state,
+        },
+      },
+    })
+
+    await getJobResult.refetch()
+
+    setIsLoading(false)
   }, [])
 
   useEffect(() => {
@@ -261,6 +286,8 @@ export default function AdminJobEditorPage() {
       initialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(initialValues.address)
     }
 
+    $state.current = initialValues.state
+
     setInitialValues(initialValues)
     setIsLoading(false)
   }, [getJobResult.data])
@@ -287,11 +314,11 @@ export default function AdminJobEditorPage() {
           </Field>
 
           <DoubleField>
-            <AdminForm.Select
+            <AdminForm.RecruiterSelect
+              institutionId={auth.user?.institutionId}
               isDisabled={isLoading}
-              label="État *"
-              name="state"
-              options={JOB_STATES_AS_OPTIONS}
+              label="Service recruteur *"
+              name="recruiterId"
               placeholder="…"
             />
 
@@ -299,11 +326,10 @@ export default function AdminJobEditorPage() {
           </DoubleField>
 
           <DoubleField>
-            <AdminForm.RecruiterSelect
-              institutionId={auth.user?.institutionId}
+            <AdminForm.ProfessionSelect
               isDisabled={isLoading}
-              label="Service recruteur *"
-              name="recruiterId"
+              label="Secteur d’activité *"
+              name="professionId"
               placeholder="…"
             />
 
@@ -333,15 +359,6 @@ export default function AdminJobEditorPage() {
               placeholder="…"
             />
           </DoubleField>
-
-          <Field>
-            <AdminForm.ProfessionSelect
-              isDisabled={isLoading}
-              label="Secteurs d’activité *"
-              name="professionId"
-              placeholder="…"
-            />
-          </Field>
 
           <Field>
             <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
@@ -516,13 +533,67 @@ export default function AdminJobEditorPage() {
           </AdminCard>
         )}
 
+        <Flex justifyContent="center" style={{ margin: '2rem 0 0' }}>
+          <StepBar
+            activeStepKey={$state.current}
+            steps={[
+              {
+                Icon: PenTool,
+                key: JobState.DRAFT,
+                label: 'Brouillon',
+              },
+              {
+                Icon: Globe,
+                key: JobState.PUBLISHED,
+                label: 'Publiée',
+              },
+              {
+                Icon: Briefcase,
+                key: JobState.FILLED,
+                label: 'Pourvue',
+              },
+            ]}
+          />
+        </Flex>
+
         <AdminCard>
           <AdminForm.Error />
 
-          <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
-            Annuler
-          </AdminForm.Cancel>
-          <AdminForm.Submit isDisabled={isLoading}>Mettre à jour</AdminForm.Submit>
+          <Flex justifyContent="space-between">
+            <div>
+              <Button accent="secondary" disabled={isLoading} onClick={goToList}>
+                Revenir à la liste
+              </Button>
+            </div>
+
+            <div>
+              {$state.current === JobState.DRAFT && <AdminForm.Submit isDisabled={isLoading}>Publier</AdminForm.Submit>}
+              {$state.current === JobState.PUBLISHED && (
+                <Button
+                  accent="warning"
+                  disabled={isLoading}
+                  onClick={() => updateState(JobState.DRAFT)}
+                  style={{ marginLeft: '1rem' }}
+                >
+                  Dépublier
+                </Button>
+              )}
+              {$state.current === JobState.PUBLISHED && (
+                <Button
+                  disabled={isLoading}
+                  onClick={() => updateState(JobState.FILLED)}
+                  style={{ marginLeft: '1rem' }}
+                >
+                  Marquer comme pourvue
+                </Button>
+              )}
+              {$state.current === JobState.FILLED && (
+                <Button accent="warning" disabled={isLoading} onClick={() => updateState(JobState.PUBLISHED)}>
+                  Republier
+                </Button>
+              )}
+            </div>
+          </Flex>
         </AdminCard>
       </AdminForm>
     </>
