@@ -1,5 +1,6 @@
 import { Textarea as SuiTextarea } from '@singularity/core'
 import { useFormikContext } from 'formik'
+import { useMemo } from 'react'
 
 type TextareaProps = {
   helper?: string
@@ -21,11 +22,12 @@ export function Textarea({
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
+  const defaultVaLue = useMemo(() => values[name], [values[name]])
 
   return (
     <SuiTextarea
       autoComplete="off"
-      defaultValue={values[name]}
+      defaultValue={defaultVaLue}
       disabled={isDisabled || isSubmitting}
       error={maybeError}
       helper={helper}

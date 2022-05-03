@@ -1,7 +1,6 @@
 import { TextInput as SuiTextInput } from '@singularity/core'
 import { useFormikContext } from 'formik'
-
-import type { ChangeEvent, ChangeEventHandler } from 'react'
+import { ChangeEvent, ChangeEventHandler, useMemo } from 'react'
 
 type TextInputProps = {
   autoComplete?: string
@@ -27,6 +26,7 @@ export function TextInput({
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
+  const defaultVaLue = useMemo(() => values[name], [values[name]])
 
   const checkChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChange !== undefined) {
@@ -39,7 +39,7 @@ export function TextInput({
   return (
     <SuiTextInput
       autoComplete={autoComplete}
-      defaultValue={values[name]}
+      defaultValue={defaultVaLue}
       disabled={isDisabled || isSubmitting}
       error={maybeError}
       helper={helper}
