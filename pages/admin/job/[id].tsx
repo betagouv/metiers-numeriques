@@ -11,6 +11,7 @@ import Title from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
+import Spinner from '@app/molecules/AdminLoader/Spinner'
 import { StepBar } from '@app/molecules/StepBar'
 import queries from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS } from '@common/constants'
@@ -26,6 +27,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Briefcase, Globe, PenTool } from 'react-feather'
 import toast from 'react-hot-toast'
 import { Flex } from 'reflexbox'
+import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import type { JobFromGetOne } from '@api/resolvers/jobs'
@@ -42,6 +44,13 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   recruiterId: string
   seniorityInYears: number
 }
+
+const SpinnerBox = styled.div`
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+`
 
 export const JobFormSchema = Yup.object().shape(
   {
@@ -291,6 +300,20 @@ export default function AdminJobEditorPage() {
     setInitialValues(initialValues)
     setIsLoading(false)
   }, [getJobResult.data])
+
+  if (initialValues === undefined) {
+    return (
+      <>
+        <AdminHeader>
+          <Title>Édition d’une offre d’emploi</Title>
+        </AdminHeader>
+
+        <SpinnerBox>
+          <Spinner />
+        </SpinnerBox>
+      </>
+    )
+  }
 
   return (
     <>
