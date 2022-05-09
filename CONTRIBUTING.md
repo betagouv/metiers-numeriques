@@ -11,6 +11,7 @@
   - [Generate a new database migration](#generate-a-new-database-migration)
 - [IDEs](#ides)
   - [Recommended Visual Studio Code settings](#recommended-visual-studio-code-settings)
+  - [Recommended Visual Studio Code extensions](#recommended-visual-studio-code-extensions)
 
 ## Get Started
 
@@ -122,5 +123,15 @@ And don't forget to restart your local instance in order for Prisma to load the 
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   }
+}
+```
+
+### Recommended Visual Studio Code extensions
+
+`.vscode/extensions.json`
+
+```json
+{
+  "recommendations": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint", "ms-playwright.playwright", "Prisma.prisma"]
 }
 ```

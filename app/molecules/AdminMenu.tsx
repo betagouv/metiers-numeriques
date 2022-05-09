@@ -19,12 +19,13 @@ const Box = styled.div`
   position: fixed;
   overflow-y: auto;
 
-  a {
+  a,
+  button {
     text-decoration: none;
   }
 `
 
-const MenuTitle = styled.h4`
+const MenuTitle = styled.p`
   border-top: 1px solid ${p => p.theme.color.body.white};
   color: ${p => p.theme.color.body.white};
   font-size: 80%;
@@ -104,6 +105,10 @@ export default function AdminMenu() {
               </VerticalMenu.Item>
             </Link>
           )}
+
+          <ButtonAsLink onClick={auth.logOut}>
+            <VerticalMenu.Item isDark>Déconnexion</VerticalMenu.Item>
+          </ButtonAsLink>
         </VerticalMenu>
 
         <MenuTitle>ADMINISTRATION</MenuTitle>
@@ -155,10 +160,6 @@ export default function AdminMenu() {
               </Link>
             </>
           )}
-
-          <ButtonAsLink onClick={auth.logOut}>
-            <VerticalMenu.Item isDark>Déconnexion</VerticalMenu.Item>
-          </ButtonAsLink>
         </VerticalMenu>
 
         {isAdmin && (

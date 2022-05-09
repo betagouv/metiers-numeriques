@@ -74,6 +74,10 @@
     {
       "files": ["./e2e/**/*.ts", "./scripts/**/*.ts"],
       "rules": {
+        "no-await-in-loop": "off",
+
+        "@typescript-eslint/no-loop-func": "off",
+
         "import/no-extraneous-dependencies": [
           "error",
           {

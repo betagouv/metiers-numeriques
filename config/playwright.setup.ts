@@ -50,6 +50,14 @@ export default async function globalSetup(config: FullConfig) {
     },
   })
 
+  await prisma.institution.deleteMany({
+    where: {
+      name: {
+        startsWith: '$$',
+      },
+    },
+  })
+
   await prisma.job.deleteMany({
     where: {
       title: {
@@ -68,7 +76,7 @@ export default async function globalSetup(config: FullConfig) {
 
   await prisma.recruiter.deleteMany({
     where: {
-      name: {
+      displayName: {
         startsWith: '$$',
       },
     },
