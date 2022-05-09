@@ -13,7 +13,7 @@ import * as profession from './profession'
 import * as recruiter from './recruiter'
 import * as user from './user'
 
-export default {
+const queries = {
   address,
   archivedJob,
   contact,
@@ -29,3 +29,5 @@ export default {
   recruiter,
   user,
 }
+
+export { queries }

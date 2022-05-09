@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 
-import Link from '../atoms/Link'
+import { Link } from '../atoms/Link'
 
 const Box = styled.div`
   background-color: #293042;
@@ -35,7 +35,7 @@ const MenuTitle = styled.p`
   padding: ${p => p.theme.padding.layout.small} 0;
 `
 
-export default function AdminMenu() {
+export function AdminMenu() {
   const router = useRouter()
   const auth = useAuth<Common.Auth.User>()
 

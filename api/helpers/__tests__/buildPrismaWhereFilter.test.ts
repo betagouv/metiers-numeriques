@@ -1,4 +1,4 @@
-import buildPrismaWhereFilter from '../buildPrismaWhereFilter'
+import { buildPrismaWhereFilter } from '../buildPrismaWhereFilter'
 
 describe('api/helpers/buildPrismaWhereFilter()', () => {
   test(`with ["a", "b.c"]`, () => {

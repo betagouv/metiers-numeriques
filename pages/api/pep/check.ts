@@ -47,7 +47,7 @@ export default async function ApiPepCheckEndpoint(req: NextApiRequest, res: Next
         },
         hasError: false,
       })
-    } catch (err) {
+    } catch (err: any) {
       if (err.response && err.response.status === 404) {
         res.json({
           data: {

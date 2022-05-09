@@ -1,6 +1,6 @@
 import { getApiSecretFromNextRequest } from '@api/helpers/getApiSecretFromNextRequest'
-import permission from '@api/libs/permission'
-import resolvers from '@api/resolvers'
+import { permission } from '@api/libs/permission'
+import { resolvers } from '@api/resolvers'
 import { handleError } from '@common/helpers/handleError'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { loadSchema } from '@graphql-tools/load'
@@ -128,9 +128,10 @@ const permissions = shield({
 /* eslint-enable sort-keys-fix/sort-keys-fix */
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const __GRAPHQL_SERVER: {
+const GRAPHQL_SERVER: {
   apolloServer?: ApolloServer
 } = {}
+
 export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (DOMAIN_URL === undefined) {
@@ -147,7 +148,7 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
       return false
     }
 
-    if (!__GRAPHQL_SERVER.apolloServer) {
+    if (!GRAPHQL_SERVER.apolloServer) {
       // https://www.graphql-tools.com/docs/schema-loading#usage
       const typeDefs = await loadSchema(GRAPHQL_SCHEMA_PATH, {
         loaders: [new GraphQLFileLoader()],
@@ -156,7 +157,7 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
       const schema = makeExecutableSchema({ resolvers, typeDefs })
       const schemaWithPermissions = applyMiddleware(schema, permissions)
 
-      __GRAPHQL_SERVER.apolloServer = new ApolloServer({
+      GRAPHQL_SERVER.apolloServer = new ApolloServer({
         context: async ({ req }: { req: NextApiRequest }) => {
           const apiSecret = getApiSecretFromNextRequest(req)
           const user = await getUser(req)
@@ -169,10 +170,10 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
         schema: schemaWithPermissions,
       })
 
-      await __GRAPHQL_SERVER.apolloServer.start()
+      await GRAPHQL_SERVER.apolloServer.start()
     }
 
-    await (__GRAPHQL_SERVER.apolloServer as unknown as ApolloServer).createHandler({
+    await (GRAPHQL_SERVER.apolloServer as unknown as ApolloServer).createHandler({
       path: '/api/graphql',
     })(req, res)
   } catch (err) {

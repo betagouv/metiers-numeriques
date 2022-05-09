@@ -27,7 +27,7 @@ const buildRelationStatements = <T extends Record<string, any>>(fields: Array<ke
     })),
   )(fields)
 
-export default function buildPrismaWhereFilter<T extends Record<string, any>>(
+export function buildPrismaWhereFilter<T extends Record<string, any>>(
   fields: Array<keyof T>,
   searchQuery?: string,
   andFilter?: Record<string, Common.Pojo>,

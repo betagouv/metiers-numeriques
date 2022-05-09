@@ -13,7 +13,7 @@ import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/700.css'
 import 'remixicon/fonts/remixicon.css'
 
-const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper), {
+const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper) as any, {
   ssr: false,
 })
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import ky from 'ky-universal'
 
 export enum MatomoGoal {
@@ -61,11 +63,11 @@ export const matomo = {
     return value
   },
 
-  trackGoal: (matoomoGoal: MatomoGoal) => {
+  trackGoal: (matomoGoal: MatomoGoal) => {
     if (window === undefined || (window as any)._paq === undefined) {
       return
     }
 
-    ;(window as any)._paq.push(['trackGoal', matoomoGoal])
+    ;(window as any)._paq.push(['trackGoal', matomoGoal])
   },
 }

@@ -1,5 +1,5 @@
 import { prisma } from '@api/libs/prisma'
-import InstitutionCard from '@app/organisms/InstitutionCard'
+import { InstitutionCard } from '@app/organisms/InstitutionCard'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs'
 import Head from 'next/head'

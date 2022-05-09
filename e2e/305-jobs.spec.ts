@@ -80,9 +80,11 @@ test.describe('Admin > Jobs', () => {
 
         // TODO Investigate why this we need to click twice with a timeout.
         let maxRetries = 5
-        while ((await page.locator('h1').textContent()) !== 'Offres d’emploi' && maxRetries-- > 0) {
+        while ((await page.locator('h1').textContent()) !== 'Offres d’emploi' && maxRetries > 0) {
           await page.click('"Publier"')
           await page.waitForTimeout(500)
+
+          maxRetries -= 1
         }
 
         await expect(page.locator('h1')).toHaveText('Offres d’emploi')

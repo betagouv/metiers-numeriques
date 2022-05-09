@@ -1,4 +1,4 @@
-import Link from '../atoms/Link'
+import { Link } from '../atoms/Link'
 
 import type { File, FilesOnLegacyInstitutions, LegacyInstitution } from '@prisma/client'
 
@@ -23,7 +23,7 @@ export type LegacyInstitutionWithRelation = LegacyInstitution & {
 type InstitutionCardProps = {
   institution: LegacyInstitutionWithRelation
 }
-export default function InstitutionCard({ institution }: InstitutionCardProps) {
+export function InstitutionCard({ institution }: InstitutionCardProps) {
   return (
     <div className="fr-card fr-enlarge-link">
       <div className="fr-card__body">

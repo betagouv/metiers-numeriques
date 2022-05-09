@@ -32,7 +32,7 @@ const getDescriptionSource = ({ mission, reference, tasks, team }: LegacyJob): s
   )
 }
 
-export default function normalizeJobDescription(job: LegacyJob): string | ReactElement {
+export function normalizeJobDescription(job: LegacyJob): string | ReactElement {
   try {
     return getDescriptionSource(job)
   } catch (err) {

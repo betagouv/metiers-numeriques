@@ -59,7 +59,7 @@ export const JobApplicationModal = ({ job, onDone }: JobApplicationModalProps) =
       cookie.set(CookieKey.HAS_SUBSCRIBED_TO_NEWSLETTER, true)
 
       setHasJustSubscribed(true)
-    } catch (err) {
+    } catch (err: any) {
       if (err.name === 'HTTPError') {
         setErrors({
           email: 'Êtes-vous déjà inscrit·e ?',
@@ -156,7 +156,7 @@ export const JobApplicationModal = ({ job, onDone }: JobApplicationModalProps) =
               {!hasAlreadySubscribed && (
                 <NewsletterBox className="fr-modal__footer">
                   {!hasJustSubscribed && (
-                    <Form initialValues={{}} onSubmit={createLead} validationSchema={FormSchema}>
+                    <Form initialValues={{}} onSubmit={createLead as any} validationSchema={FormSchema}>
                       <Form.TextInput label="E-mail" name="email" type="email" />
                       <Form.Submit>TENEZ-MOI INFORMÉ·E !</Form.Submit>
                     </Form>

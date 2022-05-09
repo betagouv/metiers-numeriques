@@ -4,7 +4,7 @@ import { handleError } from '@common/helpers/handleError'
 
 import type { FilesOnLegacyInstitutionsWithRelation } from '@app/organisms/InstitutionCard'
 
-export default function renderLegacyInstitutionFile(legacyInstitutionFile: FilesOnLegacyInstitutionsWithRelation) {
+export function renderLegacyInstitutionFile(legacyInstitutionFile: FilesOnLegacyInstitutionsWithRelation) {
   try {
     const { id, title, url } = legacyInstitutionFile.file
 

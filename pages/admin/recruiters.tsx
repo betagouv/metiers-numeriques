@@ -1,10 +1,10 @@
 import { useQuery, useMutation } from '@apollo/client'
-import AdminHeader from '@app/atoms/AdminHeader'
+import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
-import Title from '@app/atoms/Title'
+import { Title } from '@app/atoms/Title'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
-import queries from '@app/queries'
+import { queries } from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { JobSource } from '@prisma/client'
@@ -183,7 +183,12 @@ export default function AdminRecruiterListPage() {
       <Card>
         <Flex>
           <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un service recruteur" />
-          <Select isClearable onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
+          <Select
+            isClearable
+            onChange={handleSourceSelect as any}
+            options={JOB_SOURCES_AS_OPTIONS}
+            placeholder="Source"
+          />
         </Flex>
 
         <Table

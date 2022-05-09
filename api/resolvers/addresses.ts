@@ -1,8 +1,9 @@
-import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
-import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
+
+import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
+import { buildPrismaWhereFilter } from '../helpers/buildPrismaWhereFilter'
+import { prisma } from '../libs/prisma'
 
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Address, Prisma } from '@prisma/client'
@@ -65,6 +66,7 @@ export const mutation = {
 
       const data = (await prisma.address.findUnique(args)) as unknown as AddressFromGetAddresses | null
 
+      // eslint-disable-next-line no-underscore-dangle
       if (data === null || data._count.jobs > 0) {
         return null
       }

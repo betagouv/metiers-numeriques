@@ -5,7 +5,7 @@ const MAX_PER_PAGE = 100
 /**
  * @see  https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination
  */
-export default function buildPrismaPaginationFilter(
+export function buildPrismaPaginationFilter(
   perPage: number,
   pageIndex: number,
 ): {

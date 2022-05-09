@@ -1,4 +1,4 @@
-import buildPrismaPaginationFilter from '../buildPrismaPaginationFilter'
+import { buildPrismaPaginationFilter } from '../buildPrismaPaginationFilter'
 
 describe('api/helpers/buildPrismaPaginationFilter()', () => {
   test(`with 1 and 0`, () => {

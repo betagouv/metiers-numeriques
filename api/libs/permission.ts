@@ -108,4 +108,6 @@ class Permission {
   }
 }
 
-export default new Permission()
+const permission = new Permission()
+
+export { permission }

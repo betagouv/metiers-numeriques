@@ -1,5 +1,5 @@
-import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
-import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
+import { buildPrismaPaginationFilter } from '@api/helpers/buildPrismaPaginationFilter'
+import { buildPrismaWhereFilter } from '@api/helpers/buildPrismaWhereFilter'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 

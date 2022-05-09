@@ -3,12 +3,12 @@ import { AuthProvider } from 'nexauth/client'
 import Head from 'next/head'
 import { createGlobalStyle } from 'styled-components'
 
-import AdminBody from '../atoms/AdminBody'
-import AdminMain from '../atoms/AdminMain'
+import { AdminBody } from '../atoms/AdminBody'
+import { AdminMain } from '../atoms/AdminMain'
 import { AdminLoader } from '../molecules/AdminLoader'
-import AdminMenu from '../molecules/AdminMenu'
+import { AdminMenu } from '../molecules/AdminMenu'
 import { AdminToaster } from '../molecules/AdminToaster'
-import SignInDialog from '../organisms/SignInDialog'
+import { SignInDialog } from '../organisms/SignInDialog'
 import { WithGraphql } from './WithGraphql'
 
 const GlobalStyleCustom = createGlobalStyle`

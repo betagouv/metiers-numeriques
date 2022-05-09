@@ -1,5 +1,5 @@
-import Overlay from './Overlay'
-import Spinner from './Spinner'
+import { Overlay } from './Overlay'
+import { Spinner } from './Spinner'
 
 export function AdminLoader() {
   return (

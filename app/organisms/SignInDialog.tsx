@@ -44,7 +44,7 @@ const signUpFormSchema = Yup.object().shape({
 type SignInDialogProps = {
   defaultType?: SignInDialogType
 }
-export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDialogProps) {
+export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDialogProps) {
   const [type, setType] = useState(defaultType)
   const auth = useAuth()
 
@@ -136,7 +136,7 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
           key="logIn.form"
           autoComplete="on"
           initialValues={{}}
-          onSubmit={logIn}
+          onSubmit={logIn as any}
           validationSchema={logInFormSchema}
         >
           <Dialog.Body>
@@ -177,7 +177,7 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
         key="signUp.form"
         autoComplete="on"
         initialValues={{}}
-        onSubmit={signUp}
+        onSubmit={signUp as any}
         validationSchema={signUpFormSchema}
       >
         <Dialog.Body>

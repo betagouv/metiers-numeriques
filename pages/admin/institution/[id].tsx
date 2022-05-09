@@ -1,12 +1,12 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
-import AdminHeader from '@app/atoms/AdminHeader'
+import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Subtitle } from '@app/atoms/Subtitle'
-import Title from '@app/atoms/Title'
+import { Title } from '@app/atoms/Title'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
-import queries from '@app/queries'
+import { queries } from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
@@ -196,7 +196,7 @@ export default function AdminInstitutionEditorPage() {
       <AdminCard isFirst>
         <AdminForm
           initialValues={initialValues || {}}
-          onSubmit={saveAndGoToList}
+          onSubmit={saveAndGoToList as any}
           validationSchema={InstitutionFormSchema}
         >
           <Field>

@@ -1,4 +1,4 @@
-import Link from '@app/atoms/Link'
+import { Link } from '@app/atoms/Link'
 import Head from 'next/head'
 
 export default function NotFoundPage() {

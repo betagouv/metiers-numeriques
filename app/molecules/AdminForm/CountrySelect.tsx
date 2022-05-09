@@ -52,7 +52,7 @@ export function CountrySelect({ helper, isDisabled = false, label, name, placeho
       isDisabled={isControlledDisabled}
       label={label}
       name={name}
-      onChange={updateFormikValues}
+      onChange={updateFormikValues as any}
       options={countriesAsOptions}
       placeholder={placeholder}
     />

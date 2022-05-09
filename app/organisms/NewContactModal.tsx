@@ -4,7 +4,7 @@ import { Button, Field, Modal, TextInput } from '@singularity/core'
 import { KeyboardEventHandler, useRef, useState } from 'react'
 import * as Yup from 'yup'
 
-import queries from '../queries'
+import { queries } from '../queries'
 
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { Contact } from '@prisma/client'
@@ -88,7 +88,7 @@ export const NewContactModal = ({ onCancel, onCreate }: NewContactModalProps) =>
       const createContactResult = await createContact(options)
 
       onCreate(createContactResult.data.createContact.id)
-    } catch (err) {
+    } catch (err: any) {
       if (err.name === 'ValidationError') {
         const errors = makeErrorsFromYupErrors(err.errors)
 

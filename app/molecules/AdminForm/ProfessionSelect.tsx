@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { showApolloError } from '../../helpers/showApolloError'
-import queries from '../../queries'
+import { queries } from '../../queries'
 
 import type { Profession } from '@prisma/client'
 
@@ -79,7 +79,7 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
     const newProfessionsAsOptions = R.map(({ id, name }) => ({
       label: name,
       value: id,
-    }))(getProfessionsListResult.data.getProfessionsList)
+    }))(getProfessionsListResult.data.getProfessionsList as any) as Common.App.SelectOption[]
 
     setOptions(newProfessionsAsOptions)
 
@@ -102,7 +102,7 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
       isDisabled={isControlledDisabled}
       label={label}
       name={name}
-      onChange={updateFormikValues}
+      onChange={updateFormikValues as any}
       options={options}
       placeholder={placeholder}
     />

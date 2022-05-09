@@ -7,7 +7,7 @@ import * as R from 'ramda'
 
 import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { getCountryFromCode } from '../../helpers/getCountryFromCode'
-import queries from '../../queries'
+import { queries } from '../../queries'
 
 import type { Address, Prisma } from '@prisma/client'
 

@@ -1,22 +1,19 @@
 {
-  "extends": "@ivangabriele/eslint-config-typescript-react",
+  "extends": "@ivangabriele/eslint-config-typescript-next",
   "env": {
     "browser": false,
     "node": true
   },
   "parserOptions": {
     "ecmaVersion": 2021,
+    "extraFileExtensions": [".mjs"],
     "project": "./tsconfig.json"
   },
   "ignorePatterns": ["/.next/", "/.yarn/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",
-    "import/prefer-default-export": "off",
-    "no-new": "off",
-    "no-plusplus": "off",
-    "no-restricted-syntax": "off",
-    "no-underscore-dangle": "off",
+    "no-lone-blocks": "off",
 
     "jsx-a11y/label-has-associated-control": [
       "error",
@@ -27,13 +24,6 @@
 
     "react/function-component-definition": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/prop-types": [
-      "error",
-      {
-        "ignore": ["children", "className", "Component", "pageProps"]
-      }
-    ],
-    "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
 
     "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
@@ -56,12 +46,6 @@
       }
     },
     {
-      "files": ["./pages/**/*.tsx"],
-      "rules": {
-        "react/prop-types": "off"
-      }
-    },
-    {
       "files": ["./prisma/**/*.ts", "./workers/**/*.mjs"],
       "env": {
         "browser": false,
@@ -72,9 +56,19 @@
       }
     },
     {
-      "files": ["./e2e/**/*.ts", "./scripts/**/*.ts"],
+      "files": [
+        "./config/**/*.js",
+        "./config/**/*.ts",
+        "./e2e/**/*.ts",
+        "./prisma/seeds/**/*.ts",
+        "./scripts/**/*.ts",
+        "./workers/**/*.mjs"
+      ],
       "rules": {
+        "import/extensions": "off",
+        "import/no-default-export": "off",
         "no-await-in-loop": "off",
+        "no-restricted-syntax": "off",
 
         "@typescript-eslint/no-loop-func": "off",
 
@@ -87,9 +81,11 @@
       }
     },
     {
-      "files": ["**/*.test.js", "**/*.test.ts", "jest.setup.js"],
+      "files": ["./config/**/*.js", "./config/**/*.ts"],
       "env": {
-        "jest": true
+        "browser": false,
+        "jest": true,
+        "node": true
       }
     }
   ]

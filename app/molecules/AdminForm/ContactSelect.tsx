@@ -8,7 +8,7 @@ import { useFormikContext } from 'formik'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import queries from '../../queries'
+import { queries } from '../../queries'
 
 import type { Contact } from '@prisma/client'
 
@@ -112,7 +112,7 @@ export function ContactSelect({
     const newContactsAsOptions = R.map(({ email, id, name }) => ({
       label: `${name} (${email})`,
       value: id,
-    }))(getContactsListResult.data.getContactsList)
+    }))(getContactsListResult.data.getContactsList as any) as Common.App.SelectOption[]
 
     setOptions(newContactsAsOptions)
 
@@ -148,7 +148,7 @@ export function ContactSelect({
         isMulti={isMulti}
         label={label}
         name={name}
-        onChange={updateFormikValues}
+        onChange={updateFormikValues as any}
         options={options}
         placeholder={placeholder}
       />

@@ -28,7 +28,7 @@ export function NewsletterBar() {
       cookie.set(CookieKey.HAS_SUBSCRIBED_TO_NEWSLETTER, true)
 
       setHasJustSubscribed(true)
-    } catch (err) {
+    } catch (err: any) {
       if (err.name === 'HTTPError') {
         setErrors({
           email: 'Êtes-vous déjà inscrit·e ?',

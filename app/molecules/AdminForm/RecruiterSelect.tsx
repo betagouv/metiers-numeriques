@@ -8,7 +8,7 @@ import { useFormikContext } from 'formik'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import queries from '../../queries'
+import { queries } from '../../queries'
 
 import type { Recruiter } from '@prisma/client'
 
@@ -151,7 +151,7 @@ export function RecruiterSelect({
         isMulti={isMulti}
         label={label}
         name={name}
-        onChange={updateFormikValues}
+        onChange={updateFormikValues as any}
         options={options}
         placeholder={placeholder}
       />

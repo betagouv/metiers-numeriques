@@ -1,6 +1,6 @@
 import { generateKeyFromValues } from './generateKeyFromValues'
 
-export default function renderLegacyInstitutionSocialNetwork(url: string) {
+export function renderLegacyInstitutionSocialNetwork(url: string) {
   const key = generateKeyFromValues(url)
 
   switch (true) {

@@ -6,7 +6,7 @@ import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 
-import Link from '../atoms/Link'
+import { Link } from '../atoms/Link'
 
 import type { Address, Contact, Job, Profession, Recruiter } from '@prisma/client'
 
