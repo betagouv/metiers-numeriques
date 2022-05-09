@@ -21,7 +21,7 @@ import type { TableColumnProps } from '@singularity/core'
 
 const FormSchema = Yup.object().shape({
   displayName: Yup.string().nullable().required(`Le nom est obligatoire.`),
-  institutionId: Yup.string().nullable(),
+  institutionId: Yup.string().nullable().required(`L'institution est obligatoire.`),
   websiteUrl: Yup.string().nullable().url(`Cette URL est mal formatée.`),
 })
 
@@ -216,7 +216,7 @@ export default function AdminRecruiterEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.InstitutionSelect isDisabled={isLoading} label="Institution" name="institutionId" />
+            <AdminForm.InstitutionSelect isDisabled={isLoading} label="Institution *" name="institutionId" />
           </Field>
 
           <Field>

@@ -216,7 +216,7 @@ export default function AdminJobEditorPage() {
 
       await getJobResult.refetch()
     } catch (err) {
-      handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
+      handleError(err, 'pages/admin/job/[id].tsx > save()')
       toast.error(String(err))
     }
   }, [])
@@ -229,6 +229,8 @@ export default function AdminJobEditorPage() {
         ...values,
         state: JobState.PUBLISHED,
       })
+
+      goToList()
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > saveAndGoToList()')
 

@@ -7,27 +7,26 @@ test.describe('Admin > Contacts', () => {
     storageState: './e2e/states/administrator.json',
   })
 
-  test('First Contact Creation', async ({ page }) => {
-    const firstTestContact = TEST_CONTACTS[0]
-
+  test('Contacts Creation', async ({ page }) => {
     await page.goto('http://localhost:3000/admin')
-
     await page.click('"Contacts"')
 
     await expect(page.locator('h1')).toHaveText('Contacts')
 
-    await page.click('"Ajouter un contact"')
+    for (const testContact of TEST_CONTACTS) {
+      await page.click('"Ajouter un contact"')
 
-    await expect(page.locator('h1')).toHaveText('Nouveau contact')
+      await expect(page.locator('h1')).toHaveText('Nouveau contact')
 
-    await page.fill('"Nom *"', firstTestContact.name)
-    await page.fill('"Email *"', firstTestContact.email)
-    await page.fill('"Téléphone"', firstTestContact.phone)
-    await page.fill('"Poste"', firstTestContact.position)
-    await page.fill('"Notes"', firstTestContact.notes)
-    await page.click('"Créer"')
+      await page.fill('"Nom *"', testContact.name)
+      await page.fill('"Email *"', testContact.email)
+      await page.fill('"Téléphone"', testContact.phone as string)
+      await page.fill('"Poste"', testContact.position as string)
+      await page.fill('"Notes"', testContact.note as string)
+      await page.click('"Créer"')
 
-    await expect(page.locator('h1')).toHaveText('Contacts')
-    await expect(page.locator(`td:has-text("${firstTestContact.name}")`)).toBeVisible()
+      await expect(page.locator('h1')).toHaveText('Contacts')
+      await expect(page.locator(`td:has-text("${testContact.name}")`)).toBeVisible()
+    }
   })
 })

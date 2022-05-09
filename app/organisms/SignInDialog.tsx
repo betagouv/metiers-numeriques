@@ -37,7 +37,7 @@ const signUpFormSchema = Yup.object().shape({
   signUpLastName: Yup.string().required(`Veuillez entrer votre nom.`),
   signUpPassword: Yup.string().required(`Veuillez entrer un mot de passe.`),
   signUpPasswordConfirmation: Yup.string()
-    .required(`Veuillez répêter le mot de passe.`)
+    .required(`Veuillez répéter le mot de passe.`)
     .oneOf([Yup.ref('signUpPassword'), null], 'Les mots de passe ne correspondent pas.'),
 })
 
@@ -55,10 +55,22 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
       const res = await auth.logIn(logInEmail, logInPassword)
       if (res.isError) {
         if (res.error.email !== undefined) {
-          if (res.error.email === NexauthError.LOG_IN_WRONG_EMAIL_OR_PASSWORD) {
-            setErrors({
-              logInEmail: 'Mauvais email et/ou mot de passe.',
-            })
+          switch (res.error.email) {
+            case NexauthError.LOG_IN_WRONG_EMAIL_OR_PASSWORD:
+              setErrors({
+                logInEmail: 'Mauvais email et/ou mot de passe.',
+              })
+              break
+
+            case NexauthError.LOG_IN_UNACCEPTABLE_CONDITION:
+              setErrors({
+                logInEmail: 'Votre compte n’a pas encore été activé.',
+              })
+              break
+
+            default:
+              // eslint-disable-next-line no-console
+              console.error(res.error)
           }
         }
 
@@ -85,13 +97,16 @@ export default function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: 
     })
     if (res.isError) {
       if (res.error.email !== undefined) {
-        if (res.error.email === NexauthError.SIGN_UP_DUPLICATE_EMAIL) {
-          setErrors({
-            signUpEmail: 'Cette adresse email est déjà associée à un compte.',
-          })
-        } else {
-          // eslint-disable-next-line no-console
-          console.error(res.error)
+        switch (res.error.email) {
+          case NexauthError.SIGN_UP_DUPLICATE_EMAIL:
+            setErrors({
+              signUpEmail: 'Cette adresse email est déjà associée à un compte.',
+            })
+            break
+
+          default:
+            // eslint-disable-next-line no-console
+            console.error(res.error)
         }
       } else {
         // eslint-disable-next-line no-console
