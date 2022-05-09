@@ -62,7 +62,7 @@
     "formik": "2.2.9",
     "graphql": "16.3.0",
     "graphql-iso-date": "3.6.1",
-    "graphql-middleware": "6.0.10",
+    "graphql-middleware": "6.1.25",
     "graphql-rate-limit": "3.3.0",
     "graphql-shield": "7.5.0",
     "graphql-type-json": "0.3.2",
