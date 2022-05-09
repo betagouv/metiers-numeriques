@@ -136,10 +136,6 @@ dist
 # Database backups
 /.backups
 
-# Local data
-/data/*
-!/data/.gitkeep
-
 # Playwright storage states
 /e2e/states/*
 !/e2e/states/README.md
