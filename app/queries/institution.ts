@@ -35,8 +35,7 @@ export const GET_ONE = gql`
       recruiters {
         id
 
-        fullName
-        name
+        displayName
 
         jobs {
           id

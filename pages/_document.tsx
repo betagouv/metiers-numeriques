@@ -10,13 +10,12 @@ export default class TellMeDocument extends Document<{
   isWebsite: boolean
 }> {
   static async getInitialProps(ctx: DocumentContext) {
-    const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
+    const sheet = new ServerStyleSheet()
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          // eslint-disable-next-line react/jsx-props-no-spreading
           enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
         })
 
@@ -54,6 +53,7 @@ export default class TellMeDocument extends Document<{
 
         <body>
           <Main />
+          <div id="modal" />
           <NextScript />
         </body>
       </Html>

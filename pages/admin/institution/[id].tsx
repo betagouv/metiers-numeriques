@@ -27,16 +27,9 @@ type InstitutionFormData = Pick<Institution, 'name'>
 
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
   {
-    grow: 0.3,
     isSortable: false,
-    key: 'name',
+    key: 'displayName',
     label: 'Nom',
-  },
-  {
-    grow: 0.7,
-    isSortable: false,
-    key: 'fullName',
-    label: 'Nom complet',
   },
 ]
 

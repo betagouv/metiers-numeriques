@@ -19,7 +19,7 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { Job, Recruiter } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
-const FormSchema = Yup.object().shape({
+export const RecruiterFormSchema = Yup.object().shape({
   displayName: Yup.string().nullable().required(`Le nom est obligatoire.`),
   institutionId: Yup.string().nullable().required(`L'institution est obligatoire.`),
   websiteUrl: Yup.string().nullable().url(`Cette URL est mal formatée.`),
@@ -206,7 +206,11 @@ export default function AdminRecruiterEditorPage() {
       </AdminHeader>
 
       <AdminCard isFirst>
-        <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
+        <AdminForm
+          initialValues={initialValues || {}}
+          onSubmit={saveAndGoToList}
+          validationSchema={RecruiterFormSchema}
+        >
           {/* <Field>
             <AdminForm.Image accept=".svg" isDisabled={isLoading} label="Logo" name="logoFileId" />
           </Field> */}
