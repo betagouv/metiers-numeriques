@@ -183,7 +183,7 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
         <AccordionItem uuid="professionIdFilter">
           <AccordionItemHeading>
             <StyledAccordionItemButton className="fr-mt-4w">
-              <Title>Secteur</Title>
+              <Title>Secteur d’activité</Title>
               {openedAccordionFilters.includes('professionIdFilter') ? <ChevronDown /> : <ChevronLeft />}
             </StyledAccordionItemButton>
           </AccordionItemHeading>
