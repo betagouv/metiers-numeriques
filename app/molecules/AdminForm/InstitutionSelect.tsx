@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 import { showApolloError } from '../../helpers/showApolloError'
-import queries from '../../queries'
+import { queries } from '../../queries'
 
 import type { Institution } from '@prisma/client'
 
@@ -79,7 +79,7 @@ export function InstitutionSelect({ helper, isDisabled = false, label, name, pla
     const newInstitutionsAsOptions = R.map(({ id, name }) => ({
       label: name,
       value: id,
-    }))(getInstitutionsListResult.data.getInstitutionsList)
+    }))(getInstitutionsListResult.data.getInstitutionsList as any) as Common.App.SelectOption[]
 
     setOptions(newInstitutionsAsOptions)
 
@@ -102,7 +102,7 @@ export function InstitutionSelect({ helper, isDisabled = false, label, name, pla
       isDisabled={isControlledDisabled}
       label={label}
       name={name}
-      onChange={updateFormikValues}
+      onChange={updateFormikValues as any}
       options={options}
       placeholder={placeholder}
     />

@@ -76,7 +76,7 @@ export function Select({
       isMulti={isMulti}
       label={label}
       name={name}
-      onChange={updateFormikValues}
+      onChange={updateFormikValues as any}
       options={!isAsync ? options : undefined}
       placeholder={placeholder}
     />

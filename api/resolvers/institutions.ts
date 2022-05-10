@@ -1,7 +1,8 @@
-import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
-import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
+
+import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
+import { buildPrismaWhereFilter } from '../helpers/buildPrismaWhereFilter'
+import { prisma } from '../libs/prisma'
 
 import type { GetAllArgs, GetAllResponse } from './types'
 import type { Institution, Job, Prisma, Recruiter, User } from '@prisma/client'

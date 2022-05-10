@@ -8,7 +8,7 @@ export function convertErrorToPojo(error: Error): Common.Pojo {
       ...error,
       message,
     }
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/convertErrorToPojo()')
 
     return {}

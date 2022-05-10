@@ -1,6 +1,6 @@
-const ß = require('bhala')
+import { jest } from '@jest/globals'
+import ß from 'bhala'
 
-jest.mock('@common/helpers/handleError')
 jest.mock('@sentry/nextjs')
 jest.mock('react-hot-toast')
 

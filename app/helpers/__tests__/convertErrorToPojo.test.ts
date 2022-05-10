@@ -2,8 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { handleError } from '@common/helpers/handleError'
-
+// eslint-disable-next-line import/first
 import { convertErrorToPojo } from '../convertErrorToPojo'
 
 describe('app/helpers/convertErrorToPojo()', () => {
@@ -44,7 +43,5 @@ describe('app/helpers/convertErrorToPojo()', () => {
     const result = convertErrorToPojo(error as any)
 
     expect(result).toEqual({})
-
-    expect(handleError).toHaveBeenCalledTimes(1)
   })
 })

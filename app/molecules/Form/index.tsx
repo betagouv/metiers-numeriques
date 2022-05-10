@@ -39,7 +39,7 @@ type FormProps<Values extends FormikValues = FormikValues, ExtraProps = {}> = Fo
     isInline?: boolean
   }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
 const _Form = ({
   children,
   initialErrors,

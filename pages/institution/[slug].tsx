@@ -1,9 +1,9 @@
 import { prisma } from '@api/libs/prisma'
 import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
-import renderLegacyInstitutionFile from '@app/helpers/renderLegacyInstitutionFile'
-import renderLegacyInstitutionSocialNetwork from '@app/helpers/renderLegacyInstitutionSocialNetwork'
-import renderMarkdown from '@app/helpers/renderMarkdown'
-import uncapitalizeFirstLetter from '@app/helpers/uncapitalizeFirstLetter'
+import { renderLegacyInstitutionFile } from '@app/helpers/renderLegacyInstitutionFile'
+import { renderLegacyInstitutionSocialNetwork } from '@app/helpers/renderLegacyInstitutionSocialNetwork'
+import { renderMarkdown } from '@app/helpers/renderMarkdown'
+import { uncapitalizeFirstLetter } from '@app/helpers/uncapitalizeFirstLetter'
 import { LegacyInstitutionSection } from '@prisma/client'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs'

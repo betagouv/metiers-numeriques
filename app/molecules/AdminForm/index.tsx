@@ -30,7 +30,7 @@ const StyledForm = styled(FormikForm)`
 type FormProps<Values extends FormikValues = FormikValues, ExtraProps = {}> = FormikConfig<Values> &
   ExtraProps &
   Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
 const _AdminForm = ({
   children,
   initialErrors,

@@ -4,7 +4,7 @@ import { Button, Field, Modal, TextInput } from '@singularity/core'
 import { KeyboardEventHandler, useRef, useState } from 'react'
 import * as Yup from 'yup'
 
-import queries from '../queries'
+import { queries } from '../queries'
 
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { Recruiter } from '@prisma/client'
@@ -79,7 +79,7 @@ export const NewRecruiterModal = ({ onCancel, onCreate }: NewRecruiterModalProps
       const createRecruiterResult = await createRecruiter(options)
 
       onCreate(createRecruiterResult.data.createRecruiter.id)
-    } catch (err) {
+    } catch (err: any) {
       if (err.name === 'ValidationError') {
         const errors = makeErrorsFromYupErrors(err.errors)
 

@@ -1,4 +1,4 @@
-import Link from '../../atoms/Link'
+import { Link } from '../../atoms/Link'
 
 type BrandProps = {
   onToggleMenu: Common.FunctionLike

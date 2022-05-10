@@ -1,16 +1,16 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
-import AdminHeader from '@app/atoms/AdminHeader'
+import { AdminHeader } from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { Flex } from '@app/atoms/Flex'
 import { Subtitle } from '@app/atoms/Subtitle'
-import Title from '@app/atoms/Title'
+import { Title } from '@app/atoms/Title'
 import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
-import queries from '@app/queries'
+import { queries } from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS, JOB_STATES_AS_OPTIONS } from '@common/constants'
 import { convertGeocodeJsonFeatureToPrismaAddress } from '@common/helpers/convertGeocodeJsonFeatureToPrismaAddress'
 import { handleError } from '@common/helpers/handleError'
@@ -184,7 +184,7 @@ export default function AdminLegacyJobMigratorPage() {
           label: legacyEntity ? `${name} (${legacyEntity.name})` : name,
           value: id,
         })),
-      )(getLegacyServicesListResult.data.getLegacyServicesList)
+      )(getLegacyServicesListResult.data.getLegacyServicesList) as Common.App.SelectOption<string>[]
 
       setLegacyServicesAsOptions(newLegacyServicesAsOptions)
     }

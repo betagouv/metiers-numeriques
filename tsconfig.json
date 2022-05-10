@@ -1,27 +1,14 @@
 {
+  "extends": "@ivangabriele/tsconfig-next",
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": ".",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "noImplicitAny": false,
     "paths": {
       "@api/*": ["api/*"],
       "@app/*": ["app/*"],
       "@common/*": ["common/*"]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "strictNullChecks": true,
-    "target": "es5"
+    }
   },
   "exclude": [".next/*", "node_modules/*"],
   "include": ["**/*.js", "**/*.mjs", "**/*.ts", "**/*.tsx", "next-env.d.ts"],

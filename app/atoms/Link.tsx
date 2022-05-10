@@ -11,7 +11,7 @@ type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string
 }
 
-export default function Link({ children, href, ...props }: LinkProps) {
+export function Link({ children, href, ...props }: LinkProps) {
   return (
     <NextLink href={href}>
       <StyledAnchor href={href} {...props}>

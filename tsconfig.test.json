@@ -1,0 +1,8 @@
+{
+  "extends": ".",
+  "ts-node": {
+    "compilerOptions": {
+      "esm": true
+    }
+  }
+}

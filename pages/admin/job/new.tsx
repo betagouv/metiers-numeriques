@@ -1,6 +1,6 @@
 import { prisma } from '@api/libs/prisma'
-import AdminHeader from '@app/atoms/AdminHeader'
-import Title from '@app/atoms/Title'
+import { AdminHeader } from '@app/atoms/AdminHeader'
+import { Title } from '@app/atoms/Title'
 import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobRemoteStatus, JobState } from '@prisma/client'
 import cuid from 'cuid'

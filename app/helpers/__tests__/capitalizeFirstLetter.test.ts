@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import capitalizeFirstLetter from '../capitalizeFirstLetter'
+import { capitalizeFirstLetter } from '../capitalizeFirstLetter'
 
 describe('app/helpers/capitalizeFirstLetter()', () => {
   test(`with "abajour"`, () => {

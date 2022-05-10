@@ -2,18 +2,18 @@ import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import { AdminFloatingButton } from '@app/atoms/AdminFloatingButton'
-import AdminHeader from '@app/atoms/AdminHeader'
+import { AdminHeader } from '@app/atoms/AdminHeader'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { FieldGroup } from '@app/atoms/FieldGroup'
 import { SeparatorText } from '@app/atoms/SeparatorText'
 import { Subtitle } from '@app/atoms/Subtitle'
-import Title from '@app/atoms/Title'
+import { Title } from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
-import Spinner from '@app/molecules/AdminLoader/Spinner'
+import { Spinner } from '@app/molecules/AdminLoader/Spinner'
 import { StepBar } from '@app/molecules/StepBar'
-import queries from '@app/queries'
+import { queries } from '@app/queries'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_REMOTE_STATUSES_AS_OPTIONS } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
@@ -328,8 +328,8 @@ export default function AdminJobEditorPage() {
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
-      <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={JobFormSchema}>
-        <AdminForm.AutoSave onChange={save} />
+      <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList as any} validationSchema={JobFormSchema}>
+        <AdminForm.AutoSave onChange={save as any} />
 
         <AdminCard isFirst>
           <Subtitle>Informations essentielles</Subtitle>

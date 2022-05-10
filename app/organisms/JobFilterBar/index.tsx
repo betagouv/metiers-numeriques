@@ -188,7 +188,7 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
             </StyledAccordionItemButton>
           </AccordionItemHeading>
           <AccordionItemPanel>
-            <ProfessionFilter onChange={handleProfessionId} professions={professions} />
+            <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
           </AccordionItemPanel>
         </AccordionItem>
 
@@ -200,7 +200,7 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
             </StyledAccordionItemButton>
           </AccordionItemHeading>
           <AccordionItemPanel>
-            <RegionFilter onChange={handleRegion} />
+            <RegionFilter onChange={handleRegion as any} />
           </AccordionItemPanel>
         </AccordionItem>
 

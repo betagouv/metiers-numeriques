@@ -1,9 +1,10 @@
-import buildPrismaPaginationFilter from '@api/helpers/buildPrismaPaginationFilter'
-import buildPrismaWhereFilter from '@api/helpers/buildPrismaWhereFilter'
-import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
+
+import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
+import { buildPrismaWhereFilter } from '../helpers/buildPrismaWhereFilter'
+import { prisma } from '../libs/prisma'
 
 import type { Context, GetAllArgs, GetAllResponse } from './types'
 import type { Region } from '@common/constants'

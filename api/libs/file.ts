@@ -8,11 +8,6 @@ import type { FileTypeKey, FileTypeValue } from '../../common/constants'
 
 const { AWS_S3_BUCKET } = process.env
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const __AWS_SDK_S3 = {
-  awsSdkS3Instance: new AwsSdkS3(),
-}
-
 class File {
   private s3BucketName: string
   private s3Instance: AwsSdkS3
@@ -24,7 +19,7 @@ class File {
       }
 
       this.s3BucketName = AWS_S3_BUCKET
-      this.s3Instance = __AWS_SDK_S3.awsSdkS3Instance
+      this.s3Instance = new AwsSdkS3()
     } catch (err) {
       handleError(err, 'api/libs/File.constructor()', true)
     }
@@ -172,4 +167,6 @@ class File {
   }
 }
 
-export default new File()
+const file = new File()
+
+export { file }

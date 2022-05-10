@@ -1,6 +1,6 @@
-import AdminHeader from '@app/atoms/AdminHeader'
+import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Subtitle } from '@app/atoms/Subtitle'
-import Title from '@app/atoms/Title'
+import { Title } from '@app/atoms/Title'
 import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'

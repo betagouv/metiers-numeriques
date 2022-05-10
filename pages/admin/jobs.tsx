@@ -1,11 +1,11 @@
 import { useQuery, useMutation } from '@apollo/client'
-import AdminHeader from '@app/atoms/AdminHeader'
+import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Flex } from '@app/atoms/Flex'
-import Title from '@app/atoms/Title'
+import { Title } from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
-import queries from '@app/queries'
+import { queries } from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
 import { Job, UserRole } from '@prisma/client'
@@ -208,8 +208,13 @@ export default function AdminJobListPage() {
       <Card>
         <Flex>
           <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une offre d’emploi" />
-          <Select isClearable onChange={handleSourceSelect} options={JOB_SOURCES_AS_OPTIONS} placeholder="Source" />
-          <Select isClearable onChange={handleStateSelect} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
+          <Select
+            isClearable
+            onChange={handleSourceSelect as any}
+            options={JOB_SOURCES_AS_OPTIONS}
+            placeholder="Source"
+          />
+          <Select isClearable onChange={handleStateSelect as any} options={JOB_STATES_AS_OPTIONS} placeholder="État" />
         </Flex>
 
         <Table

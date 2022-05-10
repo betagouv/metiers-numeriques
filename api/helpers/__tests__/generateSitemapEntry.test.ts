@@ -1,8 +1,6 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 
-process.env.DOMAIN_URL = 'https://www.example.com'
-
 // eslint-disable-next-line import/first
 import { generateSitemapEntry } from '../generateSitemapEntry'
 
@@ -17,7 +15,7 @@ describe('api/helpers/generateSitemapEntry()', () => {
     // eslint-disable-next-line prettier/prettier
     expect(result).toBe(
       '  <url>\n' +
-        '    <loc>https://www.example.com/a/path</loc>\n' +
+        '    <loc>http://localhost:3000/a/path</loc>\n' +
         '  </url>',
     )
   })
@@ -30,7 +28,7 @@ describe('api/helpers/generateSitemapEntry()', () => {
 
     expect(result).toBe(
       '  <url>\n' +
-        '    <loc>https://www.example.com/a/path</loc>\n' +
+        '    <loc>http://localhost:3000/a/path</loc>\n' +
         '    <lastmod>2022-01-01</lastmod>\n' +
         '  </url>',
     )

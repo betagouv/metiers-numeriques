@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import uncapitalizeFirstLetter from '../uncapitalizeFirstLetter'
+import { uncapitalizeFirstLetter } from '../uncapitalizeFirstLetter'
 
 describe('app/helpers/uncapitalizeFirstLetter()', () => {
   test(`with "Abajour"`, () => {

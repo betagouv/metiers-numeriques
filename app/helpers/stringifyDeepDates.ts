@@ -17,6 +17,7 @@ export function stringifyDeepDates(input: any): Common.Pojo {
 
     const inputAsPojo = {}
 
+    // eslint-disable-next-line no-restricted-syntax
     for (const key in input) {
       if (Object.prototype.hasOwnProperty.call(input, key)) {
         inputAsPojo[key] = stringifyDeepDates(input[key])

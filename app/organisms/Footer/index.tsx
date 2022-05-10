@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import Link from '../../atoms/Link'
+import { Link } from '../../atoms/Link'
 import { BackToTopButton } from './BackToTopButton'
 
 const Brand = styled.div`

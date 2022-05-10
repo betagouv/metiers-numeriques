@@ -3,7 +3,10 @@ export class ApiError extends Error {
   public status: number
 
   constructor(message: string, status: number, isExposed: boolean = false) {
-    super(message)
+    /* istanbul ignore next */
+    {
+      super(message)
+    }
 
     this.isExposed = isExposed
     this.status = status

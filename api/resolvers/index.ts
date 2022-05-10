@@ -16,7 +16,7 @@ import * as professions from './professions'
 import * as recruiters from './recruiters'
 import * as users from './users'
 
-export default {
+const resolvers = {
   DateTime: GraphQLDateTime,
   JSONObject: GraphQLJSONObject,
   Mutation: {
@@ -52,3 +52,5 @@ export default {
     ...users.query,
   },
 }
+
+export { resolvers }
