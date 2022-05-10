@@ -59,6 +59,7 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
             <Component {...pageProps} />
           </main>
           <Footer />
+          <div id="modal" />
 
           <>
             <MatomoScript />

@@ -1,4 +1,5 @@
 import { Formik, Form as FormikForm } from 'formik'
+import { forwardRef } from 'react'
 import styled from 'styled-components'
 
 import { AddressSelect } from './AddressSelect'
@@ -19,7 +20,7 @@ import { Textarea } from './Textarea'
 import { TextInput } from './TextInput'
 
 import type { FormikConfig, FormikValues } from 'formik'
-import type { FormHTMLAttributes } from 'react'
+import type { FormHTMLAttributes, ForwardedRef } from 'react'
 
 const StyledForm = styled(FormikForm)`
   display: flex;
@@ -31,15 +32,19 @@ type FormProps<Values extends FormikValues = FormikValues, ExtraProps = {}> = Fo
   ExtraProps &
   Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>
 // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
-const _AdminForm = ({
-  children,
-  initialErrors,
-  initialValues,
-  onSubmit,
-  validate,
-  validationSchema,
-  ...props
-}: FormProps) => (
+const _AdminForm = (
+  {
+    children,
+    initialErrors,
+    initialValues,
+    onSubmit,
+
+    validate,
+    validationSchema,
+    ...props
+  }: FormProps,
+  ref: ForwardedRef<HTMLFormElement>,
+) => (
   <Formik
     enableReinitialize
     initialErrors={initialErrors}
@@ -48,13 +53,16 @@ const _AdminForm = ({
     validate={validate}
     validationSchema={validationSchema}
   >
-    <StyledForm noValidate {...props}>
+    <StyledForm ref={ref} noValidate {...props}>
       {children}
     </StyledForm>
   </Formik>
 )
 
-export const AdminForm = Object.assign(_AdminForm, {
+// eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
+const _AdminFormWithRef = forwardRef(_AdminForm)
+
+export const AdminForm = Object.assign(_AdminFormWithRef, {
   AddressSelect,
   AutoSave,
   Cancel,

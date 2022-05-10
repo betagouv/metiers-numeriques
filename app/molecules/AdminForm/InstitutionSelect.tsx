@@ -9,16 +9,12 @@ import { showApolloError } from '../../helpers/showApolloError'
 import { queries } from '../../queries'
 
 import type { Institution } from '@prisma/client'
+import type { SelectProps } from '@singularity/core'
 
-type InstitutionSelectProps = {
-  helper?: string
-  isDisabled?: boolean
-  label: string
+type InstitutionSelectProps = Omit<SelectProps, 'options'> & {
   name: string
-  placeholder?: string
 }
-
-export function InstitutionSelect({ helper, isDisabled = false, label, name, placeholder }: InstitutionSelectProps) {
+export function InstitutionSelect({ helper, isDisabled = false, name, ...props }: InstitutionSelectProps) {
   const $newInstitutionId = useRef<string>()
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
@@ -97,14 +93,12 @@ export function InstitutionSelect({ helper, isDisabled = false, label, name, pla
       key={generateKeyFromValues(options, defaultValue)}
       defaultValue={defaultValue}
       error={maybeError}
-      helper={helper}
       isClearable
       isDisabled={isControlledDisabled}
-      label={label}
       name={name}
       onChange={updateFormikValues as any}
       options={options}
-      placeholder={placeholder}
+      {...props}
     />
   )
 }

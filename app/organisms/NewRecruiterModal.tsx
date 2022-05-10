@@ -1,58 +1,27 @@
 import { useMutation } from '@apollo/client'
-import { handleError } from '@common/helpers/handleError'
-import { Button, Field, Modal, TextInput } from '@singularity/core'
-import { KeyboardEventHandler, useRef, useState } from 'react'
-import * as Yup from 'yup'
+import { Button, Field, Modal } from '@singularity/core'
+import { RecruiterFormSchema } from 'pages/admin/recruiter/[id]'
+import * as R from 'ramda'
+import { useCallback, useRef, useState } from 'react'
 
+import { ModalPortal } from '../hocs/ModalPortal'
+import { AdminForm } from '../molecules/AdminForm'
 import { queries } from '../queries'
 
 import type { MutationFunctionOptions } from '@apollo/client'
 import type { Recruiter } from '@prisma/client'
-
-const recruiterSchema = Yup.object().shape({
-  name: Yup.string().required(`[name] Le nom est obligatoire.`),
-  websiteUrl: Yup.string().url(`Cette URL est mal formatée.`),
-})
 
 type NewRecruiterModalProps = {
   onCancel: Common.FunctionLike
   onCreate: (newRecruiterId: string) => void | Promise<void>
 }
 
-const makeErrorsFromYupErrors = (yupErrors: string[]): Record<string, string> => {
-  const errors = {}
-  yupErrors.forEach(yupError => {
-    const result = /\[([a-z]+)\] (.+)/i.exec(yupError)
-    if (result === null) {
-      return
-    }
-
-    const [, key, message] = result
-
-    errors[key] = message
-  })
-
-  return errors
-}
-
 export const NewRecruiterModal = ({ onCancel, onCreate }: NewRecruiterModalProps) => {
-  const $fullName = useRef<HTMLInputElement>(null)
-  const $nameInput = useRef<HTMLInputElement>(null)
-  const $websiteUrlInput = useRef<HTMLInputElement>(null)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const $form = useRef<HTMLFormElement>(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [createRecruiter] = useMutation(queries.recruiter.CREATE_ONE)
 
-  const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = event => {
-    if (event.key !== 'Enter') {
-      return
-    }
-
-    event.preventDefault()
-
-    saveAndCallBack()
-  }
-
-  const saveAndCallBack = async () => {
+  /* const saveAndCallBack = async () => {
     try {
       setErrors({})
 
@@ -90,43 +59,57 @@ export const NewRecruiterModal = ({ onCancel, onCreate }: NewRecruiterModalProps
 
       handleError(err, 'app/organisms/NewRecruiterModal() > saveAndCallBack()')
     }
-  }
+  } */
+
+  const saveAndCallBack = useCallback(async (values: any) => {
+    setIsLoading(true)
+
+    const input: Partial<Recruiter> = R.pick(['displayName', 'institutionId', 'websiteUrl'])(values)
+
+    const options: MutationFunctionOptions = {
+      variables: {
+        input,
+      },
+    }
+
+    const createRecruiterResult = await createRecruiter(options)
+
+    onCreate(createRecruiterResult.data.createRecruiter.id)
+  }, [])
 
   return (
-    <Modal
-      onCancel={onCancel}
-      style={{
-        zIndex: 999,
-      }}
-    >
-      <Modal.Body>
-        <Modal.Title>Nouveau recruteur</Modal.Title>
+    <ModalPortal>
+      <Modal
+        onCancel={onCancel}
+        style={{
+          zIndex: 999,
+        }}
+      >
+        <AdminForm ref={$form} initialValues={{}} onSubmit={saveAndCallBack} validationSchema={RecruiterFormSchema}>
+          <Modal.Body>
+            <Modal.Title>Nouveau recruteur</Modal.Title>
 
-        <Field>
-          <TextInput ref={$nameInput} error={errors.name} label="Nom *" onKeyPress={handleKeyPress} />
-        </Field>
+            <Field>
+              <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="displayName" />
+            </Field>
 
-        <Field>
-          <TextInput ref={$fullName} error={errors.fullName} label="Nom complet" onKeyPress={handleKeyPress} />
-        </Field>
+            <Field>
+              <AdminForm.InstitutionSelect label="Institution *" name="institutionId" />
+            </Field>
 
-        <Field>
-          <TextInput
-            ref={$websiteUrlInput}
-            error={errors.websiteUrl}
-            label="Site (URL)"
-            onKeyPress={handleKeyPress}
-            type="url"
-          />
-        </Field>
-      </Modal.Body>
+            <Field>
+              <AdminForm.TextInput isDisabled={isLoading} label="Site (URL)" name="websiteUrl" type="url" />
+            </Field>
+          </Modal.Body>
 
-      <Modal.Action>
-        <Button accent="secondary" onClick={onCancel}>
-          Annuler
-        </Button>
-        <Button onClick={saveAndCallBack}>Créer et attacher</Button>
-      </Modal.Action>
-    </Modal>
+          <Modal.Action>
+            <Button accent="secondary" onClick={onCancel}>
+              Annuler
+            </Button>
+            <Button type="submit">Créer et attacher</Button>
+          </Modal.Action>
+        </AdminForm>
+      </Modal>
+    </ModalPortal>
   )
 }
