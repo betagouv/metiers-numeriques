@@ -3271,13 +3271,10 @@ better-prop-types@1.1.1:
     "@types/prop-types" "15.7.4"
     prop-types "15.8.1"
 
-bhala@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/bhala/-/bhala-2.1.0.tgz#75af5e5b2102d24bc8608fc4f3440980637ec3bb"
-  integrity sha512-I4Qpf4iqXetJlc13nBlVTIernQsSIzDExwM1iV5ejpTwKKzwO95cJ2eQScLBtggvHCvPA+vrsd/hUaodJS0u5A==
-  dependencies:
-    chalk "^4.1.2"
-    node-emoji "^1.11.0"
+bhala@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/bhala/-/bhala-3.0.4.tgz#3e62a96e387a482e09091c6da0ded55762145720"
+  integrity sha512-kh9gkIwV+hwpDAy/bLMXRFSJ39F/42qoqdtwOGDs9iWDPGwOxIV7nrVbngVIyO/tgGmP/kdrEpvEUKirrWXC1w==
 
 bl@^1.0.0:
   version "1.2.3"
@@ -3475,7 +3472,7 @@ chalk@^2.0.0:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.2:
+chalk@^4.0.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -7105,13 +7102,6 @@ node-domexception@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
-
-node-emoji@^1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.11.0.tgz#69a0150e6946e2f115e9d7ea4df7971e2628301c"
-  integrity sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==
-  dependencies:
-    lodash "^4.17.21"
 
 node-fetch@2.6.7, node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.7"
