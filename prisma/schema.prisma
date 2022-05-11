@@ -371,12 +371,13 @@ model RefreshToken {
 // https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model User {
   id        String   @id @default(cuid())
-  role      UserRole @default(RECRUITER)
   email     String   @unique
-  password  String
+  extra     Json     @default("{}")
   firstName String
-  lastName  String
   isActive  Boolean  @default(false)
+  lastName  String
+  password  String
+  role      UserRole @default(RECRUITER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

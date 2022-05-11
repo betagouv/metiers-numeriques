@@ -13,6 +13,6 @@ export default Nexauth<User>({
       role: 'ADMINISTRATOR',
     },
     logInConditions: [user => user.isActive],
-    newUserAllowedProps: ['email', 'firstName', 'lastName', 'password'],
+    newUserAllowedProps: ['email', 'firstName', 'extra', 'lastName', 'password'],
   },
 })

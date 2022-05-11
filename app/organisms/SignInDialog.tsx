@@ -15,6 +15,8 @@ type LogInValues = {
 }
 type SignUpValues = {
   signUpEmail: string
+  signUpExtraRequestedInstitution: string
+  signUpExtraRequestedService: string
   signUpFirstName: string
   signUpLastName: string
   signUpPassword: string
@@ -33,6 +35,8 @@ const logInFormSchema = Yup.object().shape({
 
 const signUpFormSchema = Yup.object().shape({
   signUpEmail: Yup.string().required(`Veuillez entrer votre email.`).email(`Votre addresse email est mal formatée.`),
+  signUpExtraRequestedInstitution: Yup.string().required(`Veuillez entrer le nom de votre institution.`),
+  signUpExtraRequestedService: Yup.string().required(`Veuillez entrer le nom de votre service.`),
   signUpFirstName: Yup.string().required(`Veuillez entrer votre prénom.`),
   signUpLastName: Yup.string().required(`Veuillez entrer votre nom.`),
   signUpPassword: Yup.string().required(`Veuillez entrer un mot de passe.`),
@@ -84,6 +88,8 @@ export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDi
   const signUp = async (values: SignUpValues, { setErrors, setSubmitting }: FormikHelpers<SignUpValues>) => {
     const {
       signUpEmail: email,
+      signUpExtraRequestedInstitution: requestedInstitution,
+      signUpExtraRequestedService: requestedService,
       signUpFirstName: firstName,
       signUpLastName: lastName,
       signUpPassword: password,
@@ -91,6 +97,10 @@ export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDi
 
     const res = await auth.signUp({
       email,
+      extra: {
+        requestedInstitution,
+        requestedService,
+      },
       firstName,
       lastName,
       password,
@@ -215,6 +225,12 @@ export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDi
           </Field>
           <Field>
             <AdminForm.TextInput autoComplete="family-name" label="Nom" name="signUpLastName" />
+          </Field>
+          <Field>
+            <AdminForm.TextInput label="Nom de votre institution" name="signUpExtraRequestedInstitution" />
+          </Field>
+          <Field>
+            <AdminForm.TextInput label="Nom de votre service" name="signUpExtraRequestedService" />
           </Field>
         </Dialog.Body>
 

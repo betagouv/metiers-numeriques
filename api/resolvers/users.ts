@@ -38,7 +38,16 @@ export const mutation = {
     }
   },
 
-  updateUser: async (_parent: undefined, { id, input }: { id: string; input: Partial<User> }): Promise<User | null> => {
+  updateUser: async (
+    _parent: undefined,
+    {
+      id,
+      input,
+    }: {
+      id: string
+      input: Partial<Prisma.UserUncheckedUpdateInput>
+    },
+  ): Promise<User | null> => {
     try {
       let institutionId: string | null = null
       if (typeof input.recruiterId === 'string') {

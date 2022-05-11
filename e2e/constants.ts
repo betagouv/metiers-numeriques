@@ -172,6 +172,8 @@ export const TEST_USERS = [
     firstName: 'Doris',
     lastName: 'Fish',
     password: 'doris',
+    requestedInstitution: 'An institution',
+    requestedService: 'A service',
   },
   {
     email: 'nemo.fish@sea.com',
@@ -179,5 +181,7 @@ export const TEST_USERS = [
     lastName: 'Fish',
     password: 'nemo',
     recruiter: TEST_RECRUITERS[0],
+    requestedInstitution: 'Another institution',
+    requestedService: 'Another service',
   },
 ]
