@@ -1,19 +1,23 @@
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { Alert } from '@app/atoms/Alert'
 import { Subtitle } from '@app/atoms/Subtitle'
 import { Title } from '@app/atoms/Title'
 import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
 import { useAuth } from 'nexauth/client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Briefcase, Send, Users } from 'react-feather'
 import { Flex } from 'reflexbox'
 
 import type { GlobalStatistics, LocalStatistics } from '@app/workers/statistics'
+import type { Recruiter } from '@prisma/client'
 
 const createStatisticsWorker = createWorkerFactory(() => import('../../app/workers/statistics'))
+const createAlertWorker = createWorkerFactory(() => import('../../app/workers/alert'))
 
 export default function AdminDashboardPage() {
+  const $timerId = useRef<number>()
   const [globalStatistics, setGlobalStatistics] = useState<GlobalStatistics>({
     activeJobsCount: undefined,
     newApplicationsCount: undefined,
@@ -23,8 +27,14 @@ export default function AdminDashboardPage() {
     activeJobsCount: undefined,
     institution: undefined,
   })
+  const [institutionlessRecruiters, setInstitutionlessRecruiters] = useState<Recruiter[]>([])
   const auth = useAuth<Common.Auth.User>()
+  const alertWorker = useWorker(createAlertWorker)
   const statisticsWorker = useWorker(createStatisticsWorker)
+
+  const goToRecruiter = useCallback(recruiterId => {
+    window.open(`/admin/recruiter/${recruiterId}`, '_blank')
+  }, [])
 
   const updateStatitics = useCallback(async () => {
     if (auth.user === undefined) {
@@ -40,16 +50,23 @@ export default function AdminDashboardPage() {
 
       setLocalStatistics({ ...newLocalStatistics })
     }
-  }, [auth.user])
+
+    if (auth.user.role === UserRole.ADMINISTRATOR) {
+      const newInstitutionlessRecruiters = await alertWorker.getInstitutionlessRecruiters(auth.state.accessToken)
+
+      setInstitutionlessRecruiters(newInstitutionlessRecruiters)
+    }
+
+    $timerId.current = setTimeout(updateStatitics, 1000) as unknown as number
+  }, [auth.state.accessToken])
 
   useEffect(() => {
     updateStatitics()
 
-    const timerId = setInterval(updateStatitics, 5000)
-
     return () => {
-      clearInterval(timerId)
+      clearTimeout($timerId.current)
 
+      terminate(alertWorker)
       terminate(statisticsWorker)
     }
   }, [])
@@ -79,6 +96,17 @@ export default function AdminDashboardPage() {
           <Flex>
             <AdminFigure Icon={Briefcase} label="Offres Actives" value={localStatistics.activeJobsCount} />
           </Flex>
+        </>
+      )}
+
+      {auth.user.role === UserRole.ADMINISTRATOR && institutionlessRecruiters.length !== 0 && (
+        <>
+          <Subtitle noBorder>Services recruteurs non liés</Subtitle>
+          {institutionlessRecruiters.map(({ displayName, id }, index) => (
+            <Alert key={id} isFirst={index === 0} onClick={() => goToRecruiter(id)}>
+              {displayName}
+            </Alert>
+          ))}
         </>
       )}
     </>

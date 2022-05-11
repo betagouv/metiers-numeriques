@@ -141,7 +141,10 @@ export const query = {
     },
   ): Promise<GetAllResponse<RecruiterFromGetAll>> => {
     try {
-      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
+      const paginationFilter =
+        typeof pageIndex === 'number' && typeof perPage === 'number'
+          ? buildPrismaPaginationFilter(perPage, pageIndex)
+          : {}
 
       const andFilter: Prisma.Enumerable<Prisma.RecruiterWhereInput> = {}
       if (source !== undefined) {
