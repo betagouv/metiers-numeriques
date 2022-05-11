@@ -31,6 +31,10 @@ export const GET_ONE = gql`
       id
 
       email
+      extra {
+        requestedInstitution
+        requestedService
+      }
       firstName
       isActive
       lastName

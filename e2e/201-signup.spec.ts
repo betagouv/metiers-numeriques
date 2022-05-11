@@ -21,6 +21,8 @@ test.describe('Admin > Authentication', () => {
     await page.fill('"Mot de passe (répêter)"', testAdministrationUser.password)
     await page.fill('"Prénom"', testAdministrationUser.firstName)
     await page.fill('"Nom"', testAdministrationUser.lastName)
+    await page.fill('"Nom de votre institution"', testAdministrationUser.requestedInstitution)
+    await page.fill('"Nom de votre service"', testAdministrationUser.requestedService)
     await page.click('"Envoyer ma demande"')
 
     await expect(page.locator('h4')).toHaveText('Connexion')
@@ -56,6 +58,8 @@ test.describe('Admin > Authentication', () => {
     await page.fill('"Mot de passe (répêter)"', testRecruitingUser.password)
     await page.fill('"Prénom"', testRecruitingUser.firstName)
     await page.fill('"Nom"', testRecruitingUser.lastName)
+    await page.fill('"Nom de votre institution"', testRecruitingUser.requestedInstitution)
+    await page.fill('"Nom de votre service"', testRecruitingUser.requestedService)
     await page.click('"Envoyer ma demande"')
 
     await expect(page.locator('h4')).toHaveText('Connexion')

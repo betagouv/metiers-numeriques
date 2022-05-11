@@ -1,17 +1,19 @@
 import { useQuery, useMutation } from '@apollo/client'
+import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { Subtitle } from '@app/atoms/Subtitle'
 import { Title } from '@app/atoms/Title'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
-import { Card, Field } from '@singularity/core'
+import { Field } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 
 import type { MutationFunctionOptions } from '@apollo/client'
-import type { User } from '@prisma/client'
+import type { Prisma, User } from '@prisma/client'
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().required(`L’adresse email est obligatoire.`).email(`Cette addresse email est mal formatée.`),
@@ -31,7 +33,13 @@ export default function AdminUserEditorPage() {
   const router = useRouter()
   const { id } = router.query
 
-  const [initialValues, setInitialValues] = useState({})
+  const [initialValues, setInitialValues] = useState<
+    Partial<
+      User & {
+        extra: Prisma.JsonObject
+      }
+    >
+  >({})
   const [isLoading, setIsLoading] = useState(true)
 
   const getUserResult = useQuery(queries.user.GET_ONE, {
@@ -99,7 +107,7 @@ export default function AdminUserEditorPage() {
         <Title>Édition d’un·e utilisateur·rice</Title>
       </AdminHeader>
 
-      <Card>
+      <AdminCard isFirst>
         <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Email" name="email" type="email" />
@@ -137,7 +145,26 @@ export default function AdminUserEditorPage() {
             <AdminForm.Submit isDisabled={isLoading}>Mettre à jour</AdminForm.Submit>
           </Field>
         </AdminForm>
-      </Card>
+      </AdminCard>
+
+      {initialValues.extra && (initialValues.extra.requestedInstitution || initialValues.extra.requestedService) && (
+        <AdminCard>
+          <Subtitle isFirst withBottomMargin>
+            Inscription
+          </Subtitle>
+
+          {initialValues.extra.requestedInstitution && (
+            <p>
+              <b>Institution déclarée :</b> {initialValues.extra.requestedInstitution}
+            </p>
+          )}
+          {initialValues.extra.requestedService && (
+            <p>
+              <b>Service déclaré :</b> {initialValues.extra.requestedService}
+            </p>
+          )}
+        </AdminCard>
+      )}
     </>
   )
 }

@@ -4,6 +4,7 @@ type User {
   id: ID!
 
   email: String
+  extra: UserExtra
   firstName: String
   isActive: Boolean
   lastName: String
@@ -11,15 +12,24 @@ type User {
 
   recruiter: Recruiter
 }
+type UserExtra {
+  requestedInstitution: String
+  requestedService: String
+}
 
 input UserInput {
   email: String
+  extra: UserInputExtra
   firstName: String
   isActive: Boolean
   lastName: String
   role: String
 
   recruiterId: String
+}
+input UserInputExtra {
+  requestedInstitution: String
+  requestedService: String
 }
 
 type UsersResult {
