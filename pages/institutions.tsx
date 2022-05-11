@@ -10,7 +10,7 @@ type InstitutionListPageProps = {
   institutions: LegacyInstitutionWithRelation[]
 }
 export default function InstitutionListPage({ institutions }: InstitutionListPageProps) {
-  const pageTitle = 'Liste des entités numériques de l’État | metiers.numerique.gouv.fr'
+  const pageTitle = 'Liste des entités numériques de l’État | Métiers du Numérique'
   const pageDescription = 'Découvrez l’ensemble des entités numériques des ministères et services de l’État.'
 
   return (

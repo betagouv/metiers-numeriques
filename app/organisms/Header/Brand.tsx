@@ -31,11 +31,9 @@ export function Brand({ onToggleMenu }: BrandProps) {
       </div>
       <div className="fr-header__service">
         <p className="fr-header__service-title">
-          <Link href="/">metiers.numerique.gouv.fr</Link>
+          <Link href="/">Métiers du Numérique</Link>
         </p>
-        <p className="fr-header__service-tagline fr-text--sm">
-          Tout savoir sur les métiers du numérique au sein de l’État.
-        </p>
+        <p className="fr-header__service-tagline fr-text--sm">Découvrez les offres d’emploi numériques de l’État.</p>
       </div>
     </div>
   )

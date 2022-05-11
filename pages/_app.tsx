@@ -33,7 +33,7 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
   return (
     <>
       <Head>
-        <title>metiers.numeriques.gouv.fr</title>
+        <title>Métiers du Numérique</title>
 
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
@@ -44,7 +44,7 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
 
         <meta content="rbHd2NXOspK6-avguNFUvBzgddpFwWzph-a8Ebxepvo" name="google-site-verification" />
 
-        <meta content="metiers.numerique.gouv.fr" property="og:title" />
+        <meta content="Métiers du Numérique" property="og:title" />
         <meta
           content="L’État Numérique : Des projets à découvrir, des missions à pourvoir !"
           property="og:description"

@@ -26,7 +26,7 @@ type InsitutionPageProps = {
 }
 export default function InstitutionPage({ institution }: InsitutionPageProps) {
   // console.log(institution)
-  const pageTitle = `${institution.title} | metiers.numerique.gouv.fr`
+  const pageTitle = `${institution.title} | Métiers du Numérique`
   const pageDescription = `Tout savoir sur ${uncapitalizeFirstLetter(institution.fullName)}.`
   // console.log(institution)
 
