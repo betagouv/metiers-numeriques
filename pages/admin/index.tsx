@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
     window.open(`/admin/recruiter/${recruiterId}`, '_blank')
   }, [])
 
-  const updateStatitics = useCallback(async () => {
+  const updateStatistics = useCallback(async () => {
     if (auth.user === undefined) {
       return
     }
@@ -56,20 +56,22 @@ export default function AdminDashboardPage() {
 
       setInstitutionlessRecruiters(newInstitutionlessRecruiters)
     }
-
-    $timerId.current = setTimeout(updateStatitics, 1000) as unknown as number
   }, [auth.state.accessToken])
 
   useEffect(() => {
-    updateStatitics()
+    if ($timerId.current !== undefined) {
+      clearInterval($timerId.current)
+    }
+
+    $timerId.current = setInterval(updateStatistics, 1000) as unknown as number
 
     return () => {
-      clearTimeout($timerId.current)
+      clearInterval($timerId.current)
 
       terminate(alertWorker)
       terminate(statisticsWorker)
     }
-  }, [])
+  }, [updateStatistics])
 
   if (auth.user === undefined) {
     return null
