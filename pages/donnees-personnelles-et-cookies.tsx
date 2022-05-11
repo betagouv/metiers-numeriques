@@ -10,7 +10,7 @@ const Iframe = styled.iframe`
 `
 
 export default function PrivacyPage() {
-  const pageTitle = 'Données personnelles et cookies | metiers.numerique.gouv.fr'
+  const pageTitle = 'Données personnelles et cookies | Métiers du Numérique'
 
   return (
     <article className="fr-pt-4w fr-pb-8w">

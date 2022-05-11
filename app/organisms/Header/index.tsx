@@ -65,16 +65,16 @@ export function Header() {
                 href="/"
                 onClick={closeMenu}
               >
-                Accueil
+                Offres d’emplois
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 aria-current={router.pathname === '/emplois' ? 'page' : undefined}
                 className="fr-nav__link"
                 href="/emplois"
                 onClick={closeMenu}
               >
                 Les offres d’emplois
-              </NavLink>
+              </NavLink> */}
               {/* <NavLink
                 aria-current={router.pathname === '/institutions' ? 'page' : undefined}
                 className="fr-nav__link"

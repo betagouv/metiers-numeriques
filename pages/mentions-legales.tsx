@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 export default function LegalNoticesPage() {
-  const pageTitle = 'Mentions légales | metiers.numerique.gouv.fr'
+  const pageTitle = 'Mentions légales | Métiers du Numérique'
 
   return (
     <article className="fr-pt-4w fr-pb-8w">
@@ -14,7 +14,7 @@ export default function LegalNoticesPage() {
       <section className="fr-mt-4w">
         <h2>Éditeur de la Plateforme</h2>
         <p>
-          La Plateforme metiers.numerique.gouv.fr est éditée par l’Incubateur de services numériques de la Direction
+          La plateforme Métiers du Numérique est éditée par l’Incubateur de services numériques de la Direction
           interministérielle du numérique (DINUM).
         </p>
         <p>

@@ -15,7 +15,7 @@ type ArchivedJobPageProps = {
 }
 
 export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
-  const pageTitle = useMemo(() => `${archivedJob.title} | metiers.numerique.gouv.fr`, [])
+  const pageTitle = useMemo(() => `${archivedJob.title} | Métiers du Numérique`, [])
 
   const pageDescription = archivedJob.missionDescription
 

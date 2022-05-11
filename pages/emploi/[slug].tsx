@@ -96,7 +96,7 @@ type JobPageProps = {
 export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageProps) {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
 
-  const pageTitle = useMemo(() => `${data.title} | metiers.numerique.gouv.fr`, [])
+  const pageTitle = useMemo(() => `${data.title} | Métiers du Numérique`, [])
 
   const closeApplicationModal = useCallback(() => {
     setIsApplicationModalOpen(false)

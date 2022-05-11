@@ -8,7 +8,7 @@ import ß from 'bhala'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const ERROR_PATH = 'pages/api/sitemap.ts'
-const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', '/emplois' /* , '/institutions' */, '/mentions-legales']
+const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', /* '/emplois', '/institutions', */ '/mentions-legales']
 
 export default async function Sitemap(req: NextApiRequest, res: NextApiResponse) {
   try {

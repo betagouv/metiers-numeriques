@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 export default function LegalNoticesPage() {
-  const pageTitle = 'Déclaration d’accessibilité | metiers.numerique.gouv.fr'
+  const pageTitle = 'Déclaration d’accessibilité | Métiers du Numérique'
 
   return (
     <article className="fr-pt-4w fr-pb-8w">

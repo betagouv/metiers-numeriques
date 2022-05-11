@@ -1,12 +1,203 @@
-import { NewsletterBar } from '@app/organisms/NewletterBar'
+import { prisma } from '@api/libs/prisma'
+import { useLazyQuery } from '@apollo/client'
+import { isObjectEmpty } from '@app/helpers/isObjectEmpty'
+import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
+import { Loader } from '@app/molecules/Loader'
+import { JobCard } from '@app/organisms/JobCard'
+import { INITIAL_FILTER, JobFilterBar } from '@app/organisms/JobFilterBar'
+import { queries } from '@app/queries'
+import { handleError } from '@common/helpers/handleError'
+import { JobState } from '@prisma/client'
+import debounce from 'lodash.debounce'
 import Head from 'next/head'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import styled from 'styled-components'
 
-export default function HomePage() {
-  const pageTitle = 'Découvrez les métiers numériques de l’État | metiers.numerique.gouv.fr'
-  const pageDescription = 'Tout savoir sur les métiers du numérique au sein de l’État.'
+import type { GetAllResponse } from '@api/resolvers/types'
+import type { JobWithRelation } from '@app/organisms/JobCard'
+import type { Filter } from '@app/organisms/JobFilterBar'
+import type { Institution, Profession } from '@prisma/client'
+
+const INITIAL_VARIABLES = {
+  pageIndex: 0,
+  perPage: 10,
+}
+
+const JobListOuterBox = styled.div`
+  min-height: calc(100vh - 12rem);
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row-reverse;
+  }
+`
+
+const JobListInnerBox = styled.div`
+  @media screen and (min-width: 768px) {
+    flex-direction: row-reverse;
+  }
+`
+
+const CounterSentenceBox = styled.div`
+  display: flex;
+  line-height: 2;
+`
+
+const CounterButtonsBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
+const JobFilterBarBox = styled.div`
+  @media screen and (max-width: 767px) {
+    flex: none;
+    width: auto;
+  }
+`
+
+type JobListPageProps = {
+  initialInstitutions: Institution[]
+  initialJobs: JobWithRelation[]
+  initialJobsLength: number
+  initialProfessions: Profession[]
+}
+export default function JobListPage({
+  initialInstitutions,
+  initialJobs,
+  initialJobsLength,
+  initialProfessions,
+}: JobListPageProps) {
+  const $hasFilter = useRef<boolean>(false)
+  const $jobsLength = useRef<number>(initialJobsLength)
+  const [jobFilterBarKey, setJobFilterBarKey] = useState<number>(1)
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [jobs, setJobs] = useState(initialJobs)
+
+  const [getJobs, getJobsResult] = useLazyQuery<
+    {
+      getPublicJobs: GetAllResponse<JobWithRelation>
+    },
+    any
+  >(queries.job.GET_ALL_PUBLIC)
+
+  const jobsResult =
+    getJobsResult.loading || getJobsResult.error || getJobsResult.data === undefined
+      ? {
+          index: 0,
+          length: Infinity,
+        }
+      : getJobsResult.data.getPublicJobs
+
+  const jobsLengthSentence = useMemo(() => {
+    switch ($jobsLength.current) {
+      case 0:
+        if ($hasFilter.current) {
+          return 'Aucune offre d’emploi trouvée.'
+        }
+
+        return 'Aucune offre d’emploi n’est disponible pour le moment.'
+
+      case 1:
+        if ($hasFilter.current) {
+          return 'Une offre d’emploi trouvée.'
+        }
+
+        return 'Une offre d’emploi disponible.'
+
+      default:
+        if ($hasFilter.current) {
+          return `${$jobsLength.current} offres d’emploi trouvées.`
+        }
+
+        return `${$jobsLength.current} offres d’emploi disponibles.`
+    }
+  }, [$hasFilter.current, $jobsLength.current])
+  const hasMoreJobs = jobs.length > 0 && jobsResult.length > jobs.length
+  const nextPageIndex = jobsResult.index + 1
+  const pageTitle = 'Offres d’emploi | Métiers du Numérique'
+  const pageDescription =
+    'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
+    'et les administrations territoriales.'
+
+  const closeFilterModal = useCallback(() => {
+    setIsFilterModalOpen(false)
+  }, [])
+
+  const openFilterModal = useCallback(() => {
+    setIsFilterModalOpen(true)
+  }, [])
+
+  const query = useCallback(
+    debounce(async (pageIndex: number, filter: Filter = INITIAL_FILTER) => {
+      const isNewQuery = pageIndex === 0
+
+      if (isNewQuery) {
+        setIsLoading(true)
+      } else {
+        setIsLoadingMore(true)
+      }
+
+      const newOrAdditionalJobsResult = await getJobs({
+        variables: {
+          ...INITIAL_VARIABLES,
+          pageIndex,
+          ...filter,
+        },
+      })
+
+      if (newOrAdditionalJobsResult.error) {
+        handleError(newOrAdditionalJobsResult.error, 'pages/emplois.tsx > query()')
+
+        if (isNewQuery) {
+          setIsLoading(false)
+        } else {
+          setIsLoadingMore(false)
+        }
+
+        return
+      }
+
+      if (newOrAdditionalJobsResult.data === undefined) {
+        if (isNewQuery) {
+          setIsLoading(false)
+        } else {
+          setIsLoadingMore(false)
+        }
+
+        return
+      }
+
+      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getPublicJobs.data
+
+      $hasFilter.current = !isObjectEmpty(filter)
+      $jobsLength.current = newOrAdditionalJobsResult.data.getPublicJobs.length
+
+      if (isNewQuery) {
+        setIsLoading(false)
+      } else {
+        setIsLoadingMore(false)
+      }
+
+      if (isNewQuery) {
+        setJobs(newOrAdditionalJobs)
+      } else {
+        setJobs([...jobs, ...newOrAdditionalJobs])
+      }
+    }, 500),
+    [jobs],
+  )
+
+  const resetFilter = useCallback(() => {
+    setJobFilterBarKey(jobFilterBarKey + 1)
+  }, [jobFilterBarKey])
+
+  useEffect(() => {
+    document.body.style.overflowY = isFilterModalOpen ? 'hidden' : 'auto'
+  }, [isFilterModalOpen])
 
   return (
-    <>
+    <div className="fr-pb-4w">
       <Head>
         <title>{pageTitle}</title>
 
@@ -15,208 +206,119 @@ export default function HomePage() {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <div className="fr-container">
-        <div className="fr-grid-row fr-grid-row--center fr-grid-row--middle">
-          <div className="fr-col-md-5 fr-col-xs-6w fr-px-6w fr-my-5w">
-            <h1>L’État Numérique : Des projets à découvrir, des missions à pourvoir !</h1>
-            <p className="text-grey">
-              Découvrez les projets numériques au sein des ministères et entités numériques, rencontrez des acteurs et
-              co-construisons ensemble l’État Numérique de demain !
-            </p>
-            <div className="fr-mt-4w">
-              {/* <a className="fr-btn fr-btn--secondary btn-home--secondary" href="/institutions">
-                  Découvrir
-                </a> */}
-              <a className="fr-btn btn-home" href="/emplois">
-                Candidater
-              </a>
-            </div>
-          </div>
-          <div className="fr-col-md-5 fr-col-xs-6">
-            <div>
-              <img alt="L’État Numérique" src="/images/main-illu.svg" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <JobListOuterBox className="fr-grid-row">
+        <JobFilterBarBox className="fr-col-12 fr-col-md-5">
+          <JobFilterBar
+            key={jobFilterBarKey}
+            institutions={initialInstitutions}
+            isModalOpen={isFilterModalOpen}
+            onChange={filter => query(0, filter)}
+            onModalClose={closeFilterModal}
+            professions={initialProfessions}
+          />
+        </JobFilterBarBox>
 
-      <section className="fr-py-8w home-bg--alt">
-        <div className="fr-container" id="decouvrir">
-          <div className="fr-fr-grid-row fr-grid-row--center rf-centered">
-            <div className="fr-mb-6w fr-px-6w">
-              <h2 className="fr-pb-6v">Qu’est-ce que l’État Numérique ?</h2>
-              <span className="text-grey">Le numérique est devenu le premier canal d’accès aux services publics.</span>
-              <br />
-              <span className="text-grey">
-                Cette évolution numérique repose sur trois enjeux majeurs : la qualité du numérique public, l’ouverture
-                et la transparence, la souveraineté et la sécurité. Le secteur public offre un cadre sécurisant avec de
-                multiples perspectives de postes sur l’ensemble du territoire et permet d’évoluer sur des problématiques
-                concrètes.
-              </span>
-              <p className="text-grey">
-                Travaillez sur les SI les plus vastes de France et ayez de l’impact auprès de 67 millions d’utilisateurs
-                !
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="fr-container">
-          <div className="fr-grid-row fr-mt-4v">
-            <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
-              <div className="rf-centered fr-mx-3w">
-                <img alt="Icone d’information" className="card-icon " src="/images/picto-metiersnumeriques-1.png" />
-                <h4>Plus de 200</h4>
-                <p className="fr-text--md">nouvelles offres d’emplois à pourvoir chaque mois !</p>
-              </div>
-            </div>
-
-            <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
-              <div className="rf-centered fr-mx-3w">
-                <img alt="Icone de montagne" className="card-icon " src="/images/picto-metiersnumeriques-2.png" />
-                <h4>Des missions ambitieuses &amp; challengeantes</h4>
-                <p className="fr-text--md" />
-              </div>
-            </div>
-
-            <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
-              <div className="rf-centered fr-mx-3w">
-                <img
-                  alt="Icone de main avec un coeur"
-                  className="card-icon "
-                  src="/images/picto-metiersnumeriques-3.png"
-                />
-                <h4>Des projets qui ont de l’impact</h4>
-                <p className="fr-text--md">&amp; touchent des milliers d’utilisateurs</p>
-              </div>
-            </div>
-
-            <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
-              <div className="rf-centered fr-mx-3w">
-                <img
-                  alt="Icone d’avion qui décole"
-                  className="card-icon "
-                  src="/images/picto-metiersnumeriques-4.png"
-                />
-                <h4>Un univers pérenne &amp; plein d’avenir</h4>
-                <p className="fr-text--md" />
-              </div>
-            </div>
-
-            <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
-              <div className="rf-centered fr-mx-3w">
-                <img
-                  alt="Icone de quatres flèches"
-                  className="card-icon "
-                  src="/images/picto-metiersnumeriques-5.png"
-                />
-                <h4>Des secteurs très différents</h4>
-                <p className="fr-text--md">santé, éducation, économie, finance...</p>
-              </div>
-            </div>
-
-            <div className="fr-col-12 fr-col-md-4 fr-mb-3w">
-              <div className="rf-centered fr-mx-3w">
-                <img alt="Icone d’ampoule" className="card-icon " src="/images/picto-metiersnumeriques-6.png" />
-                <h4>Des métiers divers &amp; très variés</h4>
-                <p className="fr-text--md">pour tous les profils</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="fr-py-8w">
-        <div className="fr-container">
-          <div className="fr-grid-row fr-grid-row--center rf-centered">
-            <div className="fr-col-8">
-              <h2 className="fr-pb-6v">Rencontres</h2>
-              <span className="text-grey">
-                Marine, Laetitia, Pierre et tant d’autres travaillent dans le Numérique pour l’État : ils vous racontent
-                leur histoire et leur métier ! Découvrez une variété et une richesse de profils, de métiers et de
-                projets au sein des ministères.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="fr-container">
-          <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center fr-mt-4v fr-pb-4v">
-            <div className="stories fr-col-9 fr-col-xs-6 fr-my-5w">
-              <img alt="Marine" className="stories-picture fr-my-3w" src="/images/marine-boudeau.png" />
-              <div className="fr-col-8 fr-col-xs-6 fr-mx-6w">
-                <h4 className="stories-name">Marine</h4>
-                <h5 className="stories-title">Responsable du pôle design - DINUM</h5>
-                <p className="stories-text">
-                  “On peut faire tout ce qui est possible et imaginable pour atteindre cet objectif (de rendre meilleur
-                  les services) et on nous donne [..] l’espace pour le faire. Un peu comme si on était une mini start-up
-                  au sein de l’État.“
-                </p>
-                <a
-                  className="fr-fi-arrow-right-s-line stories-link"
-                  href="https://www.dailymotion.com/video/x81o96d?playlist=x74h65"
-                  rel="noopener noreferrer"
-                  target="_blank"
+        <JobListInnerBox className="fr-col-12 fr-col-md-7">
+          <div className="fr-grid-row fr-mt-3w fr-mb-1w">
+            <CounterSentenceBox className="fr-col-6 fr-col-md-8">{jobsLengthSentence}</CounterSentenceBox>
+            <CounterButtonsBox className="fr-col-6 fr-col-md-4">
+              {$hasFilter.current && (
+                <button
+                  className="fr-btn fr-btn--secondary rf-btn--error fr-btn--icon-left fr-fi-close-line"
+                  onClick={resetFilter}
+                  type="button"
                 >
-                  Voir la vidéo
-                </a>
-              </div>
-            </div>
-            <div className="stories fr-col-9 fr-col-xs-6  fr-my-5w">
-              <div className="fr-col-8 fr-col-xs-6 fr-mx-6w">
-                <h4 className="stories-name">Laetitia</h4>
-                <h5 className="stories-title">
-                  Cheffe de projet numérique - Direction Numérique des Ministères Sociaux
-                </h5>
-                <p className="stories-text">
-                  “Au sein des Ministères sociaux, on a un grand champ : travail, santé, jeunesses et sport donc il y a
-                  énormément de projets ! Avoir toujours l’usager en ligne de mire, ça nous donne envie de faire
-                  toujours mieux. Le sens du service, plus le collectif c’est vraiment une force qu’on a pas forcément
-                  ailleurs.“
-                </p>
-                <a
-                  className="fr-fi-arrow-right-s-line stories-link"
-                  href="https://www.dailymotion.com/video/x81o9e8?playlist=x74h65"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Voir la vidéo
-                </a>
-              </div>
-              <img alt="Laetitia" className="stories-picture fr-my-3w" src="/images/laetitia-herbin-collot.png" />
-            </div>
-            <div className="stories fr-col-9 fr-col-xs-6  fr-my-5w">
-              <img alt="Pierre" className="stories-picture fr-my-3w" src="/images/pierre-dubreuil.png" />
-              <div className="fr-col-8 fr-col-xs-6 fr-mx-6w">
-                <h4 className="stories-name">Pierre</h4>
-                <h5 className="stories-title">Chef de l’unité Régulation par la donnée - ARCEP</h5>
-                <p className="stories-text">
-                  “Mon métier, c’est utiliser la puissance de l’information pour mieux orienter le marché comme par
-                  exemple pour la plateforme :<a href="https://monreseaumobile.arcep.fr">mon réseau mobile</a>. Je viens
-                  du milieu des start-up et moderniser l’action de l’État c’est quelque chose qui me motive beaucoup.“
-                </p>
-                <a
-                  className="fr-fi-arrow-right-s-line stories-link"
-                  href="https://www.dailymotion.com/video/x81pp3d?playlist=x74h65"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Voir la vidéo
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="fr-grid-row fr-grid-row--center fr-mt-4w">
-            <a
-              className="rf-centered fr-btn btn-home"
-              href="https://www.dailymotion.com/playlist/x74h65"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Voir tous les témoignages
-            </a>
-          </div>
-        </div>
-      </section>
+                  Réinitialiser
+                </button>
+              )}
 
-      <NewsletterBar />
-    </>
+              <button
+                className="fr-btn fr-btn--secondary rf-hidden-md fr-ml-2w"
+                onClick={openFilterModal}
+                type="button"
+              >
+                Filtres
+              </button>
+            </CounterButtonsBox>
+          </div>
+
+          {isLoading && <Loader />}
+
+          {!isLoading && jobs.map(job => <JobCard key={job.id} job={job} />)}
+
+          {isLoadingMore && <Loader />}
+
+          {!isLoading && !isLoadingMore && hasMoreJobs && (
+            <div className="fr-py-4w rf-text-center">
+              <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
+                Afficher plus de résultats
+              </button>
+            </div>
+          )}
+        </JobListInnerBox>
+      </JobListOuterBox>
+    </div>
   )
+}
+
+export async function getStaticProps() {
+  const whereFilter = {
+    where: {
+      AND: {
+        expiredAt: {
+          gt: new Date(),
+        },
+        state: JobState.PUBLISHED,
+      },
+    },
+  }
+
+  const initialJobsLength = await prisma.job.count(whereFilter)
+
+  const initialInstitutions = await prisma.institution.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
+
+  const initialJobs = await prisma.job.findMany({
+    include: {
+      address: true,
+      applicationContacts: true,
+      infoContact: true,
+      profession: true,
+      recruiter: true,
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+    take: INITIAL_VARIABLES.perPage,
+    ...whereFilter,
+  })
+
+  const initialProfessions = await prisma.profession.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
+
+  const normalizedIinitialJobs = initialJobs.map(stringifyDeepDates)
+
+  return {
+    props: {
+      initialInstitutions,
+      initialJobs: normalizedIinitialJobs,
+      initialJobsLength,
+      initialProfessions,
+    },
+    revalidate: 300,
+  }
 }
