@@ -135,8 +135,8 @@ type Query {
 
   getRecruiter(id: String!): Recruiter
   getRecruiters(
-    pageIndex: Int!
-    perPage: Int!
+    pageIndex: Int
+    perPage: Int
     query: String
     source: String
   ): RecruitersResult!

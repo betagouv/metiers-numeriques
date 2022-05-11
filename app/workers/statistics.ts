@@ -1,9 +1,8 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
 import { queries } from '@app/queries'
-import { JobState } from '@prisma/client'
-import dayjs from 'dayjs'
 import * as R from 'ramda'
 
+import { isJobActive } from '../helpers/isJobActive'
 import { matomo } from '../libs/matomo'
 
 import type { InstitutionFromGetOne, RecruiterWithJobsAndUsers } from '@api/resolvers/institutions'
@@ -26,7 +25,6 @@ const aggregateInstitutionJobs = (institution: InstitutionFromGetOne) =>
     R.map<RecruiterWithJobsAndUsers, Job[]>(R.prop('jobs')),
     R.flatten,
   )(institution) as Job[]
-const isJobActive = (job: Job) => job.state === JobState.PUBLISHED && !dayjs(job.expiredAt).isBefore(dayjs(), 'day')
 const filterActiveJobs: (job: Job[]) => Job[] = R.filter(isJobActive)
 
 export type GlobalStatistics = {
