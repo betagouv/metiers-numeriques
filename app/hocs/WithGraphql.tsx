@@ -17,7 +17,7 @@ export function WithGraphql({ children }: WithGraphqlProps) {
         },
         uri: '/api/graphql',
       }),
-    [auth.state],
+    [auth.state.accessToken],
   )
 
   return <ApolloProvider client={graphqlClient}>{children}</ApolloProvider>
