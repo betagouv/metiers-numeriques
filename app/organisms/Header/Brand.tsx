@@ -33,7 +33,9 @@ export function Brand({ onToggleMenu }: BrandProps) {
         <p className="fr-header__service-title">
           <Link href="/">Métiers du Numérique</Link>
         </p>
-        <p className="fr-header__service-tagline fr-text--sm">Découvrez les offres d’emploi numériques de l’État.</p>
+        <p className="fr-header__service-tagline fr-text--sm">
+          Découvrez les offres d’emploi du numérique dans l’État.
+        </p>
       </div>
     </div>
   )
