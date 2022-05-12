@@ -117,8 +117,7 @@ export default function JobListPage({
   const nextPageIndex = jobsResult.index + 1
   const pageTitle = 'Offres d’emploi | Métiers du Numérique'
   const pageDescription =
-    'Découvrez l’ensemble des offres d’emploi numériques proposées par les services de l’État ' +
-    'et les administrations territoriales.'
+    'Découvrez l’ensemble des offres d’emploi du numérique dans l’État et les administrations territoriales.'
 
   const closeFilterModal = useCallback(() => {
     setIsFilterModalOpen(false)

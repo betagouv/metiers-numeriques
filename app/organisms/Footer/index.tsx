@@ -37,7 +37,7 @@ export function Footer() {
             </Brand>
 
             <div className="fr-footer__content">
-              <p className="fr-footer__content-desc">Découvrez les offres d’emploi numériques de l’État.</p>
+              <p className="fr-footer__content-desc">Découvrez les offres d’emploi du numérique dans l’État.</p>
               <p className="fr-footer__content-desc">
                 <a
                   href="https://github.com/betagouv/metiers-numeriques"
