@@ -16,7 +16,7 @@ export const GET_ALL = gql`
         recruiter {
           id
 
-          name
+          displayName
         }
       }
       index
@@ -42,9 +42,6 @@ export const GET_ONE = gql`
 
       recruiter {
         id
-
-        fullName
-        name
       }
     }
   }
