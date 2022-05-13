@@ -21,46 +21,6 @@ export const NewRecruiterModal = ({ onCancel, onCreate }: NewRecruiterModalProps
   const [isLoading, setIsLoading] = useState(false)
   const [createRecruiter] = useMutation(queries.recruiter.CREATE_ONE)
 
-  /* const saveAndCallBack = async () => {
-    try {
-      setErrors({})
-
-      if ($fullName.current === null || $nameInput.current === null || $websiteUrlInput.current === null) {
-        return
-      }
-
-      const input: Partial<Recruiter> = {
-        fullName: $fullName.current.value,
-        name: $nameInput.current.value,
-        websiteUrl: $websiteUrlInput.current.value,
-      }
-
-      await recruiterSchema.validate(input, {
-        abortEarly: false,
-      })
-
-      const options: MutationFunctionOptions = {
-        variables: {
-          input,
-        },
-      }
-
-      const createRecruiterResult = await createRecruiter(options)
-
-      onCreate(createRecruiterResult.data.createRecruiter.id)
-    } catch (err: any) {
-      if (err.name === 'ValidationError') {
-        const errors = makeErrorsFromYupErrors(err.errors)
-
-        setErrors(errors)
-
-        return
-      }
-
-      handleError(err, 'app/organisms/NewRecruiterModal() > saveAndCallBack()')
-    }
-  } */
-
   const saveAndCallBack = useCallback(async (values: any) => {
     setIsLoading(true)
 

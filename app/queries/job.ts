@@ -12,6 +12,12 @@ export const GET_ALL = gql`
         state
         title
         updatedAt
+
+        recruiter {
+          id
+
+          displayName
+        }
       }
       index
       length

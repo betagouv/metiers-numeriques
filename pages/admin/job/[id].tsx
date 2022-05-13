@@ -334,8 +334,6 @@ export default function AdminJobEditorPage() {
         <AdminForm.AutoSave onChange={save as any} />
 
         <AdminCard isFirst>
-          <Subtitle>Informations essentielles</Subtitle>
-
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
           </Field>
@@ -395,45 +393,14 @@ export default function AdminJobEditorPage() {
         </AdminCard>
 
         <AdminCard>
-          <Subtitle>Questions</Subtitle>
-
           <Field>
-            <AdminForm.ContactSelect
+            <AdminForm.Editor
               isDisabled={isLoading}
-              label="Contact unique pour les questions *"
-              name="infoContactId"
-              placeholder="…"
+              label="Contexte"
+              name="contextDescription"
+              placeholder="Contexte de la mission."
             />
           </Field>
-        </AdminCard>
-
-        <AdminCard>
-          <Subtitle>Candidature</Subtitle>
-
-          <Field>
-            <AdminForm.ContactSelect
-              isDisabled={isLoading}
-              isMulti
-              label="Contacts pour l’envoi des candidatures **"
-              name="applicationContactIds"
-              placeholder="…"
-            />
-          </Field>
-
-          <SeparatorText>OU</SeparatorText>
-
-          <Field>
-            <AdminForm.TextInput
-              isDisabled={isLoading}
-              label="site officiel de candidature (URL) **"
-              name="applicationWebsiteUrl"
-              type="url"
-            />
-          </Field>
-        </AdminCard>
-
-        <AdminCard>
-          <Subtitle>Mission</Subtitle>
 
           <Field>
             <AdminForm.Editor
@@ -443,16 +410,51 @@ export default function AdminJobEditorPage() {
               placeholder="Décrivez la mission de la manière la plus succinte possible."
             />
           </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="L'équipe"
+              name="teamDescription"
+              placeholder="Brève description des rôles et objectifs de l’équipe."
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Conditions particulières"
+              name="particularitiesDescription"
+              placeholder="Conditions particulières du poste : formations, habilitations, etc."
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Avantages"
+              name="perksDescription"
+              placeholder="Liste des avantages du poste : opportunités de formation, horaires aménagées, etc."
+            />
+          </Field>
         </AdminCard>
 
         <AdminCard>
-          <Subtitle>Informations recommandées</Subtitle>
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Tâches"
+              name="tasksDescription"
+              placeholder="Liste des tâches principales impliquées par le poste."
+            />
+          </Field>
 
           <Field>
-            <AdminForm.TextInput
+            <AdminForm.Editor
               isDisabled={isLoading}
-              label="Vidéo (URL YouTube ou DailyMotion)"
-              name="missionVideoUrl"
+              label="Profil idéal de candidat·e"
+              name="profileDescription"
+              placeholder="Liste des expériences, qualités et éventuelles qualifications attendues."
             />
           </Field>
 
@@ -477,71 +479,43 @@ export default function AdminJobEditorPage() {
               <span>K€</span>
             </FieldGroup>
           </DoubleField>
-
-          <Field>
-            <AdminForm.Editor
-              isDisabled={isLoading}
-              label="L'équipe"
-              name="teamDescription"
-              placeholder="Brève description des rôles et objectifs de l’équipe."
-            />
-          </Field>
-
-          <Field>
-            <AdminForm.Editor
-              isDisabled={isLoading}
-              label="Avantages"
-              name="perksDescription"
-              placeholder="Liste des avantages du poste : opportunités de formation, horaires aménagées, etc."
-            />
-          </Field>
         </AdminCard>
 
         <AdminCard>
-          <Subtitle>Informations complémentaires</Subtitle>
-
-          <Field>
-            <AdminForm.Editor
-              isDisabled={isLoading}
-              label="Contexte"
-              name="contextDescription"
-              placeholder="Contexte de la mission."
-            />
-          </Field>
-
-          <Field>
-            <AdminForm.Editor
-              isDisabled={isLoading}
-              label="Profil idéal de candidat·e"
-              name="profileDescription"
-              placeholder="Liste des expériences, qualités et éventuelles qualifications attendues."
-            />
-          </Field>
-
-          <Field>
-            <AdminForm.Editor
-              isDisabled={isLoading}
-              label="Tâches"
-              name="tasksDescription"
-              placeholder="Liste des tâches principales impliquées par le poste."
-            />
-          </Field>
-
-          <Field>
-            <AdminForm.Editor
-              isDisabled={isLoading}
-              label="Conditions particulières"
-              name="particularitiesDescription"
-              placeholder="Conditions particulières du poste : formations, habilitations, etc."
-            />
-          </Field>
-
           <Field>
             <AdminForm.Editor
               isDisabled={isLoading}
               label="Processus de recrutement"
               name="processDescription"
               placeholder="Exemple : le processus se déroulera sur 1 mois avec 4 entretiens."
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.ContactSelect
+              isDisabled={isLoading}
+              isMulti
+              label="Contacts pour l’envoi des candidatures **"
+              name="applicationContactIds"
+              placeholder="…"
+            />
+          </Field>
+          <SeparatorText>OU</SeparatorText>
+          <Field>
+            <AdminForm.TextInput
+              isDisabled={isLoading}
+              label="site officiel de candidature (URL) **"
+              name="applicationWebsiteUrl"
+              type="url"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.ContactSelect
+              isDisabled={isLoading}
+              label="Contact unique pour les questions *"
+              name="infoContactId"
+              placeholder="…"
             />
           </Field>
         </AdminCard>

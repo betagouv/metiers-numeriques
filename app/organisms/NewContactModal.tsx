@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client'
+import { capitalize } from '@app/helpers/capitalize'
 import { handleError } from '@common/helpers/handleError'
 import { Button, Field, Modal, TextInput } from '@singularity/core'
 import { KeyboardEventHandler, useRef, useState } from 'react'
@@ -69,10 +70,10 @@ export const NewContactModal = ({ onCancel, onCreate }: NewContactModalProps) =>
       }
 
       const input: Partial<Contact> = {
-        email: $emailInput.current.value,
-        name: $nameInput.current.value,
-        phone: $phoneInput.current.value,
-        position: $positionInput.current.value,
+        email: $emailInput.current.value.trim().toLocaleLowerCase(),
+        name: capitalize($nameInput.current.value.trim()),
+        phone: $phoneInput.current.value.trim(),
+        position: $positionInput.current.value.trim(),
       }
 
       await contactSchema.validate(input, {
