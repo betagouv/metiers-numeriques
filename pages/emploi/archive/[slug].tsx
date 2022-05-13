@@ -41,7 +41,7 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
               paddingTop: '1rem',
             }}
           >
-            <Link href="/emplois">Voulez-vous rechercher un autre offre d’emploi ?</Link>
+            <Link href="/">Voulez-vous rechercher un autre offre d’emploi ?</Link>
           </p>
         </div>
 

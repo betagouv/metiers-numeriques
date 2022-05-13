@@ -34,7 +34,7 @@ export function Brand({ onToggleMenu }: BrandProps) {
           <Link href="/">Métiers du Numérique</Link>
         </p>
         <p className="fr-header__service-tagline fr-text--sm">
-          Découvrez les offres d’emploi du numérique dans l’État.
+          Découvrez les offres d’emploi du numérique au sein de l’État.
         </p>
       </div>
     </div>
