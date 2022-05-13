@@ -23,7 +23,7 @@ import dayjs from 'dayjs'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Briefcase, Globe, PenTool } from 'react-feather'
 import toast from 'react-hot-toast'
 import { Flex } from 'reflexbox'
@@ -77,10 +77,10 @@ export const JobFormSchema = Yup.object().shape(
       .required(`Au moins un type de contrat est obligatoire.`)
       .min(1, `Au moins un type de contrat est obligatoire.`),
     expiredAtAsString: Yup.string().nullable().required(`La date d’expiration est obligatoire.`),
-    infoContactId: Yup.string().nullable().required(`Le contact "questions" est obligatoire.`),
+    infoContactId: Yup.string().nullable().required(`Le contact unique pour les questions est obligatoire.`),
     missionDescription: Yup.string().nullable().trim().required(`Décrire la mission est obligatoire.`),
-    professionId: Yup.string().nullable().required(`Le métier est obligatoire.`),
-    recruiterId: Yup.string().nullable().required(`Le recruteur est obligatoire.`),
+    professionId: Yup.string().nullable().required(`Le secteur d’activité est obligatoire.`),
+    recruiterId: Yup.string().nullable().required(`Le service recruteur est obligatoire.`),
     remoteStatus: Yup.string().nullable().required(`Indiquer les possibilités de télétravail est obligatoire.`),
     salaryMax: Yup.number()
       .nullable()
@@ -109,6 +109,8 @@ export default function AdminJobEditorPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
   const auth = useAuth<Common.Auth.User>()
+
+  const isAdmin = useMemo(() => auth.user?.role === UserRole.ADMINISTRATOR, [auth.user])
 
   const getJobResult = useQuery<
     {
@@ -340,7 +342,9 @@ export default function AdminJobEditorPage() {
 
           <DoubleField>
             <AdminForm.RecruiterSelect
+              canCreate={isAdmin}
               institutionId={auth.user?.institutionId}
+              isClearable={isAdmin}
               isDisabled={isLoading}
               label="Service recruteur *"
               name="recruiterId"
@@ -542,7 +546,7 @@ export default function AdminJobEditorPage() {
           </Field>
         </AdminCard>
 
-        {auth.user?.role === UserRole.ADMINISTRATOR && initialValues?.source !== JobSource.MDN && (
+        {isAdmin && initialValues?.source !== JobSource.MDN && (
           <AdminCard>
             <Subtitle>Références internes</Subtitle>
 

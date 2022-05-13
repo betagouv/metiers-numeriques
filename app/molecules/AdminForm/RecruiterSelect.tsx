@@ -13,8 +13,10 @@ import { queries } from '../../queries'
 import type { Recruiter } from '@prisma/client'
 
 type RecruiterSelectProps = {
+  canCreate?: boolean
   helper?: string
   institutionId?: string
+  isClearable?: boolean
   isDisabled?: boolean
   isMulti?: boolean
   label: string
@@ -23,8 +25,10 @@ type RecruiterSelectProps = {
 }
 
 export function RecruiterSelect({
+  canCreate = false,
   helper,
   institutionId,
+  isClearable = false,
   isDisabled = false,
   isMulti = false,
   label,
@@ -138,6 +142,25 @@ export function RecruiterSelect({
 
     $newRecruiterId.current = undefined
   }, [getRecruitersListResult.data])
+
+  if (!canCreate) {
+    return (
+      <Select
+        key={generateKeyFromValues(options, defaultValue)}
+        defaultValue={defaultValue}
+        error={maybeError}
+        helper={helper}
+        isClearable={isClearable}
+        isDisabled={isControlledDisabled}
+        isMulti={isMulti}
+        label={label}
+        name={name}
+        onChange={updateFormikValues as any}
+        options={options}
+        placeholder={placeholder}
+      />
+    )
+  }
 
   return (
     <FieldWithAction onClick={openNewRecruiterModal}>
