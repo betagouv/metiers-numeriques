@@ -7,8 +7,10 @@ import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { Job, JobState, UserRole } from '@prisma/client'
+import { slugify } from '@common/helpers/slugify'
+import { Job, JobContractType, JobRemoteStatus, JobState, UserRole } from '@prisma/client'
 import { Button, Card, Select, Table, TextInput } from '@singularity/core'
+import cuid from 'cuid'
 import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
 import { useAuth } from 'nexauth/client'
@@ -16,8 +18,10 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CheckCircle, Edit, ExternalLink, Trash, XCircle } from 'react-feather'
+import toast from 'react-hot-toast'
 
 import type { GetAllResponse } from '@api/resolvers/types'
+import type { Prisma } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const BASE_COLUMNS: TableColumnProps[] = [
@@ -55,7 +59,10 @@ export default function AdminJobListPage() {
   const [selectedEntity, setSelectedEntity] = useState('')
   const auth = useAuth<Common.Auth.User>()
   const [deleteJob] = useMutation(queries.job.DELETE_ONE)
+  const [createJob] = useMutation(queries.job.CREATE_ONE)
   const router = useRouter()
+
+  const isAdmin = useMemo(() => auth.user?.role === UserRole.ADMINISTRATOR, [auth.user])
 
   const getJobsResult = useQuery<
     {
@@ -99,6 +106,47 @@ export default function AdminJobListPage() {
     },
     [jobsResult.data],
   )
+
+  const createAndGoToEditor = useCallback(async () => {
+    const id = cuid()
+    const title = 'Nouvelle offre d’emploi'
+    const slug = slugify(title, id)
+
+    const contractTypes = [JobContractType.NATIONAL_CIVIL_SERVANT, JobContractType.CONTRACT_WORKER]
+    const expiredAt = dayjs().add(2, 'months').toDate()
+    const missionDescription = ''
+    const recruiterId = !isAdmin ? auth.user?.recruiterId : null
+    const remoteStatus = JobRemoteStatus.NONE
+    const seniorityInMonths = 0
+    const state = JobState.DRAFT
+    const updatedAt = dayjs().toDate()
+
+    const newJob: Prisma.JobUncheckedCreateInput = {
+      contractTypes,
+      expiredAt,
+      id,
+      missionDescription,
+      recruiterId,
+      remoteStatus,
+      seniorityInMonths,
+      slug,
+      state,
+      title,
+      updatedAt,
+    }
+
+    const createJobResult = await createJob({
+      variables: {
+        input: newJob,
+      },
+    })
+
+    if (createJobResult.data.createJob === null) {
+      toast.error('La requête GraphQL de création a échoué.')
+    }
+
+    goToEditor(createJobResult.data.createJob.id)
+  }, [isAdmin])
 
   const deleteAndReload = useCallback(async () => {
     setHasDeletionModal(false)
@@ -180,7 +228,7 @@ export default function AdminJobListPage() {
       },
     ]
 
-    if (auth.user?.role === UserRole.ADMINISTRATOR) {
+    if (isAdmin) {
       dynamicColumns.push({
         accent: 'danger',
         action: confirmDeletion,
@@ -199,7 +247,7 @@ export default function AdminJobListPage() {
       <AdminHeader>
         <Title>Offres d’emploi</Title>
 
-        <Button onClick={() => goToEditor('new')} size="small">
+        <Button onClick={createAndGoToEditor} size="small">
           Ajouter une offre d’emploi
         </Button>
       </AdminHeader>
