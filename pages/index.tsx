@@ -173,15 +173,16 @@ export default function JobListPage({
       $jobsLength.current = getPublicJobs.length
 
       if (isNewQuery) {
+        $hasMoreJobs.current = getPublicJobs.length > 0 && getPublicJobs.length > newOrAdditionalJobs.length
         $jobs.current = newOrAdditionalJobs
+        $nextPageIndex.current = 1
         setIsLoading(false)
       } else {
         const newJobs = [...$jobs.current, ...newOrAdditionalJobs]
 
         $hasMoreJobs.current = getPublicJobs.length > 0 && getPublicJobs.length > newJobs.length
-        $nextPageIndex.current += 1
-
         $jobs.current = newJobs
+        $nextPageIndex.current += 1
         setIsLoadingMore(false)
       }
     }, 1000),
