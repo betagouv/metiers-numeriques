@@ -8,7 +8,7 @@ import ß from 'bhala'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const ERROR_PATH = 'pages/api/sitemap.ts'
-const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', /* '/emplois', '/institutions', */ '/mentions-legales']
+const MAIN_PATHS = ['/', '/donnees-personnelles-et-cookies', '/mentions-legales']
 
 export default async function Sitemap(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -24,9 +24,6 @@ export default async function Sitemap(req: NextApiRequest, res: NextApiResponse)
         },
       },
     })
-
-    // ß.info(`[${ERROR_PATH}] Fetching institutions…`)
-    // const institutions = await prisma.legacyInstitution.findMany()
 
     ß.info(`[${ERROR_PATH}] Fetching archived jobs…`)
     const archivedJobs = await prisma.archivedJob.findMany()
@@ -47,12 +44,6 @@ export default async function Sitemap(req: NextApiRequest, res: NextApiResponse)
       sitemapRows.push(generateSitemapEntry(`/emploi/${slug}`, updatedAt))
     })
     ß.success(`[${ERROR_PATH}] ${jobs.length} jobs mapped.`)
-
-    // ß.info(`[${ERROR_PATH}] Mapping institutions…`)
-    // institutions.forEach(({ slug, updatedAt }) => {
-    // sitemapRows.push(generateSitemapEntry(`/institution/${slug}`, updatedAt))
-    // })
-    // ß.success(`[${ERROR_PATH}] ${institutions.length} institutions mapped.`)
 
     ß.info(`[${ERROR_PATH}] Mapping archived jobs…`)
     archivedJobs.forEach(({ slug, updatedAt }) => {
