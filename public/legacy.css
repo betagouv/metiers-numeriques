@@ -53,20 +53,20 @@ main * > p:not(:first-child) {
 
 /* Button */
 
-main .fr-btn {
+.fr-btn {
   padding: 0.375rem 1.5rem 0.625rem;
 }
-main .fr-btn::before {
+.fr-btn::before {
   margin-top: 0.25rem;
 }
-main .fr-btn.fr-btn--sm {
+.fr-btn.fr-btn--sm {
   padding: 0.2rem 1rem 0.3rem;
 }
-main .fr-btn.fr-btn--sm::before {
+.fr-btn.fr-btn--sm::before {
   margin-top: 0.15rem;
 }
 
-main .fr-btn.fr-btn--secondary.rf-btn--error {
+.fr-btn.fr-btn--secondary.rf-btn--error {
   box-shadow: inset 0 0 0 1px var(--border-action-high-warning);
   color: var(--border-action-high-warning);
 }
@@ -95,14 +95,14 @@ main .fr-card__img img {
 
 /* Input */
 
-main .fr-input {
+.fr-input {
   box-shadow: none;
   padding: 0.375rem 0.75rem 0.625rem;
 }
-main .fr-input-wrap[class*=' fr-fi-']:before,
-main .fr-input-wrap[class*=' fr-icon-']:before,
-main .fr-input-wrap[class^='fr-fi-']:before,
-main .fr-input-wrap[class^='fr-icon-']:before {
+.fr-input-wrap[class*=' fr-fi-']:before,
+.fr-input-wrap[class*=' fr-icon-']:before,
+.fr-input-wrap[class^='fr-fi-']:before,
+.fr-input-wrap[class^='fr-icon-']:before {
   bottom: 0.75rem;
   font-size: 1rem !important;
   margin: auto;
