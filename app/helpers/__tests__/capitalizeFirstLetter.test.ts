@@ -21,6 +21,22 @@ describe('app/helpers/capitalizeFirstLetter()', () => {
     expect(result).toEqual('État de fait')
   })
 
+  test(`with "abaJour"`, () => {
+    const text = 'abaJour'
+
+    const result = capitalizeFirstLetter(text)
+
+    expect(result).toEqual('Abajour')
+  })
+
+  test(`with "état DE FAIT"`, () => {
+    const text = 'état DE FAIT'
+
+    const result = capitalizeFirstLetter(text)
+
+    expect(result).toEqual('État de fait')
+  })
+
   test(`with undefined`, () => {
     const text = undefined
 

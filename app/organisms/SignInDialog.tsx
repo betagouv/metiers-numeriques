@@ -1,4 +1,5 @@
 import { ButtonAsLink } from '@app/atoms/ButtonAsLink'
+import { capitalize } from '@app/helpers/capitalize'
 import { handleError } from '@common/helpers/handleError'
 import { Dialog, Field } from '@singularity/core'
 import { NexauthError, useAuth } from 'nexauth/client'
@@ -96,13 +97,13 @@ export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDi
     } = values
 
     const res = await auth.signUp({
-      email,
+      email: email.trim().toLocaleLowerCase(),
       extra: {
         requestedInstitution,
         requestedService,
       },
-      firstName,
-      lastName,
+      firstName: capitalize(firstName.trim()),
+      lastName: capitalize(lastName.trim()),
       password,
     })
     if (res.isError) {

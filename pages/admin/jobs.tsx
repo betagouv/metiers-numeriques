@@ -30,6 +30,11 @@ const BASE_COLUMNS: TableColumnProps[] = [
     label: 'Intitulé',
   },
   {
+    grow: 0.3,
+    key: 'recruiter.displayName',
+    label: 'Service recruteur',
+  },
+  {
     grow: 0.15,
     key: 'state',
     label: 'État',
