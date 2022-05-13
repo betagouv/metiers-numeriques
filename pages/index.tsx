@@ -1,5 +1,6 @@
 import { prisma } from '@api/libs/prisma'
 import { useLazyQuery } from '@apollo/client'
+import { getScrollOffsetFromBottom } from '@app/helpers/getScrollOffsetFromBottom'
 import { isObjectEmpty } from '@app/helpers/isObjectEmpty'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { Loader } from '@app/molecules/Loader'
@@ -8,7 +9,7 @@ import { INITIAL_FILTER, JobFilterBar } from '@app/organisms/JobFilterBar'
 import { queries } from '@app/queries'
 import { handleError } from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
-import debounce from 'lodash.debounce'
+import throttle from 'lodash.throttle'
 import Head from 'next/head'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
@@ -67,27 +68,22 @@ export default function JobListPage({
   initialProfessions,
 }: JobListPageProps) {
   const $hasFilter = useRef<boolean>(false)
+  const $hasMoreJobs = useRef<boolean>(initialJobs.length > 0 && initialJobsLength > initialJobs.length)
+  const $nextPageIndex = useRef<number>(1)
+  const $isLoading = useRef<boolean>(false)
+  const $isLoadingMore = useRef<boolean>(false)
+  const $jobs = useRef(initialJobs)
   const $jobsLength = useRef<number>(initialJobsLength)
   const [jobFilterBarKey, setJobFilterBarKey] = useState<number>(1)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const [jobs, setJobs] = useState(initialJobs)
+  const [, updateState] = useState({})
 
-  const [getJobs, getJobsResult] = useLazyQuery<
+  const [getJobs] = useLazyQuery<
     {
       getPublicJobs: GetAllResponse<JobWithRelation>
     },
     any
   >(queries.job.GET_ALL_PUBLIC)
-
-  const jobsResult =
-    getJobsResult.loading || getJobsResult.error || getJobsResult.data === undefined
-      ? {
-          index: 0,
-          length: Infinity,
-        }
-      : getJobsResult.data.getPublicJobs
 
   const jobsLengthSentence = useMemo(() => {
     switch ($jobsLength.current) {
@@ -113,8 +109,7 @@ export default function JobListPage({
         return `${$jobsLength.current} offres d’emploi disponibles.`
     }
   }, [$hasFilter.current, $jobsLength.current])
-  const hasMoreJobs = jobs.length > 0 && jobsResult.length > jobs.length
-  const nextPageIndex = jobsResult.index + 1
+
   const pageTitle = 'Offres d’emploi | Métiers du Numérique'
   const pageDescription =
     'Découvrez l’ensemble des offres d’emploi du numérique dans l’État et les administrations territoriales.'
@@ -123,12 +118,16 @@ export default function JobListPage({
     setIsFilterModalOpen(false)
   }, [])
 
+  const forceUpdate = useCallback(() => {
+    updateState({})
+  }, [])
+
   const openFilterModal = useCallback(() => {
     setIsFilterModalOpen(true)
   }, [])
 
   const query = useCallback(
-    debounce(async (pageIndex: number, filter: Filter = INITIAL_FILTER) => {
+    throttle(async (pageIndex: number, filter: Filter = INITIAL_FILTER) => {
       const isNewQuery = pageIndex === 0
 
       if (isNewQuery) {
@@ -167,33 +166,66 @@ export default function JobListPage({
         return
       }
 
-      const newOrAdditionalJobs = newOrAdditionalJobsResult.data.getPublicJobs.data
+      const { getPublicJobs } = newOrAdditionalJobsResult.data
+      const newOrAdditionalJobs = getPublicJobs.data
 
       $hasFilter.current = !isObjectEmpty(filter)
-      $jobsLength.current = newOrAdditionalJobsResult.data.getPublicJobs.length
+      $jobsLength.current = getPublicJobs.length
 
       if (isNewQuery) {
+        $jobs.current = newOrAdditionalJobs
         setIsLoading(false)
       } else {
+        const newJobs = [...$jobs.current, ...newOrAdditionalJobs]
+
+        $hasMoreJobs.current = getPublicJobs.length > 0 && getPublicJobs.length > newJobs.length
+        $nextPageIndex.current += 1
+
+        $jobs.current = newJobs
         setIsLoadingMore(false)
       }
-
-      if (isNewQuery) {
-        setJobs(newOrAdditionalJobs)
-      } else {
-        setJobs([...jobs, ...newOrAdditionalJobs])
-      }
-    }, 500),
-    [jobs],
+    }, 1000),
+    [],
   )
 
   const resetFilter = useCallback(() => {
     setJobFilterBarKey(jobFilterBarKey + 1)
   }, [jobFilterBarKey])
 
+  const setIsLoading = useCallback(
+    (state: boolean) => {
+      $isLoading.current = state
+      forceUpdate()
+    },
+    [jobFilterBarKey],
+  )
+
+  const setIsLoadingMore = useCallback(
+    (state: boolean) => {
+      $isLoadingMore.current = state
+      forceUpdate()
+    },
+    [jobFilterBarKey],
+  )
+
   useEffect(() => {
-    document.body.style.overflowY = isFilterModalOpen ? 'hidden' : 'auto'
+    window.document.body.style.overflowY = isFilterModalOpen ? 'hidden' : 'auto'
   }, [isFilterModalOpen])
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if ($isLoading.current || $isLoadingMore.current || !$hasMoreJobs.current) {
+        return
+      }
+
+      const scrollOffsetFromBottom = getScrollOffsetFromBottom()
+      if (scrollOffsetFromBottom > 500) {
+        return
+      }
+
+      query($nextPageIndex.current)
+    })
+  }, [])
 
   return (
     <div className="fr-pb-4w">
@@ -241,19 +273,11 @@ export default function JobListPage({
             </CounterButtonsBox>
           </div>
 
-          {isLoading && <Loader />}
+          {$isLoading.current && <Loader />}
 
-          {!isLoading && jobs.map(job => <JobCard key={job.id} job={job} />)}
+          {!$isLoading.current && $jobs.current.map(job => <JobCard key={job.id} job={job} />)}
 
-          {isLoadingMore && <Loader />}
-
-          {!isLoading && !isLoadingMore && hasMoreJobs && (
-            <div className="fr-py-4w rf-text-center">
-              <button className="fr-btn" disabled={isLoading} onClick={() => query(nextPageIndex)} type="button">
-                Afficher plus de résultats
-              </button>
-            </div>
-          )}
+          {$isLoadingMore.current && <Loader />}
         </JobListInnerBox>
       </JobListOuterBox>
     </div>
