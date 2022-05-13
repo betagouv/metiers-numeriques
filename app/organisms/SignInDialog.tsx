@@ -151,7 +151,6 @@ export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDi
         >
           <Dialog.Body>
             <Dialog.Title>Connexion</Dialog.Title>
-
             <p>
               Veuillez{' '}
               <ButtonAsLink onClick={switchToSignUp} type="button">
@@ -171,6 +170,13 @@ export function SignInDialog({ defaultType = SignInDialogType.LOG_IN }: SignInDi
                 type="password"
               />
             </Field>
+
+            <p>
+              <em>
+                Cet espace est réservé aux recruteur·ses des institutions publiques souhaitant publier des offres
+                d’emploi dans le domaine du numérique.
+              </em>
+            </p>
           </Dialog.Body>
 
           <Dialog.Action>

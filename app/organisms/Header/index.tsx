@@ -67,22 +67,9 @@ export function Header() {
               >
                 Offres d’emplois
               </NavLink>
-              {/* <NavLink
-                aria-current={router.pathname === '/emplois' ? 'page' : undefined}
-                className="fr-nav__link"
-                href="/emplois"
-                onClick={closeMenu}
-              >
-                Les offres d’emplois
-              </NavLink> */}
-              {/* <NavLink
-                aria-current={router.pathname === '/institutions' ? 'page' : undefined}
-                className="fr-nav__link"
-                href="/institutions"
-                onClick={closeMenu}
-              >
-                Les institutions
-              </NavLink> */}
+              <NavLink className="fr-nav__link" href="/admin" onClick={closeMenu}>
+                Déposer une offre
+              </NavLink>
             </ul>
           </nav>
         </div>
