@@ -570,7 +570,16 @@ export default function AdminJobEditorPage() {
             </div>
 
             <div>
-              {$state.current === JobState.DRAFT && <AdminForm.Submit isDisabled={isLoading}>Publier</AdminForm.Submit>}
+              {$state.current === JobState.DRAFT && (
+                <>
+                  <Button disabled={isLoading} onClick={goToList} style={{ marginRight: '1rem' }}>
+                    Mettre à jour le brouillon
+                  </Button>
+                  <AdminForm.Submit accent="warning" isDisabled={isLoading}>
+                    Publier
+                  </AdminForm.Submit>
+                </>
+              )}
               {$state.current === JobState.PUBLISHED && (
                 <Button
                   accent="warning"
