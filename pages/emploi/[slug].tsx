@@ -360,15 +360,14 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
 }
 
 export async function getStaticPaths() {
-  const jobs = await prisma.job.findMany({
+  const publishedJobs = await prisma.job.findMany({
     where: {
-      NOT: {
-        state: JobState.DRAFT,
-      },
+      state: JobState.PUBLISHED,
     },
   })
+  await prisma.$disconnect()
 
-  const nonExpiredJobs = jobs.filter(isJobFilledOrExpired)
+  const nonExpiredJobs = R.reject(isJobFilledOrExpired)(publishedJobs)
 
   const slugs = R.pipe(R.map(R.prop('slug')), R.uniq)(nonExpiredJobs)
 
@@ -395,6 +394,7 @@ export async function getStaticProps({ params: { slug } }) {
       slug,
     },
   })
+  await prisma.$disconnect()
 
   if (job === null || ![JobState.FILLED, JobState.PUBLISHED].includes(job.state as any)) {
     return {
