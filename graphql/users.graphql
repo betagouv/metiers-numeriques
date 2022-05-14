@@ -1,14 +1,18 @@
 # import Recruiter from "recruiters.graphql"
 
+scalar DateTime
+
 type User {
   id: ID!
 
+  createdAt: DateTime
   email: String
   extra: UserExtra
   firstName: String
   isActive: Boolean
   lastName: String
   role: String
+  updatedAt: DateTime
 
   recruiter: Recruiter
 }
