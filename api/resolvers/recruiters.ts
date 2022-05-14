@@ -132,25 +132,32 @@ export const query = {
   getRecruiters: async (
     _parent: undefined,
     {
+      isInstitutionless,
       pageIndex,
       perPage,
       query,
       source,
     }: GetAllArgs & {
+      isInstitutionless?: boolean
       source?: JobSource
     },
   ): Promise<GetAllResponse<RecruiterFromGetAll>> => {
     try {
-      const paginationFilter =
-        typeof pageIndex === 'number' && typeof perPage === 'number'
-          ? buildPrismaPaginationFilter(perPage, pageIndex)
-          : {}
+      const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 
       const andFilter: Prisma.Enumerable<Prisma.RecruiterWhereInput> = {}
+      const notFilter: Prisma.Enumerable<Prisma.RecruiterWhereInput> = {}
+      if (isInstitutionless !== undefined) {
+        if (isInstitutionless) {
+          andFilter.institutionId = null
+        } else {
+          notFilter.institutionId = null
+        }
+      }
       if (source !== undefined) {
         andFilter.source = source
       }
-      const whereFilter = buildPrismaWhereFilter<Recruiter>(['fullName', 'name'], query, andFilter)
+      const whereFilter = buildPrismaWhereFilter<Recruiter>(['fullName', 'name'], query, andFilter, notFilter)
 
       const args: Prisma.RecruiterFindManyArgs = {
         include: {

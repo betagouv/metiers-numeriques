@@ -34,18 +34,15 @@ const config: PlaywrightTestConfig = {
     bypassCSP: true,
     headless: IS_CI,
     locale: 'fr-FR',
-    screenshot: IS_CI ? 'only-on-failure' : 'off',
     timezoneId: 'Europe/Paris',
     trace: 'retain-on-failure',
-    video: IS_CI
-      ? 'off'
-      : {
-          mode: 'retain-on-failure',
-          size: {
-            height: 720 * 2,
-            width: 1280 * 2,
-          },
-        },
+    video: {
+      mode: 'retain-on-failure',
+      size: {
+        height: 720 * 2,
+        width: 1280 * 2,
+      },
+    },
   },
   workers: 1,
 }

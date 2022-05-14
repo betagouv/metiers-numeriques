@@ -2,7 +2,8 @@ export type Context = {
   user: Common.Auth.User
 }
 
-export type GetAllArgs = {
+export type GetAllArgs<T = Record<string, any>> = {
+  orderBy?: [keyof T, 'asc' | 'desc']
   pageIndex: number
   perPage: number
   query?: string

@@ -1,3 +1,4 @@
+import { buildPrismaOrderByFilter } from '@api/helpers/buildPrismaOrderByFilter'
 import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 
@@ -109,19 +110,32 @@ export const query = {
 
   getUsers: async (
     _parent: undefined,
-    { pageIndex, perPage, query }: GetAllArgs,
+    {
+      isActive,
+      orderBy,
+      pageIndex,
+      perPage,
+      query,
+    }: GetAllArgs<User> & {
+      isActive?: boolean
+    },
   ): Promise<GetAllResponse<UserFromGetAll>> => {
     try {
+      const orderByFilter = buildPrismaOrderByFilter<User>(['lastName', 'asc'], orderBy)
+
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
-      const whereFilter = buildPrismaWhereFilter<User>(['email', 'firstName', 'lastName'], query)
+
+      const andFilter: Prisma.Enumerable<Prisma.UserWhereInput> = {}
+      if (isActive !== undefined) {
+        andFilter.isActive = isActive
+      }
+      const whereFilter = buildPrismaWhereFilter<User>(['email', 'firstName', 'lastName'], query, andFilter)
 
       const args: Prisma.UserFindManyArgs = {
         include: {
           recruiter: true,
         },
-        orderBy: {
-          lastName: 'asc',
-        },
+        ...orderByFilter,
         ...paginationFilter,
         ...whereFilter,
       }

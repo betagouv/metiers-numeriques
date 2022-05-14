@@ -2,6 +2,7 @@ import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Alert } from '@app/atoms/Alert'
 import { Subtitle } from '@app/atoms/Subtitle'
 import { Title } from '@app/atoms/Title'
+import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
@@ -11,7 +12,7 @@ import { Briefcase, Send, Users } from 'react-feather'
 import { Flex } from 'reflexbox'
 
 import type { GlobalStatistics, LocalStatistics } from '@app/workers/statistics'
-import type { Recruiter } from '@prisma/client'
+import type { Recruiter, User } from '@prisma/client'
 
 const createStatisticsWorker = createWorkerFactory(() => import('../../app/workers/statistics'))
 const createAlertWorker = createWorkerFactory(() => import('../../app/workers/alert'))
@@ -27,13 +28,20 @@ export default function AdminDashboardPage() {
     activeJobsCount: undefined,
     institution: undefined,
   })
-  const [institutionlessRecruiters, setInstitutionlessRecruiters] = useState<Recruiter[]>([])
+  const [lastInstitutionlessRecruiters, setLastInstitutionlessRecruiters] = useState<Recruiter[]>([])
+  const [lastInstitutionlessRecruitersLength, setLastInstitutionlessRecruitersLength] = useState<number>(0)
+  const [lastInactiveUsers, setLastInactiveUsers] = useState<User[]>([])
+  const [lastInactiveUsersLength, setLastInactiveUsersLength] = useState<number>(0)
   const auth = useAuth<Common.Auth.User>()
   const alertWorker = useWorker(createAlertWorker)
   const statisticsWorker = useWorker(createStatisticsWorker)
 
   const goToRecruiter = useCallback(recruiterId => {
     window.open(`/admin/recruiter/${recruiterId}`, '_blank')
+  }, [])
+
+  const goToUser = useCallback(userId => {
+    window.open(`/admin/user/${userId}`, '_blank')
   }, [])
 
   const updateStatistics = useCallback(async () => {
@@ -52,9 +60,13 @@ export default function AdminDashboardPage() {
     }
 
     if (auth.user.role === UserRole.ADMINISTRATOR) {
-      const newInstitutionlessRecruiters = await alertWorker.getInstitutionlessRecruiters(auth.state.accessToken)
+      const lastInactiveUsersResult = await alertWorker.getLastInactiveUsers(auth.state.accessToken)
+      const lastInstitutionlessRecruitersResult = await alertWorker.getInstitutionlessRecruiters(auth.state.accessToken)
 
-      setInstitutionlessRecruiters(newInstitutionlessRecruiters)
+      setLastInactiveUsers(lastInactiveUsersResult.data)
+      setLastInactiveUsersLength(lastInactiveUsersResult.length)
+      setLastInstitutionlessRecruiters(lastInstitutionlessRecruitersResult.data)
+      setLastInstitutionlessRecruitersLength(lastInstitutionlessRecruitersResult.length)
     }
   }, [auth.state.accessToken])
 
@@ -101,10 +113,25 @@ export default function AdminDashboardPage() {
         </>
       )}
 
-      {auth.user.role === UserRole.ADMINISTRATOR && institutionlessRecruiters.length !== 0 && (
+      {auth.user.role === UserRole.ADMINISTRATOR && lastInactiveUsers.length !== 0 && (
         <>
-          <Subtitle noBorder>Services recruteurs non liés</Subtitle>
-          {institutionlessRecruiters.map(({ displayName, id }, index) => (
+          <Subtitle noBorder>{`Dernières inscriptions (${lastInactiveUsersLength})`}</Subtitle>
+          {lastInactiveUsers.map(({ createdAt, extra, firstName, id, lastName }, index) => (
+            <Alert key={id} isFirst={index === 0} onClick={() => goToUser(id)}>
+              {`${firstName} ${lastName} (${extra && (extra as any).requestedInstitution} / ${
+                extra && (extra as any).requestedService
+              }) le ${humanizeDate(createdAt)}.`}
+            </Alert>
+          ))}
+        </>
+      )}
+
+      {auth.user.role === UserRole.ADMINISTRATOR && lastInstitutionlessRecruiters.length !== 0 && (
+        <>
+          <Subtitle
+            noBorder
+          >{`Services recruteurs sans institution (${lastInstitutionlessRecruitersLength})`}</Subtitle>
+          {lastInstitutionlessRecruiters.map(({ displayName, id }, index) => (
             <Alert key={id} isFirst={index === 0} onClick={() => goToRecruiter(id)}>
               {displayName}
             </Alert>
