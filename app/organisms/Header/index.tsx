@@ -60,12 +60,24 @@ export function Header() {
           <nav aria-label="Menu principal" className="fr-nav" role="navigation">
             <ul className="fr-nav__list">
               <NavLink
-                aria-current={router.pathname === '/' ? 'page' : undefined}
+                aria-current={router.pathname === '/' || router.pathname.startsWith('/emploi/') ? 'page' : undefined}
                 className="fr-nav__link"
                 href="/"
                 onClick={closeMenu}
               >
                 Offres d’emplois
+              </NavLink>
+              <NavLink
+                aria-current={
+                  router.pathname === '/institutions' || router.pathname.startsWith('/intsitution/')
+                    ? 'page'
+                    : undefined
+                }
+                className="fr-nav__link"
+                href="/institutions"
+                onClick={closeMenu}
+              >
+                Institutions
               </NavLink>
               <NavLink className="fr-nav__link" href="/admin" onClick={closeMenu}>
                 Déposer une offre

@@ -324,3 +324,200 @@ p.rf-hint-text {
   -o-animation: rotating 2s linear infinite;
   animation: rotating 2s linear infinite;
 }
+
+.hidden {
+  display: none;
+}
+
+#ministeres--list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+#ministeres .fr-card {
+  margin-top: 2rem;
+  flex: 0 1 30%;
+  max-width: 30%;
+}
+
+#ministeres .fr-grid-row--center {
+  justify-content: space-between;
+}
+
+#Institution ul,
+#job-detail ul {
+  margin: 0;
+  padding-left: 0;
+}
+#Institution ol > li,
+#job-detail ol > li {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  padding-left: 1rem;
+}
+#Institution ul > li,
+#job-detail ul > li {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  list-style-type: none;
+  padding-left: 2.5rem;
+  position: relative;
+}
+#Institution ul > li::before,
+#job-detail ul > li::before {
+  border-color: #00a8a8;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  content: '';
+  display: block;
+  height: 1.15rem;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform-origin: bottom left;
+  transform: rotate(40deg);
+  width: 0.65rem;
+}
+#Institution ul > li *,
+#job-detail ul > li * {
+  font-size: inherit;
+  line-height: inherit;
+}
+#Institution ul > li > ul > li::before,
+#job-detail ul > li > ul > li::before {
+  width: 0.625rem;
+}
+
+#Institution .fr-col-md-3 h3,
+#Institution .fr-col-md-3 h5,
+#job-detail-main-fields .fr-col-md-3 h3,
+#job-detail-main-fields .fr-col-md-3 h5 {
+  margin: 1.15rem 0 0 0;
+}
+#Institution .fr-col-md-9,
+#job-detail-main-fields .fr-col-md-9 {
+  padding-top: 0;
+}
+@media screen and (min-width: 768px) {
+  #Institution .fr-col-md-3 h3,
+  #Institution .fr-col-md-3 h5,
+  #job-detail-main-fields .fr-col-md-3 h3,
+  #job-detail-main-fields .fr-col-md-3 h5 {
+    margin: 0;
+  }
+
+  #Institution .fr-col-md-9,
+  #job-detail-main-fields .fr-col-md-9 {
+    padding-top: 1.15rem;
+  }
+}
+
+#job-detail-header p {
+  font-weight: 700;
+}
+
+#LoadMoreSection {
+  text-align: center;
+}
+
+.hidden-md {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .hidden-md {
+    display: block;
+  }
+}
+.hidden-md-flex {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .hidden-md-flex {
+    display: flex;
+  }
+}
+
+#Institution .SocialNetworkParagraph {
+  align-items: center;
+  display: flex;
+}
+#Institution .SocialNetworkParagraph a {
+  box-shadow: none;
+  display: inline-flex;
+  margin-right: 0.5rem;
+}
+#Institution .SocialNetworkParagraph a::after {
+  content: '';
+}
+#Institution .SocialNetworkParagraph a i {
+  font-size: 150%;
+}
+#Institution .SocialNetworkParagraph a img {
+  height: 1.5rem;
+  opacity: 0.75;
+  width: 1.5rem;
+}
+
+.FileSection {
+  display: flex;
+}
+.FileSection a {
+  box-shadow: none;
+}
+.FileSection a::after {
+  content: none;
+}
+
+.FileSection .FileAsDocument {
+  background-color: #fef4f2;
+  display: inline-flex;
+  margin: 0 2rem 0 0;
+  padding: 0 1rem 1rem 1rem;
+}
+.FileSection .FileAsDocument > a {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  max-width: 8rem;
+}
+.FileSection .FileAsDocument > a > i {
+  font-size: 4rem;
+}
+.FileSection .FileAsDocument > a > b {
+  font-size: 1rem;
+  font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.FileSection .FileAsEmbed {
+  width: 100%;
+}
+.FileSection .FileAsEmbed > div {
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+}
+.FileSection .FileAsEmbed > div > iframe {
+  height: 100%;
+  left: 0px;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+}
+
+.FileSection .FileAsImage {
+  width: 100%;
+}
+.FileSection .FileAsImage > img {
+  height: auto;
+  width: 100%;
+}
