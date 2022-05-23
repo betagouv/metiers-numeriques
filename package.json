@@ -147,7 +147,7 @@
     "eslint-plugin-typescript-sort-keys": "2.1.0",
     "husky": "7.0.4",
     "jest": "27.5.1",
-    "postcss": "8.4.12",
+    "postcss": "8.4.14",
     "prettier": "2.5.1",
     "ts-jest": "27.1.3"
   },
