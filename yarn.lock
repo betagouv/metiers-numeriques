@@ -1971,29 +1971,29 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
-"@shopify/react-hooks@^2.1.12":
-  version "2.1.14"
-  resolved "https://registry.yarnpkg.com/@shopify/react-hooks/-/react-hooks-2.1.14.tgz#a901fd93217b2807b4c6248d7a1becea281b0225"
-  integrity sha512-u066fZs4HsN5kZUJ7Z+EDTDbTLGd53Wcrs7AqkQ+1T9c/XPaejmyzLkLSI3D0HU0/mwNCg3EmGOfrBrKKU1mdg==
+"@shopify/react-hooks@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/react-hooks/-/react-hooks-3.0.0.tgz#26c834546c4c0ecffe7d6b683a8ab284bdb91f69"
+  integrity sha512-slHakl4qYuQnLHcF57hc5EKgdP84KbscBr5xQCDUwwzPYqqZ9qq4RT9IDVVnr+uPGnWwkLPR9/EN9B6yjqsdVw==
 
-"@shopify/react-web-worker@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@shopify/react-web-worker/-/react-web-worker-4.0.4.tgz#bbfc4f71da2d9fc059eb0efee77bd90b64c0b428"
-  integrity sha512-ddo8hK12Yd+/HmOENUGwiccV0kuCxbEVSrgil1d8zOT52RzZ2hIt09/WyHxtf8Yd/ayDRLBwTrYhFgKIV3DTeA==
+"@shopify/react-web-worker@5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/react-web-worker/-/react-web-worker-5.0.0.tgz#b2968020c3518db70956c6c5aafaba1ac2eff5d5"
+  integrity sha512-Mcib+Vnr7KduL70VHiSwtJFVB0kuzU1iAlL9mGfRewsAcHkWwxgbFUgY5UKEFFfhazty27tRGbHuBUG1JWhwaw==
   dependencies:
-    "@shopify/react-hooks" "^2.1.12"
-    "@shopify/useful-types" "^3.0.7"
-    "@shopify/web-worker" "^4.0.2"
+    "@shopify/react-hooks" "^3.0.0"
+    "@shopify/useful-types" "^5.0.0"
+    "@shopify/web-worker" "^5.0.0"
 
-"@shopify/useful-types@^3.0.7":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@shopify/useful-types/-/useful-types-3.1.0.tgz#e8ffb4ac730c7d92870247971ec1e82735629369"
-  integrity sha512-p9K2zRjrU75mz4wWN3tb1GURZCgM1pdxovT5J7jakk7qjGPzacmHlAK4xZqrnY/7LndmOKnZ7fyT+l668MyFNA==
+"@shopify/useful-types@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/useful-types/-/useful-types-5.0.0.tgz#1a06976ecff33de9b36c822c4f2f89a92940f27b"
+  integrity sha512-3T9AZNKK3Tjxz++Z10DFtNnAXfdoE9kPkJTiCfsRcxZ3IVfFORzAUKTv4mgKT5P8IyRbIRtmxfzZzRCxn4fIgQ==
 
-"@shopify/web-worker@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@shopify/web-worker/-/web-worker-4.0.2.tgz#4a787223ac6d0706003f01f24f78c928b55a49c4"
-  integrity sha512-PCpNPYLYqURrAnMTJ7/qgE2/D8bvrF9SawfWDRlbWqrgBkRMJKuXimzfQBtQq+AevnAVI3adUMrSTmrrSAAyJw==
+"@shopify/web-worker@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/web-worker/-/web-worker-5.0.0.tgz#24d9c287994d8e2b0e9c5f37dce5d9e2c10a12e9"
+  integrity sha512-7NeRu05OkPqUP23zQPNrtGhJDPClfWQvRA6snz0YlE/qUZ7oxVoB3WLaoQ686JaRyx//XQShYjRxTyqA1O/Wdw==
   dependencies:
     "@remote-ui/rpc" "^1.2.5"
 
