@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-import { TEST_USERS } from './constants'
+import { TEST_USERS } from './constants.js'
 
 test.describe('Admin > Authentication', () => {
   test.use({

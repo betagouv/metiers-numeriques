@@ -11,12 +11,5 @@
     }
   },
   "exclude": [".next/*", "node_modules/*"],
-  "include": ["**/*.js", "**/*.mjs", "**/*.ts", "**/*.tsx", "next-env.d.ts"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    },
-    "transpiler": "ts-node/transpilers/swc-experimental",
-    "transpileOnly": true
-  }
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx", "next-env.d.ts", "next.config.cjs"]
 }

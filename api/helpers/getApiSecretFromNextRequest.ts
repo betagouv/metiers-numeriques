@@ -11,7 +11,7 @@ export function getApiSecretFromNextRequest(req: NextApiRequest): string | undef
     }
 
     return apiSecret
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'libs/getUser()', true)
   }
 }

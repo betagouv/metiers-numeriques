@@ -25,7 +25,7 @@ class Permission {
   }
 
   public get isAdministrator(): Rule {
-    return this.setRule((_paren, _args, ctx) => {
+    return this.setRule((_parent, _args, ctx) => {
       if (ctx.user === undefined) {
         return new AuthenticationError('Unauthorized.')
       }
@@ -67,6 +67,7 @@ class Permission {
   }
 
   public get isPublic(): Rule {
+    console.log(3)
     const rule = async (parent, args, ctx, info) => {
       if (ctx.apiSecret === API_SECRET) {
         return true

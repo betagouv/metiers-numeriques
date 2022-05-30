@@ -5,7 +5,11 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 
-export function renderMarkdown(markdownSource: string) {
+import type { ReactElement, JSXElementConstructor } from 'react'
+
+export function renderMarkdown(
+  markdownSource: string,
+): ReactElement<unknown, string | JSXElementConstructor<any>> | null {
   try {
     const content = unified()
       .use(remarkParse)
@@ -14,7 +18,9 @@ export function renderMarkdown(markdownSource: string) {
       .processSync(markdownSource).result
 
     return content
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/renderMarkdown()')
+
+    return null
   }
 }

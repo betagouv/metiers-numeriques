@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { structuredData } from '..'
 
 import type { Address } from '@prisma/client'

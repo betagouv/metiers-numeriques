@@ -3,12 +3,10 @@ import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Title } from '@app/atoms/Title'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
-import { slugify } from '@common/helpers/slugify'
 import { Card, Field } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
-import { v4 as uuid } from 'uuid'
 import * as Yup from 'yup'
 
 import type { MutationFunctionOptions } from '@apollo/client'
@@ -21,7 +19,6 @@ const FormSchema = Yup.object().shape({
 export default function AdminLegacyInstitutionEditorPage() {
   const router = useRouter()
   const { id } = router.query
-  const isNew = id === 'new'
 
   const [initialValues, setInitialValues] = useState({})
   const [isLoading, setIsLoading] = useState(true)
@@ -30,17 +27,10 @@ export default function AdminLegacyInstitutionEditorPage() {
       id,
     },
   })
-  const [createLegacyInstitution] = useMutation(queries.legacyInstitution.CREATE_ONE)
   const [updateLegacyInstitution] = useMutation(queries.legacyInstitution.UPDATE_ONE)
 
   useEffect(() => {
     if (!isLoading || getLegacyInstitutionResult.loading || getLegacyInstitutionResult.error) {
-      return
-    }
-
-    if (isNew) {
-      setIsLoading(false)
-
       return
     }
 
@@ -50,7 +40,7 @@ export default function AdminLegacyInstitutionEditorPage() {
 
     setInitialValues(initialValues)
     setIsLoading(false)
-  }, [getLegacyInstitutionResult, isLoading, isNew])
+  }, [getLegacyInstitutionResult, isLoading])
 
   const goToList = () => {
     router.push('/admin/legacy-institutions')
@@ -79,11 +69,6 @@ export default function AdminLegacyInstitutionEditorPage() {
       'value',
     ])(values) as any
 
-    if (isNew) {
-      input.id = uuid()
-      input.slug = slugify(input.title, input.id)
-    }
-
     const options: MutationFunctionOptions = {
       variables: {
         id,
@@ -91,12 +76,8 @@ export default function AdminLegacyInstitutionEditorPage() {
       },
     }
 
-    if (isNew) {
-      await createLegacyInstitution(options)
-    } else {
-      await updateLegacyInstitution(options)
-      await getLegacyInstitutionResult.refetch()
-    }
+    await updateLegacyInstitution(options)
+    await getLegacyInstitutionResult.refetch()
 
     goToList()
   }
@@ -104,17 +85,11 @@ export default function AdminLegacyInstitutionEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle institution [LEGACY]' : 'Édition d’une institution [LEGACY]'}</Title>
+        <Title>Édition d’une institution [LEGACY]</Title>
       </AdminHeader>
 
       <Card>
         <AdminForm initialValues={initialValues} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
-          {!isNew && (
-            <Field>
-              <AdminForm.TextInput isDisabled label="Slug" name="slug" />
-            </Field>
-          )}
-
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom court *" name="title" />
           </Field>
@@ -179,7 +154,7 @@ export default function AdminLegacyInstitutionEditorPage() {
             <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
               Annuler
             </AdminForm.Cancel>
-            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
+            <AdminForm.Submit isDisabled={isLoading}>Mettre à jour</AdminForm.Submit>
           </Field>
         </AdminForm>
       </Card>

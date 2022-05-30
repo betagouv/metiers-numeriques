@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { buildPrismaWhereFilter } from '../buildPrismaWhereFilter'
 
 describe('api/helpers/buildPrismaWhereFilter()', () => {

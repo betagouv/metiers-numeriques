@@ -21,7 +21,7 @@ export function buildPrismaPaginationFilter(
       skip,
       take: safePerPage,
     }
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'api/helpers/buildPrismaPaginationFilter()')
 
     return {

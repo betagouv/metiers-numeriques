@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 
+import prismaClientPkg from '@prisma/client'
 import dotenv from 'dotenv'
 
-import { prisma } from '../api/libs/prisma'
-import { TEST_USERS } from '../e2e/constants'
+import { TEST_USERS } from '../e2e/constants.js'
 
 import type { FullConfig } from '@playwright/test'
 
@@ -12,11 +12,15 @@ dotenv.config()
 const { CI } = process.env
 const IS_CI = Boolean(CI)
 
+const { PrismaClient } = prismaClientPkg
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function globalSetup(config: FullConfig) {
   if (IS_CI) {
     return
   }
+
+  const prisma = new PrismaClient()
 
   await prisma.address.deleteMany({
     where: {

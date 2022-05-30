@@ -1,4 +1,4 @@
-import { JOB_CONTRACT_TYPE_LABEL, JOB_REMOTE_STATUS_LABEL } from '@common/constants'
+import { JOB_CONTRACT_TYPE_LABEL, JOB_REMOTE_STATUS_LABEL } from '../common/constants.shared.js'
 
 export const TEST_CONTACTS = [
   {
@@ -185,3 +185,8 @@ export const TEST_USERS = [
     requestedService: 'Another service',
   },
 ]
+
+export const TEST_USER_ROLE = {
+  ADMINISTRATOR: 'ADMINISTRATOR',
+  RECRUITER: 'RECRUITER',
+}

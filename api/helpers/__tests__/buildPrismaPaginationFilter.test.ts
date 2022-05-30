@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { buildPrismaPaginationFilter } from '../buildPrismaPaginationFilter'
 
 describe('api/helpers/buildPrismaPaginationFilter()', () => {

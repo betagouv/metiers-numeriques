@@ -1,7 +1,5 @@
-import ß from 'bhala'
+import { B } from 'bhala'
 import * as R from 'ramda'
-
-import type { PrismaClient } from '@prisma/client'
 
 const INITIAL_PROFESSION_NAMES = [
   'Architecture',
@@ -18,11 +16,9 @@ const INITIAL_PROFESSION_NAMES = [
 
 const findMissingProfessionNames = R.difference(INITIAL_PROFESSION_NAMES)
 const mapProfessionsToNames = R.map(R.prop('name'))
-const mapNamesToProfessions: (names: string[]) => Array<{
-  name: string
-}> = R.map(name => ({ name }))
+const mapNamesToProfessions = R.map(name => ({ name }))
 
-export async function initializeProfessions(prisma: PrismaClient) {
+export async function initializeProfessions(prisma) {
   const professions = await prisma.profession.findMany()
 
   const professionNames = mapProfessionsToNames(professions)
@@ -30,12 +26,12 @@ export async function initializeProfessions(prisma: PrismaClient) {
   const missingProfessions = mapNamesToProfessions(missingProfessionNames)
 
   if (missingProfessions.length > 0) {
-    ß.info('[prisma/seeds/01-initialize-professions.ts] Seeding missing professions…')
+    B.info('[prisma/seeds/01-initialize-professions.mjs] Seeding missing professions…')
     const { count } = await prisma.profession.createMany({
       data: missingProfessions,
       skipDuplicates: true,
     })
 
-    ß.success(`[prisma/seeds/01-initialize-professions.ts] ${count} missing profession(s) seeded.`)
+    B.success(`[prisma/seeds/01-initialize-professions.mjs] ${count} missing profession(s) seeded.`)
   }
 }

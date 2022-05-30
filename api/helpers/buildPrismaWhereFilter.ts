@@ -62,7 +62,7 @@ export function buildPrismaWhereFilter<T extends Record<string, any>>(
     }
 
     return whereFilter
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'api/helpers/buildPrismaPaginationFilter()')
 
     return {}

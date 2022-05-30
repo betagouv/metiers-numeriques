@@ -1,6 +1,4 @@
-/* eslint-disable no-await-in-loop, no-continue */
-
-import ß from 'bhala'
+import { B } from 'bhala'
 import http from 'http'
 import https from 'https'
 
@@ -59,7 +57,7 @@ const fetch = async path => {
 }
 
 export default async function PepJob() {
-  ß.info('[pep] Synchronizing jobs…')
+  B.info('[pep] Synchronizing jobs…')
 
   try {
     const res = await fetch('/pep/synchronize')
@@ -67,9 +65,9 @@ export default async function PepJob() {
       throw new Error(res.message)
     }
 
-    ß.info('[pep]', `${res.data.count} job(s) synchronized.`)
+    B.info('[pep]', `${res.data.count} job(s) synchronized.`)
   } catch (err) {
-    ß.error('[pep]', err)
+    B.error('[pep]', err)
     console.error(err)
   }
 }

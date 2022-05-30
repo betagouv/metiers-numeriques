@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-import { TEST_JOBS, TEST_JOB_DRAFTS } from './constants'
+import { TEST_JOBS, TEST_JOB_DRAFTS } from './constants.js'
 
 test.describe('Admin > Jobs', () => {
   test.slow()

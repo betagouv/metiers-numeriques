@@ -1,77 +1,62 @@
 import JsCookie from 'js-cookie'
 
-const COOKIE_NAME = 'METIERS_NUMERIQUE_CONFIG'
+type JsonValue = Common.BNS | Common.BNS[] | Common.Pojo | Common.Pojo[]
+
+export const COOKIE_STORE_ID = 'METIERS_NUMERIQUE_CONFIG'
 
 export enum CookieKey {
   HAS_SUBSCRIBED_TO_NEWSLETTER = 'HAS_SUBSCRIBED_TO_NEWSLETTER',
 }
 
 class Cookie {
-  public get(key: CookieKey): any | undefined {
-    const maybeConfigAsJson = JsCookie.get(COOKIE_NAME)
-    if (maybeConfigAsJson === undefined) {
+  public get(key: CookieKey): JsonValue | undefined {
+    const maybeCookieStoreAsJson = JsCookie.get(COOKIE_STORE_ID)
+    if (maybeCookieStoreAsJson === undefined) {
       return
     }
 
-    const maybeConfig = this.parse(maybeConfigAsJson)
-    if (maybeConfig === undefined) {
+    const maybeCookieStore = this.parse(maybeCookieStoreAsJson)
+    if (maybeCookieStore === undefined) {
       return
     }
 
-    return maybeConfig[key]
+    return maybeCookieStore[key]
   }
 
-  public set(key: CookieKey, value: any): void {
-    const maybeConfigAsJson = JsCookie.get(COOKIE_NAME)
-    if (maybeConfigAsJson === undefined) {
+  public set(key: CookieKey, value: JsonValue): void {
+    const maybeCookieStoreAsJson = JsCookie.get(COOKIE_STORE_ID)
+    if (maybeCookieStoreAsJson === undefined) {
       this.setFirst(key, value)
 
       return
     }
 
-    const maybeConfig = this.parse(maybeConfigAsJson)
-    if (maybeConfig === undefined) {
+    const maybeCookieStore = this.parse(maybeCookieStoreAsJson)
+    if (typeof maybeCookieStore !== 'object' || maybeCookieStore.constructor.name !== 'Object') {
+      JsCookie.remove(COOKIE_STORE_ID)
       this.setFirst(key, value)
 
       return
     }
 
-    maybeConfig[key] = value
-    const maybeConfigAsString = this.stringify({
-      ...maybeConfig,
-      [key]: value,
-    })
-    if (maybeConfigAsString === undefined) {
-      this.setFirst(key, value)
+    maybeCookieStore[key] = value
+    const configAsJson = JSON.stringify(maybeCookieStore)
 
-      return
-    }
-
-    JsCookie.set(COOKIE_NAME, maybeConfigAsString)
+    JsCookie.set(COOKIE_STORE_ID, configAsJson)
   }
 
-  private setFirst(key: CookieKey, value: any): void {
-    const maybeConfigAsString = this.stringify({
+  private setFirst(key: CookieKey, value: JsonValue): void {
+    const cookieStore = {
       [key]: value,
-    })
-    if (maybeConfigAsString === undefined) {
-      return
     }
+    const maybeCookieStoreAsString = JSON.stringify(cookieStore)
 
-    JsCookie.set(COOKIE_NAME, maybeConfigAsString)
+    JsCookie.set(COOKIE_STORE_ID, maybeCookieStoreAsString)
   }
 
   private parse(valueAsJson: string): Record<string, any> | undefined {
     try {
       return JSON.parse(valueAsJson)
-    } catch (err) {
-      return undefined
-    }
-  }
-
-  private stringify(value: any): string | undefined {
-    try {
-      return JSON.stringify(value)
     } catch (err) {
       return undefined
     }

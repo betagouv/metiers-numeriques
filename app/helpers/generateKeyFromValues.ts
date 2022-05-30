@@ -8,7 +8,7 @@ export function generateKeyFromValues(...values: any[]): string {
     }
 
     return sha1(JSON.stringify(values))
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     handleError(err, 'app/helpers/generateKeyFromValues()')
 
     return ''

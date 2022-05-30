@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-import { TEST_JOBS, TEST_JOB_DRAFTS, TEST_USERS } from './constants'
+import { TEST_JOBS, TEST_JOB_DRAFTS, TEST_USERS } from './constants.js'
 
 test.describe('Admin > Recruiter Role', () => {
   test('Recruiter User Login', async ({ context, page }) => {
