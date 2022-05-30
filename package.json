@@ -74,7 +74,7 @@
     "lodash.throttle": "4.1.1",
     "micro": "9.3.4",
     "nexauth": "2.1.0",
-    "next": "12.1.5",
+    "next": "12.1.6",
     "numeral": "2.0.6",
     "prisma": "3.14.0",
     "ramda": "0.28.0",
