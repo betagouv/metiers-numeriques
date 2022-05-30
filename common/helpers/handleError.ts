@@ -64,7 +64,7 @@ function handleError(error: any, path: string, isFinalOrRes?: boolean | NextApiR
     if (error instanceof Error) {
       Sentry.captureException(error)
     } else {
-      Sentry.captureMessage(`[${path}] ${errorString}`, Sentry.Severity.Error)
+      Sentry.captureMessage(`[${path}] ${errorString}`, 'error')
     }
   }
 
