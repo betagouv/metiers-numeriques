@@ -20,7 +20,7 @@ import { RegionFilter } from './RegionFilter'
 import { RemoteStatusesFilter } from './RemoteStatusesFilter'
 
 import type { Institution, JobContractType, JobRemoteStatus, Profession } from '@prisma/client'
-import type { UUID } from 'react-accessible-accordion/dist/types/components/ItemContext'
+import type { ID } from 'react-accessible-accordion/dist/types/components/ItemContext'
 
 const Box = styled.div<{
   isModalOpen: boolean
@@ -107,7 +107,7 @@ type JobFilterBarProps = {
 export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose, professions }: JobFilterBarProps) {
   const $searchInput = useRef<HTMLInputElement>(null)
   const $filter = useRef<Filter>({ ...INITIAL_FILTER })
-  const [openedAccordionFilters, setOpenedAccordionFilters] = useState<UUID[]>([INITIAL_ACCORDION_FILTER])
+  const [openedAccordionFilters, setOpenedAccordionFilters] = useState<ID[]>([INITIAL_ACCORDION_FILTER])
 
   const handleContractTypes = useCallback((contractTypes: JobContractType[]) => {
     $filter.current.contractTypes = contractTypes
