@@ -67,7 +67,6 @@ class Permission {
   }
 
   public get isPublic(): Rule {
-    console.log(3)
     const rule = async (parent, args, ctx, info) => {
       if (ctx.apiSecret === API_SECRET) {
         return true
