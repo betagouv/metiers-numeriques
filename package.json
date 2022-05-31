@@ -29,7 +29,7 @@
     "start:worker:bot": "node -r dotenv/config ./workers/bot/cron.js",
     "start:worker:pep": "node -r dotenv/config ./workers/pep/cron.js",
     "test": "yarn test:lint && yarn test:build && yarn test:unit",
-    "test:lint": "eslint --ext js,mjs,ts,tsx .",
+    "test:lint": "eslint --ext cjs,js,ts,tsx .",
     "test:e2e": "playwright test -c ./config/playwright.config.ts",
     "test:type": "tsc",
     "test:unit": "jest --config=./config/jest.config.js --detectOpenHandles",
