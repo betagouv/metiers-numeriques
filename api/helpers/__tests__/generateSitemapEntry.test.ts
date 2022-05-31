@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 

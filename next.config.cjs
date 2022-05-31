@@ -35,6 +35,7 @@ const config = {
     disableClientWebpackPlugin: true,
     disableServerWebpackPlugin: true,
   },
+  swcMinify: true,
 }
 
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#extend-nextjs-configuration

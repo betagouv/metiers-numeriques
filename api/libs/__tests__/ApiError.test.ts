@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { ApiError } from '../ApiError'
 
 describe('api/libs/ApiError', () => {

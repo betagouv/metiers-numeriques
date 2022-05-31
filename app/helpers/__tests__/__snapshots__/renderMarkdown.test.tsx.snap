@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app/helpers/renderMarkdown() with a paragraph 1`] = `
+<div>
+  <p>
+    A paragraph.
+  </p>
+  
+
+  <p>
+    A 
+    <strong>
+      bold
+    </strong>
+     and 
+    <em>
+      italic
+    </em>
+     text with a 
+    <a
+      href="https://example.org"
+    >
+      link
+    </a>
+    .
+  </p>
+  
+
+  <ul>
+    
+
+    <li>
+      A
+    </li>
+    
+
+    <li>
+      bullet,
+    </li>
+    
+
+    <li>
+      list.
+    </li>
+    
+
+  </ul>
+  
+
+  <ol>
+    
+
+    <li>
+      An
+    </li>
+    
+
+    <li>
+      ordered,
+    </li>
+    
+
+    <li>
+      list.
+    </li>
+    
+
+  </ol>
+</div>
+`;

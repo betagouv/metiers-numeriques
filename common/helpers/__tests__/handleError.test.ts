@@ -3,7 +3,7 @@
 import { ApiError } from '@api/libs/ApiError'
 import { jest } from '@jest/globals'
 import * as Sentry from '@sentry/nextjs'
-import ß from 'bhala'
+import { B } from 'bhala'
 
 import type { NextApiResponse } from 'next'
 
@@ -43,8 +43,8 @@ describe('common/helpers/handleError()', () => {
 
     handleError(error, `a/path`)
 
-    expect(ß.error).toHaveBeenCalledTimes(1)
-    expect(ß.error).toHaveBeenCalledWith('[a/path] A string error.')
+    expect(B.error).toHaveBeenCalledTimes(1)
+    expect(B.error).toHaveBeenCalledWith('[a/path] A string error.')
 
     expect(Sentry.captureMessage).toHaveBeenCalledTimes(1)
   })
@@ -54,8 +54,8 @@ describe('common/helpers/handleError()', () => {
 
     handleError(error, `a/path`)
 
-    expect(ß.error).toHaveBeenCalledTimes(1)
-    expect(ß.error).toHaveBeenCalledWith('[a/path] An Error message.')
+    expect(B.error).toHaveBeenCalledTimes(1)
+    expect(B.error).toHaveBeenCalledWith('[a/path] An Error message.')
 
     expect(Sentry.captureException).toHaveBeenCalledTimes(1)
   })
@@ -66,8 +66,8 @@ describe('common/helpers/handleError()', () => {
     const error = new CustomError(`A CustomError message.`)
     handleError(error, `a/path`)
 
-    expect(ß.error).toHaveBeenCalledTimes(1)
-    expect(ß.error).toHaveBeenCalledWith('[a/path] A CustomError message.')
+    expect(B.error).toHaveBeenCalledTimes(1)
+    expect(B.error).toHaveBeenCalledWith('[a/path] A CustomError message.')
 
     expect(Sentry.captureException).toHaveBeenCalledTimes(1)
   })
@@ -78,14 +78,14 @@ describe('common/helpers/handleError()', () => {
     const error = new TooCustomError()
     handleError(error, `a/path`)
 
-    expect(ß.error).toHaveBeenCalledTimes(4)
-    expect(ß.error).toHaveBeenNthCalledWith(
+    expect(B.error).toHaveBeenCalledTimes(4)
+    expect(B.error).toHaveBeenNthCalledWith(
       1,
       '[common/helpers/handleError()] This type of error cannot be processed. This should never happen.',
     )
-    expect(ß.error).toHaveBeenNthCalledWith(2, '[common/helpers/handleError()] Error Type: object')
-    expect(ß.error).toHaveBeenNthCalledWith(3, '[common/helpers/handleError()] Error Constructor: TooCustomError')
-    expect(ß.error).toHaveBeenNthCalledWith(4, '[a/path] [object Object]')
+    expect(B.error).toHaveBeenNthCalledWith(2, '[common/helpers/handleError()] Error Type: object')
+    expect(B.error).toHaveBeenNthCalledWith(3, '[common/helpers/handleError()] Error Constructor: TooCustomError')
+    expect(B.error).toHaveBeenNthCalledWith(4, '[a/path] [object Object]')
 
     expect(Sentry.captureMessage).toHaveBeenCalledTimes(1)
   })
@@ -93,14 +93,14 @@ describe('common/helpers/handleError()', () => {
   test('with an undefined error', () => {
     handleError(undefined, `a/path`)
 
-    expect(ß.error).toHaveBeenCalledTimes(4)
-    expect(ß.error).toHaveBeenNthCalledWith(
+    expect(B.error).toHaveBeenCalledTimes(4)
+    expect(B.error).toHaveBeenNthCalledWith(
       1,
       '[common/helpers/handleError()] This type of error cannot be processed. This should never happen.',
     )
-    expect(ß.error).toHaveBeenNthCalledWith(2, '[common/helpers/handleError()] Error Type: undefined')
-    expect(ß.error).toHaveBeenNthCalledWith(3, '[common/helpers/handleError()] Error Constructor: undefined')
-    expect(ß.error).toHaveBeenNthCalledWith(4, '[a/path] undefined')
+    expect(B.error).toHaveBeenNthCalledWith(2, '[common/helpers/handleError()] Error Type: undefined')
+    expect(B.error).toHaveBeenNthCalledWith(3, '[common/helpers/handleError()] Error Constructor: undefined')
+    expect(B.error).toHaveBeenNthCalledWith(4, '[a/path] undefined')
 
     expect(Sentry.captureMessage).toHaveBeenCalledTimes(1)
   })

@@ -1,11 +1,13 @@
 import { test, expect } from '@playwright/test'
-import { UserRole } from '@prisma/client'
+import prismaClientPkg from '@prisma/client'
 
-import { prisma } from '../api/libs/prisma'
-import { TEST_USERS } from './constants'
+import { TEST_USERS, TEST_USER_ROLE } from './constants.js'
+
+const { PrismaClient } = prismaClientPkg
 
 test.describe('Admin > Authentication', () => {
   test('First User (Administrator) Signup', async ({ page }) => {
+    const prisma = new PrismaClient()
     const testAdministrationUser = TEST_USERS[0]
 
     await page.goto('http://localhost:3000/admin')
@@ -33,7 +35,7 @@ test.describe('Admin > Authentication', () => {
       await prisma.user.update({
         data: {
           isActive: true,
-          role: UserRole.ADMINISTRATOR,
+          role: TEST_USER_ROLE.ADMINISTRATOR as any,
         },
         where: {
           email: testAdministrationUser.email,

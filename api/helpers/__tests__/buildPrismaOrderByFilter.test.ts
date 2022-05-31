@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { buildPrismaOrderByFilter } from '../buildPrismaOrderByFilter'
 
 describe('api/helpers/buildPrismaOrderByFilter()', () => {

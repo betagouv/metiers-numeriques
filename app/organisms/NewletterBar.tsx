@@ -1,5 +1,5 @@
 import { handleError } from '@common/helpers/handleError'
-import ky from 'ky'
+import ky from 'ky-universal'
 import { useCallback, useMemo, useState } from 'react'
 import * as Yup from 'yup'
 

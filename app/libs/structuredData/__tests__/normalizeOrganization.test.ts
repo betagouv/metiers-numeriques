@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { structuredData } from '..'
 
 import type { Recruiter } from '@prisma/client'

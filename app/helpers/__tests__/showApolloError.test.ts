@@ -1,19 +1,33 @@
-/* eslint-disable no-console */
-
 /**
  * @jest-environment jsdom
  */
 
-import * as apolloClient from '@apollo/client'
+import { ApolloError } from '@apollo/client'
 import { GraphQLError } from 'graphql'
 import { toast } from 'react-hot-toast'
 
 import { showApolloError } from '../showApolloError'
 
+// @apollo/client/link/utils/throwServerError.d.ts
+// @apollo/client/link/utils/throwServerError.js
+class ServerError extends Error {
+  public response: Response
+  public result: Record<string, any>
+  public statusCode: number
+
+  constructor(response: Response, result: Record<string, any>, message?: string) {
+    super(message)
+
+    this.response = response
+    this.result = result
+    this.statusCode = response.status
+  }
+}
+
 describe('app/helpers/showApolloError()', () => {
   describe('with GraphQL errors', () => {
     test(`with {extensions} with a "FORBIDDEN" code prop`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [
           new GraphQLError('A GraphQLError message.', undefined, undefined, undefined, ['getPath'], undefined, {
             code: 'FORBIDDEN',
@@ -29,7 +43,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with {extensions} with an "UNAUTHENTICATED" code prop`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [
           new GraphQLError('A GraphQLError message.', undefined, undefined, undefined, ['getPath'], undefined, {
             code: 'UNAUTHENTICATED',
@@ -45,7 +59,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with {extensions} with an unknown code prop`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [
           new GraphQLError('A GraphQLError message.', undefined, undefined, undefined, ['getPath'], undefined, {
             code: 'WHATEVER',
@@ -61,7 +75,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with {extensions} with an undefined code prop`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [
           new GraphQLError('A GraphQLError message.', undefined, undefined, undefined, ['getPath'], undefined, {}),
         ],
@@ -75,7 +89,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with an empty {paths}`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [new GraphQLError('A GraphQLError message.', undefined, undefined, undefined, [])],
       })
 
@@ -87,7 +101,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with an undefined {paths}`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [new GraphQLError('A GraphQLError message.')],
       })
 
@@ -99,7 +113,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with an undefined {extension}`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         graphQLErrors: [new GraphQLError('A GraphQLError message.', undefined, undefined, undefined, ['getPath'])],
       })
 
@@ -111,7 +125,7 @@ describe('app/helpers/showApolloError()', () => {
     })
 
     test(`with an empty array`, () => {
-      const error = new (apolloClient as any).default.ApolloError({
+      const error = new ApolloError({
         errorMessage: 'An ApolloError message.',
         graphQLErrors: [],
       })
@@ -121,6 +135,23 @@ describe('app/helpers/showApolloError()', () => {
       expect(console.debug).toHaveBeenCalledTimes(1)
       expect(toast.error).toHaveBeenCalledTimes(1)
       expect(toast.error).toHaveBeenCalledWith('An ApolloError message.')
+    })
+  })
+
+  describe('with network errors', () => {
+    test(`with an empty array`, () => {
+      const error = new ApolloError({
+        networkError: new ServerError(new Response(), {
+          message: 'A ServerError message',
+          path: 'a path',
+        }),
+      })
+
+      showApolloError(error as any)
+
+      expect(console.debug).not.toHaveBeenCalled()
+      expect(toast.error).toHaveBeenCalledTimes(1)
+      expect(toast.error).toHaveBeenCalledWith('A ServerError message in a path')
     })
   })
 
@@ -144,7 +175,7 @@ describe('app/helpers/showApolloError()', () => {
   })
 
   test(`with an empty message prop`, () => {
-    const error = new (apolloClient as any).default.ApolloError({})
+    const error = new ApolloError({})
 
     showApolloError(error as any)
 

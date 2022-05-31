@@ -1,12 +1,15 @@
-import { ApolloClient, gql, HttpLink, InMemoryCache } from '@apollo/client'
-import { UserRole } from '@prisma/client'
+import appoloClientPkg from '@apollo/client'
+import prismaClientPkg from '@prisma/client'
 import bcryptjs from 'bcryptjs'
-import ß from 'bhala'
+import { B } from 'bhala'
 import fetch from 'cross-fetch'
 import cuid from 'cuid'
 import * as R from 'ramda'
 
-import { prisma } from '../../api/libs/prisma'
+const { ApolloClient, gql, HttpLink, InMemoryCache } = appoloClientPkg
+const { PrismaClient, UserRole } = prismaClientPkg
+
+const prisma = new PrismaClient()
 
 const { NODE_ENV, PROD_API_SECRET, WITH_DATA_SEED } = process.env
 
@@ -17,7 +20,7 @@ if (NODE_ENV !== 'development' && WITH_DATA_SEED !== 'true') {
 const BCRYPT_SALT_ROUNDS = 10
 const PRODUCTION_GRAPGQL_URL = 'https://metiers.numerique.gouv.fr/api/graphql'
 
-async function encrypt(value: string): Promise<string> {
+async function encrypt(value) {
   const salt = await bcryptjs.genSalt(BCRYPT_SALT_ROUNDS)
 
   const encryptedValue = await bcryptjs.hash(value, salt)
@@ -25,8 +28,8 @@ async function encrypt(value: string): Promise<string> {
   return encryptedValue
 }
 
-const omitTypenameProp: (record: any) => any = R.omit(['__typename'])
-const deduplicateById: (records: any[]) => any[] = R.uniqBy(R.prop('id'))
+const omitTypenameProp = R.omit(['__typename'])
+const deduplicateById = R.uniqBy(R.prop('id'))
 
 async function seed() {
   if (PROD_API_SECRET === undefined) {
@@ -44,32 +47,32 @@ async function seed() {
     }),
   })
 
-  ß.info('[scripts/dev/seed.ts] Deleting all refresh tokens…')
+  B.info('[scripts/dev/seed.ts] Deleting all refresh tokens…')
   await prisma.refreshToken.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all users…')
+  B.info('[scripts/dev/seed.ts] Deleting all users…')
   await prisma.user.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all jobs…')
+  B.info('[scripts/dev/seed.ts] Deleting all jobs…')
   await prisma.job.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all addresses…')
+  B.info('[scripts/dev/seed.ts] Deleting all addresses…')
   await prisma.address.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all contacts…')
+  B.info('[scripts/dev/seed.ts] Deleting all contacts…')
   await prisma.contact.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all professions…')
+  B.info('[scripts/dev/seed.ts] Deleting all professions…')
   await prisma.profession.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all recruiters…')
+  B.info('[scripts/dev/seed.ts] Deleting all recruiters…')
   await prisma.recruiter.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Deleting all institutions…')
+  B.info('[scripts/dev/seed.ts] Deleting all institutions…')
   await prisma.institution.deleteMany()
 
-  ß.info('[scripts/dev/seed.ts] Fetching jobs…')
-  const getJobs = async (pageIndex = 0, previousJobs: any[] = []): Promise<any[]> => {
+  B.info('[scripts/dev/seed.ts] Fetching jobs…')
+  const getJobs = async (pageIndex = 0, previousJobs = []) => {
     const {
       data: {
         getPublicJobs: { data: jobs },
@@ -180,10 +183,10 @@ async function seed() {
 
   const addresses = R.pipe(R.map(R.prop('address')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
   const professions = R.pipe(R.map(R.prop('profession')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
-  const recruiters: any[] = R.pipe(
+  const recruiters = R.pipe(
     R.map(R.prop('recruiter')),
     deduplicateById,
-    R.map((rawRecruiter: any) => ({
+    R.map(rawRecruiter => ({
       ...rawRecruiter,
       institutionId: rawRecruiter.institution !== null ? rawRecruiter.institution.id : null,
     })),
@@ -201,8 +204,8 @@ async function seed() {
   const infoContacts = R.map(R.prop('infoContact'))(rawJobs)
   const contacts = R.pipe(deduplicateById, R.map(omitTypenameProp))([...applicationContacts, ...infoContacts])
 
-  const jobs: any[] = R.pipe(
-    R.map((rawJob: any) => ({
+  const jobs = R.pipe(
+    R.map(rawJob => ({
       ...rawJob,
       addressId: rawJob.address.id,
       // applicationContactIds: rawJob.applicationContacts.map(R.prop('id')),
@@ -214,7 +217,7 @@ async function seed() {
     R.map(R.omit(['address', 'applicationContacts', 'infoContact', 'profession', 'recruiter'])),
   )(rawJobs)
 
-  ß.info('[scripts/dev/seed.ts] Creating test account (admin@beta.gouv.fr / test)…')
+  B.info('[scripts/dev/seed.ts] Creating test account (admin@beta.gouv.fr / test)…')
   const password = await encrypt('test')
   await prisma.user.create({
     data: {
@@ -227,7 +230,7 @@ async function seed() {
     },
   })
 
-  ß.info('[scripts/dev/seed.ts] Creating test account (recruiter@beta.gouv.fr / test)…')
+  B.info('[scripts/dev/seed.ts] Creating test account (recruiter@beta.gouv.fr / test)…')
   const institutionId = cuid()
   await prisma.institution.create({
     data: {
@@ -255,32 +258,32 @@ async function seed() {
     },
   })
 
-  ß.info('[scripts/dev/seed.ts] Seeding local database with production addresses…')
+  B.info('[scripts/dev/seed.ts] Seeding local database with production addresses…')
   await prisma.address.createMany({
     data: addresses,
   })
 
-  ß.info('[scripts/dev/seed.ts] Seeding local database with production contacts…')
+  B.info('[scripts/dev/seed.ts] Seeding local database with production contacts…')
   await prisma.contact.createMany({
     data: contacts,
   })
 
-  ß.info('[scripts/dev/seed.ts] Seeding local database with production professions…')
+  B.info('[scripts/dev/seed.ts] Seeding local database with production professions…')
   await prisma.profession.createMany({
     data: professions,
   })
 
-  ß.info('[scripts/dev/seed.ts] Seeding local database with production institutions…')
+  B.info('[scripts/dev/seed.ts] Seeding local database with production institutions…')
   await prisma.institution.createMany({
     data: institutions,
   })
 
-  ß.info('[scripts/dev/seed.ts] Seeding local database with production recruiters…')
+  B.info('[scripts/dev/seed.ts] Seeding local database with production recruiters…')
   await prisma.recruiter.createMany({
     data: recruiters,
   })
 
-  ß.info('[scripts/dev/seed.ts] Seeding local database with production jobs…')
+  B.info('[scripts/dev/seed.ts] Seeding local database with production jobs…')
   await prisma.job.createMany({
     data: jobs,
   })

@@ -6,7 +6,7 @@
   },
   "parserOptions": {
     "ecmaVersion": 2021,
-    "extraFileExtensions": [".mjs"],
+    "extraFileExtensions": [".cjs"],
     "project": "./tsconfig.json"
   },
   "ignorePatterns": ["/.next/", "/.yarn/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
@@ -48,28 +48,20 @@
       }
     },
     {
-      "files": ["./prisma/**/*.ts", "./workers/**/*.mjs"],
-      "env": {
-        "browser": false,
-        "node": true
-      },
-      "rules": {
-        "no-console": ["error", { "allow": ["error"] }]
-      }
-    },
-    {
       "files": [
         "./config/**/*.js",
         "./config/**/*.ts",
         "./e2e/**/*.ts",
-        "./prisma/seeds/**/*.ts",
-        "./scripts/**/*.ts",
-        "./workers/**/*.mjs"
+        "./prisma/seeds/**/*.js",
+        "./scripts/**/*.js",
+        "./workers/**/*.js",
+        "**/*.test.ts"
       ],
       "rules": {
         "import/extensions": "off",
         "import/no-default-export": "off",
         "no-await-in-loop": "off",
+        "no-console": ["error", { "allow": ["debug", "error", "warn"] }],
         "no-restricted-syntax": "off",
 
         "@typescript-eslint/no-loop-func": "off",

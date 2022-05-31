@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { structuredData } from '..'
 
 describe('libs/structuredData.normalizeMonetaryAmount()', () => {

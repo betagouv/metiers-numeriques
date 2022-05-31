@@ -2,6 +2,8 @@
  * @jest-environment jsdom
  */
 
+import { B } from 'bhala'
+
 import { convertGeocodeJsonFeatureToPrismaAddress } from '../convertGeocodeJsonFeatureToPrismaAddress'
 
 describe('app/helpers/convertGeocodeJsonFeatureToPrismaAddress()', () => {
@@ -78,5 +80,39 @@ describe('app/helpers/convertGeocodeJsonFeatureToPrismaAddress()', () => {
       sourceId: '2a004_0680_00022',
       street: '22 Cours Grandval',
     })
+  })
+
+  test(`with a non-existing postcode feature`, () => {
+    const feature: Common.GeocodeJsonFeature = {
+      geometry: {
+        coordinates: [0, 0],
+        type: 'Point',
+      },
+      properties: {
+        city: '',
+        citycode: '',
+        context: '',
+        housenumber: '',
+        id: '',
+        importance: 0,
+        label: '',
+        name: '',
+        postcode: '00000',
+        score: 0,
+        street: '',
+        type: 'housenumber',
+        x: 0,
+        y: 0,
+      },
+      type: 'Feature',
+    }
+
+    const result = convertGeocodeJsonFeatureToPrismaAddress(feature)
+
+    expect(result).toBeUndefined()
+    expect(B.error).toHaveBeenCalledTimes(1)
+    expect(B.error).toHaveBeenCalledWith(
+      '[common/helpers/convertGeocodeJsonFeatureToPrismaAddress()] Could not find region for zip code 00000.',
+    )
   })
 })

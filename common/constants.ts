@@ -1,7 +1,9 @@
 import { UserRole } from '@prisma/client'
 import * as R from 'ramda'
 
-import type { FileType, JobContractType, JobRemoteStatus, JobSource, JobState } from '@prisma/client'
+import { JOB_CONTRACT_TYPE_LABEL, JOB_REMOTE_STATUS_LABEL } from './constants.shared'
+
+import type { FileType, JobSource, JobState } from '@prisma/client'
 
 const mapLabelObjectToSelectOptions: <T extends string = string>(
   labelObject: Record<T, string>,
@@ -70,16 +72,7 @@ export const FILE_TYPE: Record<FileTypeKey, FileTypeValue> = {
   },
 }
 
-export const JOB_CONTRACT_TYPE_LABEL: Record<JobContractType, string> = {
-  CONTRACT_WORKER: 'Contractuel',
-  FREELANCER: 'Freelance',
-  INTERN: 'Stage',
-  INTERNATIONAL_VOLUNTEER: 'VIA (VIE)',
-  NATIONAL_CIVIL_SERVANT: 'Fonctionnaire',
-  PART_TIME: 'Temps partiel',
-  PERMANENT: 'CDI',
-  TEMPORARY: 'CDD',
-}
+export { JOB_CONTRACT_TYPE_LABEL }
 
 export const JOB_CONTRACT_TYPES_AS_OPTIONS = sortSelectOptions(mapLabelObjectToSelectOptions(JOB_CONTRACT_TYPE_LABEL))
 
@@ -95,12 +88,7 @@ export const JOB_SOURCE_LABEL: Record<JobSource, string> = {
 
 export const JOB_SOURCES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_SOURCE_LABEL)
 
-export const JOB_REMOTE_STATUS_LABEL: Record<JobRemoteStatus, string> = {
-  FULL: 'Total',
-  PARTIAL: 'Partiel',
-  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
-  NONE: 'Non',
-}
+export { JOB_REMOTE_STATUS_LABEL }
 
 export const JOB_REMOTE_STATUSES_AS_OPTIONS = mapLabelObjectToSelectOptions(JOB_REMOTE_STATUS_LABEL)
 

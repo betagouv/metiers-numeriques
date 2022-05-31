@@ -1,6 +1,6 @@
 import { ApiError } from '@api/libs/ApiError'
 import { handleError } from '@common/helpers/handleError'
-import ß from 'bhala'
+import { B } from 'bhala'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -29,7 +29,7 @@ export default async function ApiPepSynchronizeEndpoint(req: NextApiRequest, res
       hasError: false,
     })
   } catch (err) {
-    ß.error(`[${SCRIPT_PATH}] ${err}`)
+    B.error(`[${SCRIPT_PATH}] ${err}`)
 
     return handleError(err, SCRIPT_PATH, res)
   }

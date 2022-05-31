@@ -44,9 +44,9 @@ export function showApolloError(apolloError?: ApolloError): void {
     }
 
     if (
-      apolloError.networkError !== undefined &&
       apolloError.networkError !== null &&
-      apolloError.networkError.name === 'ServerError'
+      typeof apolloError.networkError === 'object' &&
+      apolloError.networkError.constructor.name === 'ServerError'
     ) {
       const serverError = apolloError.networkError as ServerError
       toast.error(`${serverError.result.message} in ${serverError.result.path}`)

@@ -3,7 +3,7 @@ import { ApiError } from '@api/libs/ApiError'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
-import ß from 'bhala'
+import { B } from 'bhala'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -16,7 +16,7 @@ export default async function Sitemap(req: NextApiRequest, res: NextApiResponse)
       return handleError(new ApiError('Method not allowed.', 405, true), ERROR_PATH, res)
     }
 
-    ß.info(`[${ERROR_PATH}] Fetching jobs…`)
+    B.info(`[${ERROR_PATH}] Fetching jobs…`)
     const jobs = await prisma.job.findMany({
       where: {
         NOT: {
@@ -25,7 +25,7 @@ export default async function Sitemap(req: NextApiRequest, res: NextApiResponse)
       },
     })
 
-    ß.info(`[${ERROR_PATH}] Fetching archived jobs…`)
+    B.info(`[${ERROR_PATH}] Fetching archived jobs…`)
     const archivedJobs = await prisma.archivedJob.findMany()
 
     const sitemapRows = [
@@ -33,23 +33,23 @@ export default async function Sitemap(req: NextApiRequest, res: NextApiResponse)
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
 
-    ß.info(`[${ERROR_PATH}] Mapping main pages…`)
+    B.info(`[${ERROR_PATH}] Mapping main pages…`)
     MAIN_PATHS.forEach(path => {
       sitemapRows.push(generateSitemapEntry(path))
     })
-    ß.success(`[${ERROR_PATH}] ${MAIN_PATHS.length} main pages mapped.`)
+    B.success(`[${ERROR_PATH}] ${MAIN_PATHS.length} main pages mapped.`)
 
-    ß.info(`[${ERROR_PATH}] Mapping jobs…`)
+    B.info(`[${ERROR_PATH}] Mapping jobs…`)
     jobs.forEach(({ slug, updatedAt }) => {
       sitemapRows.push(generateSitemapEntry(`/emploi/${slug}`, updatedAt))
     })
-    ß.success(`[${ERROR_PATH}] ${jobs.length} jobs mapped.`)
+    B.success(`[${ERROR_PATH}] ${jobs.length} jobs mapped.`)
 
-    ß.info(`[${ERROR_PATH}] Mapping archived jobs…`)
+    B.info(`[${ERROR_PATH}] Mapping archived jobs…`)
     archivedJobs.forEach(({ slug, updatedAt }) => {
       sitemapRows.push(generateSitemapEntry(`/emploi/archive/${slug}`, updatedAt))
     })
-    ß.success(`[${ERROR_PATH}] ${archivedJobs.length} archived jobs mapped.`)
+    B.success(`[${ERROR_PATH}] ${archivedJobs.length} archived jobs mapped.`)
 
     sitemapRows.push('</urlset>')
     const sitemap = sitemapRows.join('\n')

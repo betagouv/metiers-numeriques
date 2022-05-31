@@ -26,7 +26,7 @@ export function convertGeocodeJsonFeatureToPrismaAddress({
       sourceId,
       street,
     }
-  } catch (err) {
-    return handleError(err, 'app/helpers/convertGeocodeJsonFeatureToPrismaAddress()') as never
+  } catch (err) /* istanbul ignore next */ {
+    return handleError(err, 'common/helpers/convertGeocodeJsonFeatureToPrismaAddress()') as never
   }
 }

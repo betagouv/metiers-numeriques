@@ -1,17 +1,12 @@
 import * as Sentry from '@sentry/nextjs'
-import ß from 'bhala'
+import { B } from 'bhala'
 import { NextApiResponse } from 'next'
 
 import { ApiError } from '../../api/libs/ApiError'
 
+/* istanbul ignore next */
 Sentry.init({
-  tracesSampler: event => {
-    if (event.transactionContext.op === 'pageload') {
-      return 0
-    }
-
-    return 1
-  },
+  tracesSampler: () => 0,
 })
 
 const getErrorConstructorName = (error: any) => {
@@ -52,15 +47,15 @@ function handleError(error: any, path: string, isFinalOrRes?: boolean | NextApiR
 
     default:
       // eslint-disable-next-line no-case-declarations
-      ß.error(`[common/helpers/handleError()] This type of error cannot be processed. This should never happen.`)
-      ß.error(`[common/helpers/handleError()] Error Type: ${typeof error}`)
-      ß.error(`[common/helpers/handleError()] Error Constructor: ${getErrorConstructorName(error)}`)
+      B.error(`[common/helpers/handleError()] This type of error cannot be processed. This should never happen.`)
+      B.error(`[common/helpers/handleError()] Error Type: ${typeof error}`)
+      B.error(`[common/helpers/handleError()] Error Constructor: ${getErrorConstructorName(error)}`)
       errorString = String(error)
   }
 
   // There is no need to cluster the log with handled errors
   if (!(error instanceof ApiError)) {
-    ß.error(`[${path}] ${errorString}`)
+    B.error(`[${path}] ${errorString}`)
     // eslint-disable-next-line no-console
     console.error(error)
   }
@@ -86,7 +81,7 @@ function handleError(error: any, path: string, isFinalOrRes?: boolean | NextApiR
     // But if `error.isExposed` is `true`, that means this is a handled error that can be useful to the client,
     // that's why we want to expose it but exclude the error path
     if (error.isExposed) {
-      const code = error.status || 400
+      const code = error.status
       isFinalOrRes.status(code).json({
         code,
         hasError: true,
