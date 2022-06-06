@@ -19,6 +19,6 @@ describe('api/helpers/waitFor()', () => {
     await waitFor(inMs)
     const end = dayjs()
 
-    expect(dayjs.duration(end.diff(start)).asSeconds()).toBeGreaterThan(1)
+    expect(dayjs.duration(end.diff(start)).asSeconds()).toBeGreaterThanOrEqual(1)
   })
 })
