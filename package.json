@@ -46,7 +46,7 @@
     "@graphql-tools/load": "7.5.10",
     "@graphql-tools/schema": "8.3.5",
     "@mailchimp/mailchimp_marketing": "3.0.75",
-    "@prisma/client": "3.13.0",
+    "@prisma/client": "3.14.0",
     "@sentry/nextjs": "7.0.0",
     "@shopify/react-web-worker": "5.0.0",
     "@singularity/core": "4.1.0",
