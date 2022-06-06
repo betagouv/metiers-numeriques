@@ -103,7 +103,7 @@
     "@ivangabriele/tsconfig-next": "1.2.2",
     "@jest/globals": "28.1.0",
     "@playwright/test": "1.22.2",
-    "@swc/core": "1.2.194",
+    "@swc/core": "1.2.197",
     "@swc/jest": "0.2.21",
     "@testing-library/react-hooks": "8.0.0",
     "@tsconfig/node16": "1.0.2",
