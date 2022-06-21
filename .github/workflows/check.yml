@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 16
+          node-version: 18
       - name: Install
         run: yarn
       - name: Lint
@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 16
+          node-version: 18
       - name: Install
         run: yarn
       - name: Lint
@@ -51,7 +51,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 16
+          node-version: 18
       - name: Install
         run: yarn
       - name: Test
@@ -106,7 +106,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 16
+          node-version: 18
       - name: Install
         run: yarn --frozen-lockfile --production=false
       - name: Install Playwright browsers

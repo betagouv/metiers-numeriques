@@ -6,8 +6,9 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "16",
-    "npm": "8"
+    "node": "18",
+    "npm": "8",
+    "yarn": "1.22"
   },
   "scripts": {
     "prebuild": "sh ./scripts/build/prebuild.sh",
