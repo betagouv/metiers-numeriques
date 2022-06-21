@@ -1,9 +1,11 @@
+// TODO: fix auto import
 import { test, expect } from '@playwright/test'
 import { JobContractType, JobRemoteStatus, JobState, PrismaClient } from '@prisma/client'
 import * as R from 'ramda'
 
-import { TEST_JOBS } from './constants.js'
+import { TEST_JOBS } from './constants.js' // TODO: fix file extension
 
+// TODO: create factory
 const baseJob = TEST_JOBS[0]
 const jobInput = {
   ...R.omit(['address', 'applicationContacts', 'infoContact', 'profession', 'recruiter', 'seniorityInYears'], baseJob),
@@ -45,6 +47,7 @@ test.describe('Client > Jobs Filters', () => {
 
   test.slow()
 
+  // TODO: make test cases more robust (to actually show that it filters some offers ^^")
   test('Remote Filter', async ({ page }) => {
     await page.goto('http://localhost:3000')
 
