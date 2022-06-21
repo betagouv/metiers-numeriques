@@ -72,7 +72,7 @@ test.describe('Client > Jobs Filters', () => {
     await expect(page.locator('.job-card', { hasText: baseJob.title })).toBeVisible()
   })
 
-  test.only('Profession Filter', async ({ page }) => {
+  test('Profession Filter', async ({ page }) => {
     await page.goto('http://localhost:3000')
 
     await page.locator(`#accordion__panel-professionIdFilter :text("${baseJob.profession.name}")`).click()
