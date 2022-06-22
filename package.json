@@ -99,7 +99,7 @@
     "@commitlint/config-conventional": "16.0.0",
     "@ivangabriele/commitlint-config": "1.0.5",
     "@ivangabriele/eslint-config-typescript-next": "4.1.0",
-    "@ivangabriele/prettier-config": "3.0.2",
+    "@ivangabriele/prettier-config": "3.1.0",
     "@ivangabriele/tsconfig-next": "1.2.2",
     "@jest/globals": "28.1.0",
     "@playwright/test": "1.22.2",
