@@ -1729,20 +1729,20 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.23.5.tgz#93f7b9f4e3285a7a9ade7557d9a8d36809cbc47d"
   integrity sha512-AFBVi/iT4g20DHoujvMH1aEDn8fGJh4xsRGCP6d8RpLPMqsNPvW01Jcn0QysXTsg++/xj25NmJsGyH9xug/wKg==
 
-"@singularity/core@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.1.0.tgz#2b39b484d985242cb60a94966aadae4d36bf59e9"
-  integrity sha512-6tXY24S6nEmRYT6Bi43T+GL1gC1J51/HZLZk9+SQufmny09tCU4/eZdTQlvJbsp7kQVvHHbks3VqxDWJmm71jg==
+"@singularity/core@4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.2.0.tgz#62de6ff01f85ac402b0848c75389edfe623adf37"
+  integrity sha512-pH/4T5yChqCvhsVCMMFkynjDbxLehqAAAxaLllH2r7quxbFTxse+R1MsCtkPOeatVgdEjrqT9mU8OV4r97oOZA==
   dependencies:
     better-prop-types "1.1.1"
     ramda "0.28.0"
-    react-select "5.3.1"
+    react-select "5.3.2"
     remark-parse "10.0.1"
     remark-slate "1.8.6"
     sha1 "1.1.1"
     slate "0.78.0"
     slate-history "0.66.0"
-    slate-react "0.78.1"
+    slate-react "0.79.0"
     tslib "2.4.0"
     unified "10.1.2"
 
@@ -6747,10 +6747,10 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.1.0.tgz#61aaed3096d30eacf2a2127118b5b41387d32a67"
   integrity sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==
 
-react-select@5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.3.1.tgz#2cb651b71493e494c56f6b4ce40011669b34bd95"
-  integrity sha512-Y195MmhDoDAj/8gTDyYZU1Raf7tmZd81wxM6RkFko4pqJ4Xv0/ilqUMtSn+GYkwmSlTWeMlzh+e+t7PJgtuXPw==
+react-select@5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.3.2.tgz#ecee0d5c59ed4acb7f567f7de3c75a488d93dacb"
+  integrity sha512-W6Irh7U6Ha7p5uQQ2ZnemoCQ8mcfgOtHfw3wuMzG6FAu0P+CYicgofSLOq97BhjMx8jS+h+wwWdCBeVVZ9VqlQ==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
@@ -7137,10 +7137,10 @@ slate-history@0.66.0:
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@0.78.1:
-  version "0.78.1"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.78.1.tgz#c6d5e334ff79251823d8005d94fbab3c3b252b10"
-  integrity sha512-RxOZx22dP1YTgGjr9zDZ0XuSZ/PLlpr9LgAApmzWgSC0bBE+jw9D8ml23pyY2oAAylxiczPx06UgKDCx6Or94Q==
+slate-react@0.79.0:
+  version "0.79.0"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.79.0.tgz#4a5cf458b8f7568d9a313d3786569623dd52454e"
+  integrity sha512-uPzYArGwHKq4QvpzRvP/DVvsDgB2Zw6x9Som/hJWaydu18r0Vp2vmgHL0Dbc4EU6pUNV6o83XbBJLLEwISzBHQ==
   dependencies:
     "@types/is-hotkey" "^0.1.1"
     "@types/lodash" "^4.14.149"
