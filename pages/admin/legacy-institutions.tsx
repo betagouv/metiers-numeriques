@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
 import { define } from '@common/helpers/define'
@@ -127,7 +127,7 @@ export default function AdminLegacyInstitutionListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Institutions [LEGACY]</Title>
+        <AdminTitle>Institutions [LEGACY]</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
           Ajouter une institution [LEGACY]

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Flex } from '@app/atoms/Flex'
-import { Title } from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { queries } from '@app/queries'
 import { JOB_SOURCES_AS_OPTIONS, JOB_SOURCE_LABEL, JOB_STATES_AS_OPTIONS, JOB_STATE_LABEL } from '@common/constants'
@@ -133,7 +133,7 @@ export default function AdminLegacyJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres d’emploi [LEGACY]</Title>
+        <AdminTitle>Offres d’emploi [LEGACY]</AdminTitle>
       </AdminHeader>
 
       <Card>

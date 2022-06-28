@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
 import { FILE_TYPE } from '@common/constants'
@@ -77,7 +77,7 @@ export default function AdminFileEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau fichier' : 'Édition d’un fichier'}</Title>
+        <AdminTitle>{isNew ? 'Nouveau fichier' : 'Édition d’un fichier'}</AdminTitle>
       </AdminHeader>
 
       <Card>

@@ -65,7 +65,15 @@ export function Header() {
                 href="/"
                 onClick={closeMenu}
               >
-                Offres d’emplois
+                Accueil
+              </NavLink>
+              <NavLink
+                aria-current={router.pathname === '/offres-emploi' ? 'page' : undefined}
+                className="fr-nav__link"
+                href="/offres-emploi"
+                onClick={closeMenu}
+              >
+                Offres d’emploi
               </NavLink>
               <NavLink className="fr-nav__link" href="/admin" onClick={closeMenu}>
                 Déposer une offre

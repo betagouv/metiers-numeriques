@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
 import { Card, Field } from '@singularity/core'
@@ -90,7 +90,7 @@ export default function AdminContactEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau contact' : 'Édition d’un contact'}</Title>
+        <AdminTitle>{isNew ? 'Nouveau contact' : 'Édition d’un contact'}</AdminTitle>
       </AdminHeader>
 
       <Card>

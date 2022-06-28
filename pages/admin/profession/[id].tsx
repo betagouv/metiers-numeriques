@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
 import { Card, Field } from '@singularity/core'
@@ -89,7 +89,7 @@ export default function AdminProfessionEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau secteur d’activité' : 'Édition d’un secteur d’activité'}</Title>
+        <AdminTitle>{isNew ? 'Nouveau secteur d’activité' : 'Édition d’un secteur d’activité'}</AdminTitle>
       </AdminHeader>
 
       <Card>

@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
@@ -212,7 +212,7 @@ export default function AdminArchivedJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres archivées</Title>
+        <AdminTitle>Offres archivées</AdminTitle>
       </AdminHeader>
 
       <Card>

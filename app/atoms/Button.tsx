@@ -1,53 +1,126 @@
-import classnames from 'classnames'
+import { theme } from '@app/theme'
+import { ButtonHTMLAttributes, useMemo } from 'react'
+import { MoonLoader } from 'react-spinners'
 import styled from 'styled-components'
 
-import type { ButtonHTMLAttributes } from 'react'
-
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 const ACCENT_TABLE = {
-  moutarde: {
+  primary: {
     backgroundColor: {
-      default: 'rgb(255,202,0)',
-      hover: 'rgb(255,215,91)',
-      transparent: 'rgba(255,202,0,0.25)',
+      default: theme.color.primary.darkBlue,
+      hover: theme.color.primary.navy,
+      focus: theme.color.primary.navy,
+      click: theme.color.primary.azure,
+      loading: theme.color.primary.darkBlue,
+      disabled: theme.color.primary.lightBlue,
     },
-    isLight: false,
+    border: {
+      default: 0,
+      hover: 0,
+      focus: 0,
+      click: 0,
+      loading: 0,
+      disabled: 0,
+    },
+    color: {
+      default: theme.color.neutral.white,
+      hover: theme.color.neutral.white,
+      focus: theme.color.neutral.white,
+      click: theme.color.neutral.white,
+      loading: theme.color.neutral.white,
+      disabled: theme.color.neutral.greyBlue,
+    },
+    outline: theme.color.neutral.black,
   },
-  normal: {
+  secondary: {
     backgroundColor: {
-      default: 'rgb(0,178,186)',
-      hover: 'rgb(0,106,111)',
-      transparent: 'rgba(0,106,111,0.25)',
+      default: theme.color.neutral.white,
+      hover: theme.color.primary.lightBlue,
+      focus: theme.color.primary.lightBlue,
+      click: theme.color.primary.lightBlue,
+      loading: theme.color.primary.lightBlue,
+      disabled: theme.color.primary.lightBlue,
     },
-    isLight: true,
+    border: {
+      default: `solid 1px ${theme.color.primary.darkBlue}`,
+      hover: `solid 1px ${theme.color.primary.darkBlue}`,
+      focus: `solid 1px ${theme.color.primary.lightBlue}`,
+      click: `solid 1px ${theme.color.primary.lightBlue}`,
+      loading: `solid 1px ${theme.color.primary.lightBlue}`,
+      disabled: `solid 1px ${theme.color.primary.lightBlue}`,
+    },
+    color: {
+      default: theme.color.primary.darkBlue,
+      hover: theme.color.primary.darkBlue,
+      focus: theme.color.primary.darkBlue,
+      click: theme.color.primary.darkBlue,
+      loading: theme.color.primary.darkBlue,
+      disabled: theme.color.neutral.greyBlue,
+    },
+    outline: theme.color.neutral.darkGrey,
+  },
+  tertiary: {
+    backgroundColor: {
+      default: theme.color.neutral.white,
+      hover: theme.color.primary.lightBlue,
+      focus: theme.color.neutral.white,
+      click: theme.color.primary.sky,
+      loading: theme.color.primary.sky,
+      disabled: theme.color.primary.lightBlue,
+    },
+    border: {
+      default: 0,
+      hover: 0,
+      focus: 0,
+      click: 0,
+      loading: 0,
+      disabled: 0,
+    },
+    color: {
+      default: theme.color.primary.darkBlue,
+      hover: theme.color.primary.darkBlue,
+      focus: theme.color.primary.darkBlue,
+      click: theme.color.primary.darkBlue,
+      loading: theme.color.primary.darkBlue,
+      disabled: theme.color.neutral.greyBlue,
+    },
+    outline: theme.color.neutral.darkGrey,
   },
 }
 
+const convertFontSizePcToPx = (fontSizeInPc: string): number => (16 * Number(fontSizeInPc.replace(/%/, ''))) / 100
 const SIZE_TABLE = {
-  large: {
-    fontSize: '120%',
-    padding: '0.75rem 1.5rem 1rem',
-  },
   normal: {
-    fontSize: '100%',
-    padding: '0.5rem 1rem 0.85rem',
+    fontSize: theme.typography.desktop.button.normal.size,
+    fontSizeInPx: convertFontSizePcToPx(theme.typography.desktop.button.normal.size),
+    padding: '0.85rem 2rem 1.15rem',
+  },
+  medium: {
+    fontSize: theme.typography.desktop.button.medium.size,
+    fontSizeInPx: convertFontSizePcToPx(theme.typography.desktop.button.medium.size),
+    padding: '0.75rem 2rem 1rem',
   },
   small: {
-    fontSize: '90%',
-    padding: '0.5rem 1rem 0.75rem',
+    fontSize: theme.typography.desktop.button.small.size,
+    fontSizeInPx: convertFontSizePcToPx(theme.typography.desktop.button.small.size),
+    padding: '0.425rem 1.5rem 0.575rem',
   },
 }
+/* eslint-enable sort-keys-fix/sort-keys-fix */
 
 export const StyledButton = styled.button<{
-  accent: 'moutarde' | 'normal'
-  isLight: boolean
-  isSecondary: boolean
-  size: 'large' | 'normal' | 'small'
+  accent: 'primary' | 'secondary' | 'tertiary'
+  isLoading: boolean
+  size: 'medium' | 'normal' | 'small'
 }>`
   --blend: none;
-  background-color: ${p => (p.isSecondary ? 'transparent' : ACCENT_TABLE[p.accent].backgroundColor.default)};
-  box-shadow: inset 0 0 0 2px ${p => ACCENT_TABLE[p.accent].backgroundColor.default};
-  color: ${p =>
-    (p.isLight && p.isSecondary) || (ACCENT_TABLE[p.accent].isLight && !p.isSecondary) ? 'white' : 'black'};
+  align-items: flex-start;
+  background-color: ${p => ACCENT_TABLE[p.accent].backgroundColor.default};
+  border: ${p => ACCENT_TABLE[p.accent].border.default};
+  border-radius: 0.25rem;
+  box-shadow: none;
+  color: ${p => ACCENT_TABLE[p.accent].color.default};
+  display: inline-flex;
   font-size: ${p => SIZE_TABLE[p.size].fontSize};
   line-height: 1;
   min-height: auto;
@@ -55,41 +128,67 @@ export const StyledButton = styled.button<{
   transition: all 0.2s ease;
 
   :hover {
-    background-color: ${p => (p.isSecondary ? 'transparent' : ACCENT_TABLE[p.accent].backgroundColor.hover)};
-    box-shadow: inset 0 0 0 2px
-      ${p =>
-        p.isSecondary
-          ? ACCENT_TABLE[p.accent].backgroundColor.transparent
-          : ACCENT_TABLE[p.accent].backgroundColor.hover};
+    background-color: ${p => ACCENT_TABLE[p.accent].backgroundColor.hover};
+    border: ${p => ACCENT_TABLE[p.accent].border.hover};
+    color: ${p => ACCENT_TABLE[p.accent].color.hover};
+  }
+
+  :focus {
+    background-color: ${p => ACCENT_TABLE[p.accent].backgroundColor.focus};
+    border: ${p => ACCENT_TABLE[p.accent].border.focus};
+    box-shadow: 0 0 0 2px ${p => ACCENT_TABLE[p.accent].outline};
+    color: ${p => ACCENT_TABLE[p.accent].color.focus};
+  }
+
+  :active {
+    background-color: ${p => ACCENT_TABLE[p.accent].backgroundColor.click};
+    border: ${p => ACCENT_TABLE[p.accent].border.click};
+    color: ${p => ACCENT_TABLE[p.accent].color.click};
+  }
+
+  :disabled {
+    background-color: ${p =>
+      p.isLoading ? ACCENT_TABLE[p.accent].backgroundColor.loading : ACCENT_TABLE[p.accent].backgroundColor.disabled};
+    border: ${p => (p.isLoading ? ACCENT_TABLE[p.accent].border.loading : ACCENT_TABLE[p.accent].border.disabled)};
+    color: ${p => (p.isLoading ? ACCENT_TABLE[p.accent].color.loading : ACCENT_TABLE[p.accent].color.disabled)};
+  }
+
+  > span {
+    align-self: flex-end;
+    margin-left: 1rem;
   }
 `
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  accent?: 'moutarde' | 'normal'
-  isLight?: boolean
-  isSecondary?: boolean
-  size?: 'large' | 'normal' | 'small'
+  accent?: 'primary' | 'secondary' | 'tertiary'
+  isLoading?: boolean
+  size?: 'medium' | 'normal' | 'small'
 }
-
 export function Button({
-  accent = 'normal',
-  className,
-  isLight = false,
-  isSecondary = false,
+  accent = 'primary',
+  children,
+  isLoading = false,
   size = 'normal',
-  ...rest
+  type = 'button',
+  ...nativeProps
 }: ButtonProps) {
-  const controlledClassName = classnames('fr-btn', className)
+  const { disabled } = nativeProps
+  const controlledDisabled = disabled || isLoading
+  const spinnerColor = useMemo(() => ACCENT_TABLE[accent].color.loading, [])
+  const spinnerSize = useMemo(() => SIZE_TABLE[size].fontSizeInPx / 1.5, [])
 
   return (
     <StyledButton
       accent={accent}
-      className={controlledClassName}
-      isLight={isLight}
-      isSecondary={isSecondary}
+      className="Button"
+      disabled={controlledDisabled}
+      isLoading={isLoading}
       size={size}
-      type="button"
-      {...rest}
-    />
+      type={type}
+      {...nativeProps}
+    >
+      {children}
+      {isLoading ? <MoonLoader color={spinnerColor} size={spinnerSize} /> : undefined}
+    </StyledButton>
   )
 }

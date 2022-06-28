@@ -2,10 +2,10 @@ import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { Flex } from '@app/atoms/Flex'
 import { Subtitle } from '@app/atoms/Subtitle'
-import { Title } from '@app/atoms/Title'
 import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
@@ -267,7 +267,7 @@ export default function AdminLegacyJobMigratorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Migration d’une offre [LEGACY]</Title>
+        <AdminTitle>Migration d’une offre [LEGACY]</AdminTitle>
       </AdminHeader>
 
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}

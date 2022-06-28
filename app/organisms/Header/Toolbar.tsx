@@ -9,7 +9,7 @@ export function Toolbar() {
             <LinkLikeButton
               href="https://www.demarches-simplifiees.fr/commencer/metiers-numerique-gouv-fr-candidature-spontanee"
               isExternal
-              type="button"
+              size="medium"
             >
               Déposez une candidature spontanée
             </LinkLikeButton>
