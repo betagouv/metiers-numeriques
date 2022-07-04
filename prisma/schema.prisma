@@ -107,6 +107,17 @@ model Address {
   jobs Job[] @relation("JobAddress")
 }
 
+model InstitutionPage {
+	id                 String      @id @default(cuid())
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+	institution        Institution @relation("InstitutionPageInstitution", fields: [institutionId], references: [id])
+  institutionId      String
+  title              String
+  description        String
+}
+
 model ArchivedJob {
   id                 String    @id @default(cuid())
   sourceId           String    @unique
@@ -151,6 +162,7 @@ model File {
   filesOnLegacyInstitutions              FilesOnLegacyInstitutions[]
   relatedLogoFileLegacyInstitutions      LegacyInstitution[]         @relation("legacyInstitutionLogoFile")
   relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
+  relatedLogoInstitution                 Institution[]               @relation("InstitutionLogoFile")
   recruiter                              Recruiter?                  @relation("RecruiterLogoFile")
 }
 
@@ -166,14 +178,19 @@ model FilesOnLegacyInstitutions {
 }
 
 model Institution {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String           @id @default(cuid())
+  name       String           @unique
+  slug       String           @unique
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
 
-  recruiters Recruiter[] @relation("RecruiterInstitution")
-  users      User[]      @relation("UserInstitution")
+  url        String?
+  logoFile   File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
+  logoFileId String?          @unique
+
+  page       InstitutionPage? @relation("InstitutionPageInstitution")
+  recruiters Recruiter[]      @relation("RecruiterInstitution")
+  users      User[]           @relation("UserInstitution")
 }
 
 model Job {
