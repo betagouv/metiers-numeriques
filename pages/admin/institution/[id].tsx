@@ -23,7 +23,7 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { Institution } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
-type InstitutionFormData = Pick<Institution, 'name'>
+type InstitutionFormData = Pick<Institution, 'name' | 'url'>
 
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
   {
@@ -106,7 +106,7 @@ export default function AdminInstitutionEditorPage() {
 
       const input: Partial<Institution> & {
         name: string
-      } = R.pick(['fullName', 'name'])(values)
+      } = R.pick(['fullName', 'name', 'url'])(values)
 
       if (isNew) {
         input.id = cuid()
@@ -194,6 +194,10 @@ export default function AdminInstitutionEditorPage() {
         >
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+          </Field>
+
+          <Field>
+            <AdminForm.TextInput isDisabled={isLoading} label="Site (URL)" name="url" />
           </Field>
 
           <Field>

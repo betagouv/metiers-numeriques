@@ -8,6 +8,7 @@ type Institution {
   createdAt: DateTime
   name: String
   slug: String
+  url: String
   updatedAt: DateTime
 
   recruiters: [Recruiter!]!
@@ -27,6 +28,7 @@ input InstitutionInput {
 
   fullName: String
   name: String
+  url: String
   slug: String
 }
 
