@@ -32,6 +32,8 @@ export const GET_ONE = gql`
 
       name
       url
+      pageTitle
+      description
 
       recruiters {
         id

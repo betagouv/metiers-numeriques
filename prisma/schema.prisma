@@ -107,17 +107,6 @@ model Address {
   jobs Job[] @relation("JobAddress")
 }
 
-model InstitutionPage {
-	id                 String      @id @default(cuid())
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
-
-	institution        Institution @relation("InstitutionPageInstitution", fields: [institutionId], references: [id])
-  institutionId      String
-  title              String
-  description        String
-}
-
 model ArchivedJob {
   id                 String    @id @default(cuid())
   sourceId           String    @unique
@@ -188,7 +177,9 @@ model Institution {
   logoFile   File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
   logoFileId String?          @unique
 
-  page       InstitutionPage? @relation("InstitutionPageInstitution")
+  pageTitle  String?
+  description String?
+
   recruiters Recruiter[]      @relation("RecruiterInstitution")
   users      User[]           @relation("UserInstitution")
 }

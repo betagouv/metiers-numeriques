@@ -23,8 +23,6 @@ import type { MutationFunctionOptions } from '@apollo/client'
 import type { Institution } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
-type InstitutionFormData = Pick<Institution, 'name' | 'url'>
-
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
   {
     isSortable: false,
@@ -100,13 +98,13 @@ export default function AdminInstitutionEditorPage() {
     router.push('/admin/institutions')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: InstitutionFormData) => {
+  const saveAndGoToList = useCallback(async (values: Institution) => {
     try {
       setIsLoading(true)
 
       const input: Partial<Institution> & {
         name: string
-      } = R.pick(['fullName', 'name', 'url'])(values)
+      } = R.pick(['fullName', 'name', 'url', 'pageTitle', 'description'])(values)
 
       if (isNew) {
         input.id = cuid()
@@ -173,9 +171,12 @@ export default function AdminInstitutionEditorPage() {
       ...getInstitutionResult.data.getInstitution,
     }
 
+    console.log('set values', initialValues.description)
     setInitialValues(initialValues)
     setIsLoading(false)
   }, [getInstitutionResult.data])
+
+  console.log('render', initialValues?.description)
 
   return (
     <>
@@ -186,12 +187,13 @@ export default function AdminInstitutionEditorPage() {
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
-      <AdminCard isFirst>
-        <AdminForm
-          initialValues={initialValues || {}}
-          onSubmit={saveAndGoToList as any}
-          validationSchema={InstitutionFormSchema}
-        >
+      <AdminForm
+        initialValues={initialValues || {}}
+        onSubmit={saveAndGoToList as any}
+        validationSchema={InstitutionFormSchema}
+      >
+        <AdminCard isFirst>
+          <Subtitle>Informations Générales</Subtitle>
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
           </Field>
@@ -206,8 +208,31 @@ export default function AdminInstitutionEditorPage() {
             </AdminForm.Cancel>
             <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </AdminForm>
-      </AdminCard>
+        </AdminCard>
+
+        <AdminCard>
+          <Subtitle>Page Vitrine</Subtitle>
+          <Field>
+            <AdminForm.TextInput isDisabled={isLoading} label="Titre" name="pageTitle" />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Onglet Description"
+              name="description"
+              placeholder="Présentez l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
+              Annuler
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
+          </Field>
+        </AdminCard>
+      </AdminForm>
 
       {!isNew && (
         <AdminCard>
