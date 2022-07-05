@@ -90,7 +90,10 @@ export default function AdminInstitutionEditorPage() {
   const [createFile] = useMutation(queries.file.CREATE_ONE)
   const [updateFile] = useMutation(queries.file.UPDATE_ONE)
 
-  const saveFile = async (input: File): Promise<string | undefined> => {
+  const saveFile = async (input?: File): Promise<string | undefined> => {
+    if (!input) {
+      return
+    }
     if (input.id) {
       const updateFileResult = await updateFile({ variables: { id: cuid(), input } })
       if (updateFileResult.data.updateFile === null) {
@@ -129,7 +132,7 @@ export default function AdminInstitutionEditorPage() {
       const logoFileId = await saveFile(values.logoFile)
 
       // Save file failed
-      if (!logoFileId) {
+      if (!!values.logoFile && !logoFileId) {
         throw new Error('Failed to save logo file')
       }
 
