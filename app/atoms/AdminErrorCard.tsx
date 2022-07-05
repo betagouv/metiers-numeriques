@@ -13,6 +13,10 @@ export const ADMIN_ERROR: Record<string, AdminErrorCardProps> = {
     title: 'Erreur de requête GraphQL',
     message: 'Une erreur est survenue durant le chargement de cette donnée.',
   },
+  NEXT_REQUEST: {
+    title: 'Erreur de requête Next',
+    message: 'Une erreur est survenue durant le chargement de cette donnée.',
+  },
 }
 /* eslint-enable sort-keys-fix/sort-keys-fix */
 

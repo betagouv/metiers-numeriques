@@ -152,6 +152,7 @@ model File {
   relatedLogoFileLegacyInstitutions      LegacyInstitution[]         @relation("legacyInstitutionLogoFile")
   relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
   relatedLogoInstitution                 Institution[]               @relation("InstitutionLogoFile")
+  relatedAvatarTestimony                 Testimony[]                 @relation("TestimonyAvatarFile")
   recruiter                              Recruiter?                  @relation("RecruiterLogoFile")
 }
 
@@ -184,8 +185,20 @@ model Institution {
   structure        String?
   organisation     String?
 
+  testimonies      Testimony[]      @relation("TestimonyInstituion")
   recruiters       Recruiter[]      @relation("RecruiterInstitution")
   users            User[]           @relation("UserInstitution")
+}
+
+model Testimony {
+	id               String @id @default(cuid())
+	name             String
+	job              String
+	avatarFile       File?   @relation("TestimonyAvatarFile", fields: [avatarFileId], references: [id])
+	avatarFileId     String? @unique
+	testimony        String
+	institution      Institution @relation("TestimonyInstituion", fields: [institutionId], references: [id])
+  institutionId    String
 }
 
 model Job {
