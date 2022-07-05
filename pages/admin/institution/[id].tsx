@@ -90,19 +90,24 @@ export default function AdminInstitutionEditorPage() {
   const [createFile] = useMutation(queries.file.CREATE_ONE)
   const [updateFile] = useMutation(queries.file.UPDATE_ONE)
 
-  const saveFile = async (input?: File): Promise<string | undefined> => {
-    if (!input) {
+  const saveFile = async (file?: File): Promise<string | undefined> => {
+    if (!file) {
       return
     }
-    if (input.id) {
-      const updateFileResult = await updateFile({ variables: { id: cuid(), input } })
+
+    const input = R.pick(['type', 'url', 'title'])(file)
+
+    if (file.id) {
+      const updateFileResult = await updateFile({ variables: { id: file.id, input } })
       if (updateFileResult.data.updateFile === null) {
         toast.error('La requête GraphQL de modification de "File" a échoué.')
 
         return
       }
+
+      return updateFileResult.data.updateFile.id
     }
-    const createFileResult = await createFile({ variables: { id: input.id, input } })
+    const createFileResult = await createFile({ variables: { id: cuid(), input } })
     if (createFileResult.data.createFile === null) {
       toast.error('La requête GraphQL de modification de "File" a échoué.')
 
