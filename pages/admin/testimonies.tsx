@@ -20,22 +20,31 @@ import type { TableColumnProps } from '@singularity/core'
 const PER_PAGE = 10
 
 export default function AdminTestimonyListPage() {
+  const searchInput = useRef<HTMLInputElement>()
   const [testimonies, setTestimonies] = useState<GetAllResponse<Testimony>>({ count: 1, data: [], index: 0, length: 0 })
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
+  const fetchTestimonies = async (pageIndex: number) => {
+    const searchQuery = searchInput.current?.value
+    const query = {
+      pageIndex: pageIndex.toString(),
+      perPage: PER_PAGE.toString(),
+      query: searchQuery || '',
+    }
+    const queryString = new URLSearchParams(query)
+
     setIsLoading(true)
-    fetch<GetAllResponse<Testimony>>('/api/testimonies')
-      .then(res => res.json())
-      .then(data => {
-        setTestimonies(data)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    const fetchResponse = await fetch<GetAllResponse<Testimony>>(`/api/testimonies?${queryString}`)
+    const jsonResponse = await fetchResponse.json()
+
+    setTestimonies(jsonResponse)
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchTestimonies(0)
   }, [])
 
-  // const $searchInput = useRef<HTMLInputElement>(null)
   // const [hasDeletionModal, setHasDeletionModal] = useState(false)
   // const [selectedId, setSelectedId] = useState('')
   // const [selectedEntity, setSelectedEntity] = useState('')
@@ -95,14 +104,14 @@ export default function AdminTestimonyListPage() {
   const goToEditor = (id: string) => {
     router.push(`/admin/testimony/${id}`)
   }
-  //
+
   // const query = useCallback(
   //   debounce(async (pageIndex: number) => {
-  //     if ($searchInput.current === null) {
+  //     if (searchInput.current === null) {
   //       return
   //     }
   //
-  //     const query = define($searchInput.current.value)
+  //     const query = define(searchInput.current.value)
   //
   //     getInstitutionsResult.refetch({
   //       pageIndex,
@@ -112,14 +121,6 @@ export default function AdminTestimonyListPage() {
   //   }, 250),
   //   [],
   // )
-
-  // useEffect(() => {
-  //   if (getInstitutionsResult.error === undefined) {
-  //     return
-  //   }
-  //
-  //   showApolloError(getInstitutionsResult.error)
-  // }, [getInstitutionsResult.error])
 
   const columns: TableColumnProps[] = [
     {
@@ -159,13 +160,20 @@ export default function AdminTestimonyListPage() {
       </AdminHeader>
 
       <Card>
-        {/* <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un témoignage" /> */}
+        <TextInput
+          ref={searchInput}
+          onInput={debounce(() => {
+            console.log('aaaaa')
+            fetchTestimonies(0)
+          }, 250)}
+          placeholder="Rechercher un témoignage"
+        />
 
         <Table
           columns={columns}
           data={testimonies.data}
           isLoading={isLoading}
-          // onPageChange={query as any}
+          onPageChange={fetchTestimonies}
           pageCount={testimonies.count}
           pageIndex={testimonies.index}
           perPage={PER_PAGE}
