@@ -1,4 +1,5 @@
 import { Loader } from '@app/molecules/Loader'
+import { FileType } from '@prisma/client'
 import { Button as SUIButton } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useS3Upload } from 'next-s3-upload'
@@ -49,12 +50,13 @@ const Error = styled.span`
 `
 
 export function FileUpload({ isDisabled = false, label, name }: FileUploadProps) {
-  const { errors, isSubmitting, setFieldError, setFieldValue } = useFormikContext<any>()
+  const { errors, isSubmitting, setFieldError, setFieldValue, values } = useFormikContext<any>()
 
   const inputRef = useRef<HTMLInputElement | null>(null)
   const { uploadToS3 } = useS3Upload()
-  const [isUploadding, setIsUploading] = useState(false)
-  const [uploadUrl, setUploadUrl] = useState<string>()
+  const [isUploading, setIsUploading] = useState(false)
+
+  const uploadUrl = values?.[name]?.url
 
   const handleFileChange = async event => {
     setIsUploading(true)
@@ -62,8 +64,8 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
       const file = event.target.files[0]
       const { url } = await uploadToS3(file)
 
-      setFieldValue(name, url)
-      setUploadUrl(url)
+      // TODO: Remove useless FileType
+      setFieldValue(name, { title: file.name, type: FileType.EXTERNAL, url })
       setIsUploading(false)
     } catch (e) {
       setFieldError(name, `Une erreur est survenue lors du chargement: ${e}`)
@@ -73,9 +75,9 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
   return (
     <Container>
       <Label>{label}</Label>
-      {isUploadding && <Loader />}
+      {isUploading && <Loader />}
       <Row>
-        {!isUploadding && uploadUrl && <Thumbnail alt="uploaded file" src={uploadUrl} />}
+        {!isUploading && uploadUrl && <Thumbnail alt="uploaded file" src={uploadUrl} />}
         <input
           ref={inputRef}
           accept="image/*"
@@ -84,7 +86,7 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
           style={{ display: 'none' }}
           type="file"
         />
-        {!isUploadding && (
+        {!isUploading && (
           <Button accent="primary" disabled={isDisabled || isSubmitting} onClick={() => inputRef.current?.click?.()}>
             {uploadUrl ? 'Editer' : 'Choisir un fichier'}
           </Button>

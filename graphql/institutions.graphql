@@ -1,3 +1,4 @@
+# import File from "files.graphql"
 # import Recruiter from "recruiters.graphql"
 
 scalar DateTime
@@ -10,6 +11,7 @@ type Institution {
   name: String
   slug: String
   url: String
+  logoFile: File
 
   pageTitle: String
   description: String
@@ -34,6 +36,7 @@ input InstitutionInput {
   url: String
   slug: String
 
+  logoFileId: String
   pageTitle: String
   description: String
 }

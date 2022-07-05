@@ -20,8 +20,10 @@ import * as Yup from 'yup'
 
 import type { InstitutionFromGetOne } from '@api/resolvers/institutions'
 import type { MutationFunctionOptions } from '@apollo/client'
-import type { Institution } from '@prisma/client'
+import type { Institution, File } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
+
+type InstitutionFormInput = Institution & { logoFile: File }
 
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
   {
@@ -85,6 +87,27 @@ export default function AdminInstitutionEditorPage() {
   })
   const [createInstitution] = useMutation(queries.institution.CREATE_ONE)
   const [updateInstitution] = useMutation(queries.institution.UPDATE_ONE)
+  const [createFile] = useMutation(queries.file.CREATE_ONE)
+  const [updateFile] = useMutation(queries.file.UPDATE_ONE)
+
+  const saveFile = async (input: File): Promise<string | undefined> => {
+    if (input.id) {
+      const updateFileResult = await updateFile({ variables: { id: cuid(), input } })
+      if (updateFileResult.data.updateFile === null) {
+        toast.error('La requête GraphQL de modification de "File" a échoué.')
+
+        return
+      }
+    }
+    const createFileResult = await createFile({ variables: { id: input.id, input } })
+    if (createFileResult.data.createFile === null) {
+      toast.error('La requête GraphQL de modification de "File" a échoué.')
+
+      return
+    }
+
+    return createFileResult.data.createFile.id
+  }
 
   const users = useMemo(() => {
     if (isNew || getInstitutionResult.data === undefined) {
@@ -98,9 +121,17 @@ export default function AdminInstitutionEditorPage() {
     router.push('/admin/institutions')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: Institution) => {
+  const saveAndGoToList = useCallback(async (values: InstitutionFormInput) => {
     try {
       setIsLoading(true)
+
+      // Save logo file first
+      const logoFileId = await saveFile(values.logoFile)
+
+      // Save file failed
+      if (!logoFileId) {
+        throw new Error('Failed to save logo file')
+      }
 
       const input: Partial<Institution> & {
         name: string
@@ -110,6 +141,7 @@ export default function AdminInstitutionEditorPage() {
         input.id = cuid()
       }
       input.slug = slugify(input.name, input.id)
+      input.logoFileId = logoFileId
 
       const options: MutationFunctionOptions = {
         variables: {

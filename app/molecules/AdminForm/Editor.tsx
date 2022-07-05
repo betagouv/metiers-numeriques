@@ -1,7 +1,7 @@
 import { MarkdownEditor } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import debounce from 'lodash.debounce'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
 type EditorProps = {
   helper?: string
