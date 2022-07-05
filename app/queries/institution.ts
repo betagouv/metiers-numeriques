@@ -34,6 +34,10 @@ export const GET_ONE = gql`
       url
       pageTitle
       description
+      challenges
+      mission
+      structure
+      organisation
 
       logoFile {
         id
