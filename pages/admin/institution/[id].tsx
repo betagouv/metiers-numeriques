@@ -171,12 +171,9 @@ export default function AdminInstitutionEditorPage() {
       ...getInstitutionResult.data.getInstitution,
     }
 
-    console.log('set values', initialValues.description)
     setInitialValues(initialValues)
     setIsLoading(false)
   }, [getInstitutionResult.data])
-
-  console.log('render', initialValues?.description)
 
   return (
     <>
@@ -196,6 +193,10 @@ export default function AdminInstitutionEditorPage() {
           <Subtitle>Informations Générales</Subtitle>
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+          </Field>
+
+          <Field>
+            <AdminForm.FileUpload isDisabled={isLoading} label="Logo" name="logoFile" />
           </Field>
 
           <Field>

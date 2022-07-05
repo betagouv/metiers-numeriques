@@ -20,6 +20,7 @@
 - [Node.js](https://nodejs.org)
 - [Yarn](https://yarnpkg.com/getting-started/install)
 - [Docker](https://www.docker.com/get-started)
+- `brew install gsed`
 
 ### First Setup
 
