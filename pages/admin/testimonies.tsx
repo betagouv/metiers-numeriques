@@ -1,26 +1,19 @@
-import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
 import { Title } from '@app/atoms/Title'
-import { showApolloError } from '@app/helpers/showApolloError'
-import { DeletionModal } from '@app/organisms/DeletionModal'
-import { queries } from '@app/queries'
-import { define } from '@common/helpers/define'
 import { Testimony } from '@prisma/client'
 import { Button, Card, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
 import { useRouter } from 'next/router'
-import * as R from 'ramda'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Edit, Trash } from 'react-feather'
+import { useEffect, useRef, useState } from 'react'
+import { Edit } from 'react-feather'
 
-import type { InstitutionFromGetAll } from '@api/resolvers/institutions'
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { TableColumnProps } from '@singularity/core'
 
 const PER_PAGE = 10
 
 export default function AdminTestimonyListPage() {
-  const searchInput = useRef<HTMLInputElement>()
+  const searchInput = useRef<HTMLInputElement>(null)
   const [testimonies, setTestimonies] = useState<GetAllResponse<Testimony>>({ count: 1, data: [], index: 0, length: 0 })
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +27,7 @@ export default function AdminTestimonyListPage() {
     const queryString = new URLSearchParams(query)
 
     setIsLoading(true)
-    const fetchResponse = await fetch<GetAllResponse<Testimony>>(`/api/testimonies?${queryString}`)
+    const fetchResponse = await fetch(`/api/testimonies?${queryString}`)
     const jsonResponse = await fetchResponse.json()
 
     setTestimonies(jsonResponse)
@@ -163,7 +156,6 @@ export default function AdminTestimonyListPage() {
         <TextInput
           ref={searchInput}
           onInput={debounce(() => {
-            console.log('aaaaa')
             fetchTestimonies(0)
           }, 250)}
           placeholder="Rechercher un témoignage"

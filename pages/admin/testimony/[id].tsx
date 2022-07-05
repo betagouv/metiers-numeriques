@@ -1,29 +1,16 @@
-import { GetAllResponse } from '@api/resolvers/types'
-import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
-import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
+import { ADMIN_ERROR, AdminErrorCard } from '@app/atoms/AdminErrorCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Subtitle } from '@app/atoms/Subtitle'
 import { Title } from '@app/atoms/Title'
-import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
-import { queries } from '@app/queries'
-import { USER_ROLE_LABEL } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
-import { slugify } from '@common/helpers/slugify'
-import { Testimony } from '@prisma/client'
-import { Field, Table } from '@singularity/core'
-import cuid from 'cuid'
+import { Field } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
+import { useCallback, useEffect, useState } from 'react'
 import * as Yup from 'yup'
 
-import type { InstitutionFromGetOne } from '@api/resolvers/institutions'
-import type { MutationFunctionOptions } from '@apollo/client'
-import type { Institution, TestimonyCreateInput } from '@prisma/client'
-import type { TableColumnProps } from '@singularity/core'
+import type { Testimony, TestimonyUncheckedCreateInput } from '@prisma/client'
 
 export const TestimonyFormSchema = Yup.object().shape({
   institutionId: Yup.string().required(`L'institution est obligatoire.`),
@@ -37,7 +24,7 @@ export default function AdminTestimonyEditorPage() {
   const { id } = router.query
   const isNew = id === 'new'
 
-  const [initialValues, setInitialValues] = useState<TestimonyCreateInput>()
+  const [initialValues, setInitialValues] = useState<Testimony>()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isNotFound, setIsNotFound] = useState(false)
@@ -48,19 +35,16 @@ export default function AdminTestimonyEditorPage() {
     }
 
     setIsLoading(true)
-    fetch<Testimony>(`/api/testimonies/${id}`)
+    fetch(`/api/testimonies/${id}`)
       .then(res => {
         if (res.status === 200) {
           return res.json()
         }
         if (res.status === 404) {
           setIsNotFound(true)
-
-          return {}
+        } else {
+          setIsError(true)
         }
-        setIsError(true)
-
-        return {}
       })
       .then(data => {
         setInitialValues(data)
@@ -74,75 +58,21 @@ export default function AdminTestimonyEditorPage() {
       })
   }, [isNew])
 
-  // const getInstitutionResult = useQuery<
-  //   {
-  //     getInstitution: InstitutionFromGetOne
-  //   },
-  //   any
-  // >(queries.institution.GET_ONE, {
-  //   variables: {
-  //     id,
-  //   },
-  // })
-  // const [createInstitution] = useMutation(queries.institution.CREATE_ONE)
-  // const [updateInstitution] = useMutation(queries.institution.UPDATE_ONE)
-  // const [createFile] = useMutation(queries.file.CREATE_ONE)
-  // const [updateFile] = useMutation(queries.file.UPDATE_ONE)
-  //
-  // const saveFile = async (file?: File): Promise<string | undefined> => {
-  //   if (!file) {
-  //     return
-  //   }
-  //
-  //   const input = R.pick(['type', 'url', 'title'])(file)
-  //
-  //   if (file.id) {
-  //     const updateFileResult = await updateFile({ variables: { id: file.id, input } })
-  //     if (updateFileResult.data.updateFile === null) {
-  //       toast.error('La requête GraphQL de modification de "File" a échoué.')
-  //
-  //       return
-  //     }
-  //
-  //     return updateFileResult.data.updateFile.id
-  //   }
-  //   const createFileResult = await createFile({ variables: { id: cuid(), input } })
-  //   if (createFileResult.data.createFile === null) {
-  //     toast.error('La requête GraphQL de modification de "File" a échoué.')
-  //
-  //     return
-  //   }
-  //
-  //   return createFileResult.data.createFile.id
-  // }
-  //
-  // const users = useMemo(() => {
-  //   if (isNew || getInstitutionResult.data === undefined) {
-  //     return []
-  //   }
-  //
-  //   return R.pipe(R.map(R.prop('users')), R.unnest)(getInstitutionResult.data.getInstitution.recruiters)
-  // }, [getInstitutionResult.data])
-  //
   const goToList = useCallback(() => {
     router.push('/admin/testimonies')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: TestimonyCreateInput) => {
+  const saveAndGoToList = useCallback(async (values: TestimonyUncheckedCreateInput) => {
     try {
       setIsLoading(true)
 
-      // Save logo file first
-      // const logoFileId = await saveFile(values.logoFile)
+      const valuesWithoutNestedRelations = R.omit(['avatarFile'])(values)
+      const body = JSON.stringify(valuesWithoutNestedRelations)
 
-      // Save file failed
-      // if (!!values.logoFile && !logoFileId) {
-      //   throw new Error('Failed to save logo file')
-      // }
       if (isNew) {
-        await fetch('/api/testimonies', { body: JSON.stringify(values), method: 'POST' })
+        await fetch('/api/testimonies', { body, method: 'POST' })
       } else {
-        await fetch(`/api/testimonies/${id}`, { body: JSON.stringify(values), method: 'PUT' })
+        await fetch(`/api/testimonies/${id}`, { body, method: 'PUT' })
       }
 
       goToList()
@@ -152,39 +82,6 @@ export default function AdminTestimonyEditorPage() {
       setIsLoading(false)
     }
   }, [])
-  //
-  // useEffect(() => {
-  //   if (!isLoading || isError || isNotFound || getInstitutionResult.loading) {
-  //     return
-  //   }
-  //
-  //   if (getInstitutionResult.error) {
-  //     showApolloError(getInstitutionResult.error)
-  //
-  //     setIsError(true)
-  //
-  //     return
-  //   }
-  //
-  //   if (getInstitutionResult.data?.getInstitution === undefined) {
-  //     setIsNotFound(true)
-  //
-  //     return
-  //   }
-  //
-  //   if (isNew) {
-  //     setIsLoading(false)
-  //
-  //     return
-  //   }
-  //
-  //   const initialValues: InstitutionFromGetOne = {
-  //     ...getInstitutionResult.data.getInstitution,
-  //   }
-  //
-  //   setInitialValues(initialValues)
-  //   setIsLoading(false)
-  // }, [getInstitutionResult.data])
 
   return (
     <>

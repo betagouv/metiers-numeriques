@@ -1,10 +1,6 @@
-import { buildPrismaPaginationFilter } from '@api/helpers/buildPrismaPaginationFilter'
-import { buildPrismaWhereFilter } from '@api/helpers/buildPrismaWhereFilter'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import type { Prisma, Testimony } from '@prisma/client'
 
 export default async function ApiTestimonyEndpoint(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -20,7 +16,10 @@ export default async function ApiTestimonyEndpoint(req: NextApiRequest, res: Nex
 const getTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { testimonyId } = req.query
-    const data = await prisma.testimony.findUnique({ where: { id: testimonyId as string } })
+    const data = await prisma.testimony.findUnique({
+      include: { avatarFile: true },
+      where: { id: testimonyId as string },
+    })
 
     if (!data) {
       res.status(404).send({})
@@ -35,8 +34,10 @@ const getTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
   const { testimonyId } = req.query
+
+  const data = JSON.parse(req.body)
   try {
-    const updateResponse = await prisma.testimony.update({ data: JSON.parse(req.body), where: { id: testimonyId } })
+    const updateResponse = await prisma.testimony.update({ data, where: { id: testimonyId as string } })
     res.status(200).send(updateResponse)
   } catch (err) {
     handleError(err, 'pages/api/testimonies/[testimonyId].ts > query.updateTestimony()')
