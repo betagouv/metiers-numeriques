@@ -10,6 +10,8 @@ test.describe('Sanity Check', () => {
   test('Home', async ({ page }) => {
     await page.goto('http://localhost:3000')
 
-    await expect(page.locator('h5 >> nth=0')).toHaveText('Secteur d’activité')
+    await expect(page.locator('h2 >> nth=0')).toHaveText(
+      'Tu es un talent du numérique ?Mets tes compétencesau service des citoyens !',
+    )
   })
 })
