@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
@@ -157,7 +157,7 @@ export default function AdminAddressListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Adresses</Title>
+        <AdminTitle>Adresses</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
           Ajouter une adresse

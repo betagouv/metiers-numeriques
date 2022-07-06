@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { queries } from '@app/queries'
@@ -104,7 +104,7 @@ export default function AdminLeadListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Abonné·es</Title>
+        <AdminTitle>Abonné·es</AdminTitle>
       </AdminHeader>
 
       <Card>

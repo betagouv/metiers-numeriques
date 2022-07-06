@@ -3,20 +3,27 @@ import styled from 'styled-components'
 
 import type { AnchorHTMLAttributes } from 'react'
 
-const StyledAnchor = styled.a`
+const StyledAnchor = styled.a<{
+  noUnderline: boolean
+}>`
   --blend: none;
+  box-shadow: ${p => (p.noUnderline ? 'none' : 'var(--link-underline)')};
+
+  :after {
+    content: ${p => (p.noUnderline ? 'none' : 'var(--link-blank-content)')};
+  }
 `
 
 type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string
+  noUnderline?: boolean
 }
+export function Link({ noUnderline = false, ...props }: LinkProps) {
+  const { href } = props
 
-export function Link({ children, href, ...props }: LinkProps) {
   return (
     <NextLink href={href}>
-      <StyledAnchor href={href} {...props}>
-        {children}
-      </StyledAnchor>
+      <StyledAnchor noUnderline={noUnderline} {...props} />
     </NextLink>
   )
 }

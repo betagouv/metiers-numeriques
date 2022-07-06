@@ -1,7 +1,7 @@
-// import generateKeyFromValue from '@app/helpers/generateKeyFromValue'
 import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
+import { theme } from '@app/theme'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
@@ -9,14 +9,6 @@ import styled from 'styled-components'
 import { Link } from '../atoms/Link'
 
 import type { Address, Contact, Job, Profession, Recruiter } from '@prisma/client'
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      acronym: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
-    }
-  }
-}
 
 export type JobWithRelation = Job & {
   address: Address
@@ -26,21 +18,60 @@ export type JobWithRelation = Job & {
   recruiter: Recruiter
 }
 
+const Box = styled.div`
+  display: flex;
+`
+
+const Card = styled.div`
+  border-radius: 0.5rem;
+  box-shadow: ${theme.shadow.large};
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.5rem;
+`
+
+const Date = styled.p`
+  color: #666666;
+  font-size: 85%;
+`
+
+const Title = styled.h3`
+  font-size: 150%;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0.5rem 0 0;
+`
+
 const Excerpt = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   display: -webkit-box;
-  font-size: 1.15rem;
+  font-size: 110%;
   line-clamp: 3;
   line-height: 1.5;
+  margin-bottom: 1rem !important;
   overflow: hidden;
   text-overflow: ellipsis;
+`
+
+const Info = styled.p`
+  font-size: 90%;
+  font-weight: 600;
+  margin-top: 0.5rem !important;
+
+  > i {
+    color: ${theme.color.primary.azure};
+    font-size: 120%;
+    font-weight: 500;
+    margin-right: 0.5rem;
+    vertical-align: -2.5px;
+  }
 `
 
 type JobCardProps = {
   job: JobWithRelation
 }
-
 export function JobCard({ job }: JobCardProps) {
   const location = job.address.country === 'FR' ? job.address.region : getCountryFromCode(job.address.country)
   const seniorityInYears = useMemo(() => Math.ceil(job.seniorityInMonths / 12), [])
@@ -50,124 +81,75 @@ export function JobCard({ job }: JobCardProps) {
   }, [])
 
   return (
-    <div className="fr-col-12 fr-py-2w fr-col-md-12 job-card">
-      <div className="fr-card fr-card--horizontal fr-card--no-arrow shadow-lg rounded-lg zoomable">
-        <div className="fr-card__body">
-          <div className="fr-grid-row fr-grid-row--gutters fr-pb-2w">
-            <div className="fr-col-12 fr-col-md-3 hidden-md">
-              <p
-                style={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  fontSize: '1rem',
-                }}
-              >
-                <i className="ri-building-fill fr-mr-2w" />
-                {job.recruiter.websiteUrl && (
-                  <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                    {job.recruiter.displayName}
-                  </a>
-                )}
-                {!job.recruiter.websiteUrl && job.recruiter.displayName}
-              </p>
+    <Box className="JobCard">
+      <Card>
+        <Date>Publiée le {humanizeDate(job.updatedAt)}</Date>
 
-              <p
-                style={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  fontSize: '1rem',
-                }}
-              >
-                <i className="ri-map-pin-fill fr-mr-2w" />
-                {location}
-              </p>
+        <Title className="fr-card__lead">
+          <Link
+            href={`/emploi/${job.slug}`}
+            noUnderline
+            onAuxClick={trackJobOpening}
+            onClick={trackJobOpening}
+            target="_blank"
+          >
+            {job.title}
+          </Link>
+        </Title>
 
-              {job.updatedAt && (
-                <p
-                  style={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    fontSize: '1rem',
-                  }}
-                >
-                  <i className="ri-calendar-fill fr-mr-2w" />
-                  {humanizeDate(job.updatedAt)}
-                </p>
-              )}
-            </div>
+        <ul
+          className="fr-tags-group"
+          style={{
+            marginTop: '1.15rem',
+          }}
+        >
+          {job.contractTypes.map(contractType => (
+            <li
+              key={`${job.id}-${contractType}`}
+              className="fr-tag fr-tag--sm"
+              style={{
+                backgroundColor: 'var(--background-flat-info)',
+                color: 'white',
+              }}
+            >
+              {JOB_CONTRACT_TYPE_LABEL[contractType]}
+            </li>
+          ))}
 
-            <div className="fr-col-12 fr-col-md-9">
-              <h4 className="fr-card__lead">
-                <Link
-                  className="fr-card__link"
-                  href={`/emploi/${job.slug}`}
-                  onAuxClick={trackJobOpening}
-                  onClick={trackJobOpening}
-                  target="_blank"
-                >
-                  {job.title}
-                </Link>
-              </h4>
-
-              <Excerpt className="fr-card__desc">{job.missionDescription}</Excerpt>
-
-              <ul
-                className="fr-tags-group"
-                style={{
-                  marginTop: '1.15rem',
-                }}
-              >
-                {job.contractTypes.map(contractType => (
-                  <li
-                    key={`${job.id}-${contractType}`}
-                    className="fr-tag fr-tag--sm"
-                    style={{
-                      backgroundColor: 'var(--background-flat-info)',
-                      color: 'white',
-                    }}
-                  >
-                    {JOB_CONTRACT_TYPE_LABEL[contractType]}
-                  </li>
-                ))}
-
-                <li
-                  key={`${job.id}-${job.seniorityInMonths}`}
-                  className="fr-tag fr-tag--sm"
-                  style={{
-                    backgroundColor: 'var(--background-flat-success)',
-                    color: 'white',
-                  }}
-                >
-                  {/* eslint-disable-next-line no-nested-ternary */}
-                  {seniorityInYears === 0
-                    ? 'Ouvert aux débutant·es'
-                    : seniorityInYears === 1
-                    ? `Min. 1 an d’expérience`
-                    : `Min. ${seniorityInYears} ans d’expérience`}
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div
-            className="rf-hidden-md-flex"
+          <li
+            key={`${job.id}-${job.seniorityInMonths}`}
+            className="fr-tag fr-tag--sm"
             style={{
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
+              backgroundColor: 'var(--background-flat-success)',
+              color: 'white',
             }}
           >
-            <Link
-              className="fr-btn fr-btn--sm fr-fi-arrow-right-line fr-btn--icon-right"
-              href={`/emploi/${job.slug}`}
-              onAuxClick={trackJobOpening}
-              onClick={trackJobOpening}
-              target="_blank"
-            >
-              Lire l’offre d’emploi
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {seniorityInYears === 0
+              ? 'Ouvert aux débutant·es'
+              : seniorityInYears === 1
+              ? `Min. 1 an d’expérience`
+              : `Min. ${seniorityInYears} ans d’expérience`}
+          </li>
+        </ul>
+
+        <Excerpt className="fr-card__desc">{job.missionDescription}</Excerpt>
+
+        <Info>
+          <i className="ri-map-pin-line" />
+          {location}
+        </Info>
+
+        <Info>
+          <i className="ri-suitcase-line" />
+          {job.recruiter.websiteUrl && (
+            <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
+              {job.recruiter.displayName}
+            </a>
+          )}
+          {!job.recruiter.websiteUrl && job.recruiter.displayName}
+        </Info>
+      </Card>
+    </Box>
   )
 }

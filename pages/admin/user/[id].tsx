@@ -1,8 +1,8 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Subtitle } from '@app/atoms/Subtitle'
-import { Title } from '@app/atoms/Title'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
@@ -104,7 +104,7 @@ export default function AdminUserEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Édition d’un·e utilisateur·rice</Title>
+        <AdminTitle>Édition d’un·e utilisateur·rice</AdminTitle>
       </AdminHeader>
 
       <AdminCard isFirst>

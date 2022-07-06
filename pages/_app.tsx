@@ -15,7 +15,7 @@ import 'remixicon/fonts/remixicon.css'
 
 const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper) as any, {
   ssr: false,
-})
+}) as any
 
 export default function MetiersNumeriquesApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
@@ -53,18 +53,16 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
       </Head>
 
       <WithGraphql>
-        <>
-          <Header />
-          <main className="fr-container">
-            <Component {...pageProps} />
-          </main>
-          <Footer />
-          <div id="modal" />
+        <Header />
+        <main className="fr-container">
+          <Component {...pageProps} />
+        </main>
+        <Footer />
+        <div id="modal" />
 
-          <>
-            <MatomoScript />
-            <CrispScript />
-          </>
+        <>
+          <MatomoScript />
+          <CrispScript />
         </>
       </WithGraphql>
     </>

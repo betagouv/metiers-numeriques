@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Flex } from '@app/atoms/Flex'
-import { Title } from '@app/atoms/Title'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
@@ -173,7 +173,7 @@ export default function AdminRecruiterListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Services recruteurs</Title>
+        <AdminTitle>Services recruteurs</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
           Ajouter un service recruteur

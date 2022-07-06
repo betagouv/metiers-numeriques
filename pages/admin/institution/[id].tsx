@@ -2,8 +2,8 @@ import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Subtitle } from '@app/atoms/Subtitle'
-import { Title } from '@app/atoms/Title'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
@@ -189,7 +189,7 @@ export default function AdminInstitutionEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle institution' : 'Édition d’une institution'}</Title>
+        <AdminTitle>{isNew ? 'Nouvelle institution' : 'Édition d’une institution'}</AdminTitle>
       </AdminHeader>
 
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}

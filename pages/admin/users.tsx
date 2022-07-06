@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
@@ -177,7 +177,7 @@ export default function AdminUserListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Utilisateur·rices</Title>
+        <AdminTitle>Utilisateur·rices</AdminTitle>
       </AdminHeader>
 
       <Card>

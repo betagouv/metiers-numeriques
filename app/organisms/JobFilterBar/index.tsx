@@ -1,53 +1,35 @@
+import { Button } from '@app/atoms/Button'
 import { ButtonX } from '@app/atoms/ButtonX'
+import { TextInput } from '@app/atoms/TextInput'
 import { Region } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  Accordion,
-  AccordionItem,
-  AccordionItemHeading,
-  AccordionItemButton,
-  AccordionItemPanel,
-} from 'react-accessible-accordion'
-import { ChevronDown, ChevronLeft } from 'react-feather'
+import { FormEvent, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { ContractTypesFilter } from './ContractTypesFilter'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { InstitutionsFilter } from './InstitutionsFilter'
 import { ProfessionFilter } from './ProfessionFilter'
 import { RegionFilter } from './RegionFilter'
 import { RemoteStatusesFilter } from './RemoteStatusesFilter'
 
 import type { Institution, JobContractType, JobRemoteStatus, Profession } from '@prisma/client'
-import type { ID } from 'react-accessible-accordion/dist/types/components/ItemContext'
 
 const Box = styled.div<{
   isModalOpen: boolean
 }>`
+  margin: 3rem 0 0 0;
+
   @media screen and (max-width: 767px) {
     background-color: var(--info-950-100);
     bottom: 0;
     display: ${p => (p.isModalOpen ? 'block' : 'none')};
     left: 0;
+    margin: 0;
     overflow-y: auto;
+    padding: 1rem;
     position: absolute;
     right: 0;
     top: 0;
     z-index: 3;
-  }
-
-  input[type='text'] {
-    background-color: white;
-    border-radius: 0;
-  }
-
-  button.fr-btn {
-    background-color: #0078f3;
-
-    :hover {
-      background-color: #6196ff;
-    }
   }
 `
 
@@ -61,20 +43,25 @@ const DialogTitle = styled.h4`
   margin: 0;
 `
 
-const StyledAccordionItemButton = styled(AccordionItemButton)`
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.05);
-  cursor: pointer;
+const FilterList = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding: 0 0.5rem;
-`
-const Title = styled.h5`
-  font-size: 110%;
-  line-height: 1.5;
-  margin: 0;
-  padding-bottom: 0.25rem;
+  flex-direction: column;
+  margin-top: 1rem;
+
+  > div:not(:first-child) {
+    margin: 1rem 0 0 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+
+    > div {
+      flex-grow: 1;
+    }
+    > div:not(:first-child) {
+      margin: 0 0 0 1rem;
+    }
+  }
 `
 
 export type Filter = {
@@ -105,9 +92,7 @@ type JobFilterBarProps = {
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose, professions }: JobFilterBarProps) {
-  const $searchInput = useRef<HTMLInputElement>(null)
   const $filter = useRef<Filter>({ ...INITIAL_FILTER })
-  const [openedAccordionFilters, setOpenedAccordionFilters] = useState<ID[]>([INITIAL_ACCORDION_FILTER])
 
   const handleContractTypes = useCallback((contractTypes: JobContractType[]) => {
     $filter.current.contractTypes = contractTypes
@@ -128,12 +113,8 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
     onChange($filter.current)
   }, [])
 
-  const handleQuery = useCallback(() => {
-    if ($searchInput.current === null) {
-      return
-    }
-
-    $filter.current.query = define($searchInput.current.value)
+  const handleQuery = useCallback((event: FormEvent<HTMLInputElement>) => {
+    $filter.current.query = define(event.currentTarget.value)
 
     onChange($filter.current)
   }, [])
@@ -158,7 +139,7 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
   )
 
   return (
-    <Box className="fr-p-4w fr-p-md-0 fr-pl-md-4w fr-pt-md-3w" isModalOpen={isModalOpen}>
+    <Box isModalOpen={isModalOpen}>
       <DialogHeader className="fr-grid-row fr-pb-1w fr-mb-2w rf-hidden-md-flex">
         <div className="fr-col-8">
           <DialogTitle>Filtres</DialogTitle>
@@ -168,83 +149,17 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
         </div>
       </DialogHeader>
 
-      <div className="fr-input-wrap fr-fi-search-line">
-        <input
-          ref={$searchInput}
-          className="fr-input"
-          id="JobsSearchInput"
-          onInput={handleQuery}
-          placeholder="Rechercher un titre d’offre"
-          type="text"
-        />
-      </div>
+      <TextInput aria-label="Mot-clé" name="query" onInput={handleQuery} placeholder="Rechercher par mot-clé" />
 
-      <Accordion allowZeroExpanded onChange={setOpenedAccordionFilters} preExpanded={[INITIAL_ACCORDION_FILTER]}>
-        <AccordionItem uuid="professionIdFilter">
-          <AccordionItemHeading>
-            <StyledAccordionItemButton className="fr-mt-4w">
-              <Title>Secteur d’activité</Title>
-              {openedAccordionFilters.includes('professionIdFilter') ? <ChevronDown /> : <ChevronLeft />}
-            </StyledAccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel>
-            <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
-          </AccordionItemPanel>
-        </AccordionItem>
-
-        <AccordionItem uuid="regionFilter">
-          <AccordionItemHeading>
-            <StyledAccordionItemButton className="fr-mt-4w">
-              <Title>Région</Title>
-              {openedAccordionFilters.includes('regionFilter') ? <ChevronDown /> : <ChevronLeft />}
-            </StyledAccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel>
-            <RegionFilter onChange={handleRegion as any} />
-          </AccordionItemPanel>
-        </AccordionItem>
-
-        <AccordionItem uuid="contractTypesFilter">
-          <AccordionItemHeading>
-            <StyledAccordionItemButton className="fr-mt-4w">
-              <Title>Contrats</Title>
-              {openedAccordionFilters.includes('contractTypesFilter') ? <ChevronDown /> : <ChevronLeft />}
-            </StyledAccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel>
-            <ContractTypesFilter onChange={handleContractTypes} />
-          </AccordionItemPanel>
-        </AccordionItem>
-
-        <AccordionItem uuid="remoteStatusesFilter">
-          <AccordionItemHeading>
-            <StyledAccordionItemButton className="fr-mt-4w">
-              <Title>Télétravail</Title>
-              {openedAccordionFilters.includes('remoteStatusesFilter') ? <ChevronDown /> : <ChevronLeft />}
-            </StyledAccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel>
-            <RemoteStatusesFilter onChange={handleRemoteStatuses} />
-          </AccordionItemPanel>
-        </AccordionItem>
-
-        {/* <AccordionItem uuid="institutionIdsFilter">
-          <AccordionItemHeading>
-            <StyledAccordionItemButton className="fr-mt-4w">
-              <Title>Institutions</Title>
-              {openedAccordionFilters.includes('institutionIdsFilter') ? <ChevronDown /> : <ChevronLeft />}
-            </StyledAccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel>
-            <InstitutionsFilter institutions={institutions} onChange={handleInstitutionIds} />
-          </AccordionItemPanel>
-        </AccordionItem> */}
-      </Accordion>
+      <FilterList>
+        <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
+        <RegionFilter onChange={handleRegion as any} />
+        <ContractTypesFilter onChange={handleContractTypes} />
+        <RemoteStatusesFilter onChange={handleRemoteStatuses} />
+      </FilterList>
 
       <div className="fr-mt-2w rf-text-right rf-hidden-md">
-        <button className="fr-btn" onClick={() => onModalClose()} type="button">
-          Appliquer
-        </button>
+        <Button onClick={() => onModalClose()}>Appliquer</Button>
       </div>
     </Box>
   )

@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
@@ -131,7 +131,7 @@ export default function AdminArchivedJobEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouvelle offre archivée ' : 'Édition d’une offre archivée'}</Title>
+        <AdminTitle>{isNew ? 'Nouvelle offre archivée ' : 'Édition d’une offre archivée'}</AdminTitle>
       </AdminHeader>
 
       <Card>

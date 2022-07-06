@@ -1,8 +1,8 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Subtitle } from '@app/atoms/Subtitle'
-import { Title } from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { queries } from '@app/queries'
@@ -202,7 +202,7 @@ export default function AdminRecruiterEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau service recruteur' : 'Édition d’un service recruteur'}</Title>
+        <AdminTitle>{isNew ? 'Nouveau service recruteur' : 'Édition d’un service recruteur'}</AdminTitle>
       </AdminHeader>
 
       <AdminCard isFirst>

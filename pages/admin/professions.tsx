@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
@@ -135,7 +135,7 @@ export default function AdminProfessionListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Secteurs d’activité</Title>
+        <AdminTitle>Secteurs d’activité</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
           Ajouter un secteur d’activité

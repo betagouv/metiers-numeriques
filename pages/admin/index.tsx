@@ -1,7 +1,7 @@
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Alert } from '@app/atoms/Alert'
 import { Subtitle } from '@app/atoms/Subtitle'
-import { Title } from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
@@ -92,7 +92,7 @@ export default function AdminDashboardPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Tableau de bord</Title>
+        <AdminTitle>Tableau de bord</AdminTitle>
       </AdminHeader>
 
       <Subtitle isFirst noBorder>

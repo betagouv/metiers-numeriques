@@ -79,11 +79,12 @@
     "prisma": "3.14.0",
     "ramda": "0.28.0",
     "react": "17.0.2",
-    "react-accessible-accordion": "5.0.0",
     "react-detect-click-outside": "1.1.2",
     "react-dom": "17.0.2",
     "react-feather": "2.0.10",
     "react-hot-toast": "2.2.0",
+    "react-select": "5.4.0",
+    "react-spinners": "0.13.3",
     "reflexbox": "4.0.6",
     "rehype-react": "7.1.1",
     "remark-parse": "10.0.1",
@@ -147,6 +148,7 @@
     "jest-environment-jsdom": "28.1.0",
     "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
+    "type-fest": "2.13.1",
     "typescript": "4.7.2"
   },
   "resolutions": {

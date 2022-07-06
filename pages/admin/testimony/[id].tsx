@@ -1,7 +1,7 @@
 import { AdminCard } from '@app/atoms/AdminCard'
 import { ADMIN_ERROR, AdminErrorCard } from '@app/atoms/AdminErrorCard'
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { AdminForm } from '@app/molecules/AdminForm'
 import { handleError } from '@common/helpers/handleError'
 import { Field } from '@singularity/core'
@@ -86,7 +86,7 @@ export default function AdminTestimonyEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>{isNew ? 'Nouveau témoignage' : 'Édition d’un témoignage'}</Title>
+        <AdminTitle>{isNew ? 'Nouveau témoignage' : 'Édition d’un témoignage'}</AdminTitle>
       </AdminHeader>
 
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}

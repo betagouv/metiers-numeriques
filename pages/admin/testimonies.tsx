@@ -1,5 +1,5 @@
 import { AdminHeader } from '@app/atoms/AdminHeader'
-import { Title } from '@app/atoms/Title'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Testimony } from '@prisma/client'
 import { Button, Card, Table, TextInput } from '@singularity/core'
 import debounce from 'lodash.debounce'
@@ -145,7 +145,7 @@ export default function AdminTestimonyListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Témoignages</Title>
+        <AdminTitle>Témoignages</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
           Ajouter un témoignage

@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Flex } from '@app/atoms/Flex'
-import { Title } from '@app/atoms/Title'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { DeletionModal } from '@app/organisms/DeletionModal'
 import { queries } from '@app/queries'
@@ -250,7 +250,7 @@ export default function AdminJobListPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Offres d’emploi</Title>
+        <AdminTitle>Offres d’emploi</AdminTitle>
 
         <Button onClick={createAndGoToEditor} size="small">
           Ajouter une offre d’emploi

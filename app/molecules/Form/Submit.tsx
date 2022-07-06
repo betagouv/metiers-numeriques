@@ -1,18 +1,14 @@
+import { Button } from '@app/atoms/Button'
 import { useFormikContext } from 'formik'
-import styled from 'styled-components'
+import { useMemo } from 'react'
 
-import type { ButtonHTMLAttributes } from 'react'
+import type { ButtonProps } from '@app/atoms/Button'
 
-const StyledButton = styled.button`
-  white-space: nowrap;
-`
-
-type SubmitProps = ButtonHTMLAttributes<HTMLButtonElement>
-
-export function Submit({ disabled, onClick, ...props }: SubmitProps) {
+export function Submit(props: ButtonProps) {
+  const { disabled } = props
   const { isSubmitting } = useFormikContext<any>()
 
-  const isControlledDisabled = disabled || isSubmitting
+  const isControlledDisabled = useMemo(() => disabled || isSubmitting, [disabled, isSubmitting])
 
-  return <StyledButton className="fr-btn" disabled={isControlledDisabled} type="submit" {...props} />
+  return <Button disabled={isControlledDisabled} type="submit" {...props} />
 }

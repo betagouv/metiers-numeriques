@@ -3,11 +3,11 @@ import { AdminCard } from '@app/atoms/AdminCard'
 import { AdminErrorCard, ADMIN_ERROR } from '@app/atoms/AdminErrorCard'
 import { AdminFloatingButton } from '@app/atoms/AdminFloatingButton'
 import { AdminHeader } from '@app/atoms/AdminHeader'
+import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DoubleField } from '@app/atoms/DoubleField'
 import { FieldGroup } from '@app/atoms/FieldGroup'
 import { SeparatorText } from '@app/atoms/SeparatorText'
 import { Subtitle } from '@app/atoms/Subtitle'
-import { Title } from '@app/atoms/Title'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
@@ -309,7 +309,7 @@ export default function AdminJobEditorPage() {
     return (
       <>
         <AdminHeader>
-          <Title>Édition d’une offre d’emploi</Title>
+          <AdminTitle>Édition d’une offre d’emploi</AdminTitle>
         </AdminHeader>
 
         <SpinnerBox>
@@ -322,7 +322,7 @@ export default function AdminJobEditorPage() {
   return (
     <>
       <AdminHeader>
-        <Title>Édition d’une offre d’emploi</Title>
+        <AdminTitle>Édition d’une offre d’emploi</AdminTitle>
 
         <AdminFloatingButton onClick={goToPreview}>Prévisualiser</AdminFloatingButton>
       </AdminHeader>
