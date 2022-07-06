@@ -31,6 +31,17 @@ export const GET_ONE = gql`
       id
 
       name
+      url
+      pageTitle
+      description
+
+      logoFile {
+        id
+
+        type
+        title
+        url
+      }
 
       recruiters {
         id

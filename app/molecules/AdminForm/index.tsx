@@ -10,7 +10,7 @@ import { ContactSelect } from './ContactSelect'
 import { CountrySelect } from './CountrySelect'
 import { Editor } from './Editor'
 import { Error } from './Error'
-// import { Image } from './Image'
+import { FileUpload } from './FileUpload'
 import { InstitutionSelect } from './InstitutionSelect'
 import { ProfessionSelect } from './ProfessionSelect'
 import { RecruiterSelect } from './RecruiterSelect'
@@ -71,7 +71,7 @@ export const AdminForm = Object.assign(_AdminFormWithRef, {
   CountrySelect,
   Editor,
   Error,
-  // Image,
+  FileUpload,
   InstitutionSelect,
   ProfessionSelect,
   RecruiterSelect,

@@ -20,10 +20,10 @@ import * as Yup from 'yup'
 
 import type { InstitutionFromGetOne } from '@api/resolvers/institutions'
 import type { MutationFunctionOptions } from '@apollo/client'
-import type { Institution } from '@prisma/client'
+import type { Institution, File } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
-type InstitutionFormData = Pick<Institution, 'name'>
+type InstitutionFormInput = Institution & { logoFile: File }
 
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
   {
@@ -87,6 +87,35 @@ export default function AdminInstitutionEditorPage() {
   })
   const [createInstitution] = useMutation(queries.institution.CREATE_ONE)
   const [updateInstitution] = useMutation(queries.institution.UPDATE_ONE)
+  const [createFile] = useMutation(queries.file.CREATE_ONE)
+  const [updateFile] = useMutation(queries.file.UPDATE_ONE)
+
+  const saveFile = async (file?: File): Promise<string | undefined> => {
+    if (!file) {
+      return
+    }
+
+    const input = R.pick(['type', 'url', 'title'])(file)
+
+    if (file.id) {
+      const updateFileResult = await updateFile({ variables: { id: file.id, input } })
+      if (updateFileResult.data.updateFile === null) {
+        toast.error('La requête GraphQL de modification de "File" a échoué.')
+
+        return
+      }
+
+      return updateFileResult.data.updateFile.id
+    }
+    const createFileResult = await createFile({ variables: { id: cuid(), input } })
+    if (createFileResult.data.createFile === null) {
+      toast.error('La requête GraphQL de modification de "File" a échoué.')
+
+      return
+    }
+
+    return createFileResult.data.createFile.id
+  }
 
   const users = useMemo(() => {
     if (isNew || getInstitutionResult.data === undefined) {
@@ -100,18 +129,27 @@ export default function AdminInstitutionEditorPage() {
     router.push('/admin/institutions')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: InstitutionFormData) => {
+  const saveAndGoToList = useCallback(async (values: InstitutionFormInput) => {
     try {
       setIsLoading(true)
 
+      // Save logo file first
+      const logoFileId = await saveFile(values.logoFile)
+
+      // Save file failed
+      if (!!values.logoFile && !logoFileId) {
+        throw new Error('Failed to save logo file')
+      }
+
       const input: Partial<Institution> & {
         name: string
-      } = R.pick(['fullName', 'name'])(values)
+      } = R.pick(['fullName', 'name', 'url', 'pageTitle', 'description'])(values)
 
       if (isNew) {
         input.id = cuid()
       }
       input.slug = slugify(input.name, input.id)
+      input.logoFileId = logoFileId
 
       const options: MutationFunctionOptions = {
         variables: {
@@ -186,14 +224,23 @@ export default function AdminInstitutionEditorPage() {
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
-      <AdminCard isFirst>
-        <AdminForm
-          initialValues={initialValues || {}}
-          onSubmit={saveAndGoToList as any}
-          validationSchema={InstitutionFormSchema}
-        >
+      <AdminForm
+        initialValues={initialValues || {}}
+        onSubmit={saveAndGoToList as any}
+        validationSchema={InstitutionFormSchema}
+      >
+        <AdminCard isFirst>
+          <Subtitle>Informations Générales</Subtitle>
           <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+          </Field>
+
+          <Field>
+            <AdminForm.FileUpload isDisabled={isLoading} label="Logo" name="logoFile" />
+          </Field>
+
+          <Field>
+            <AdminForm.TextInput isDisabled={isLoading} label="Site (URL)" name="url" />
           </Field>
 
           <Field>
@@ -202,8 +249,31 @@ export default function AdminInstitutionEditorPage() {
             </AdminForm.Cancel>
             <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
-        </AdminForm>
-      </AdminCard>
+        </AdminCard>
+
+        <AdminCard>
+          <Subtitle>Page Vitrine</Subtitle>
+          <Field>
+            <AdminForm.TextInput isDisabled={isLoading} label="Titre" name="pageTitle" />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Onglet Description"
+              name="description"
+              placeholder="Présentez l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
+              Annuler
+            </AdminForm.Cancel>
+            <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
+          </Field>
+        </AdminCard>
+      </AdminForm>
 
       {!isNew && (
         <AdminCard>

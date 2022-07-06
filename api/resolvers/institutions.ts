@@ -1,4 +1,5 @@
 import { handleError } from '@common/helpers/handleError'
+import { File } from '@prisma/client'
 
 import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
 import { buildPrismaWhereFilter } from '../helpers/buildPrismaWhereFilter'
@@ -13,6 +14,7 @@ export type RecruiterWithJobsAndUsers = Recruiter & {
 }
 
 export type InstitutionFromGetOne = Institution & {
+  logoFile: File
   recruiters: RecruiterWithJobsAndUsers[]
 }
 
@@ -118,6 +120,7 @@ export const query = {
     try {
       const args: Prisma.InstitutionFindUniqueArgs = {
         include: {
+          logoFile: true,
           recruiters: {
             include: {
               jobs: true,

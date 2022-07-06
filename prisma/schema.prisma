@@ -151,6 +151,7 @@ model File {
   filesOnLegacyInstitutions              FilesOnLegacyInstitutions[]
   relatedLogoFileLegacyInstitutions      LegacyInstitution[]         @relation("legacyInstitutionLogoFile")
   relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
+  relatedLogoInstitution                 Institution[]               @relation("InstitutionLogoFile")
   recruiter                              Recruiter?                  @relation("RecruiterLogoFile")
 }
 
@@ -166,14 +167,21 @@ model FilesOnLegacyInstitutions {
 }
 
 model Institution {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String           @id @default(cuid())
+  name       String           @unique
+  slug       String           @unique
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
 
-  recruiters Recruiter[] @relation("RecruiterInstitution")
-  users      User[]      @relation("UserInstitution")
+  url        String?
+  logoFile   File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
+  logoFileId String?          @unique
+
+  pageTitle  String?
+  description String?
+
+  recruiters Recruiter[]      @relation("RecruiterInstitution")
+  users      User[]           @relation("UserInstitution")
 }
 
 model Job {
