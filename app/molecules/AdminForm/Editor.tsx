@@ -15,7 +15,7 @@ export function Editor({ helper, isDisabled = false, label, name, placeholder }:
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
-  const defaultValue = values[name] || '<br>'
+  const defaultValue = values[name] || '<br>' // TODO: handle undefined value
 
   const updateFormikValues = useCallback(
     debounce((markdownSource: string) => {
