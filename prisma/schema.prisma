@@ -167,21 +167,25 @@ model FilesOnLegacyInstitutions {
 }
 
 model Institution {
-  id         String           @id @default(cuid())
-  name       String           @unique
-  slug       String           @unique
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
+  id               String           @id @default(cuid())
+  name             String           @unique
+  slug             String           @unique
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
-  url        String?
-  logoFile   File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
-  logoFileId String?          @unique
+  url              String?
+  logoFile         File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
+  logoFileId       String?          @unique
 
-  pageTitle  String?
-  description String?
+  pageTitle        String?
+  description      String?
+  challenges       String?
+  mission          String?
+  structure        String?
+  organisation     String?
 
-  recruiters Recruiter[]      @relation("RecruiterInstitution")
-  users      User[]           @relation("UserInstitution")
+  recruiters       Recruiter[]      @relation("RecruiterInstitution")
+  users            User[]           @relation("UserInstitution")
 }
 
 model Job {

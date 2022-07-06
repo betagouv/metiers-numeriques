@@ -143,7 +143,17 @@ export default function AdminInstitutionEditorPage() {
 
       const input: Partial<Institution> & {
         name: string
-      } = R.pick(['fullName', 'name', 'url', 'pageTitle', 'description'])(values)
+      } = R.pick([
+        'fullName',
+        'name',
+        'url',
+        'pageTitle',
+        'description',
+        'challenges',
+        'mission',
+        'structure',
+        'organisation',
+      ])(values)
 
       if (isNew) {
         input.id = cuid()
@@ -263,6 +273,42 @@ export default function AdminInstitutionEditorPage() {
               label="Onglet Description"
               name="description"
               placeholder="Présentez l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Onglet Enjeux"
+              name="challenges"
+              placeholder="Présentez les enjeux de l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Onglet Mission"
+              name="mission"
+              placeholder="Présentez la mission de l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Onglet Structure"
+              name="structure"
+              placeholder="Présentez la structure de l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Onglet Organisation"
+              name="organisation"
+              placeholder="Présentez l'organisation de l'institution en quelques mots"
             />
           </Field>
 

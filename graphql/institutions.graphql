@@ -15,6 +15,10 @@ type Institution {
 
   pageTitle: String
   description: String
+  challenges: String
+  mission: String
+  structure: String
+  organisation: String
 
   recruiters: [Recruiter!]!
 }
@@ -35,10 +39,14 @@ input InstitutionInput {
   name: String
   url: String
   slug: String
-
   logoFileId: String
+
   pageTitle: String
   description: String
+  challenges: String
+  mission: String
+  structure: String
+  organisation: String
 }
 
 type InstitutionsResult {
