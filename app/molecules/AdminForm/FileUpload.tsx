@@ -1,4 +1,6 @@
+import { useMutation } from '@apollo/client'
 import { Loader } from '@app/molecules/Loader'
+import { queries } from '@app/queries'
 import { FileType } from '@prisma/client'
 import { Button as SUIButton } from '@singularity/core'
 import { useFormikContext } from 'formik'
@@ -12,7 +14,6 @@ type FileUploadProps = {
   name: string
 }
 
-// TODO: export in SUI
 const Label = styled.label`
   font-size: 80%;
   padding: 0 0 0.25rem 0;
@@ -49,12 +50,33 @@ const Error = styled.span`
   color: ${p => p.theme.color.danger.default};
 `
 
+// TODO: export in SUI
+// TODO: handle similar pictures posted
+/**
+ * File Uploader for Formik & Prisma
+ * @param isDisabled
+ * @param label
+ * @param name use the id field when using it (if the
+ * @returns { type: string, url: string, title: string }
+ *
+ * Handles two formik values: `field` and `fieldId`
+ * On your formik field, please use `field` and not `fieldId`
+ * When Prisma returns an existing object, it hydrates both values
+ * When a new picture is uploaded, it hydrates both values
+ * When pushing to Prisma, you might need to strip the `field` from Formik values
+ * before sending it to the backend, so you can use Prisma's UncheckedInput types:
+ * ```
+ *    R.omit(['field'])(formikValues)
+ * ```
+ * Otherwise, Prisma will raise a `"Unknown arg `field` in data.field for type MyObjectUnchecked(Create|Update)Input"`
+ */
 export function FileUpload({ isDisabled = false, label, name }: FileUploadProps) {
   const { errors, isSubmitting, setFieldError, setFieldValue, values } = useFormikContext<any>()
 
-  const inputRef = useRef<HTMLInputElement | null>(null)
   const { uploadToS3 } = useS3Upload()
   const [isUploading, setIsUploading] = useState(false)
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const [createFile] = useMutation(queries.file.CREATE_ONE)
 
   const uploadUrl = values?.[name]?.url
 
@@ -62,10 +84,21 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
     setIsUploading(true)
     try {
       const file = event.target.files[0]
+
+      // Upload file to S3
       const { url } = await uploadToS3(file)
 
+      // Create the file entry in the DB (for further a11y props)
       // TODO: Remove useless FileType
-      setFieldValue(name, { title: file.name, type: FileType.EXTERNAL, url })
+      const input = { title: file.name, type: FileType.EXTERNAL, url }
+      const createFileResult = await createFile({
+        variables: { input },
+      })
+
+      // Update both the field value and its ID field for Prisma
+      setFieldValue(name, input)
+      setFieldValue(`${name}Id`, createFileResult.data.createFile.id)
+
       setIsUploading(false)
     } catch (e) {
       setFieldError(name, `Une erreur est survenue lors du chargement: ${e}`)

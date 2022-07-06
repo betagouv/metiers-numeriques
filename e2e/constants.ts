@@ -33,10 +33,25 @@ export const TEST_CONTACTS = [
 
 export const TEST_INSTITUTIONS = [
   {
+    description: 'Description A',
     name: '$$ Institution A Name',
+    pageTitle: 'Institution A',
+    url: 'iA.gouv.fr',
   },
   {
+    description: 'Description B',
     name: '$$ Institution B Name',
+    pageTitle: 'Institution B',
+    url: 'iB.gouv.fr',
+  },
+]
+
+export const TEST_TESTIMONIES = [
+  {
+    institution: TEST_INSTITUTIONS[0],
+    job: 'Software Engineer',
+    name: '$$ Testimony A',
+    testimony: 'I really like this!',
   },
 ]
 

@@ -75,6 +75,17 @@ export function AdminMenu() {
             </Link>
           )}
 
+          {isAdmin && (
+            <Link href="/admin/testimonies">
+              <VerticalMenu.Item
+                isActive={router.pathname === '/admin/testimonies' || router.pathname.startsWith('/admin/testimon/')}
+                isDark
+              >
+                Témoignages
+              </VerticalMenu.Item>
+            </Link>
+          )}
+
           <Link href="/admin/jobs">
             <VerticalMenu.Item
               isActive={router.pathname === '/admin/jobs' || router.pathname.startsWith('/admin/job/')}

@@ -1,0 +1,73 @@
+import { buildPrismaPaginationFilter } from '@api/helpers/buildPrismaPaginationFilter'
+import { buildPrismaWhereFilter } from '@api/helpers/buildPrismaWhereFilter'
+import { prisma } from '@api/libs/prisma'
+import { handleError } from '@common/helpers/handleError'
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import type { Prisma, Testimony } from '@prisma/client'
+
+export default async function ApiTestimoniesEndpoint(req: NextApiRequest, res: NextApiResponse) {
+  switch (req.method) {
+    case 'GET':
+      return getTestimonies(req, res)
+    case 'POST':
+      return createTestimony(req, res)
+    default:
+      return defaultResponse(req, res)
+  }
+}
+
+const getTestimonies = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const pageIndex = +(req.query?.pageIndex || 0)
+    const perPage = +(req.query?.perPage || 10) // TODO: default value here
+    const query = req.query?.query as string
+
+    const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
+
+    const whereFilter = buildPrismaWhereFilter<Testimony>(['name'], query)
+
+    const args: Prisma.TestimonyFindManyArgs = {
+      include: {
+        institution: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+      ...paginationFilter,
+      ...whereFilter,
+    }
+
+    const length = await prisma.testimony.count(whereFilter)
+    const data = (await prisma.testimony.findMany(args)) as unknown as Testimony[]
+    const count = perPage !== undefined ? Math.ceil(length / perPage) : 1
+
+    res.send({
+      count,
+      data,
+      index: pageIndex,
+      length,
+    })
+  } catch (err) {
+    handleError(err, 'pages/api/testimonies/index.ts > query.getTestimonies()')
+
+    res.status(400).send({
+      count: 1,
+      data: [],
+      index: 0,
+      length: 0,
+    })
+  }
+}
+
+const createTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const createResponse = await prisma.testimony.create({ data: JSON.parse(req.body) })
+    res.status(201).send(createResponse)
+  } catch (err) {
+    handleError(err, 'pages/api/testimonies/index.ts > query.createTestimony()')
+    res.status(400).end()
+  }
+}
+
+const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
