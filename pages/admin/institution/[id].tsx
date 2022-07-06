@@ -20,7 +20,7 @@ import * as Yup from 'yup'
 
 import type { InstitutionFromGetOne } from '@api/resolvers/institutions'
 import type { MutationFunctionOptions } from '@apollo/client'
-import type { InstitutionUncheckedCreateInput } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 import type { TableColumnProps } from '@singularity/core'
 
 const RECRUITER_LIST_COLUMNS: TableColumnProps[] = [
@@ -98,11 +98,11 @@ export default function AdminInstitutionEditorPage() {
     router.push('/admin/institutions')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: InstitutionUncheckedCreateInput) => {
+  const saveAndGoToList = useCallback(async (values: Prisma.InstitutionUncheckedCreateInput) => {
     try {
       setIsLoading(true)
 
-      const input: InstitutionUncheckedCreateInput = R.pick([
+      const filteredInput = R.pick([
         'fullName',
         'name',
         'url',
@@ -115,10 +115,12 @@ export default function AdminInstitutionEditorPage() {
         'organisation',
       ])(values)
 
-      if (isNew) {
-        input.id = cuid()
+      const inputId = isNew ? cuid() : (id as string)
+      const input = {
+        id: inputId,
+        slug: slugify(values.name, inputId),
+        ...filteredInput,
       }
-      input.slug = slugify(input.name, input.id)
 
       const options: MutationFunctionOptions = {
         variables: {

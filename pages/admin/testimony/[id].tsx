@@ -10,7 +10,7 @@ import * as R from 'ramda'
 import { useCallback, useEffect, useState } from 'react'
 import * as Yup from 'yup'
 
-import type { Testimony, TestimonyUncheckedCreateInput } from '@prisma/client'
+import type { Testimony, Prisma } from '@prisma/client'
 
 export const TestimonyFormSchema = Yup.object().shape({
   institutionId: Yup.string().required(`L'institution est obligatoire.`),
@@ -62,7 +62,7 @@ export default function AdminTestimonyEditorPage() {
     router.push('/admin/testimonies')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: TestimonyUncheckedCreateInput) => {
+  const saveAndGoToList = useCallback(async (values: Prisma.TestimonyUncheckedCreateInput) => {
     try {
       setIsLoading(true)
 
