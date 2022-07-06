@@ -1,0 +1,6 @@
+{
+  "*.{html,json,md,mdx,scss,yaml}": "prettier --write",
+  "*.{cjs,js,ts,tsx}": [
+    "eslint --quiet --fix"
+  ]
+}
