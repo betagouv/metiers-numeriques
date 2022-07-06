@@ -41,7 +41,7 @@ const updateTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).send(updateResponse)
   } catch (err) {
     handleError(err, 'pages/api/testimonies/[testimonyId].ts > query.updateTestimony()')
-    res.status(400).send(err)
+    res.status(400).end()
   }
 }
 

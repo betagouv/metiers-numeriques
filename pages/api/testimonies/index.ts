@@ -66,7 +66,7 @@ const createTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(201).send(createResponse)
   } catch (err) {
     handleError(err, 'pages/api/testimonies/index.ts > query.createTestimony()')
-    res.status(400).send(err)
+    res.status(400).end()
   }
 }
 
