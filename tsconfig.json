@@ -4,6 +4,8 @@
     "baseUrl": ".",
     "incremental": true,
     "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmit": true,
     "paths": {
       "@api/*": ["api/*"],
       "@app/*": ["app/*"],
