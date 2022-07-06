@@ -116,9 +116,11 @@ export default function AdminInstitutionEditorPage() {
       ])(values)
 
       const inputId = isNew ? cuid() : (id as string)
+      const inputSlug = isNew ? slugify(values.name) : values.slug
+
       const input = {
         id: inputId,
-        slug: slugify(values.name, inputId),
+        slug: inputSlug,
         ...filteredInput,
       }
 
