@@ -191,11 +191,13 @@ model Institution {
 }
 
 model Testimony {
-	id               String @id @default(cuid())
+	id               String      @id @default(cuid())
+	createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt @default(now())
 	name             String
 	job              String
-	avatarFile       File?   @relation("TestimonyAvatarFile", fields: [avatarFileId], references: [id])
-	avatarFileId     String? @unique
+	avatarFile       File?       @relation("TestimonyAvatarFile", fields: [avatarFileId], references: [id])
+	avatarFileId     String?     @unique
 	testimony        String
 	institution      Institution @relation("TestimonyInstituion", fields: [institutionId], references: [id])
   institutionId    String
