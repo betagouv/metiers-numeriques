@@ -29,7 +29,7 @@ const Box = styled.div<{
     position: absolute;
     right: 0;
     top: 0;
-    z-index: 3;
+    z-index: 3000;
   }
 `
 
