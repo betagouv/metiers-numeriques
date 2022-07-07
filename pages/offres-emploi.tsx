@@ -37,6 +37,12 @@ const CounterBox = styled.div`
   }
 `
 
+const FilterButtonBox = styled.div`
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`
+
 const CounterSentenceBox = styled.p`
   display: flex;
   font-size: ${theme.typography.desktop.body.normal.size};
@@ -265,9 +271,11 @@ export default function JobListPage({
             </Button>
           )}
 
-          <Button accent="secondary" onClick={openFilterModal} size="medium">
-            Filtres
-          </Button>
+          <FilterButtonBox>
+            <Button accent="secondary" onClick={openFilterModal} size="medium">
+              Filtres
+            </Button>
+          </FilterButtonBox>
         </CounterButtonsBox>
       </CounterBox>
 

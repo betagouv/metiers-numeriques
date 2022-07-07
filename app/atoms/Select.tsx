@@ -23,6 +23,10 @@ const StyledReactSelect = styled(ReactSelect)`
     padding: 1.25rem 1.25rem 0.25rem;
   }
 
+  .react-select__menu {
+    z-index: 1000;
+  }
+
   /* width: 100%; */
 
   ::placeholder {
