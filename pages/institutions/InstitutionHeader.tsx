@@ -12,6 +12,10 @@ const HeaderContainer = styled.div`
   top: 11rem;
   left: 0;
   width: 100%;
+
+  @media screen and (max-width: 767px) {
+    top: 11.7rem;
+  }
 `
 
 const Header = styled.div`
@@ -29,8 +33,16 @@ const Title = styled.h1`
   color: white;
   font-size: 4rem;
   line-height: 3.7rem;
-  margin-left: -5px;
   margin-bottom: 0;
+
+  @media screen and (min-width: 768px) {
+    margin-left: -5px;
+  }
+
+  @media screen and (max-width: 767px) {
+    font-size: 2rem;
+    line-height: 2.25rem;
+  }
 `
 
 const PageTitle = styled.div`
@@ -38,6 +50,11 @@ const PageTitle = styled.div`
   font-size: 1.5rem;
   line-height: 2rem;
   margin-bottom: 0.5rem;
+
+  @media screen and (max-width: 767px) {
+    font-size: 1rem;
+    line-height: 1.25rem;
+  }
 `
 
 const InstitutionLogo = styled.img`

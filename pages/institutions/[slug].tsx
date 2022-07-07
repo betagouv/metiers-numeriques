@@ -13,8 +13,9 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 const ContentContainer = styled.div`
-  margin-top: 11rem;
-  margin-bottom: 4rem;
+  position: relative;
+  top: 12rem;
+  margin-bottom: 8rem;
 `
 
 const SubTitle = styled.h2`
@@ -23,6 +24,10 @@ const SubTitle = styled.h2`
   color: ${theme.color.primary.darkBlue};
   font-weight: 500;
   margin-bottom: 2.5rem;
+
+  @media screen and (max-width: 767px) {
+    margin-bottom: 1.5rem;
+  }
 `
 
 const Card = styled.div`
@@ -88,7 +93,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
   }))
 
   return (
-    <div>
+    <>
       <Head>
         <title>{institution.pageTitle}</title>
       </Head>
@@ -121,7 +126,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
         </div>
 
         <SubTitle>Offres en cours</SubTitle>
-        <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
+        <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v fr-mb-10v fr-mb-md-0">
           {jobs.map(job => (
             <div key={job.id} className="fr-col-12 fr-col-md-4">
               <JobCard job={job} />
@@ -129,7 +134,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
           ))}
         </div>
       </ContentContainer>
-    </div>
+    </>
   )
 }
 

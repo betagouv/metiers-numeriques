@@ -2,6 +2,18 @@ import { theme } from '@app/theme'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
+const TabContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  margin: 4rem 0 3rem;
+
+  @media screen and (max-width: 767px) {
+    margin: 2rem -1.5rem;
+  }
+`
+
 const Tab = styled.div<{ selected?: boolean }>`
   padding: 0.5rem 1rem;
   color: ${p => (p.selected ? theme.color.primary.darkBlue : 'inherit')};
@@ -29,12 +41,12 @@ export const TabMenu = ({ tabs }: TabMenuProps) => {
   }
 
   return (
-    <div className="fr-grid-row fr-pb-12v fr-pt-16v">
+    <TabContainer>
       {tabs.map((tab, index) => (
         <Tab key={tab.label} onClick={() => handleClick(tab, index)} selected={index === currentTabIndex}>
           {tab.label}
         </Tab>
       ))}
-    </div>
+    </TabContainer>
   )
 }
