@@ -3,15 +3,17 @@ import { renderMarkdown } from '@app/helpers/renderMarkdown'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { JobCard, JobWithRelation } from '@app/organisms/JobCard'
 import { theme } from '@app/theme'
+import { Institution } from '@prisma/client'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { InstitutionHeader } from 'pages/institutions/InstitutionHeader'
+import { TabMenu } from 'pages/institutions/TabMenu'
+import { InstitutionWithRelation } from 'pages/institutions/types'
 import * as R from 'ramda'
 import styled from 'styled-components'
 
-import { InstitutionHeader } from './InstitutionHeader'
-import { InstitutionWithRelation } from './types'
-
 const ContentContainer = styled.div`
-  margin-top: 13rem;
+  margin-top: 11rem;
   margin-bottom: 4rem;
 `
 
@@ -55,12 +57,37 @@ const TestimonyAuthor = styled.div`
   margin-bottom: 0.75rem;
 `
 
+type InstitutionTabFields = keyof Pick<
+  Institution,
+  'description' | 'challenges' | 'mission' | 'structure' | 'organisation'
+>
+
+const TABS: { [key: string]: InstitutionTabFields } = {
+  description: 'description',
+  enjeux: 'challenges',
+  mission: 'mission',
+  organisation: 'organisation',
+  structure: 'structure',
+}
+
 type InstitutionPageProps = {
   institution: InstitutionWithRelation
   jobs: JobWithRelation[]
+  slug: string
+  tab?: keyof typeof TABS
 }
 
-export default function InstitutionPage({ institution, jobs }: InstitutionPageProps) {
+export default function InstitutionPage({ institution, jobs, slug, tab }: InstitutionPageProps) {
+  const router = useRouter()
+
+  const institutionTabField = tab ? TABS[tab] : 'description'
+  const bodyMarkdown = institution[institutionTabField]
+
+  const tabs = R.map(tabName => ({
+    label: tabName,
+    onClick: () => router.push(`/institutions/${slug}/${tabName}`),
+  }))(Object.keys(TABS))
+
   return (
     <div>
       <Head>
@@ -69,9 +96,11 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
       <InstitutionHeader institution={institution} />
 
       <ContentContainer>
-        {institution.description && (
+        <TabMenu tabs={tabs} />
+
+        {bodyMarkdown && (
           <section className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
-            <div className="fr-col-12 fr-col-md-9">{renderMarkdown(institution.description)}</div>
+            <div className="fr-col-12 fr-col-md-9">{renderMarkdown(bodyMarkdown)}</div>
           </section>
         )}
 
@@ -109,9 +138,13 @@ export async function getStaticPaths() {
   const institutions = await prisma.institution.findMany()
   const slugs = R.pipe(R.map(R.prop('slug')), R.uniq)(institutions)
 
-  const paths = slugs.map(slug => ({
-    params: { slug },
-  }))
+  const paths = slugs.flatMap(slug =>
+    [null, ...Object.keys(TABS)].map(tab => ({
+      params: { paths: tab ? [slug, tab] : [slug] },
+    })),
+  )
+
+  console.log(paths)
 
   return {
     fallback: 'blocking',
@@ -119,7 +152,11 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params: { slug } }) {
+export async function getStaticProps({ params: { paths } }) {
+  const slug = paths[0]
+  const tab = paths.length > 1 ? paths[1] : null
+  console.log(slug, tab)
+
   const institution = await prisma.institution.findUnique({
     include: {
       logoFile: true,
@@ -163,11 +200,13 @@ export async function getStaticProps({ params: { slug } }) {
     },
   })
 
+  console.log(slug, tab, institution)
+
   const institutionWithHumanDates = stringifyDeepDates(institution)
   const jobsWithHumanDates = stringifyDeepDates(jobs)
 
   return {
-    props: { institution: institutionWithHumanDates, jobs: jobsWithHumanDates },
+    props: { institution: institutionWithHumanDates, jobs: jobsWithHumanDates, slug, tab },
     revalidate: 300,
   }
 }
