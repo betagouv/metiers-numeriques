@@ -38,6 +38,8 @@ const Card = styled.div`
   flex-direction: column;
   flex-grow: 1;
   padding: 1.5rem;
+  height: 100%;
+  justify-content: space-between;
 `
 
 const TestimonyAvatar = styled.img`
@@ -99,7 +101,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
 
   const bodyMarkdown = institution[currentBodyKey]
 
-  const tabs = TABS.map(tab => ({
+  const tabs = TABS.filter(tab => !!institution[tab.key]).map(tab => ({
     ...tab,
     onClick: () => setCurrentBodyKey(tab.key),
   }))
@@ -107,7 +109,15 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
   return (
     <>
       <Head>
-        <title>{institution.pageTitle}</title>
+        <title>{institution.pageTitle} | Métiers du Numérique</title>
+
+        {institution.pageTitle && <meta content={institution.pageTitle} property="og:title" />}
+        {institution.description && (
+          <>
+            <meta content={institution.description} property="og:description" />
+            <meta content={institution.description} name="description" />
+          </>
+        )}
       </Head>
       <InstitutionHeader institution={institution} />
 
@@ -120,31 +130,39 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
           </section>
         )}
 
-        <SubTitle>{institution.testimonyTitle}</SubTitle>
-        <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
-          {institution.testimonies.map(testimony => (
-            <div key={testimony.id} className="fr-col-12 fr-col-md-6">
-              <Card>
-                <p>{testimony.testimony}</p>
-                <TestimonyAuthorContainer>
-                  <TestimonyAvatar src={testimony.avatarFile.url} />
-                  <TestimonyAuthor>
-                    {testimony.name}, {testimony.job}
-                  </TestimonyAuthor>
-                </TestimonyAuthorContainer>
-              </Card>
+        {!!institution.testimonies?.length && (
+          <>
+            <SubTitle>{institution.testimonyTitle}</SubTitle>
+            <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
+              {institution.testimonies.map(testimony => (
+                <div key={testimony.id} className="fr-col-12 fr-col-md-6">
+                  <Card>
+                    <p>{testimony.testimony}</p>
+                    <TestimonyAuthorContainer>
+                      <TestimonyAvatar src={testimony.avatarFile.url} />
+                      <TestimonyAuthor>
+                        {testimony.name}, {testimony.job}
+                      </TestimonyAuthor>
+                    </TestimonyAuthorContainer>
+                  </Card>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
-        <SubTitle>Offres en cours</SubTitle>
-        <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v fr-mb-10v fr-mb-md-0">
-          {jobs.map(job => (
-            <div key={job.id} className="fr-col-12 fr-col-md-4">
-              <JobCard job={job} />
+        {!!jobs?.length && (
+          <>
+            <SubTitle>Offres en cours</SubTitle>
+            <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v fr-mb-10v fr-mb-md-0">
+              {jobs.map(job => (
+                <div key={job.id} className="fr-col-12 fr-col-md-4">
+                  <JobCard job={job} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </ContentContainer>
     </>
   )
