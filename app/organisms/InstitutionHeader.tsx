@@ -1,8 +1,10 @@
 import { theme } from '@app/theme'
+import { File, Institution, Testimony } from '@prisma/client'
 import React from 'react'
 import styled from 'styled-components'
 
-import { InstitutionWithRelation } from './types'
+type TestimonyWithRelation = Testimony & { avatarFile: File }
+export type InstitutionWithRelation = Institution & { logoFile?: File; testimonies: TestimonyWithRelation[] }
 
 const HeaderContainer = styled.div`
   display: flex;
