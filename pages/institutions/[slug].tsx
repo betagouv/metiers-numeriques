@@ -3,59 +3,16 @@ import { renderMarkdown } from '@app/helpers/renderMarkdown'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { JobCard, JobWithRelation } from '@app/organisms/JobCard'
 import { theme } from '@app/theme'
-import { File, Testimony } from '@prisma/client'
 import Head from 'next/head'
 import * as R from 'ramda'
 import styled from 'styled-components'
 
-import type { Institution } from '@prisma/client'
-
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: ${theme.color.primary.darkBlue};
-  position: absolute;
-  top: 11rem;
-  left: 0;
-  width: 100%;
-`
-
-const Header = styled.div`
-  color: white;
-  padding: 3rem 1.5rem;
-  width: 78rem;
-`
+import { InstitutionHeader } from './InstitutionHeader'
+import { InstitutionWithRelation } from './types'
 
 const ContentContainer = styled.div`
   margin-top: 13rem;
   margin-bottom: 4rem;
-`
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-
-const Title = styled.h1`
-  color: white;
-  font-size: 4rem;
-  line-height: 3.7rem;
-  margin-left: -5px;
-  margin-bottom: 0;
-`
-
-const PageTitle = styled.div`
-  color: white;
-  font-size: 1.5rem;
-  line-height: 2rem;
-  margin-bottom: 0.5rem;
-`
-
-const InstitutionLogo = styled.img`
-  width: 100px;
-  height: 90px;
-  object-fit: cover;
-  margin-right: 2rem;
 `
 
 const SubTitle = styled.h2`
@@ -98,9 +55,6 @@ const TestimonyAuthor = styled.div`
   margin-bottom: 0.75rem;
 `
 
-type TestimonyWithRelation = Testimony & { avatarFile: File }
-type InstitutionWithRelation = Institution & { logoFile?: File; testimonies: TestimonyWithRelation[] }
-
 type InstitutionPageProps = {
   institution: InstitutionWithRelation
   jobs: JobWithRelation[]
@@ -112,24 +66,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
       <Head>
         <title>{institution.pageTitle}</title>
       </Head>
-      <HeaderContainer>
-        <Header className="fr-py-4w">
-          <Row>
-            {institution.logoFile && (
-              <InstitutionLogo alt={`${institution.name} logo`} src={institution.logoFile.url} />
-            )}
-            <div>
-              <Title>{institution.name}</Title>
-              <PageTitle>{institution.pageTitle}</PageTitle>
-              {institution.url && (
-                <a href={institution.url} rel="noreferrer" target="_blank">
-                  {institution.url.replace(/https?:\/\//, '')}
-                </a>
-              )}
-            </div>
-          </Row>
-        </Header>
-      </HeaderContainer>
+      <InstitutionHeader institution={institution} />
 
       <ContentContainer>
         {institution.description && (
