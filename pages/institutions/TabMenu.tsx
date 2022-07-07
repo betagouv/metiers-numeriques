@@ -13,6 +13,7 @@ const Tab = styled.div<{ selected?: boolean }>`
 `
 
 type TabProps = {
+  key: string
   label: string
   onClick: () => void
 }
