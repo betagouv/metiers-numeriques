@@ -20,7 +20,7 @@ export const theme = {
     },
     primary: {
       azure: '#4196f0',
-      darkBlue: '#0053ad',
+      darkBlue: '#000F9F',
       lightBlue: '#eef5fc',
       navy: '#0663c7',
       sky: '#dbedff',

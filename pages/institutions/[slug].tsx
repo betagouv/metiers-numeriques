@@ -126,7 +126,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
 
         {!!institution.testimonies?.length && (
           <>
-            <SubTitle>{institution.testimonyTitle}</SubTitle>
+            <SubTitle>{institution.testimonyTitle || 'Ils y travaillent'}</SubTitle>
             <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
               {institution.testimonies.map(testimony => (
                 <div key={testimony.id} className="fr-col-12 fr-col-md-6">
@@ -192,7 +192,7 @@ export async function getStaticProps({ params: { slug } }) {
     },
   })
 
-  if (institution === null) {
+  if (institution === null || !institution.pageTitle || !institution.description) {
     return {
       notFound: true,
     }

@@ -21,7 +21,7 @@ export function ContractTypesFilter({ onChange }: ContractTypesFilterProps) {
     <Select
       isClearable
       isMulti
-      label="Filtrer par domaine"
+      label="Filtrer par type de contrat"
       name="profession"
       onChange={handleChange as any}
       options={JOB_CONTRACT_TYPES_AS_OPTIONS}
