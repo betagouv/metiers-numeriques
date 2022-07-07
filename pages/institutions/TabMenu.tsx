@@ -10,6 +10,7 @@ const TabContainer = styled.div`
   margin: 4rem 0 3rem;
 
   @media screen and (max-width: 767px) {
+    padding: 0 1rem;
     margin: 2rem -1.5rem;
   }
 `

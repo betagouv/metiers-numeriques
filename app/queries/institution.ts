@@ -34,6 +34,7 @@ export const GET_ONE = gql`
       name
       url
       pageTitle
+      testimonyTitle
       description
       challenges
       mission

@@ -179,6 +179,7 @@ model Institution {
   logoFileId       String?          @unique
 
   pageTitle        String?
+  testimonyTitle   String?
   description      String?
   challenges       String?
   mission          String?

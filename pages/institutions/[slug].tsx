@@ -45,6 +45,13 @@ const TestimonyAvatar = styled.img`
   height: 128px;
   object-fit: cover;
   border-radius: 64px;
+
+  @media screen and (max-width: 767px) {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 45px;
+  }
 `
 
 const TestimonyAuthorContainer = styled.div`
@@ -60,6 +67,11 @@ const TestimonyAuthor = styled.div`
   font-size: 1.5rem;
   line-height: 2rem;
   margin-bottom: 0.75rem;
+
+  @media screen and (max-width: 767px) {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
 `
 
 type InstitutionTabFields = keyof Pick<
@@ -108,7 +120,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
           </section>
         )}
 
-        <SubTitle>Ils travaillent {institution.pageTitle}</SubTitle>
+        <SubTitle>{institution.testimonyTitle}</SubTitle>
         <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
           {institution.testimonies.map(testimony => (
             <div key={testimony.id} className="fr-col-12 fr-col-md-6">
