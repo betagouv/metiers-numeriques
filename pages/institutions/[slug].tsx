@@ -1,6 +1,7 @@
 import { prisma } from '@api/libs/prisma'
 import { renderMarkdown } from '@app/helpers/renderMarkdown'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
+import { JobCard, JobWithRelation } from '@app/organisms/JobCard'
 import { theme } from '@app/theme'
 import { File, Testimony } from '@prisma/client'
 import Head from 'next/head'
@@ -27,6 +28,7 @@ const Header = styled.div`
 
 const ContentContainer = styled.div`
   margin-top: 13rem;
+  margin-bottom: 4rem;
 `
 
 const Row = styled.div`
@@ -56,12 +58,12 @@ const InstitutionLogo = styled.img`
   margin-right: 2rem;
 `
 
-const TestimonyTitle = styled.h2`
-  margin-top: 8rem;
+const SubTitle = styled.h2`
   font-size: 2.5rem;
   line-height: 3rem;
   color: ${theme.color.primary.darkBlue};
   font-weight: 500;
+  margin-bottom: 2.5rem;
 `
 
 const Card = styled.div`
@@ -101,9 +103,10 @@ type InstitutionWithRelation = Institution & { logoFile?: File; testimonies: Tes
 
 type InstitutionPageProps = {
   institution: InstitutionWithRelation
+  jobs: JobWithRelation[]
 }
 
-export default function InstitutionPage({ institution }: InstitutionPageProps) {
+export default function InstitutionPage({ institution, jobs }: InstitutionPageProps) {
   return (
     <div>
       <Head>
@@ -120,7 +123,7 @@ export default function InstitutionPage({ institution }: InstitutionPageProps) {
               <PageTitle>{institution.pageTitle}</PageTitle>
               {institution.url && (
                 <a href={institution.url} rel="noreferrer" target="_blank">
-                  {institution.url}
+                  {institution.url.replace(/https?:\/\//, '')}
                 </a>
               )}
             </div>
@@ -130,15 +133,15 @@ export default function InstitutionPage({ institution }: InstitutionPageProps) {
 
       <ContentContainer>
         {institution.description && (
-          <section className="fr-grid-row fr-grid-row--gutters">
+          <section className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
             <div className="fr-col-12 fr-col-md-9">{renderMarkdown(institution.description)}</div>
           </section>
         )}
 
-        <TestimonyTitle>Ils travaillent {institution.pageTitle}</TestimonyTitle>
-        <div className="fr-grid-row fr-grid-row--gutters">
-          {R.take(2)(institution.testimonies).map(testimony => (
-            <div className="fr-col-12 fr-col-md-6">
+        <SubTitle>Ils travaillent {institution.pageTitle}</SubTitle>
+        <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
+          {institution.testimonies.map(testimony => (
+            <div key={testimony.id} className="fr-col-12 fr-col-md-6">
               <Card>
                 <p>{testimony.testimony}</p>
                 <TestimonyAuthorContainer>
@@ -148,6 +151,15 @@ export default function InstitutionPage({ institution }: InstitutionPageProps) {
                   </TestimonyAuthor>
                 </TestimonyAuthorContainer>
               </Card>
+            </div>
+          ))}
+        </div>
+
+        <SubTitle>Offres en cours</SubTitle>
+        <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
+          {jobs.map(job => (
+            <div key={job.id} className="fr-col-12 fr-col-md-4">
+              <JobCard job={job} />
             </div>
           ))}
         </div>
@@ -178,6 +190,10 @@ export async function getStaticProps({ params: { slug } }) {
         include: {
           avatarFile: true,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        take: 2,
       },
     },
     where: {
@@ -191,10 +207,30 @@ export async function getStaticProps({ params: { slug } }) {
     }
   }
 
+  const jobs = await prisma.job.findMany({
+    include: {
+      address: true,
+      applicationContacts: true,
+      infoContact: true,
+      profession: true,
+      recruiter: true,
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+    take: 3,
+    where: {
+      recruiter: {
+        institutionId: institution.id,
+      },
+    },
+  })
+
   const institutionWithHumanDates = stringifyDeepDates(institution)
+  const jobsWithHumanDates = stringifyDeepDates(jobs)
 
   return {
-    props: { institution: institutionWithHumanDates },
+    props: { institution: institutionWithHumanDates, jobs: jobsWithHumanDates },
     revalidate: 300,
   }
 }

@@ -37,6 +37,12 @@ const Date = styled.p`
 `
 
 const Title = styled.h3`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 150%;
   font-weight: 600;
   line-height: 1.25;
