@@ -19,7 +19,7 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
   const pageTitle = `${archivedJob.title} | Métiers du Numérique`
 
   return (
-    <div className="fr-py-4w">
+    <div className="fr-container">
       <Head>
         <title>{pageTitle}</title>
 

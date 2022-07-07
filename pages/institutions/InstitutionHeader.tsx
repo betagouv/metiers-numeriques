@@ -8,10 +8,6 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
   background-color: ${theme.color.primary.darkBlue};
-  position: absolute;
-  top: 11rem;
-  left: 0;
-  width: 100%;
 
   @media screen and (max-width: 767px) {
     top: 11.7rem;
@@ -70,7 +66,7 @@ type InstitutionHeaderProps = {
 
 export const InstitutionHeader = ({ institution }: InstitutionHeaderProps) => (
   <HeaderContainer>
-    <Header className="fr-py-4w">
+    <Header className="fr-container fr-py-4w">
       <Row>
         {institution.logoFile && <InstitutionLogo alt={`${institution.name} logo`} src={institution.logoFile.url} />}
         <div>

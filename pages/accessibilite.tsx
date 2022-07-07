@@ -4,7 +4,7 @@ export default function LegalNoticesPage() {
   const pageTitle = 'Déclaration d’accessibilité | Métiers du Numérique'
 
   return (
-    <article className="fr-pt-4w fr-pb-8w">
+    <article className="fr-container fr-pt-4w fr-pb-8w">
       <Head>
         <title>{pageTitle}</title>
       </Head>

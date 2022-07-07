@@ -242,7 +242,7 @@ export default function JobListPage({
   }, [])
 
   return (
-    <div className="fr-py-4w">
+    <div className="fr-container fr-py-4w">
       <Head>
         <title>{pageTitle}</title>
 

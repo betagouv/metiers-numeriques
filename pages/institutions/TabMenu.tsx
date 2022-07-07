@@ -7,7 +7,6 @@ const TabContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   overflow-y: auto;
-  margin: 4rem 0 3rem;
 
   @media screen and (max-width: 767px) {
     padding: 0 1rem;

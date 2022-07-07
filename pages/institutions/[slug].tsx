@@ -12,12 +12,6 @@ import * as R from 'ramda'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-const ContentContainer = styled.div`
-  position: relative;
-  top: 12rem;
-  margin-bottom: 8rem;
-`
-
 const SubTitle = styled.h2`
   font-size: 2.5rem;
   line-height: 3rem;
@@ -121,11 +115,11 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
       </Head>
       <InstitutionHeader institution={institution} />
 
-      <ContentContainer>
+      <div className="fr-container fr-mb-12v fr-mt-16v">
         <TabMenu tabs={tabs} />
 
         {bodyMarkdown && (
-          <section className="fr-grid-row fr-grid-row--gutters fr-pb-24v">
+          <section className="fr-grid-row fr-grid-row--gutters fr-mt-12v fr-mb-24v">
             <div className="fr-col-12 fr-col-md-9">{renderMarkdown(bodyMarkdown)}</div>
           </section>
         )}
@@ -154,7 +148,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
         {!!jobs?.length && (
           <>
             <SubTitle>Offres en cours</SubTitle>
-            <div className="fr-grid-row fr-grid-row--gutters fr-pb-24v fr-mb-10v fr-mb-md-0">
+            <div className="fr-grid-row fr-grid-row--gutters">
               {jobs.map(job => (
                 <div key={job.id} className="fr-col-12 fr-col-md-4">
                   <JobCard job={job} />
@@ -163,7 +157,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
             </div>
           </>
         )}
-      </ContentContainer>
+      </div>
     </>
   )
 }

@@ -94,7 +94,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
   const structuredData = !isPreview ? generateJobStructuredData(job) : ''
 
   return (
-    <div className="fr-py-4w">
+    <div className="fr-container">
       <Head>
         <title>{pageTitle}</title>
 
