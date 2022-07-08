@@ -66,7 +66,7 @@ export function TestimonialBar() {
       </Picture>
 
       <Content>
-        <Title as="h2">
+        <Title as="h2" isFirst>
           Pourquoi venir travailler
           <br />
           dans le public ?

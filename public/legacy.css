@@ -70,16 +70,6 @@ main * > p:not(:first-child) {
   color: var(--border-action-high-warning);
 }
 
-/* Card */
-
-main .fr-card__img {
-  filter: brightness(90%);
-  background: white;
-}
-main .fr-card__img img {
-  object-fit: contain;
-}
-
 /* Header */
 
 .fr-header {
@@ -90,24 +80,6 @@ main .fr-card__img img {
   .fr-header {
     border-bottom: 0;
   }
-}
-
-/* Input */
-
-.fr-input {
-  box-shadow: none;
-  padding: 0.375rem 0.75rem 0.625rem;
-}
-.fr-input-wrap[class*=' fr-fi-']:before,
-.fr-input-wrap[class*=' fr-icon-']:before,
-.fr-input-wrap[class^='fr-fi-']:before,
-.fr-input-wrap[class^='fr-icon-']:before {
-  bottom: 0.75rem;
-  font-size: 1rem !important;
-  margin: auto;
-  position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
 }
 
 /*******************************************************************************

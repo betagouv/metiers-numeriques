@@ -1,12 +1,12 @@
 import { prisma } from '@api/libs/prisma'
-import { Link } from '@app/atoms/Link'
+import { Title } from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { renderMarkdown } from '@app/helpers/renderMarkdown'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
+import { JobMenu } from '@app/organisms/JobMenu'
 import Head from 'next/head'
-import { useMemo } from 'react'
 
-import { JobContent, JobInfo } from '../[slug]'
+import { Body, InfoBar, JobContent } from '../[slug]'
 
 import type { ArchivedJob } from '@prisma/client'
 
@@ -15,12 +15,11 @@ type ArchivedJobPageProps = {
 }
 
 export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
-  const pageTitle = useMemo(() => `${archivedJob.title} | Métiers du Numérique`, [])
-
   const pageDescription = archivedJob.missionDescription
+  const pageTitle = `${archivedJob.title} | Métiers du Numérique`
 
   return (
-    <>
+    <div className="fr-py-4w">
       <Head>
         <title>{pageTitle}</title>
 
@@ -29,81 +28,62 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <JobContent className="fr-container--fluid">
-        <div className="fr-mb-4w fr-mt-6w">
-          <h1>{archivedJob.title}</h1>
+      <Title as="h1" isFirst>
+        {archivedJob.title}
+      </Title>
+
+      <InfoBar>
+        <div>
+          <i className="ri-calendar-line" />
+          {humanizeDate(archivedJob.expiredAt)}
         </div>
-
-        <div className="fr-alert fr-alert--warning fr-my-2w">
-          <p className="fr-alert__title">Cette offre a déjà été pourvue !</p>
-          <p
-            style={{
-              paddingTop: '1rem',
-            }}
-          >
-            <Link href="/">Voulez-vous rechercher un autre offre d’emploi ?</Link>
-          </p>
+        <div>
+          <i className="ri-suitcase-line" />
+          {archivedJob.recruiterName}
         </div>
-
-        <div className="fr-callout fr-px-0 fr-my-2w">
-          <div className="fr-callout__text fr-text--lg">
-            <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Recruteur</div>
-              <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{archivedJob.recruiterName}</div>
-            </div>
-
-            <div className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-12 fr-pl-4w fr-col-md-3 fr-pl-md-8w">Région</div>
-              <div className="fr-col-12 fr-pl-4w fr-col-md-9 fr-pl-md-0">{archivedJob.region}</div>
-            </div>
-          </div>
+        <div>
+          <i className="ri-map-pin-line" />
+          {archivedJob.region}
         </div>
+      </InfoBar>
 
-        <div className="fr-my-4w" id="job-detail-main-fields">
-          <section className="fr-grid-row fr-grid-row--gutters">
-            <div className="fr-col-12 fr-col-md-3">
-              <h2>Mission</h2>
-            </div>
-            <div className="fr-col-12 fr-col-md-9">{renderMarkdown(archivedJob.missionDescription)}</div>
-          </section>
+      <Body>
+        <JobMenu job={archivedJob as any} />
+
+        <JobContent className="fr-container--fluid">
+          <Title as="h2" id="mission" isFirst>
+            Mission
+          </Title>
+          {renderMarkdown(archivedJob.missionDescription)}
 
           {archivedJob.profileDescription && (
-            <section className="fr-grid-row fr-grid-row--gutters">
-              <div className="fr-col-12 fr-col-md-3">
-                <h2>Votre profil</h2>
-              </div>
-              <div className="fr-col-12 fr-col-md-9">{renderMarkdown(archivedJob.profileDescription)}</div>
-            </section>
+            <>
+              <Title as="h2" id="profil-recherche">
+                Profil recherché
+              </Title>
+              {renderMarkdown(archivedJob.profileDescription)}
+            </>
           )}
-        </div>
-      </JobContent>
 
-      <JobInfo className="fr-container--fluid fr-mt-4w fr-mb-0 fr-text--lg">
-        <div className="fr-grid-row">
-          <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w">
-            Date Limite :
-          </div>
-          <div
-            className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-1w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w"
-            style={{
-              color: 'red',
-              fontWeight: 700,
-            }}
-          >
-            {humanizeDate(archivedJob.expiredAt)}
-          </div>
-        </div>
-
-        <div className="fr-grid-row" style={{ opacity: 0.65 }}>
-          <div className="fr-col-12 fr-px-2w fr-pt-3w fr-pb-0 fr-col-md-3 fr-pl-md-2w fr-pr-md-0 fr-py-md-1w fr-pb-md-2w">
-            <p>Référence interne :</p>
-          </div>
-          <div className="fr-col-12 fr-px-2w fr-pt-0 fr-pb-3w fr-col-md-9 fr-pl-md-0 fr-pr-md-2w fr-py-md-1w fr-pb-md-2w">
-            <code>{archivedJob.id.toUpperCase()}</code>
-          </div>
-        </div>
-      </JobInfo>
-    </>
+          <Title as="h2" id="pour-candidater">
+            Pour candidater
+          </Title>
+          <p>
+            Date limite :{' '}
+            <strong
+              style={{
+                color: 'red',
+              }}
+            >
+              {humanizeDate(archivedJob.expiredAt)}
+            </strong>
+          </p>
+          <p>
+            Référence interne : <code>{archivedJob.id.toUpperCase()}</code>
+          </p>
+        </JobContent>
+      </Body>
+    </div>
   )
 }
 

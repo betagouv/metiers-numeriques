@@ -23,6 +23,19 @@ const NewsletterBox = styled.div`
   }
 `
 
+const StyledForm = styled(Form)`
+  align-items: flex-start;
+  display: flex;
+  margin-top: 3rem;
+
+  > .TextInput {
+    flex-grow: 1;
+  }
+  > .Button {
+    margin-left: 1rem;
+  }
+`
+
 export const FormSchema = Yup.object().shape({
   email: Yup.string()
     .required(`Sans addresse e-mail, ça va être compliqué !`)
@@ -156,10 +169,10 @@ export const JobApplicationModal = ({ job, onDone }: JobApplicationModalProps) =
               {!hasAlreadySubscribed && (
                 <NewsletterBox className="fr-modal__footer">
                   {!hasJustSubscribed && (
-                    <Form initialValues={{}} onSubmit={createLead as any} validationSchema={FormSchema}>
-                      <Form.TextInput label="E-mail" name="email" type="email" />
+                    <StyledForm initialValues={{}} onSubmit={createLead as any} validationSchema={FormSchema}>
+                      <Form.TextInput aria-label="Adresse email" name="email" placeholder="tim.berners-lee@w3c.org" />
                       <Form.Submit>TENEZ-MOI INFORMÉ·E !</Form.Submit>
-                    </Form>
+                    </StyledForm>
                   )}
                   {hasJustSubscribed && (
                     <>

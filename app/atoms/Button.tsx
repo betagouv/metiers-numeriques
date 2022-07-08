@@ -126,6 +126,7 @@ export const StyledButton = styled.button<{
   min-height: auto;
   padding: ${p => SIZE_TABLE[p.size].padding};
   transition: all 0.2s ease;
+  white-space: nowrap;
 
   :hover {
     background-color: ${p => ACCENT_TABLE[p.accent].backgroundColor.hover};
@@ -153,9 +154,10 @@ export const StyledButton = styled.button<{
     color: ${p => (p.isLoading ? ACCENT_TABLE[p.accent].color.loading : ACCENT_TABLE[p.accent].color.disabled)};
   }
 
-  > span {
-    align-self: flex-end;
+  /* Right icons */
+  > i {
     margin-left: 1rem;
+    margin-top: 3px;
   }
 `
 

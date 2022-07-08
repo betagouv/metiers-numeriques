@@ -56,14 +56,14 @@ export function JobSearchBar() {
   return (
     <Box>
       <Content>
-        <Title as="h2">
+        <Title as="h2" isFirst>
           Tu es un talent du numérique ?<br />
           Mets tes compétences
           <br />
           au service des citoyens !
         </Title>
 
-        <StyledForm initialValues={{}} isInline onSubmit={goToJobList} validationSchema={FormSchema}>
+        <StyledForm initialValues={{}} onSubmit={goToJobList} validationSchema={FormSchema}>
           <Form.TextInput aria-label="Mot-clé" name="query" placeholder="Développeur" />
           <Form.Submit>Chercher</Form.Submit>
         </StyledForm>

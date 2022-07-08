@@ -85,7 +85,7 @@ export function JobCard({ job }: JobCardProps) {
       <Card>
         <Date>Publiée le {humanizeDate(job.updatedAt)}</Date>
 
-        <Title className="fr-card__lead">
+        <Title>
           <Link
             href={`/emploi/${job.slug}`}
             noUnderline
@@ -133,7 +133,7 @@ export function JobCard({ job }: JobCardProps) {
           </li>
         </ul>
 
-        <Excerpt className="fr-card__desc">{job.missionDescription}</Excerpt>
+        <Excerpt>{job.missionDescription}</Excerpt>
 
         <Info>
           <i className="ri-map-pin-line" />
