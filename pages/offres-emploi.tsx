@@ -251,7 +251,9 @@ export default function JobListPage({
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <Title as="h1">Toutes les offres</Title>
+      <Title as="h1" isFirst>
+        Toutes les offres
+      </Title>
 
       <JobFilterBar
         key={jobFilterBarKey}

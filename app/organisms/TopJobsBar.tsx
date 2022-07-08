@@ -35,7 +35,9 @@ type TopJobsBarProps = {
 export function TopJobsBar({ jobs }: TopJobsBarProps) {
   return (
     <Box>
-      <Title as="h2">Nos offres de la semaine</Title>
+      <Title as="h2" isFirst>
+        Nos offres de la semaine
+      </Title>
 
       <List>
         {jobs.map(job => (

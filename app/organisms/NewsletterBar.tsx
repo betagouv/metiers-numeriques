@@ -102,13 +102,14 @@ export function NewsletterBar() {
       <Content>
         {!hasJustSubscribed && (
           <>
-            {' '}
-            <Title as="h2">On reste en contact ?</Title>
+            <Title as="h2" isFirst>
+              On reste en contact ?
+            </Title>
             <Text>
               Laisse-nous ton adresse mail ci-dessous et reçois des informations sur les métiers du numériques au sein
               de l’État. Promis on ne te spammera pas !
             </Text>
-            <StyledForm initialValues={{}} isInline onSubmit={createLead} validationSchema={FormSchema}>
+            <StyledForm initialValues={{}} onSubmit={createLead} validationSchema={FormSchema}>
               <Form.TextInput aria-label="Adresse email" name="email" placeholder="tim.berners-lee@w3c.org" />
               <Form.Submit>S’inscrire</Form.Submit>
             </StyledForm>
@@ -117,7 +118,9 @@ export function NewsletterBar() {
 
         {hasJustSubscribed && (
           <div>
-            <Title as="h2">Plus qu’une dernière étape !</Title>
+            <Title as="h2" isFirst>
+              Plus qu’une dernière étape !
+            </Title>
             <Text>Vérifiez votre messagerie pour valider votre abonnement 😉.</Text>
           </div>
         )}
