@@ -2,6 +2,7 @@ import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { theme } from '@app/theme'
+import * as R from 'ramda'
 import { useCallback } from 'react'
 import styled from 'styled-components'
 
@@ -121,19 +122,17 @@ export function JobCard({ job }: JobCardProps) {
             {job.profession.name}
           </li>
 
-          {job?.domains
-            ?.sort((a, b) => a.name.localeCompare(b.name))
-            ?.map(domain => (
-              <li
-                key={domain.id}
-                className="fr-tag fr-tag--sm"
-                style={{
-                  backgroundColor: theme.color.primary.lightBlue,
-                }}
-              >
-                {domain.name}
-              </li>
-            ))}
+          {R.sortBy<Domain>(d => d.name, job?.domains || []).map(domain => (
+            <li
+              key={domain.id}
+              className="fr-tag fr-tag--sm"
+              style={{
+                backgroundColor: theme.color.primary.lightBlue,
+              }}
+            >
+              {domain.name}
+            </li>
+          ))}
         </ul>
 
         <Excerpt>{job.missionDescription}</Excerpt>

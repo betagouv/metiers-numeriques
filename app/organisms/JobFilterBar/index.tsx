@@ -1,8 +1,10 @@
 import { Button } from '@app/atoms/Button'
 import { ButtonX } from '@app/atoms/ButtonX'
 import { TextInput } from '@app/atoms/TextInput'
+import { DomainFilter } from '@app/organisms/JobFilterBar/DomainFilter'
 import { Region } from '@common/constants'
 import { define } from '@common/helpers/define'
+import { Domain } from '@prisma/client'
 import { FormEvent, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
@@ -11,7 +13,7 @@ import { ProfessionFilter } from './ProfessionFilter'
 import { RegionFilter } from './RegionFilter'
 import { RemoteStatusesFilter } from './RemoteStatusesFilter'
 
-import type { Institution, JobContractType, JobRemoteStatus, Profession } from '@prisma/client'
+import type { JobContractType, JobRemoteStatus, Profession } from '@prisma/client'
 
 const Box = styled.div<{
   isModalOpen: boolean
@@ -66,18 +68,16 @@ const FilterList = styled.div`
 
 export type Filter = {
   contractTypes: JobContractType[]
+  domainId?: string
   institutionIds: string[]
-  professionId: string | undefined
-  query: string | undefined
-  region: Region | undefined
+  professionId?: string
+  query?: string
+  region?: Region
   remoteStatuses: JobRemoteStatus[]
 }
 export const INITIAL_FILTER: Filter = {
   contractTypes: [],
   institutionIds: [],
-  professionId: undefined,
-  query: undefined,
-  region: undefined,
   remoteStatuses: [],
 }
 
@@ -85,15 +85,21 @@ export const INITIAL_ACCORDION_FILTER: string = 'professionIdFilter'
 
 type JobFilterBarProps = {
   defaultQuery?: string
-  // eslint-disable-next-line react/no-unused-prop-types
-  institutions: Pick<Institution, 'id' | 'name'>[]
+  domains: Domain[]
   isModalOpen: boolean
   onChange: (filter: Filter) => void | Promise<void>
   onModalClose: () => void | Promise<void>
   professions: Pick<Profession, 'id' | 'name'>[]
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose, professions }: JobFilterBarProps) {
+export function JobFilterBar({
+  defaultQuery,
+  domains,
+  isModalOpen,
+  onChange,
+  onModalClose,
+  professions,
+}: JobFilterBarProps) {
   const $filter = useRef<Filter>({
     ...INITIAL_FILTER,
     query: defaultQuery,
@@ -114,6 +120,12 @@ export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose
 
   const handleProfessionId = useCallback((professionId: string) => {
     $filter.current.professionId = professionId
+
+    onChange($filter.current)
+  }, [])
+
+  const handleDomainId = useCallback((domainId?: string) => {
+    $filter.current.domainId = domainId
 
     onChange($filter.current)
   }, [])
@@ -164,6 +176,7 @@ export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose
 
       <FilterList>
         <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
+        <DomainFilter domains={domains} onChange={handleDomainId} />
         <RegionFilter onChange={handleRegion as any} />
         <ContractTypesFilter onChange={handleContractTypes} />
         <RemoteStatusesFilter onChange={handleRemoteStatuses} />

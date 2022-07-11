@@ -329,6 +329,7 @@ export const query = {
     obj,
     queryArgs: GetAllArgs & {
       contractTypes?: JobContractType[]
+      domainId?: string
       institutionIds?: string[]
       professionId?: string
       region?: Region
@@ -336,8 +337,17 @@ export const query = {
     },
   ): Promise<GetAllResponse<JobFromGetPublicJobs>> => {
     try {
-      const { contractTypes, institutionIds, pageIndex, perPage, professionId, query, region, remoteStatuses } =
-        queryArgs
+      const {
+        contractTypes,
+        domainId,
+        institutionIds,
+        pageIndex,
+        perPage,
+        professionId,
+        query,
+        region,
+        remoteStatuses,
+      } = queryArgs
 
       const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
 
@@ -355,6 +365,7 @@ export const query = {
         }
       }
       if (institutionIds !== undefined && institutionIds.length > 0) {
+        // TODO: remove this (unused)
         andFilter.recruiter = {
           institution: {
             id: {
@@ -365,6 +376,11 @@ export const query = {
       }
       if (professionId !== undefined) {
         andFilter.professionId = professionId
+      }
+      if (domainId !== undefined) {
+        andFilter.domains = {
+          some: { id: domainId },
+        }
       }
       if (region !== undefined) {
         andFilter.address = { region }

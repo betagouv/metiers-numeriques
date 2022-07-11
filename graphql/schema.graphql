@@ -74,6 +74,7 @@ type Query {
     pageIndex: Int!
     perPage: Int!
     professionId: String
+    domainId: String
     query: String
     region: String
     remoteStatuses: [String]

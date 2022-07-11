@@ -32,6 +32,7 @@ export const GET_ALL_PUBLIC = gql`
     $pageIndex: Int!
     $perPage: Int!
     $professionId: String
+    $domainId: String
     $query: String
     $region: String
     $remoteStatuses: [String]
@@ -42,6 +43,7 @@ export const GET_ALL_PUBLIC = gql`
       pageIndex: $pageIndex
       perPage: $perPage
       professionId: $professionId
+      domainId: $domainId
       query: $query
       region: $region
       remoteStatuses: $remoteStatuses
