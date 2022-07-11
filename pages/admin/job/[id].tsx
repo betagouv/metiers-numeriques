@@ -79,7 +79,7 @@ export const JobFormSchema = Yup.object().shape(
     expiredAtAsString: Yup.string().nullable().required(`La date d’expiration est obligatoire.`),
     infoContactId: Yup.string().nullable().required(`Le contact unique pour les questions est obligatoire.`),
     missionDescription: Yup.string().nullable().trim().required(`Décrire la mission est obligatoire.`),
-    professionId: Yup.string().nullable().required(`Le secteur d’activité est obligatoire.`),
+    professionId: Yup.string().nullable().required(`La compétence est obligatoire.`),
     recruiterId: Yup.string().nullable().required(`Le service recruteur est obligatoire.`),
     remoteStatus: Yup.string().nullable().required(`Indiquer les possibilités de télétravail est obligatoire.`),
     salaryMax: Yup.number()
@@ -355,7 +355,7 @@ export default function AdminJobEditorPage() {
           <DoubleField>
             <AdminForm.ProfessionSelect
               isDisabled={isLoading}
-              label="Secteur d’activité *"
+              label="Compétence *"
               name="professionId"
               placeholder="…"
             />

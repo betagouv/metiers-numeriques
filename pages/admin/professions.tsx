@@ -119,7 +119,7 @@ export default function AdminProfessionListPage() {
       action: goToEditor,
       Icon: Edit,
       key: 'edit',
-      label: 'Éditer cette profession',
+      label: 'Éditer cette compétence',
       type: 'action',
     },
     {
@@ -127,7 +127,7 @@ export default function AdminProfessionListPage() {
       action: confirmDeletion,
       Icon: Trash,
       key: 'delete',
-      label: 'Supprimer cette profession',
+      label: 'Supprimer cette compétence',
       type: 'action',
     },
   ]
@@ -135,15 +135,15 @@ export default function AdminProfessionListPage() {
   return (
     <>
       <AdminHeader>
-        <AdminTitle>Secteurs d’activité</AdminTitle>
+        <AdminTitle>Compétence</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
-          Ajouter un secteur d’activité
+          Ajouter une compétence
         </Button>
       </AdminHeader>
 
       <Card>
-        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher un secteur d’activité" />
+        <TextInput ref={$searchInput} onInput={() => query(0)} placeholder="Rechercher une compétence" />
 
         <Table
           columns={columns}

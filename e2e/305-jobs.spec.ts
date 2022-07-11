@@ -50,7 +50,7 @@ test.describe('Admin > Jobs', () => {
         await page.fill('"Service recruteur *"', testJob.recruiter.displayName)
         await page.click(`"${testJob.recruiter.displayName}"`)
 
-        await page.fill('"Secteur d’activité *"', testJob.profession.name)
+        await page.fill('"Compétence *"', testJob.profession.name)
         await page.click(`"${testJob.profession.name}"`)
 
         await page.click('.Select__clear-indicator:below(:text("Types de contrat *"))')

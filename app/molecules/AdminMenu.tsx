@@ -101,7 +101,7 @@ export function AdminMenu() {
                 isActive={router.pathname === '/admin/professions' || router.pathname.startsWith('/admin/profession/')}
                 isDark
               >
-                Secteurs d’activité
+                Compétences
               </VerticalMenu.Item>
             </Link>
           )}
