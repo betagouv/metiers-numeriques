@@ -47,6 +47,7 @@ describe('app/helpers/generateJobStructuredData()', () => {
       contextDescription: null,
       contractTypes: ['CONTRACT_WORKER', 'NATIONAL_CIVIL_SERVANT'],
       createdAt: '2022-02-10T07:40:05.356Z' as unknown as Date,
+      domains: [],
       expiredAt: '2022-02-27T23:00:00.000Z' as unknown as Date,
       id: 'ckzgo7z0c0000386gl7uv1q4j',
       infoContact: {

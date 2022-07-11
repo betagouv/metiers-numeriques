@@ -57,6 +57,10 @@ export const GET_ALL_PUBLIC = gql`
         title
         updatedAt
 
+        domains {
+          id
+          name
+        }
         address {
           id
 

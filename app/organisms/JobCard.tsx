@@ -2,16 +2,17 @@ import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { theme } from '@app/theme'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import styled from 'styled-components'
 
 import { Link } from '../atoms/Link'
 
-import type { Address, Contact, Job, Profession, Recruiter } from '@prisma/client'
+import type { Address, Contact, Job, Profession, Recruiter, Domain } from '@prisma/client'
 
 export type JobWithRelation = Job & {
   address: Address
   applicationContacts: Contact[]
+  domains: Domain[]
   infoContact: Contact
   profession: Profession
   recruiter: Recruiter
@@ -80,9 +81,9 @@ const Info = styled.p`
 type JobCardProps = {
   job: JobWithRelation
 }
+
 export function JobCard({ job }: JobCardProps) {
   const location = job.address.country === 'FR' ? job.address.region : getCountryFromCode(job.address.country)
-  const seniorityInYears = useMemo(() => Math.ceil(job.seniorityInMonths / 12), [])
 
   const trackJobOpening = useCallback(() => {
     matomo.trackGoal(MatomoGoal.JOB_OPENING)
@@ -120,14 +121,19 @@ export function JobCard({ job }: JobCardProps) {
             {job.profession.name}
           </li>
 
-          <li
-            className="fr-tag fr-tag--sm"
-            style={{
-              backgroundColor: theme.color.primary.lightBlue,
-            }}
-          >
-            Armée
-          </li>
+          {job?.domains
+            ?.sort((a, b) => a.name.localeCompare(b.name))
+            ?.map(domain => (
+              <li
+                key={domain.id}
+                className="fr-tag fr-tag--sm"
+                style={{
+                  backgroundColor: theme.color.primary.lightBlue,
+                }}
+              >
+                {domain.name}
+              </li>
+            ))}
         </ul>
 
         <Excerpt>{job.missionDescription}</Excerpt>

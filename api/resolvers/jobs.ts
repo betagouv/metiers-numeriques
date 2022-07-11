@@ -177,6 +177,7 @@ export const mutation = {
         },
         include: {
           applicationContacts: true,
+          domains: true,
         },
         where: {
           id,
@@ -290,6 +291,7 @@ export const query = {
         include: {
           address: true,
           applicationContacts: true,
+          domains: true,
           infoContact: true,
           profession: true,
           recruiter: true,
@@ -378,6 +380,7 @@ export const query = {
         include: {
           address: true,
           applicationContacts: true,
+          domains: true,
           infoContact: true,
           profession: true,
           recruiter: {

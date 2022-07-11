@@ -338,6 +338,7 @@ export async function getServerSideProps(
     include: {
       address: true,
       applicationContacts: true,
+      domains: true,
       infoContact: true,
       profession: true,
       recruiter: true,
