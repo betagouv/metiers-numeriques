@@ -10,21 +10,18 @@ import * as R from 'ramda'
 import { useCallback, useEffect, useState } from 'react'
 import * as Yup from 'yup'
 
-import type { Testimony, Prisma } from '@prisma/client'
+import type { Domain, Prisma } from '@prisma/client'
 
-export const TestimonyFormSchema = Yup.object().shape({
-  institutionId: Yup.string().required(`L'institution est obligatoire.`),
-  job: Yup.string().required(`La profession est obligatoire.`),
+export const DomainFormSchema = Yup.object().shape({
   name: Yup.string().required(`Le nom est obligatoire.`),
-  testimony: Yup.string().required(`Le témoignage est obligatoire.`),
 })
 
-export default function AdminTestimonyEditorPage() {
+export default function AdminDomainEditorPage() {
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
 
-  const [initialValues, setInitialValues] = useState<Testimony>()
+  const [initialValues, setInitialValues] = useState<Domain>()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isNotFound, setIsNotFound] = useState(false)
@@ -35,7 +32,7 @@ export default function AdminTestimonyEditorPage() {
     }
 
     setIsLoading(true)
-    fetch(`/api/testimonies/${id}`)
+    fetch(`/api/domains/${id}`)
       .then(res => {
         if (res.status === 200) {
           return res.json()
@@ -50,7 +47,7 @@ export default function AdminTestimonyEditorPage() {
         setInitialValues(data)
       })
       .catch(err => {
-        handleError(err, 'pages/admin/testimony/[id].tsx > fetchTestimony()')
+        handleError(err, 'pages/admin/domain/[id].tsx > fetchDomain()')
         setIsError(true)
       })
       .finally(() => {
@@ -59,25 +56,24 @@ export default function AdminTestimonyEditorPage() {
   }, [isNew])
 
   const goToList = useCallback(() => {
-    router.push('/admin/testimonies')
+    router.push('/admin/domains')
   }, [])
 
-  const saveAndGoToList = useCallback(async (values: Prisma.TestimonyUncheckedCreateInput) => {
+  const saveAndGoToList = useCallback(async (values: Prisma.DomainCreateInput) => {
     try {
       setIsLoading(true)
 
-      const valuesWithoutNestedRelations = R.omit(['avatarFile'])(values)
-      const body = JSON.stringify(valuesWithoutNestedRelations)
+      const body = JSON.stringify(values)
 
       if (isNew) {
-        await fetch('/api/testimonies', { body, method: 'POST' })
+        await fetch('/api/domains', { body, method: 'POST' })
       } else {
-        await fetch(`/api/testimonies/${id}`, { body, method: 'PUT' })
+        await fetch(`/api/domains/${id}`, { body, method: 'PUT' })
       }
 
       goToList()
     } catch (err) {
-      handleError(err, 'pages/admin/testimony/[id].tsx > saveAndGoToList()')
+      handleError(err, 'pages/admin/domain/[id].tsx > saveAndGoToList()')
     } finally {
       setIsLoading(false)
     }
@@ -86,7 +82,7 @@ export default function AdminTestimonyEditorPage() {
   return (
     <>
       <AdminHeader>
-        <AdminTitle>{isNew ? 'Nouveau témoignage' : 'Édition d’un témoignage'}</AdminTitle>
+        <AdminTitle>{isNew ? 'Nouveau domaine' : 'Édition d’un domaine'}</AdminTitle>
       </AdminHeader>
 
       {isNotFound && <AdminErrorCard error={ADMIN_ERROR.NOT_FOUND} />}
@@ -95,27 +91,11 @@ export default function AdminTestimonyEditorPage() {
       <AdminForm
         initialValues={initialValues || {}}
         onSubmit={saveAndGoToList as any}
-        validationSchema={TestimonyFormSchema}
+        validationSchema={DomainFormSchema}
       >
         <AdminCard isFirst>
           <Field>
-            <AdminForm.InstitutionSelect isDisabled={isLoading} label="Institution *" name="institutionId" />
-          </Field>
-
-          <Field>
             <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
-          </Field>
-
-          <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Profession *" name="job" />
-          </Field>
-
-          <Field>
-            <AdminForm.FileUpload isDisabled={isLoading} label="Avatar" name="avatarFile" />
-          </Field>
-
-          <Field>
-            <AdminForm.Textarea isDisabled={isLoading} label="Témoignage *" name="testimony" />
           </Field>
 
           <Field>
