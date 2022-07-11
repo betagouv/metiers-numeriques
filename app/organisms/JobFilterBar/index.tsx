@@ -84,15 +84,20 @@ export const INITIAL_FILTER: Filter = {
 export const INITIAL_ACCORDION_FILTER: string = 'professionIdFilter'
 
 type JobFilterBarProps = {
-  institutions: Institution[]
+  defaultQuery?: string
+  // eslint-disable-next-line react/no-unused-prop-types
+  institutions: Pick<Institution, 'id' | 'name'>[]
   isModalOpen: boolean
   onChange: (filter: Filter) => void | Promise<void>
   onModalClose: () => void | Promise<void>
-  professions: Profession[]
+  professions: Pick<Profession, 'id' | 'name'>[]
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose, professions }: JobFilterBarProps) {
-  const $filter = useRef<Filter>({ ...INITIAL_FILTER })
+export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose, professions }: JobFilterBarProps) {
+  const $filter = useRef<Filter>({
+    ...INITIAL_FILTER,
+    query: defaultQuery,
+  })
 
   const handleContractTypes = useCallback((contractTypes: JobContractType[]) => {
     $filter.current.contractTypes = contractTypes
@@ -149,7 +154,13 @@ export function JobFilterBar({ institutions, isModalOpen, onChange, onModalClose
         </div>
       </DialogHeader>
 
-      <TextInput aria-label="Mot-clé" name="query" onInput={handleQuery} placeholder="Rechercher par mot-clé" />
+      <TextInput
+        aria-label="Mot-clé"
+        defaultValue={defaultQuery}
+        name="query"
+        onInput={handleQuery}
+        placeholder="Rechercher par mot-clé"
+      />
 
       <FilterList>
         <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
