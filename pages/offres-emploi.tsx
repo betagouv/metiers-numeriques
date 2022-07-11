@@ -14,12 +14,14 @@ import { handleError } from '@common/helpers/handleError'
 import { JobState } from '@prisma/client'
 import throttle from 'lodash.throttle'
 import Head from 'next/head'
+import { mergeDeepRight } from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Filter } from '@app/organisms/JobFilterBar'
-import type { Institution, Profession } from '@prisma/client'
+import type { Institution, Profession, Prisma } from '@prisma/client'
+import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 
 const INITIAL_VARIABLES = {
   pageIndex: 0,
@@ -69,16 +71,18 @@ const List = styled.div`
 `
 
 type JobListPageProps = {
-  initialInstitutions: Institution[]
+  initialInstitutions: Pick<Institution, 'id' | 'name'>[]
   initialJobs: JobWithRelation[]
   initialJobsLength: number
-  initialProfessions: Profession[]
+  initialProfessions: Pick<Profession, 'id' | 'name'>[]
+  initialQueryFilter?: string
 }
 export default function JobListPage({
   initialInstitutions,
   initialJobs,
   initialJobsLength,
   initialProfessions,
+  initialQueryFilter,
 }: JobListPageProps) {
   const $hasFilter = useRef<boolean>(false)
   const $hasMoreJobs = useRef<boolean>(initialJobs.length > 0 && initialJobsLength > initialJobs.length)
@@ -257,6 +261,7 @@ export default function JobListPage({
 
       <JobFilterBar
         key={jobFilterBarKey}
+        defaultQuery={initialQueryFilter}
         institutions={initialInstitutions}
         isModalOpen={isFilterModalOpen}
         onChange={filter => query(0, filter)}
@@ -290,19 +295,34 @@ export default function JobListPage({
   )
 }
 
-export async function getStaticProps() {
-  const whereFilter = {
-    where: {
-      AND: {
-        expiredAt: {
-          gt: new Date(),
-        },
-        state: JobState.PUBLISHED,
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<GetServerSidePropsResult<JobListPageProps>> {
+  const { query } = context.query
+  const initialQueryFilter = typeof query === 'string' ? query : undefined
+
+  const whereFilterBase: Prisma.JobWhereInput = {
+    AND: {
+      expiredAt: {
+        gt: new Date(),
       },
+      state: JobState.PUBLISHED,
     },
   }
+  const whereFilter: Prisma.JobWhereInput = initialQueryFilter
+    ? mergeDeepRight(whereFilterBase, {
+        AND: {
+          title: {
+            contains: initialQueryFilter,
+            mode: 'insensitive',
+          },
+        },
+      })
+    : whereFilterBase
 
-  const initialJobsLength = await prisma.job.count(whereFilter)
+  const initialJobsLength = await prisma.job.count({
+    where: whereFilter,
+  })
 
   const initialInstitutions = await prisma.institution.findMany({
     orderBy: {
@@ -326,7 +346,7 @@ export async function getStaticProps() {
       updatedAt: 'desc',
     },
     take: INITIAL_VARIABLES.perPage,
-    ...whereFilter,
+    where: whereFilter,
   })
 
   const initialProfessions = await prisma.profession.findMany({
@@ -347,7 +367,7 @@ export async function getStaticProps() {
       initialJobs: normalizedIinitialJobs,
       initialJobsLength,
       initialProfessions,
+      initialQueryFilter,
     },
-    revalidate: 300,
   }
 }

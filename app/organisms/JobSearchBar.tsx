@@ -1,11 +1,12 @@
 import { Title } from '@app/atoms/Title'
 import { Form } from '@app/molecules/Form'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import styled from 'styled-components'
 import * as Yup from 'yup'
 
-import type { FormikHelpers, FormikValues } from 'formik'
+import type { FormikValues } from 'formik'
 
 const FormSchema = Yup.object().shape({
   query: Yup.string().trim().required(`N’oubliez pas le mot-clé 😉.`),
@@ -46,11 +47,13 @@ const StyledForm = styled(Form)`
 `
 
 export function JobSearchBar() {
-  const goToJobList = useCallback(({ query }: FormikValues, { setErrors }: FormikHelpers<FormikValues>) => {
-    // eslint-disable-next-line no-console
-    console.log(`TODO ${query}`)
+  const router = useRouter()
 
-    setErrors({})
+  const goToJobList = useCallback(({ query }: FormikValues) => {
+    const urlSearchParams = new URLSearchParams({
+      query,
+    })
+    router.push(`/offres-emploi?${urlSearchParams.toString()}`)
   }, [])
 
   return (
