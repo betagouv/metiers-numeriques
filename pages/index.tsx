@@ -36,7 +36,7 @@ export default function HomePage({ topJobs }: HomePageProps) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const topInstitutions = await prisma.institution.findMany({
     orderBy: {
       name: 'asc',
