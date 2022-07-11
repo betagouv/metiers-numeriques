@@ -29,7 +29,7 @@ export function ProfessionFilter({ onChange, professions }: ProfessionFilterProp
   return (
     <Select
       isClearable
-      label="Filtrer par domaine"
+      label="Filtrer par compétence"
       name="profession"
       onChange={handleChange as any}
       options={options}
