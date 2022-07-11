@@ -81,6 +81,7 @@ describe('app/helpers/generateJobStructuredData()', () => {
         displayName: null,
         fullName: null,
         id: 'ckyyms87t0279a0j7esc6vpfe',
+        institution: { name: 'Institution B' },
         institutionId: null,
         logoFileId: null,
         name: 'Recruteur B',

@@ -54,7 +54,15 @@ export async function getStaticProps() {
       applicationContacts: true,
       infoContact: true,
       profession: true,
-      recruiter: true,
+      recruiter: {
+        include: {
+          institution: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
     orderBy: {
       updatedAt: 'desc',

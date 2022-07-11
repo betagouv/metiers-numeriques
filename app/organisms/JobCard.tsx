@@ -16,7 +16,7 @@ export type JobWithRelation = Job & {
   domains: Domain[]
   infoContact: Contact
   profession: Profession
-  recruiter: Recruiter
+  recruiter: Recruiter & { institution: { name: string } }
 }
 
 const Box = styled.div`
@@ -147,10 +147,10 @@ export function JobCard({ job }: JobCardProps) {
             <i className="ri-suitcase-line" style={{ color: theme.color.primary.azure }} />
             {job.recruiter.websiteUrl && (
               <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                {job.recruiter.displayName}
+                {job.recruiter.institution.name}
               </a>
             )}
-            {!job.recruiter.websiteUrl && job.recruiter.displayName}
+            {!job.recruiter.websiteUrl && job.recruiter.institution.name}
           </Info>
         </Row>
       </Card>
