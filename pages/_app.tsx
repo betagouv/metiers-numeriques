@@ -54,7 +54,7 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
 
       <WithGraphql>
         <Header />
-        <main className="fr-container">
+        <main>
           <Component {...pageProps} />
         </main>
         <Footer />

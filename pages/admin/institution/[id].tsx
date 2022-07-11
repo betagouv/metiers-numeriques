@@ -108,6 +108,7 @@ export default function AdminInstitutionEditorPage() {
         'url',
         'logoFileId',
         'pageTitle',
+        'testimonyTitle',
         'description',
         'challenges',
         'mission',
@@ -116,9 +117,11 @@ export default function AdminInstitutionEditorPage() {
       ])(values)
 
       const inputId = isNew ? cuid() : (id as string)
+      const inputSlug = isNew ? slugify(values.name) : values.slug
+
       const input = {
         id: inputId,
-        slug: slugify(values.name, inputId),
+        slug: inputSlug,
         ...filteredInput,
       }
 
@@ -225,7 +228,21 @@ export default function AdminInstitutionEditorPage() {
         <AdminCard>
           <Subtitle>Page Vitrine</Subtitle>
           <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Titre" name="pageTitle" />
+            <AdminForm.TextInput
+              isDisabled={isLoading}
+              label="Titre"
+              name="pageTitle"
+              placeholder="Les SIC de la Défense"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.TextInput
+              isDisabled={isLoading}
+              label="Titre Témoignages"
+              name="testimonyTitle"
+              placeholder="Ils travaillent aux SIC de la Défense"
+            />
           </Field>
 
           <Field>

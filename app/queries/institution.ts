@@ -29,10 +29,12 @@ export const GET_ONE = gql`
   query GetInstitution($id: String!) {
     getInstitution(id: $id) {
       id
+      slug
 
       name
       url
       pageTitle
+      testimonyTitle
       description
       challenges
       mission

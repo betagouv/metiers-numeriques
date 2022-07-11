@@ -20,7 +20,7 @@ export default function HomePage({ topJobs }: HomePageProps) {
     'Découvrez l’ensemble des offres d’emploi du numérique au sein de l’État et des administrations territoriales.'
 
   return (
-    <div className="fr-pb-4w">
+    <div className="fr-container fr-pb-4w">
       <Head>
         <title>{pageTitle}</title>
 
