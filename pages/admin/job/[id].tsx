@@ -370,6 +370,10 @@ export default function AdminJobEditorPage() {
             />
           </DoubleField>
 
+          <Field>
+            <AdminForm.DomainSelect isDisabled={isLoading} label="Domaines *" name="domainIds" />
+          </Field>
+
           <DoubleField>
             <AdminForm.TextInput
               isDisabled={isLoading}
@@ -387,9 +391,9 @@ export default function AdminJobEditorPage() {
             />
           </DoubleField>
 
-          <Field>
+          <DoubleField>
             <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
-          </Field>
+          </DoubleField>
         </AdminCard>
 
         <AdminCard>

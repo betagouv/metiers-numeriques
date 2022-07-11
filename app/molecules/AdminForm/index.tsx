@@ -8,6 +8,7 @@ import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { ContactSelect } from './ContactSelect'
 import { CountrySelect } from './CountrySelect'
+import { DomainSelect } from './DomainSelect'
 import { Editor } from './Editor'
 import { Error } from './Error'
 import { FileUpload } from './FileUpload'
@@ -69,6 +70,7 @@ export const AdminForm = Object.assign(_AdminFormWithRef, {
   Checkbox,
   ContactSelect,
   CountrySelect,
+  DomainSelect,
   Editor,
   Error,
   FileUpload,
