@@ -38,6 +38,7 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   addressAsPrismaAddress: Prisma.AddressCreateInput
   applicationContactIds: string[]
   contractTypes: JobContractType[]
+  domainIds: string[]
   expiredAtAsString: string
   infoContactId: string
   professionId: string
@@ -76,6 +77,9 @@ export const JobFormSchema = Yup.object().shape(
     contractTypes: Yup.array(Yup.string().nullable())
       .required(`Au moins un type de contrat est obligatoire.`)
       .min(1, `Au moins un type de contrat est obligatoire.`),
+    domainIds: Yup.array(Yup.string().nullable())
+      .required(`Au moins un domaine est obligatoire.`)
+      .min(1, `Au moins un domaine est obligatoire.`),
     expiredAtAsString: Yup.string().nullable().required(`La date d’expiration est obligatoire.`),
     infoContactId: Yup.string().nullable().required(`Le contact unique pour les questions est obligatoire.`),
     missionDescription: Yup.string().nullable().trim().required(`Décrire la mission est obligatoire.`),
@@ -148,6 +152,7 @@ export default function AdminJobEditorPage() {
         'applicationWebsiteUrl',
         'contextDescription',
         'contractTypes',
+        'domainIds',
         'infoContactId',
         'missionDescription',
         'missionVideoUrl',
@@ -284,6 +289,7 @@ export default function AdminJobEditorPage() {
 
     initialValues.seniorityInYears = Math.ceil(initialValues.seniorityInMonths / 12)
 
+    initialValues.domainIds = initialValues.domains.map(({ id }) => id)
     initialValues.applicationContactIds = initialValues.applicationContacts.map(({ id }) => id)
     if (initialValues.infoContact !== null) {
       initialValues.infoContactId = initialValues.infoContact.id

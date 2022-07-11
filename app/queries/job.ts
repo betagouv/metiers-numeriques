@@ -123,6 +123,9 @@ export const GET_ONE = gql`
       applicationContacts {
         id
       }
+      domains {
+        id
+      }
       infoContact {
         id
       }

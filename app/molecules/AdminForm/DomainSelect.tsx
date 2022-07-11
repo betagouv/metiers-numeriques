@@ -34,30 +34,30 @@ export function DomainSelect({ helper, isDisabled = false, label, name, placehol
   const maybeError = hasError ? String(errors[name]) : undefined
 
   const defaultValue = useMemo(() => {
-    const currentValue: string | null | undefined = values[name]
-
-    if (currentValue === undefined || currentValue === null) {
-      return undefined
+    if (values[name] === undefined || values[name] === null) {
+      return values[name]
     }
 
-    return domains.find(domain => domain.value === currentValue)
-  }, [values[name]])
+    return values[name]
+      .map(value => domains.find(option => option.value === value))
+      .filter(value => value !== undefined) as Common.App.SelectOption[]
+  }, [values[name], domains])
 
-  const updateFormikValues = (option: Common.App.SelectOption | null) => {
-    if (option === null) {
+  const updateFormikValues = (options: Common.App.SelectOption[] | null) => {
+    if (options === null) {
       setFieldValue(name, null)
 
       return
     }
 
-    const { value } = option
+    const values = options.map(({ value }) => value)
 
-    setFieldValue(name, value)
+    setFieldValue(name, values)
   }
 
   return (
     <Select
-      key={generateKeyFromValues(values[name])}
+      key={generateKeyFromValues(domains, defaultValue)}
       defaultValue={defaultValue}
       error={maybeError}
       helper={helper}

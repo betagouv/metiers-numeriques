@@ -1,5 +1,5 @@
 import { handleError } from '@common/helpers/handleError'
-import { JobState, UserRole } from '@prisma/client'
+import { Domain, JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
 
 import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
@@ -24,6 +24,7 @@ import type {
 export type JobFromGetOne = Job & {
   address: Address
   applicationContacts: Contact[]
+  domains: Domain[]
   infoContact: Contact
   profession: Profession
   recruiter: Recruiter
@@ -47,18 +48,15 @@ export const mutation = {
   createJob: async (
     _parent: undefined,
     {
-      input: { applicationContactIds = [], ...input },
+      input: { applicationContactIds = [], domainIds = [], ...input },
     }: {
       input: Prisma.JobCreateInput & {
         applicationContactIds?: string[]
+        domainIds?: string[]
       }
     },
   ): Promise<Job | null> => {
     try {
-      const applicationContactsAsConnections = applicationContactIds.map(id => ({
-        id,
-      }))
-
       const updatedAt = input.updatedAt || dayjs().toDate()
       const controlledInput: Prisma.JobCreateInput = {
         ...input,
@@ -74,7 +72,12 @@ export const mutation = {
       await prisma.job.update({
         data: {
           applicationContacts: {
-            connect: applicationContactsAsConnections,
+            connect: applicationContactIds.map(id => ({
+              id,
+            })),
+          },
+          domains: {
+            connect: domainIds.map(id => ({ id })),
           },
         },
         where: {
@@ -112,11 +115,12 @@ export const mutation = {
     _parent: undefined,
     {
       id,
-      input: { applicationContactIds = [], ...input },
+      input: { applicationContactIds = [], domainIds = [], ...input },
     }: {
       id: string
       input: Prisma.JobUpdateInput & {
         applicationContactIds?: string[]
+        domainIds?: string[]
       }
     },
   ): Promise<Job | null> => {
@@ -124,6 +128,9 @@ export const mutation = {
       await prisma.job.update({
         data: {
           applicationContacts: {
+            set: [],
+          },
+          domains: {
             set: [],
           },
         },
@@ -136,6 +143,7 @@ export const mutation = {
         data: input,
         include: {
           applicationContacts: true,
+          domains: true,
         },
         where: {
           id,
@@ -149,18 +157,22 @@ export const mutation = {
           applicationContacts: {
             set: [],
           },
+          domains: { set: [] },
         },
         where: {
           id,
         },
       })
-      const applicationContactsAsConnections = applicationContactIds.map(id => ({
-        id,
-      }))
+
       await prisma.job.update({
         data: {
           applicationContacts: {
-            connect: applicationContactsAsConnections,
+            connect: applicationContactIds.map(id => ({
+              id,
+            })),
+          },
+          domains: {
+            connect: domainIds.map(id => ({ id })),
           },
         },
         include: {
@@ -205,6 +217,7 @@ export const query = {
         include: {
           address: true,
           applicationContacts: true,
+          domains: true,
           infoContact: true,
           profession: true,
           recruiter: true,
