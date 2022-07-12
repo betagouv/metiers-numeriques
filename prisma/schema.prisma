@@ -38,21 +38,24 @@ enum JobSource {
 }
 
 enum JobContractType {
+  // Fonctionnaire d'État ou contractuel
+  NATIONAL_CIVIL_SERVANT_OR_CONTRACT_WORKER
   // Contractuel de la fonction publique
-  CONTRACT_WORKER
+  CONTRACT_WORKER_ONLY
   // Freelance
   FREELANCER
+  // Apprentissage
+  APPRENTICESHIP
   // Stagiaire
   INTERN
   // VIA (VIE)
   INTERNATIONAL_VOLUNTEER
-  // Fonctionnaire d'État
+
+  // LEGACY !!DO NOT USE!!
+  CONTRACT_WORKER
   NATIONAL_CIVIL_SERVANT
-  // Temps partiel
   PART_TIME
-  // CDI
   PERMANENT
-  // CDD
   TEMPORARY
 }
 

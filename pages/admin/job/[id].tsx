@@ -74,9 +74,7 @@ export const JobFormSchema = Yup.object().shape(
           .required(`Le site de candidature est obligatoire si aucun contact "candidatures" n’est renseigné.`)
           .url(`Cette URL est mal formatée.`),
       }),
-    contractTypes: Yup.array(Yup.string().nullable())
-      .required(`Au moins un type de contrat est obligatoire.`)
-      .min(1, `Au moins un type de contrat est obligatoire.`),
+    contractTypes: Yup.string().required('Le type de contrat est obligatoire'),
     domainIds: Yup.array(Yup.string().nullable())
       .required(`Au moins un domaine est obligatoire.`)
       .min(1, `Au moins un domaine est obligatoire.`),
@@ -201,6 +199,10 @@ export default function AdminJobEditorPage() {
       input.expiredAt = dayjs(values.expiredAtAsString).startOf('day').toDate()
       input.seniorityInMonths = values.seniorityInYears * 12
 
+      // @ts-expect-error
+      // TODO: contract types refacto forced me the keep the array form. To refactor cleaner
+      input.contractTypes = input.contractTypes ? [input.contractTypes] : undefined
+
       if (input.missionDescription === undefined) {
         input.missionDescription = ''
       }
@@ -289,7 +291,9 @@ export default function AdminJobEditorPage() {
 
     initialValues.seniorityInYears = Math.ceil(initialValues.seniorityInMonths / 12)
 
-    initialValues.domainIds = initialValues.domains.map(({ id }) => id)
+    if (initialValues.domains) {
+      initialValues.domainIds = initialValues.domains.map(({ id }) => id)
+    }
     initialValues.applicationContactIds = initialValues.applicationContacts.map(({ id }) => id)
     if (initialValues.infoContact !== null) {
       initialValues.infoContactId = initialValues.infoContact.id
@@ -303,6 +307,12 @@ export default function AdminJobEditorPage() {
 
     if (initialValues.address !== null) {
       initialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(initialValues.address)
+    }
+
+    // TODO: contract types refacto forced me the keep the array form. To refactor cleaner
+    if (initialValues.contractTypes?.length) {
+      // eslint-disable-next-line prefer-destructuring
+      initialValues.contractTypes = initialValues.contractTypes[0]
     }
 
     $state.current = initialValues.state
@@ -368,7 +378,6 @@ export default function AdminJobEditorPage() {
 
             <AdminForm.Select
               isDisabled={isLoading}
-              isMulti
               label="Types de contrat *"
               name="contractTypes"
               options={JOB_CONTRACT_TYPES_AS_OPTIONS}
@@ -397,9 +406,7 @@ export default function AdminJobEditorPage() {
             />
           </DoubleField>
 
-          <DoubleField>
-            <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
-          </DoubleField>
+          <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
         </AdminCard>
 
         <AdminCard>

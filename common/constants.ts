@@ -1,7 +1,7 @@
 import { UserRole } from '@prisma/client'
 import * as R from 'ramda'
 
-import { JOB_CONTRACT_TYPE_LABEL, JOB_REMOTE_STATUS_LABEL } from './constants.shared'
+import { JOB_CONTRACT_TYPE_LABEL, JOB_REMOTE_STATUS_LABEL, SELECTABLE_JOB_CONTRACT_TYPES } from './constants.shared'
 
 import type { FileType, JobSource, JobState } from '@prisma/client'
 
@@ -74,7 +74,9 @@ export const FILE_TYPE: Record<FileTypeKey, FileTypeValue> = {
 
 export { JOB_CONTRACT_TYPE_LABEL }
 
-export const JOB_CONTRACT_TYPES_AS_OPTIONS = sortSelectOptions(mapLabelObjectToSelectOptions(JOB_CONTRACT_TYPE_LABEL))
+export const JOB_CONTRACT_TYPES_AS_OPTIONS = mapLabelObjectToSelectOptions(
+  R.pick(SELECTABLE_JOB_CONTRACT_TYPES, JOB_CONTRACT_TYPE_LABEL),
+)
 
 export const JOB_SOURCE_LABEL: Record<JobSource, string> = {
   CDLD: 'Civils de la Défense',
