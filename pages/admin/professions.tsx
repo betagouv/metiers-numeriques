@@ -135,7 +135,7 @@ export default function AdminProfessionListPage() {
   return (
     <>
       <AdminHeader>
-        <AdminTitle>Compétence</AdminTitle>
+        <AdminTitle>Compétences</AdminTitle>
 
         <Button onClick={() => goToEditor('new')} size="small">
           Ajouter une compétence

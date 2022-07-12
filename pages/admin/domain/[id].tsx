@@ -6,7 +6,6 @@ import { AdminForm } from '@app/molecules/AdminForm'
 import { handleError } from '@common/helpers/handleError'
 import { Field } from '@singularity/core'
 import { useRouter } from 'next/router'
-import * as R from 'ramda'
 import { useCallback, useEffect, useState } from 'react'
 import * as Yup from 'yup'
 

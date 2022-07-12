@@ -23,10 +23,15 @@ export const JOB_CONTRACT_TYPE_LABEL: Record<JobContractType, string> = {
   INTERN: 'Stage',
   INTERNATIONAL_VOLUNTEER: 'VIA (VIE)',
   // LEGACY
+  /** @deprecated */
   CONTRACT_WORKER: 'Contractuel',
+  /** @deprecated */
   NATIONAL_CIVIL_SERVANT: 'Fonctionnaire',
+  /** @deprecated */
   PART_TIME: 'Temps partiel',
+  /** @deprecated */
   PERMANENT: 'CDI',
+  /** @deprecated */
   TEMPORARY: 'CDD',
 }
 

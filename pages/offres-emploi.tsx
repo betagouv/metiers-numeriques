@@ -71,7 +71,7 @@ const List = styled.div`
 `
 
 type JobListPageProps = {
-  initialDomains: Domain[]
+  initialDomains: Pick<Domain, 'id' | 'name'>[]
   initialJobs: JobWithRelation[]
   initialJobsLength: number
   initialProfessions: Pick<Profession, 'id' | 'name'>[]

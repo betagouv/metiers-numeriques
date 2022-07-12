@@ -117,7 +117,7 @@ jobs:
       - name: Setup build
         run: yarn setup
       - name: Build
-        run: yarn build
+        run: yarn build --no-lint
       - name: Serve
         run: yarn start &
       - name: Run end-to-end tests

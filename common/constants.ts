@@ -15,8 +15,6 @@ const mapLabelObjectToSelectOptions: <T extends string = string>(
   })),
 ) as any
 
-const sortSelectOptions = R.sortBy(R.prop('label'))
-
 export type FileTypeKey = FileType
 export type FileTypeValue = {
   ext: string

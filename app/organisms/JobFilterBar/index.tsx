@@ -63,7 +63,7 @@ export const INITIAL_FILTER: Filter = {
 
 type JobFilterBarProps = {
   defaultQuery?: string
-  domains: Domain[]
+  domains: Pick<Domain, 'id' | 'name'>[]
   isModalOpen: boolean
   onChange: (filter: Filter) => void | Promise<void>
   onModalClose: () => void | Promise<void>
