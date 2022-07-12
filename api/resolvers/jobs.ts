@@ -334,6 +334,7 @@ export const query = {
       professionId?: string
       region?: Region
       remoteStatuses?: JobRemoteStatus[]
+      seniorityInMonths?: number
     },
   ): Promise<GetAllResponse<JobFromGetPublicJobs>> => {
     try {
@@ -347,6 +348,7 @@ export const query = {
         query,
         region,
         remoteStatuses,
+        seniorityInMonths,
       } = queryArgs
 
       const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
@@ -384,6 +386,9 @@ export const query = {
       }
       if (region !== undefined) {
         andFilter.address = { region }
+      }
+      if (seniorityInMonths !== undefined) {
+        andFilter.seniorityInMonths = { equals: seniorityInMonths }
       }
       if (remoteStatuses !== undefined && remoteStatuses.length > 0) {
         andFilter.remoteStatus = {

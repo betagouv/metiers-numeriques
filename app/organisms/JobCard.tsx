@@ -147,10 +147,10 @@ export function JobCard({ job }: JobCardProps) {
             <i className="ri-suitcase-line" style={{ color: theme.color.primary.azure }} />
             {job.recruiter.websiteUrl && (
               <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                {job.recruiter.institution.name}
+                {job.recruiter.institution?.name}
               </a>
             )}
-            {!job.recruiter.websiteUrl && job.recruiter.institution.name}
+            {!job.recruiter.websiteUrl && job.recruiter.institution?.name}
           </Info>
         </Row>
       </Card>

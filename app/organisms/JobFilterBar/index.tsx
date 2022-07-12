@@ -1,19 +1,19 @@
 import { Button } from '@app/atoms/Button'
 import { ButtonX } from '@app/atoms/ButtonX'
+import { Checkbox } from '@app/atoms/Checkbox'
 import { TextInput } from '@app/atoms/TextInput'
 import { DomainFilter } from '@app/organisms/JobFilterBar/DomainFilter'
 import { Region } from '@common/constants'
 import { define } from '@common/helpers/define'
-import { Domain } from '@prisma/client'
+import { Domain, JobRemoteStatus } from '@prisma/client'
 import { FormEvent, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { ContractTypesFilter } from './ContractTypesFilter'
 import { ProfessionFilter } from './ProfessionFilter'
 import { RegionFilter } from './RegionFilter'
-import { RemoteStatusesFilter } from './RemoteStatusesFilter'
 
-import type { JobContractType, JobRemoteStatus, Profession } from '@prisma/client'
+import type { JobContractType, Profession } from '@prisma/client'
 
 const Box = styled.div<{
   isModalOpen: boolean
@@ -74,6 +74,7 @@ export type Filter = {
   query?: string
   region?: Region
   remoteStatuses: JobRemoteStatus[]
+  seniorityInMonths?: number
 }
 export const INITIAL_FILTER: Filter = {
   contractTypes: [],
@@ -142,8 +143,14 @@ export function JobFilterBar({
     onChange($filter.current)
   }, [])
 
-  const handleRemoteStatuses = useCallback((remoteStatuses: JobRemoteStatus[]) => {
-    $filter.current.remoteStatuses = remoteStatuses
+  const handleSeniority = useCallback((isJuniorAccepted: boolean) => {
+    $filter.current.seniorityInMonths = isJuniorAccepted ? 0 : undefined
+
+    onChange($filter.current)
+  }, [])
+
+  const handleRemoteStatuses = useCallback((isRemoteAllowed: boolean) => {
+    $filter.current.remoteStatuses = isRemoteAllowed ? [JobRemoteStatus.FULL, JobRemoteStatus.PARTIAL] : []
 
     onChange($filter.current)
   }, [])
@@ -166,20 +173,29 @@ export function JobFilterBar({
         </div>
       </DialogHeader>
 
-      <TextInput
-        aria-label="Mot-clé"
-        defaultValue={defaultQuery}
-        name="query"
-        onInput={handleQuery}
-        placeholder="Rechercher par mot-clé"
-      />
+      <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+        <div className="fr-col-4">
+          <TextInput
+            aria-label="Mot-clé"
+            defaultValue={defaultQuery}
+            name="query"
+            onInput={handleQuery}
+            placeholder="Rechercher par mot-clé"
+          />
+        </div>
+        <div className="fr-col-3 fr-col-offset-1">
+          <Checkbox label="Ouvert aux juniors" name="seniorityInMonths" onChange={handleSeniority} />
+        </div>
+        <div className="fr-col-3">
+          <Checkbox label="Télétravail possible" name="remoteStatus" onChange={handleRemoteStatuses} />
+        </div>
+      </div>
 
       <FilterList>
         <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
         <DomainFilter domains={domains} onChange={handleDomainId} />
         <RegionFilter onChange={handleRegion as any} />
         <ContractTypesFilter onChange={handleContractTypes} />
-        <RemoteStatusesFilter onChange={handleRemoteStatuses} />
       </FilterList>
 
       <div className="fr-mt-2w rf-text-right rf-hidden-md">

@@ -36,6 +36,7 @@ export const GET_ALL_PUBLIC = gql`
     $query: String
     $region: String
     $remoteStatuses: [String]
+    $seniorityInMonths: Int
   ) {
     getPublicJobs(
       contractTypes: $contractTypes
@@ -47,6 +48,7 @@ export const GET_ALL_PUBLIC = gql`
       query: $query
       region: $region
       remoteStatuses: $remoteStatuses
+      seniorityInMonths: $seniorityInMonths
     ) {
       count
       data {
@@ -79,6 +81,9 @@ export const GET_ALL_PUBLIC = gql`
 
           displayName
           websiteUrl
+          institution {
+            name
+          }
         }
       }
       index
