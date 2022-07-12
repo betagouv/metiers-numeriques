@@ -113,7 +113,7 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
         {!isUploading && uploadUrl && <Thumbnail alt="uploaded file" src={uploadUrl} />}
         <input
           ref={inputRef}
-          accept="image/*"
+          // accept="image/*"
           name={name}
           onChange={handleFileChange}
           style={{ display: 'none' }}

@@ -17,7 +17,7 @@ import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { CheckCircle, Edit, ExternalLink, Trash, XCircle } from 'react-feather'
+import { CheckCircle, Edit, ExternalLink, Eye, Trash, XCircle } from 'react-feather'
 import toast from 'react-hot-toast'
 
 import type { GetAllResponse } from '@api/resolvers/types'
@@ -33,6 +33,11 @@ const BASE_COLUMNS: TableColumnProps[] = [
     grow: 0.3,
     key: 'recruiter.displayName',
     label: 'Service recruteur',
+  },
+  {
+    grow: 0.15,
+    key: '_count.applications',
+    label: 'Candidatures',
   },
   {
     grow: 0.15,
@@ -167,6 +172,10 @@ export default function AdminJobListPage() {
     router.push(`/admin/job/${id}`)
   }, [])
 
+  const goToCandidatePool = useCallback((id: string) => {
+    router.push(`/admin/job/${id}/pool`)
+  }, [])
+
   const goToPreview = useCallback((id: string) => {
     window.open(`/emploi/preview/${id}`)
   }, [])
@@ -221,6 +230,14 @@ export default function AdminJobListPage() {
         Icon: ExternalLink,
         key: 'preview',
         label: 'Prévisualiser cette offre',
+        type: 'action',
+      },
+      {
+        accent: 'secondary',
+        action: goToCandidatePool,
+        Icon: Eye,
+        key: 'see-applications',
+        label: 'Voir le vivier',
         type: 'action',
       },
       {

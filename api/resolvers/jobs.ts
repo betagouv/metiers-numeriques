@@ -289,6 +289,9 @@ export const query = {
 
       const args: Prisma.JobFindManyArgs = {
         include: {
+          _count: {
+            select: { applications: true },
+          },
           address: true,
           applicationContacts: true,
           domains: true,

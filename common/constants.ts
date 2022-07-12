@@ -198,6 +198,7 @@ export const REGIONS_AS_OPTIONS: Common.App.SelectOption<keyof typeof Region>[] 
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
   ADMINISTRATOR: 'Administration',
+  CANDIDATE: 'Candidat',
   RECRUITER: 'Gestion',
 }
 
