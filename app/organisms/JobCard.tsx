@@ -2,6 +2,7 @@ import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { theme } from '@app/theme'
+import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import * as R from 'ramda'
 import { useCallback } from 'react'
 import styled from 'styled-components'
@@ -94,7 +95,6 @@ export function JobCard({ job }: JobCardProps) {
     <Box className="JobCard">
       <Card>
         <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
-
         <Title>
           <Link
             href={`/emploi/${job.slug}`}
@@ -106,7 +106,6 @@ export function JobCard({ job }: JobCardProps) {
             {job.title}
           </Link>
         </Title>
-
         <ul
           className="fr-tags-group"
           style={{
@@ -134,8 +133,15 @@ export function JobCard({ job }: JobCardProps) {
             </li>
           ))}
         </ul>
-
         <Excerpt>{job.missionDescription}</Excerpt>
+
+        {/* TODO: contract types refacto forced me to keep the array type. Must be refactored cleaner */}
+        {!!job.contractTypes?.length && (
+          <Info>
+            <i className="ri-user-3-line" style={{ color: theme.color.warning.lemon }} />
+            {JOB_CONTRACT_TYPE_LABEL[job.contractTypes[0]]}
+          </Info>
+        )}
 
         <Row>
           <Info>
