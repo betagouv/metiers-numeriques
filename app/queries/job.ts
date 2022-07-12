@@ -28,11 +28,10 @@ export const GET_ALL = gql`
 export const GET_ALL_PUBLIC = gql`
   query GetPublicJobs(
     $contractTypes: [String]
-    $institutionIds: [String]
     $pageIndex: Int!
     $perPage: Int!
-    $professionId: String
-    $domainId: String
+    $professionIds: [String]
+    $domainIds: [String]
     $query: String
     $region: String
     $remoteStatuses: [String]
@@ -40,11 +39,10 @@ export const GET_ALL_PUBLIC = gql`
   ) {
     getPublicJobs(
       contractTypes: $contractTypes
-      institutionIds: $institutionIds
       pageIndex: $pageIndex
       perPage: $perPage
-      professionId: $professionId
-      domainId: $domainId
+      professionIds: $professionIds
+      domainIds: $domainIds
       query: $query
       region: $region
       remoteStatuses: $remoteStatuses

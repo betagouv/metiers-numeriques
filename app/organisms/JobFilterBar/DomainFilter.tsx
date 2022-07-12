@@ -7,7 +7,7 @@ import type { Domain } from '@prisma/client'
 
 type DomainFilterProps = {
   domains: Domain[]
-  onChange: (domainId?: string) => void | Promise<void>
+  onChange: (domainIds: string[]) => void
 }
 export function DomainFilter({ domains, onChange }: DomainFilterProps) {
   const options = useMemo(() => {
@@ -22,11 +22,18 @@ export function DomainFilter({ domains, onChange }: DomainFilterProps) {
     }))
   }, [domains])
 
-  const handleChange = useCallback((domainAsOption: SelectOption | null) => {
-    onChange(domainAsOption ? domainAsOption.value : undefined)
+  const handleChange = useCallback((domainsAsOptions: SelectOption[]) => {
+    onChange(domainsAsOptions.map(R.prop('value')))
   }, [])
 
   return (
-    <Select isClearable label="Filtrer par domaine" name="domain" onChange={handleChange as any} options={options} />
+    <Select
+      isClearable
+      isMulti
+      label="Filtrer par domaine"
+      name="domain"
+      onChange={handleChange as any}
+      options={options}
+    />
   )
 }

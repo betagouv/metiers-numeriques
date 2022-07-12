@@ -45,32 +45,10 @@ const DialogTitle = styled.h4`
   margin: 0;
 `
 
-const FilterList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-
-  > div:not(:first-child) {
-    margin: 1rem 0 0 0;
-  }
-
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-
-    > div {
-      flex-grow: 1;
-    }
-    > div:not(:first-child) {
-      margin: 0 0 0 1rem;
-    }
-  }
-`
-
 export type Filter = {
   contractTypes: JobContractType[]
-  domainId?: string
-  institutionIds: string[]
-  professionId?: string
+  domainIds: string[]
+  professionIds: string[]
   query?: string
   region?: Region
   remoteStatuses: JobRemoteStatus[]
@@ -78,11 +56,10 @@ export type Filter = {
 }
 export const INITIAL_FILTER: Filter = {
   contractTypes: [],
-  institutionIds: [],
+  domainIds: [],
+  professionIds: [],
   remoteStatuses: [],
 }
-
-export const INITIAL_ACCORDION_FILTER: string = 'professionIdFilter'
 
 type JobFilterBarProps = {
   defaultQuery?: string
@@ -92,7 +69,6 @@ type JobFilterBarProps = {
   onModalClose: () => void | Promise<void>
   professions: Pick<Profession, 'id' | 'name'>[]
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function JobFilterBar({
   defaultQuery,
   domains,
@@ -106,27 +82,20 @@ export function JobFilterBar({
     query: defaultQuery,
   })
 
-  const handleContractTypes = useCallback((contractTypes: JobContractType[]) => {
-    $filter.current.contractTypes = contractTypes
+  const handleContractTypes = useCallback((contractType?: JobContractType) => {
+    $filter.current.contractTypes = contractType ? [contractType] : []
 
     onChange($filter.current)
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleInstitutionIds = useCallback((institutionIds: string[]) => {
-    $filter.current.institutionIds = institutionIds
+  const handleProfessionIds = useCallback((professionIds: string[]) => {
+    $filter.current.professionIds = professionIds
 
     onChange($filter.current)
   }, [])
 
-  const handleProfessionId = useCallback((professionId: string) => {
-    $filter.current.professionId = professionId
-
-    onChange($filter.current)
-  }, [])
-
-  const handleDomainId = useCallback((domainId?: string) => {
-    $filter.current.domainId = domainId
+  const handleDomainIds = useCallback((domainIds: string[]) => {
+    $filter.current.domainIds = domainIds
 
     onChange($filter.current)
   }, [])
@@ -191,12 +160,20 @@ export function JobFilterBar({
         </div>
       </div>
 
-      <FilterList>
-        <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
-        <DomainFilter domains={domains} onChange={handleDomainId} />
-        <RegionFilter onChange={handleRegion as any} />
-        <ContractTypesFilter onChange={handleContractTypes} />
-      </FilterList>
+      <div className="fr-grid-row fr-grid-row--gutters">
+        <div className="fr-col-3">
+          <ProfessionFilter onChange={handleProfessionIds} professions={professions} />
+        </div>
+        <div className="fr-col-3">
+          <DomainFilter domains={domains} onChange={handleDomainIds} />
+        </div>
+        <div className="fr-col-3">
+          <RegionFilter onChange={handleRegion as any} />
+        </div>
+        <div className="fr-col-3">
+          <ContractTypesFilter onChange={handleContractTypes} />
+        </div>
+      </div>
 
       <div className="fr-mt-2w rf-text-right rf-hidden-md">
         <Button onClick={() => onModalClose()}>Appliquer</Button>

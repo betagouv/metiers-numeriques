@@ -329,9 +329,8 @@ export const query = {
     obj,
     queryArgs: GetAllArgs & {
       contractTypes?: JobContractType[]
-      domainId?: string
-      institutionIds?: string[]
-      professionId?: string
+      domainIds: string[]
+      professionIds: string[]
       region?: Region
       remoteStatuses?: JobRemoteStatus[]
       seniorityInMonths?: number
@@ -340,11 +339,10 @@ export const query = {
     try {
       const {
         contractTypes,
-        domainId,
-        institutionIds,
+        domainIds,
         pageIndex,
         perPage,
-        professionId,
+        professionIds,
         query,
         region,
         remoteStatuses,
@@ -366,22 +364,12 @@ export const query = {
           hasSome: contractTypes,
         }
       }
-      if (institutionIds !== undefined && institutionIds.length > 0) {
-        // TODO: remove this (unused)
-        andFilter.recruiter = {
-          institution: {
-            id: {
-              in: institutionIds,
-            },
-          },
-        }
+      if (professionIds?.length) {
+        andFilter.professionId = { in: professionIds }
       }
-      if (professionId !== undefined) {
-        andFilter.professionId = professionId
-      }
-      if (domainId !== undefined) {
+      if (domainIds?.length) {
         andFilter.domains = {
-          some: { id: domainId },
+          some: { id: { in: domainIds } },
         }
       }
       if (region !== undefined) {
