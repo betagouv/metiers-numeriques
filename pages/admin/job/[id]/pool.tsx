@@ -97,6 +97,14 @@ const Tag = styled.div<{ color: string }>`
   background-color: ${p => p.color || theme.color.neutral.greyBlue};
 `
 
+const ListItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+`
+
 type CandidateWithRelation = Candidate & { domains: Domain[]; user: User }
 
 type JobApplicationWithRelation = JobApplication & {
@@ -212,24 +220,40 @@ export default function JobApplicationPool() {
                       <X /> Refuser cette candidature
                     </Button>
                     <Button accent="success">
-                      <Check /> Contacter ce candidat
+                      <Check /> Mettre dans mon vivier
                     </Button>
                   </Row>
                   <Spacer units={3} />
 
                   <ApplicationSubtitle>A propos de {currentCandidate.user.firstName}</ApplicationSubtitle>
-                  <Spacer units={1} />
                   <Row gap={0.5}>
-                    <Tag color={theme.color.success.mint}>{currentCandidate.region}</Tag>
-                    {currentCandidate.contractTypes.map(contractType => (
-                      <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
-                    ))}
-                    {currentCandidate.domains.map(domain => (
-                      <Tag color={theme.color.primary.lightBlue}>{domain.name}</Tag>
-                    ))}
+                    <ul>
+                      <li>
+                        <ListItem>
+                          Localisation:
+                          <Tag color={theme.color.success.mint}>{currentCandidate.region}</Tag>
+                        </ListItem>
+                      </li>
+                      <li>
+                        <ListItem>
+                          Types de contrat recherché:
+                          {currentCandidate.contractTypes.map(contractType => (
+                            <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
+                          ))}
+                        </ListItem>
+                      </li>
+                      <li>
+                        <ListItem>
+                          Domaines d&apos;intérêt:
+                          {currentCandidate.domains.map(domain => (
+                            <Tag color={theme.color.primary.lightBlue}>{domain.name}</Tag>
+                          ))}
+                        </ListItem>
+                      </li>
+                    </ul>
                   </Row>
 
-                  <Spacer units={3} />
+                  <Spacer units={2} />
 
                   <ApplicationSubtitle>Ses motivations</ApplicationSubtitle>
                   <Spacer units={1} />

@@ -163,8 +163,8 @@ model File {
   relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
   relatedLogoInstitution                 Institution[]               @relation("InstitutionLogoFile")
   relatedAvatarTestimony                 Testimony[]                 @relation("TestimonyAvatarFile")
+  fileOnJobApplication                   JobApplication[]            @relation("JobApplicationCVFile")
   recruiter                              Recruiter?                  @relation("RecruiterLogoFile")
-  fileOnJobApplication                   JobApplication?             @relation("JobApplicationCVFile")
 }
 
 model FilesOnLegacyInstitutions {
@@ -458,8 +458,9 @@ model Candidate {
   region                 String
   contractTypes          JobContractType[]
   currentJob             String
-  yearsOfExperience      Int
+  yearsOfExperience      Int?              @default(0)
   githubUrl              String?
+  linkedInUrl            String?
   portfolioUrl           String?
 
   domains                Domain[]         @relation("CandidateDomains")
