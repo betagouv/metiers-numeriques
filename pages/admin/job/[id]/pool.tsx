@@ -1,10 +1,12 @@
 import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Link } from '@app/atoms/Link'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
+import { AdminForm } from '@app/molecules/AdminForm'
 import { theme } from '@app/theme'
-import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
+import { JOB_CONTRACT_TYPE_LABEL, JOB_REMOTE_STATUSES_AS_OPTIONS } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
 import { Domain, JobApplicationStatus } from '@prisma/client'
-import { Button as SUIButton, Card as SUICard } from '@singularity/core'
+import { Select, Button as SUIButton, Card as SUICard, Modal } from '@singularity/core'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Check, GitHub, Link as LinkIcon, Linkedin, Mail, Phone, X } from 'react-feather'
@@ -26,11 +28,12 @@ const Row = styled.div<{ centered?: boolean; fullHeight?: boolean; gap?: number 
   ${p => (p.centered ? 'justify-content: center;' : '')}
 `
 
-const Col = styled.div<{ size: number }>`
+const Col = styled.div<{ scroll?: boolean; size: number }>`
   display: flex;
   flex-direction: column;
   flex: 1;
   flex-basis: ${p => p.size}%;
+  ${p => (p.scroll ? 'overflow-y: scroll;' : '')}
 `
 
 const Card = styled(SUICard)`
@@ -106,7 +109,7 @@ const ListItem = styled.div`
 `
 
 const ApplicationLetter = styled.p`
-  white-space: pre;
+  white-space: pre-wrap;
 `
 
 type CandidateWithRelation = Candidate & { domains: Domain[]; user: User }
@@ -116,13 +119,68 @@ type JobApplicationWithRelation = JobApplication & {
   cvFile: File
 }
 
+const REJECTION_REASONS = [
+  'Manque d’expérience globale sur le poste',
+  'Manque de compétences précises sur le poste (précisez aux candidats)',
+  'Manque de lien global entre la candidature et le poste',
+  'Le poste est déjà pourvu',
+  'Le process est avancé avec d’autres candidats',
+  'Le type de contrat recherché ne convient pas',
+  'La localisation recherchée ne convient pas',
+  'Le domaine recherché ne convient pas',
+  'Le métier recherché ne convient pas',
+  'La candidature n’est pas assez fournie pour pouvoir l’étudier',
+  'Ce contrat nécessite des dispositions de sécurité nécessaires non remplies (nationalité, homologation sécurité etc)',
+]
+
+const RejectionModal = ({ onCancel, onConfirm }) => {
+  const [reason, setReason] = useState<string>()
+
+  return (
+    <Modal onCancel={onCancel}>
+      <Modal.Body>
+        <Modal.Title>Souhaitez-vous vraiment refuser cette candidature ?</Modal.Title>
+
+        <p>Un email sera envoyé au candidat lui expliquant la raison de votre vhoix</p>
+        <br />
+        <Select
+          label="Raison du refus"
+          onChange={option => setReason(option.value)}
+          options={REJECTION_REASONS.map(reason => ({ label: reason, value: reason }))}
+        />
+      </Modal.Body>
+
+      <Modal.Action>
+        <Button accent="secondary" onClick={onCancel}>
+          Annuler
+        </Button>
+        <Button accent="danger" disabled={!reason} onClick={() => onConfirm(reason)}>
+          Confirmer
+        </Button>
+      </Modal.Action>
+    </Modal>
+  )
+}
+
 const getCandidateFullName = (candidate: CandidateWithRelation) =>
   `${candidate.user.firstName} ${candidate.user.lastName}`
+
+const formatSeniority = (seniority: number) => {
+  if (seniority > 1) {
+    return `${seniority} ans d'expérience`
+  }
+  if (seniority === 1) {
+    return `${seniority} an d'expérience`
+  }
+
+  return 'Profil Junior'
+}
 
 export default function JobApplicationPool() {
   const router = useRouter()
   const { id } = router.query
 
+  const [showModal, setShowModal] = useState(false)
   const [applications, setApplications] = useState<JobApplicationWithRelation[]>([])
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
   const [isLoading, setIsLoading] = useState(false)
@@ -168,6 +226,25 @@ export default function JobApplicationPool() {
     }
   }
 
+  const handleRejected = async (applicationId: string, rejectionReason: string) => {
+    const body = JSON.stringify({ rejectionReason })
+    try {
+      setIsLoading(true)
+      const response = await fetch(`/api/applications/${applicationId}/reject`, { body, method: 'PUT' })
+      if (response.status === 200) {
+        // TODO: add flash message
+        await fetchApplications()
+      } else {
+        setIsError(true)
+      }
+    } catch (err) {
+      setIsError(true)
+    } finally {
+      setIsLoading(false)
+      setShowModal(false)
+    }
+  }
+
   if (isLoading) {
     return <div>Loading</div>
   }
@@ -178,134 +255,148 @@ export default function JobApplicationPool() {
   const currentCandidate = currentApplication?.candidate
 
   return (
-    <Row fullHeight>
-      <Col size={20}>
-        <CandidateList>
-          {applications.map(application => (
-            <CandidateMenu onClick={() => setCurrentApplication(application)}>
-              <div>
-                <CandidateName>{getCandidateFullName(application.candidate)}</CandidateName>
-                <CandidateInfo>{application.candidate.currentJob}</CandidateInfo>
-                <CandidateInfo>{application.candidate.yearsOfExperience} ans d&apos;expérience</CandidateInfo>
-                {application.status === JobApplicationStatus.ACCEPTED && (
-                  <Tag color={theme.color.success.mint}>Dans mon vivier</Tag>
-                )}
-              </div>
-              {application.candidate.id === currentCandidate?.id && <Dot />}
-            </CandidateMenu>
-          ))}
-        </CandidateList>
-      </Col>
-      <Col size={80}>
-        <Card>
-          {currentCandidate ? (
-            <Row fullHeight>
-              <Col size={50}>
-                <ApplicationContainer>
-                  <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
-                  <Spacer units={0.5} />
-                  <ApplicationSubtitle>
-                    {currentCandidate.currentJob} • {currentCandidate.yearsOfExperience} ans d&apos;expérience
-                  </ApplicationSubtitle>
-                  <Spacer units={1} />
-                  <Row>
-                    <Row gap={0.5}>
-                      <Mail />
-                      <Link href={`mailto:${currentCandidate.user.email}`} rel="noreferrer" target="_blank">
-                        {currentCandidate.user.email}
-                      </Link>
+    <>
+      <Row fullHeight>
+        <Col scroll size={20}>
+          <CandidateList>
+            {applications.map(application => (
+              <CandidateMenu onClick={() => setCurrentApplication(application)}>
+                <div>
+                  <CandidateName>{getCandidateFullName(application.candidate)}</CandidateName>
+                  <CandidateInfo>{application.candidate.currentJob}</CandidateInfo>
+                  <CandidateInfo>{formatSeniority(application.candidate.yearsOfExperience)}</CandidateInfo>
+                  {application.status === JobApplicationStatus.ACCEPTED && (
+                    <Tag color={theme.color.success.mint}>Dans mon vivier</Tag>
+                  )}
+                  {application.status === JobApplicationStatus.REJECTED && (
+                    <Tag color={theme.color.danger.rubicund}>Refusé</Tag>
+                  )}
+                </div>
+                {application.candidate.id === currentCandidate?.id && <Dot />}
+              </CandidateMenu>
+            ))}
+          </CandidateList>
+        </Col>
+        <Col size={80}>
+          <Card>
+            {currentCandidate ? (
+              <Row fullHeight>
+                <Col scroll size={50}>
+                  <ApplicationContainer>
+                    <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
+                    <Spacer units={0.5} />
+                    <ApplicationSubtitle>
+                      {currentCandidate.currentJob} • {formatSeniority(currentCandidate.yearsOfExperience)}
+                    </ApplicationSubtitle>
+                    <Spacer units={1} />
+                    <Row>
+                      <Row gap={0.5}>
+                        <Mail />
+                        <Link href={`mailto:${currentCandidate.user.email}`} rel="noreferrer" target="_blank">
+                          {currentCandidate.user.email}
+                        </Link>
+                      </Row>
+                      <Row gap={0.5}>
+                        <Phone />
+                        <Link href={`tel:${currentCandidate.phone}`} rel="noreferrer" target="_blank">
+                          {currentCandidate.phone}
+                        </Link>
+                      </Row>
+                      {currentCandidate.linkedInUrl && (
+                        <Row gap={0.5}>
+                          <Linkedin />
+                          <Link href={currentCandidate.linkedInUrl} rel="noreferrer" target="_blank">
+                            LinkedIn
+                          </Link>
+                        </Row>
+                      )}
+                      {currentCandidate.githubUrl && (
+                        <Row gap={0.5}>
+                          <GitHub />
+                          <Link href={currentCandidate.githubUrl} rel="noreferrer" target="_blank">
+                            GitHub
+                          </Link>
+                        </Row>
+                      )}
+                      {currentCandidate.portfolioUrl && (
+                        <Row gap={0.5}>
+                          <LinkIcon />
+                          <Link href={currentCandidate.portfolioUrl} rel="noreferrer" target="_blank">
+                            Portfolio
+                          </Link>
+                        </Row>
+                      )}
                     </Row>
-                    <Row gap={0.5}>
-                      <Phone />
-                      <Link href={`tel:${currentCandidate.phone}`} rel="noreferrer" target="_blank">
-                        {currentCandidate.phone}
-                      </Link>
+                    <Spacer units={3} />
+
+                    <Row centered>
+                      <Button accent="danger" onClick={() => setShowModal(true)}>
+                        <X /> Refuser cette candidature
+                      </Button>
+                      <Button accent="success" onClick={() => handleAccepted(currentApplication.id)}>
+                        <Check /> Mettre dans mon vivier
+                      </Button>
                     </Row>
-                    {currentCandidate.linkedInUrl && (
-                      <Row gap={0.5}>
-                        <Linkedin />
-                        <Link href={currentCandidate.linkedInUrl} rel="noreferrer" target="_blank">
-                          LinkedIn
-                        </Link>
-                      </Row>
-                    )}
-                    {currentCandidate.githubUrl && (
-                      <Row gap={0.5}>
-                        <GitHub />
-                        <Link href={currentCandidate.githubUrl} rel="noreferrer" target="_blank">
-                          GitHub
-                        </Link>
-                      </Row>
-                    )}
-                    {currentCandidate.portfolioUrl && (
-                      <Row gap={0.5}>
-                        <LinkIcon />
-                        <Link href={currentCandidate.portfolioUrl} rel="noreferrer" target="_blank">
-                          Portfolio
-                        </Link>
-                      </Row>
-                    )}
-                  </Row>
-                  <Spacer units={3} />
+                    <Spacer units={3} />
 
-                  <Row centered>
-                    <Button accent="danger">
-                      <X /> Refuser cette candidature
-                    </Button>
-                    <Button accent="success" onClick={() => handleAccepted(currentApplication.id)}>
-                      <Check /> Mettre dans mon vivier
-                    </Button>
-                  </Row>
-                  <Spacer units={3} />
+                    <ApplicationSubtitle>A propos de {currentCandidate.user.firstName}</ApplicationSubtitle>
+                    <Row gap={0.5}>
+                      <ul>
+                        <li>
+                          <ListItem>
+                            Localisation:
+                            <Tag color={theme.color.success.mint}>{currentCandidate.region}</Tag>
+                          </ListItem>
+                        </li>
+                        <li>
+                          <ListItem>
+                            Types de contrat recherché:
+                            {!currentCandidate.contractTypes.length && ' Non renseignés'}
+                            {currentCandidate.contractTypes.map(contractType => (
+                              <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
+                            ))}
+                          </ListItem>
+                        </li>
+                        <li>
+                          <ListItem>
+                            Domaines d&apos;intérêt:
+                            {!currentCandidate.domains.length && ' Non renseignés'}
+                            {currentCandidate.domains.map(domain => (
+                              <Tag color={theme.color.primary.lightBlue}>{domain.name}</Tag>
+                            ))}
+                          </ListItem>
+                        </li>
+                      </ul>
+                    </Row>
 
-                  <ApplicationSubtitle>A propos de {currentCandidate.user.firstName}</ApplicationSubtitle>
-                  <Row gap={0.5}>
-                    <ul>
-                      <li>
-                        <ListItem>
-                          Localisation:
-                          <Tag color={theme.color.success.mint}>{currentCandidate.region}</Tag>
-                        </ListItem>
-                      </li>
-                      <li>
-                        <ListItem>
-                          Types de contrat recherché:
-                          {!currentCandidate.contractTypes.length && ' Non renseigné'}
-                          {currentCandidate.contractTypes.map(contractType => (
-                            <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
-                          ))}
-                        </ListItem>
-                      </li>
-                      <li>
-                        <ListItem>
-                          Domaines d&apos;intérêt:
-                          {!currentCandidate.domains.length && ' Non renseigné'}
-                          {currentCandidate.domains.map(domain => (
-                            <Tag color={theme.color.primary.lightBlue}>{domain.name}</Tag>
-                          ))}
-                        </ListItem>
-                      </li>
-                    </ul>
-                  </Row>
+                    <Spacer units={2} />
 
-                  <Spacer units={2} />
-
-                  <ApplicationSubtitle>Ses motivations</ApplicationSubtitle>
-                  <Spacer units={1} />
-                  <ApplicationLetter>{currentApplication.applicationLetter}</ApplicationLetter>
-                </ApplicationContainer>
-              </Col>
-              <Col size={50}>
-                <object data={currentApplication?.cvFile?.url} style={{ height: '100%' }} type="application/pdf">
-                  <iframe src="https://docs.google.com/viewer?url=your_url_to_pdf&embedded=true" title="Candidate CV" />
-                </object>
-              </Col>
-            </Row>
-          ) : (
-            <div>Choose a candidate to see the full application</div>
-          )}
-        </Card>
-      </Col>
-    </Row>
+                    <ApplicationSubtitle>Ses motivations</ApplicationSubtitle>
+                    <Spacer units={1} />
+                    <ApplicationLetter>{currentApplication.applicationLetter}</ApplicationLetter>
+                  </ApplicationContainer>
+                </Col>
+                <Col size={50}>
+                  <object data={currentApplication?.cvFile?.url} style={{ height: '100%' }} type="application/pdf">
+                    <iframe
+                      src="https://docs.google.com/viewer?url=your_url_to_pdf&embedded=true"
+                      title="Candidate CV"
+                    />
+                  </object>
+                </Col>
+              </Row>
+            ) : (
+              <div>Choose a candidate to see the full application</div>
+            )}
+          </Card>
+        </Col>
+      </Row>
+      {showModal && (
+        <RejectionModal
+          onCancel={() => setShowModal(false)}
+          onConfirm={reason => handleRejected(currentApplication?.id, reason)}
+        />
+      )}
+    </>
   )
 }
