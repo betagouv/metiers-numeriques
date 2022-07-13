@@ -19,11 +19,15 @@ const Button = styled(SUIButton)`
   gap: 0.5rem;
 `
 
-const Row = styled.div<{ centered?: boolean; fullHeight?: boolean; gap?: number }>`
+const PageContainer = styled.div`
+  height: 100vh;
+  overflow: hidden;
+`
+
+const Row = styled.div<{ centered?: boolean; gap?: number }>`
   display: flex;
   flex-direction: row;
   gap: 1rem ${p => p.gap || 2}rem;
-  ${p => (p.fullHeight ? 'height: 100%;' : '')}
   ${p => (p.centered ? 'justify-content: center;' : '')}
 `
 
@@ -41,18 +45,24 @@ const Card = styled(SUICard)`
 `
 
 const CandidateList = styled(Card)`
+  height: 100%;
+  overflow-y: scroll;
+
   > *:not(:last-child) {
     border-bottom: 1px solid grey;
   }
 `
 
-const CandidateMenu = styled.div`
+const CandidateMenu = styled.div<{ isSelected: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 1.25rem;
   cursor: pointer;
+  border-width: 0 0.25rem;
+  border-style: solid;
+  border-color: ${p => (p.isSelected ? theme.color.primary.navy : 'white')};
 `
 
 const CandidateMenuInfos = styled.div`
@@ -148,7 +158,7 @@ const RejectionModal = ({ onCancel, onConfirm }) => {
   return (
     <Modal onCancel={onCancel}>
       <Modal.Body>
-        <Modal.Title>Souhaitez-vous vraiment refuser cette candidature ?</Modal.Title>
+        <Modal.Title>Refuser cette candidature ?</Modal.Title>
 
         <p>Un email sera envoyé au candidat lui expliquant la raison de votre vhoix</p>
         <br />
@@ -268,11 +278,12 @@ export default function JobApplicationPool() {
   const applicationStatusCounts = R.countBy(application => application.status, applications)
 
   return (
-    <>
+    <PageContainer>
       <AdminTitle>Candidature: {jobTitle}</AdminTitle>
       <Spacer units={1} />
-      <Row fullHeight>
-        <Col scroll size={20}>
+      {/* TODO: fix the weird height */}
+      <Row style={{ height: '92%' }}>
+        <Col size={20}>
           <CandidateList>
             <Row gap={1} style={{ padding: '1.5rem' }}>
               <span>Filtres:</span>
@@ -306,7 +317,10 @@ export default function JobApplicationPool() {
             {applications
               .filter(application => (statusFilter ? application.status === statusFilter : true))
               .map(application => (
-                <CandidateMenu onClick={() => setCurrentApplication(application)}>
+                <CandidateMenu
+                  isSelected={currentApplication?.id === application.id}
+                  onClick={() => setCurrentApplication(application)}
+                >
                   <CandidateMenuInfos>
                     <CandidateName>{getCandidateFullName(application.candidate)}</CandidateName>
                     <CandidateInfo>{application.candidate.currentJob}</CandidateInfo>
@@ -319,7 +333,7 @@ export default function JobApplicationPool() {
                       <Tag color={theme.color.danger.rubicund}>Refusé</Tag>
                     )}
                   </CandidateMenuInfos>
-                  {application.candidate.id === currentCandidate?.id && <Dot />}
+                  {/* {application.candidate.id === currentCandidate?.id && <Dot />} */}
                 </CandidateMenu>
               ))}
           </CandidateList>
@@ -327,7 +341,7 @@ export default function JobApplicationPool() {
         <Col size={80}>
           <Card>
             {currentCandidate ? (
-              <Row fullHeight>
+              <Row style={{ height: '100%' }}>
                 <Col scroll size={50}>
                   <ApplicationContainer>
                     <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
@@ -452,12 +466,12 @@ export default function JobApplicationPool() {
           </Card>
         </Col>
       </Row>
-      {showModal && (
+      {currentApplication && showModal && (
         <RejectionModal
           onCancel={() => setShowModal(false)}
-          onConfirm={reason => handleRejected(currentApplication?.id, reason)}
+          onConfirm={reason => handleRejected(currentApplication.id, reason)}
         />
       )}
-    </>
+    </PageContainer>
   )
 }
