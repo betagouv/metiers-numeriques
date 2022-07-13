@@ -3,11 +3,11 @@ import { Link } from '@app/atoms/Link'
 import { theme } from '@app/theme'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
-import { Domain } from '@prisma/client'
+import { Domain, JobApplicationStatus } from '@prisma/client'
 import { Button as SUIButton, Card as SUICard } from '@singularity/core'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { Check, GitHub, Link as LinkIcon, Mail, Phone, X } from 'react-feather'
+import { Check, GitHub, Link as LinkIcon, Linkedin, Mail, Phone, X } from 'react-feather'
 import styled from 'styled-components'
 
 import type { File, User, Candidate, JobApplication } from '@prisma/client'
@@ -105,6 +105,10 @@ const ListItem = styled.div`
   padding: 0.5rem 0;
 `
 
+const ApplicationLetter = styled.p`
+  white-space: pre;
+`
+
 type CandidateWithRelation = Candidate & { domains: Domain[]; user: User }
 
 type JobApplicationWithRelation = JobApplication & {
@@ -124,27 +128,45 @@ export default function JobApplicationPool() {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
+  const fetchApplications = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(`/api/jobs/${id}/applications`)
+      if (response.status !== 200) {
+        setIsError(true)
+      }
+      const data = await response.json()
+      setApplications(data)
+
+      return data
+    } catch (err) {
+      handleError(err, 'pages/admin/domain/[id].tsx > fetchDomain()')
+      setIsError(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
-    setIsLoading(true)
-    fetch(`/api/jobs/${id}/applications`)
-      .then(res => {
-        if (res.status === 200) {
-          return res.json()
-        }
-        setIsError(true)
-      })
-      .then(data => {
-        setApplications(data)
-        setCurrentApplication(data[0])
-      })
-      .catch(err => {
-        handleError(err, 'pages/admin/domain/[id].tsx > fetchDomain()')
-        setIsError(true)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    fetchApplications().then(data => setCurrentApplication(data[0]))
   }, [])
+
+  const handleAccepted = async (applicationId: string) => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(`/api/applications/${applicationId}/accept`, { method: 'PUT' })
+      if (response.status === 200) {
+        // TODO: add flash message
+        await fetchApplications()
+      } else {
+        setIsError(true)
+      }
+    } catch (err) {
+      setIsError(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   if (isLoading) {
     return <div>Loading</div>
@@ -165,6 +187,9 @@ export default function JobApplicationPool() {
                 <CandidateName>{getCandidateFullName(application.candidate)}</CandidateName>
                 <CandidateInfo>{application.candidate.currentJob}</CandidateInfo>
                 <CandidateInfo>{application.candidate.yearsOfExperience} ans d&apos;expérience</CandidateInfo>
+                {application.status === JobApplicationStatus.ACCEPTED && (
+                  <Tag color={theme.color.success.mint}>Dans mon vivier</Tag>
+                )}
               </div>
               {application.candidate.id === currentCandidate?.id && <Dot />}
             </CandidateMenu>
@@ -196,6 +221,14 @@ export default function JobApplicationPool() {
                         {currentCandidate.phone}
                       </Link>
                     </Row>
+                    {currentCandidate.linkedInUrl && (
+                      <Row gap={0.5}>
+                        <Linkedin />
+                        <Link href={currentCandidate.linkedInUrl} rel="noreferrer" target="_blank">
+                          LinkedIn
+                        </Link>
+                      </Row>
+                    )}
                     {currentCandidate.githubUrl && (
                       <Row gap={0.5}>
                         <GitHub />
@@ -219,7 +252,7 @@ export default function JobApplicationPool() {
                     <Button accent="danger">
                       <X /> Refuser cette candidature
                     </Button>
-                    <Button accent="success">
+                    <Button accent="success" onClick={() => handleAccepted(currentApplication.id)}>
                       <Check /> Mettre dans mon vivier
                     </Button>
                   </Row>
@@ -237,6 +270,7 @@ export default function JobApplicationPool() {
                       <li>
                         <ListItem>
                           Types de contrat recherché:
+                          {!currentCandidate.contractTypes.length && ' Non renseigné'}
                           {currentCandidate.contractTypes.map(contractType => (
                             <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
                           ))}
@@ -245,6 +279,7 @@ export default function JobApplicationPool() {
                       <li>
                         <ListItem>
                           Domaines d&apos;intérêt:
+                          {!currentCandidate.domains.length && ' Non renseigné'}
                           {currentCandidate.domains.map(domain => (
                             <Tag color={theme.color.primary.lightBlue}>{domain.name}</Tag>
                           ))}
@@ -257,7 +292,7 @@ export default function JobApplicationPool() {
 
                   <ApplicationSubtitle>Ses motivations</ApplicationSubtitle>
                   <Spacer units={1} />
-                  <p>{currentApplication.applicationLetter}</p>
+                  <ApplicationLetter>{currentApplication.applicationLetter}</ApplicationLetter>
                 </ApplicationContainer>
               </Col>
               <Col size={50}>

@@ -49,6 +49,7 @@ data.forEach(async candidateData => {
         userId: user.id,
       },
       update: {
+        linkedInUrl: candidateData.linkedInUrl,
         phone: candidateData.phone,
       },
       where: {
