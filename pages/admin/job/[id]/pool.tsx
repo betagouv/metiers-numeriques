@@ -191,6 +191,7 @@ export default function JobApplicationPool() {
 
   const [showModal, setShowModal] = useState(false)
   const [statusFilter, setStatusFilter] = useState<JobApplicationStatus>()
+  const [jobTitle, setJobTitle] = useState<string>('')
   const [applications, setApplications] = useState<JobApplicationWithRelation[]>([])
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
   const [isLoading, setIsLoading] = useState(false)
@@ -203,10 +204,11 @@ export default function JobApplicationPool() {
       if (response.status !== 200) {
         setIsError(true)
       }
-      const data = await response.json()
-      setApplications(data)
+      const job = await response.json()
+      setJobTitle(job.title)
+      setApplications(job.applications)
 
-      return data
+      return job.applications
     } catch (err) {
       handleError(err, 'pages/admin/domain/[id].tsx > fetchDomain()')
       setIsError(true)
@@ -216,7 +218,7 @@ export default function JobApplicationPool() {
   }
 
   useEffect(() => {
-    fetchApplications().then(data => setCurrentApplication(data[0]))
+    fetchApplications().then(applications => setCurrentApplication(applications[0]))
   }, [])
 
   const handleAccepted = async (applicationId: string) => {
@@ -267,7 +269,7 @@ export default function JobApplicationPool() {
 
   return (
     <>
-      <AdminTitle>Candidature: {id}</AdminTitle>
+      <AdminTitle>Candidature: {jobTitle}</AdminTitle>
       <Spacer units={1} />
       <Row fullHeight>
         <Col scroll size={20}>

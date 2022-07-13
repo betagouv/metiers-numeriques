@@ -15,14 +15,18 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
   try {
     const { id } = req.query
 
-    const data = await prisma.jobApplication.findMany({
+    const data = await prisma.job.findUnique({
       include: {
-        candidate: {
-          include: { domains: true, user: true },
+        applications: {
+          include: {
+            candidate: {
+              include: { domains: true, user: true },
+            },
+            cvFile: true,
+          },
         },
-        cvFile: true,
       },
-      where: { jobId: id as string },
+      where: { id: id as string },
     })
 
     res.send(data)
