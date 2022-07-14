@@ -1,5 +1,4 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-
 export type Theme = typeof theme
 export const theme = {
   color: {
@@ -139,3 +138,15 @@ export const theme = {
     },
   },
 }
+
+export const colors = {
+  ...theme.color.primary,
+  ...theme.color.neutral,
+  ...theme.color.success,
+  ...theme.color.warning,
+  ...theme.color.danger,
+}
+
+export type Color = keyof typeof colors
+
+export type ColorRange = keyof typeof theme.color
