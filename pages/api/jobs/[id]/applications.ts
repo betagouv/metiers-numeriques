@@ -20,7 +20,7 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
         applications: {
           include: {
             candidate: {
-              include: { domains: true, user: true },
+              include: { domains: true, professions: true, user: true },
             },
             cvFile: true,
           },

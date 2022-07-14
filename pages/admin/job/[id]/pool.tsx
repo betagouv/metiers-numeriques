@@ -3,7 +3,7 @@ import { Link } from '@app/atoms/Link'
 import { theme } from '@app/theme'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
-import { Domain, JobApplicationStatus } from '@prisma/client'
+import { Domain, JobApplicationStatus, Profession } from '@prisma/client'
 import { Select, Button as SUIButton, Card as SUICard, Modal } from '@singularity/core'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -123,6 +123,7 @@ const ListItem = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 0.5rem 0;
 `
@@ -131,7 +132,7 @@ const ApplicationLetter = styled.p`
   white-space: pre-wrap;
 `
 
-type CandidateWithRelation = Candidate & { domains: Domain[]; user: User }
+type CandidateWithRelation = Candidate & { domains: Domain[]; professions: Profession[]; user: User }
 
 type JobApplicationWithRelation = JobApplication & {
   candidate: CandidateWithRelation
@@ -419,17 +420,17 @@ export default function JobApplicationPool() {
                       <ul>
                         <li>
                           <ListItem>
-                            Localisation:
-                            <Tag color={theme.color.success.mint}>{currentCandidate.region}</Tag>
+                            Compétences:
+                            {!currentCandidate.professions.length && ' Non renseignées'}
+                            {currentCandidate.professions.map(profession => (
+                              <Tag color={theme.color.neutral.greyBlue}>{profession.name}</Tag>
+                            ))}
                           </ListItem>
                         </li>
                         <li>
                           <ListItem>
-                            Types de contrat recherché:
-                            {!currentCandidate.contractTypes.length && ' Non renseignés'}
-                            {currentCandidate.contractTypes.map(contractType => (
-                              <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
-                            ))}
+                            Localisation:
+                            <Tag color={theme.color.success.mint}>{currentCandidate.region}</Tag>
                           </ListItem>
                         </li>
                         <li>
@@ -438,6 +439,15 @@ export default function JobApplicationPool() {
                             {!currentCandidate.domains.length && ' Non renseignés'}
                             {currentCandidate.domains.map(domain => (
                               <Tag color={theme.color.primary.lightBlue}>{domain.name}</Tag>
+                            ))}
+                          </ListItem>
+                        </li>
+                        <li>
+                          <ListItem>
+                            Types de contrat recherché:
+                            {!currentCandidate.contractTypes.length && ' Non renseignés'}
+                            {currentCandidate.contractTypes.map(contractType => (
+                              <Tag color={theme.color.warning.lighYellow}>{JOB_CONTRACT_TYPE_LABEL[contractType]}</Tag>
                             ))}
                           </ListItem>
                         </li>
