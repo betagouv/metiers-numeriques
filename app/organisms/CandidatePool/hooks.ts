@@ -1,7 +1,17 @@
 import { handleError } from '@common/helpers/handleError'
+import { JobContractType } from '@prisma/client'
+import * as R from 'ramda'
 import { useState } from 'react'
 
 import { JobApplicationWithRelation } from './types'
+
+// TODO dupe
+type FilterProps = {
+  contractTypes?: JobContractType[]
+  domainIds?: string[]
+  professionId?: string
+  region?: string
+}
 
 export const useCandidatePoolQueries = (jobId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -9,10 +19,14 @@ export const useCandidatePoolQueries = (jobId?: string) => {
 
   const [applications, setApplications] = useState<JobApplicationWithRelation[]>([])
 
-  const fetchApplications = async () => {
+  const fetchApplications = async (filters: FilterProps = {}) => {
+    console.log('fff', filters)
+    const search = R.reject(R.isNil, { ...filters, jobId })
+    const params = new URLSearchParams(search)
+
     try {
       setIsLoading(true)
-      const response = await fetch(`/api/applications${jobId ? `?jobId=${jobId}` : ''}`)
+      const response = await fetch(`/api/applications?${params.toString()}`)
       if (response.status !== 200) {
         setIsError(true)
       }

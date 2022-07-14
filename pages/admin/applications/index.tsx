@@ -1,6 +1,7 @@
 import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DocumentViewer } from '@app/atoms/DocumentViewer'
 import { Spacer } from '@app/atoms/Spacer'
+import { AdminForm } from '@app/molecules/AdminForm'
 import { ActionButtons } from '@app/organisms/CandidatePool/ActionButtons'
 import { CandidateInfos } from '@app/organisms/CandidatePool/CandidateInfos'
 import { CandidatesList } from '@app/organisms/CandidatePool/CandidatesList'
@@ -11,7 +12,11 @@ import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
 import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidatePool/utils'
 import { theme } from '@app/theme'
+import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_SOURCES_AS_OPTIONS, REGIONS_AS_OPTIONS } from '@common/constants'
+import { JobContractType } from '@prisma/client'
+import { Field } from '@singularity/core'
 import { useRouter } from 'next/router'
+import { ArchivedFormSchema } from 'pages/admin/archived-job/[id]'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -34,6 +39,51 @@ const ApplicationLetter = styled.p`
   white-space: pre-wrap;
 `
 
+const Filters = ({ onFilter }) => (
+  <AdminForm initialValues={{}} onSubmit={onFilter}>
+    <Row gap={0.5} style={{ alignItems: 'flex-end' }}>
+      <Col size={20}>
+        <Field>
+          <AdminForm.ProfessionSelect label="Compétence" name="professionId" />
+        </Field>
+      </Col>
+
+      <Col size={20}>
+        <Field>
+          <AdminForm.DomainSelect label="Domaines" name="domainIds" />
+        </Field>
+      </Col>
+      <Col size={20}>
+        <Field>
+          <AdminForm.Select
+            isMulti
+            label="Types de contrat"
+            name="contractTypes"
+            options={JOB_CONTRACT_TYPES_AS_OPTIONS}
+          />
+        </Field>
+      </Col>
+      <Col size={20}>
+        <Field>
+          <AdminForm.Select label="Localisation" name="region" options={REGIONS_AS_OPTIONS} />
+        </Field>
+      </Col>
+      <Col size={20}>
+        <Field>
+          <AdminForm.Submit>Rechercher</AdminForm.Submit>
+        </Field>
+      </Col>
+    </Row>
+  </AdminForm>
+)
+
+type FilterProps = {
+  contractTypes?: JobContractType[]
+  domainIds?: string[]
+  professionId?: string
+  region?: string
+}
+
 export default function Applications() {
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
@@ -41,14 +91,20 @@ export default function Applications() {
     useCandidatePoolQueries()
 
   useEffect(() => {
-    fetchApplications().then(applications => {
+    fetchApplications({}).then(applications => {
       setCurrentApplication(applications[0])
     })
   }, [])
 
-  if (isLoading && !applications.length) {
-    return <div>Loading</div>
+  const handleFilter = (filters: FilterProps, { setSubmitting }) => {
+    console.log('filtering')
+    fetchApplications(filters)
+    setSubmitting(false)
   }
+
+  // if (isLoading && !applications.length) {
+  //   return <div>Loading</div>
+  // }
   if (isError) {
     return <div>Error</div>
   }
@@ -59,8 +115,10 @@ export default function Applications() {
     <PageContainer>
       <AdminTitle>Mon vivier</AdminTitle>
       <Spacer units={1} />
+      <Filters onFilter={handleFilter} />
+      <Spacer units={1} />
       {/* TODO: fix the weird height */}
-      <Row style={{ height: '92%' }}>
+      <Row style={{ height: '85%' }}>
         <Col size={20}>
           <CandidatesList
             applications={applications}
@@ -82,7 +140,6 @@ export default function Applications() {
                     <Spacer units={1} />
                     <CandidateTouchPoints candidate={currentCandidate} />
                     <Spacer units={3} />
-
                     <Row centered>
                       <ActionButtons
                         application={currentApplication}

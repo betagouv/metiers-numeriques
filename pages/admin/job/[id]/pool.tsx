@@ -45,10 +45,12 @@ export default function JobApplicationPool() {
     useCandidatePoolQueries(id as string)
 
   useEffect(() => {
-    fetchApplications().then(applications => {
-      setJobTitle('NOT SET')
-      setCurrentApplication(applications[0])
-    })
+    // Fetch job
+    fetch(`/api/jobs/${id}`)
+      .then(res => res.json())
+      .then(job => setJobTitle(job.title))
+
+    fetchApplications().then(applications => setCurrentApplication(applications[0]))
   }, [])
 
   if (isLoading && !applications.length) {
