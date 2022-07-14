@@ -95,6 +95,15 @@ export function AdminMenu() {
             </VerticalMenu.Item>
           </Link>
 
+          <Link href="/admin/applications">
+            <VerticalMenu.Item
+              isActive={router.pathname === '/admin/applications' || router.pathname.startsWith('/admin/application/')}
+              isDark
+            >
+              Mon vivier
+            </VerticalMenu.Item>
+          </Link>
+
           {isAdmin && (
             <Link href="/admin/domains">
               <VerticalMenu.Item

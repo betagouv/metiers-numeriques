@@ -34,19 +34,14 @@ const ApplicationLetter = styled.p`
   white-space: pre-wrap;
 `
 
-export default function JobApplicationPool() {
-  const router = useRouter()
-  const { id } = router.query
-
-  const [jobTitle, setJobTitle] = useState<string>('')
+export default function Applications() {
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
   const { applications, fetchApplications, handleAccepted, handleRejected, isError, isLoading } =
-    useCandidatePoolQueries(id as string)
+    useCandidatePoolQueries()
 
   useEffect(() => {
     fetchApplications().then(applications => {
-      setJobTitle('NOT SET')
       setCurrentApplication(applications[0])
     })
   }, [])
@@ -62,7 +57,7 @@ export default function JobApplicationPool() {
 
   return (
     <PageContainer>
-      <AdminTitle>Candidature: {jobTitle}</AdminTitle>
+      <AdminTitle>Mon vivier</AdminTitle>
       <Spacer units={1} />
       {/* TODO: fix the weird height */}
       <Row style={{ height: '92%' }}>

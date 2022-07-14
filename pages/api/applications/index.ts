@@ -13,20 +13,16 @@ export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, re
 
 const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { id } = req.query
+    const { jobId } = req.query
 
-    const data = await prisma.job.findUnique({
+    const data = await prisma.jobApplication.findMany({
       include: {
-        applications: {
-          include: {
-            candidate: {
-              include: { domains: true, professions: true, user: true },
-            },
-            cvFile: true,
-          },
+        candidate: {
+          include: { domains: true, professions: true, user: true },
         },
+        cvFile: true,
       },
-      where: { id: id as string },
+      where: { jobId: (jobId as string) || null },
     })
 
     res.send(data)

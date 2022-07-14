@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { JobApplicationWithRelation } from './types'
 
-export const useCandidatePoolQueries = (jobId: string) => {
+export const useCandidatePoolQueries = (jobId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
@@ -12,13 +12,13 @@ export const useCandidatePoolQueries = (jobId: string) => {
   const fetchApplications = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch(`/api/jobs/${jobId}/applications`)
+      const response = await fetch(`/api/applications${jobId ? `?jobId=${jobId}` : ''}`)
       if (response.status !== 200) {
         setIsError(true)
       }
 
       const data = await response.json()
-      setApplications(data.applications)
+      setApplications(data)
 
       return data
     } catch (err) {
