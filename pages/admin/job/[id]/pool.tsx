@@ -81,6 +81,7 @@ export default function JobApplicationPool() {
             applications={applications}
             currentApplicationId={currentApplication?.id}
             onClickApplication={setCurrentApplication}
+            showFilters
           />
         </Col>
         <Col size={80}>

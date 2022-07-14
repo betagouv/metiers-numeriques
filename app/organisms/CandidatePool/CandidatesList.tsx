@@ -64,40 +64,52 @@ type CandidatesListProps = {
   applications: JobApplicationWithRelation[]
   currentApplicationId?: string
   onClickApplication: (application: JobApplicationWithRelation) => void
+  showFilters?: boolean
 }
 
-export const CandidatesList = ({ applications, currentApplicationId, onClickApplication }: CandidatesListProps) => {
+export const CandidatesList = ({
+  applications,
+  currentApplicationId,
+  onClickApplication,
+  showFilters = false,
+}: CandidatesListProps) => {
   const [statusFilter, setStatusFilter] = useState<JobApplicationStatus>()
 
   const applicationStatusCounts = R.countBy(application => application.status, applications)
 
   return (
     <CandidatesListContainer>
-      <Row gap={1} style={{ padding: '1.5rem' }}>
-        <span>Filtres:</span>
-        <Tag
-          color="success"
-          isSelected={statusFilter === JobApplicationStatus.ACCEPTED}
-          onClick={() =>
-            setStatusFilter(currentFilter =>
-              currentFilter === JobApplicationStatus.ACCEPTED ? undefined : JobApplicationStatus.ACCEPTED,
-            )
-          }
-        >
-          Vivier ({applicationStatusCounts[JobApplicationStatus.ACCEPTED] || 0})
-        </Tag>
-        <Tag
-          color="danger"
-          isSelected={statusFilter === JobApplicationStatus.REJECTED}
-          onClick={() =>
-            setStatusFilter(currentFilter =>
-              currentFilter === JobApplicationStatus.REJECTED ? undefined : JobApplicationStatus.REJECTED,
-            )
-          }
-        >
-          Refusés ({applicationStatusCounts[JobApplicationStatus.REJECTED] || 0})
-        </Tag>
-      </Row>
+      <div style={{ padding: '1.5rem' }}>
+        <div>{applications.length} candidatures</div>
+        {showFilters && (
+          <Row gap={1}>
+            <Spacer units={0.5} />
+            <span>Filtres:</span>
+            <Tag
+              color="success"
+              isSelected={statusFilter === JobApplicationStatus.ACCEPTED}
+              onClick={() =>
+                setStatusFilter(currentFilter =>
+                  currentFilter === JobApplicationStatus.ACCEPTED ? undefined : JobApplicationStatus.ACCEPTED,
+                )
+              }
+            >
+              Vivier ({applicationStatusCounts[JobApplicationStatus.ACCEPTED] || 0})
+            </Tag>
+            <Tag
+              color="danger"
+              isSelected={statusFilter === JobApplicationStatus.REJECTED}
+              onClick={() =>
+                setStatusFilter(currentFilter =>
+                  currentFilter === JobApplicationStatus.REJECTED ? undefined : JobApplicationStatus.REJECTED,
+                )
+              }
+            >
+              Refusés ({applicationStatusCounts[JobApplicationStatus.REJECTED] || 0})
+            </Tag>
+          </Row>
+        )}
+      </div>
       {applications
         .filter(application => (statusFilter ? application.status === statusFilter : true))
         .map(application => (
