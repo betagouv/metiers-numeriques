@@ -23,6 +23,9 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
         },
         cvFile: true,
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
       where: {
         candidate: {
           region,

@@ -43,10 +43,12 @@ export const useCandidatePoolQueries = (jobId?: string) => {
     }
   }
 
-  const handleAccepted = async (applicationId: string) => {
+  const handleAccepted = async (applicationId: string, isAlreadyAccepted: boolean) => {
     try {
       setIsLoading(true)
-      const response = await fetch(`/api/applications/${applicationId}/accept`, { method: 'PUT' })
+      const response = await fetch(`/api/applications/${applicationId}/accept`, {
+        method: isAlreadyAccepted ? 'DELETE' : 'PUT',
+      })
       if (response.status === 200) {
         // TODO: add flash message
         await fetchApplications()
