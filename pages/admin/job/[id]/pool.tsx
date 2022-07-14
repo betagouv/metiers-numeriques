@@ -324,7 +324,7 @@ export default function JobApplicationPool() {
                   <CandidateMenuInfos>
                     <CandidateName>{getCandidateFullName(application.candidate)}</CandidateName>
                     <CandidateInfo>{application.candidate.currentJob}</CandidateInfo>
-                    <CandidateInfo>{formatSeniority(application.candidate.yearsOfExperience)}</CandidateInfo>
+                    <CandidateInfo>{formatSeniority(application.candidate.seniorityInYears)}</CandidateInfo>
                     <Spacer units={0.5} />
                     {application.status === JobApplicationStatus.ACCEPTED && (
                       <Tag color={theme.color.success.mint}>Dans mon vivier</Tag>
@@ -347,7 +347,7 @@ export default function JobApplicationPool() {
                     <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
                     <Spacer units={0.5} />
                     <ApplicationSubtitle>
-                      {currentCandidate.currentJob} • {formatSeniority(currentCandidate.yearsOfExperience)}
+                      {currentCandidate.currentJob} • {formatSeniority(currentCandidate.seniorityInYears)}
                     </ApplicationSubtitle>
                     <Spacer units={1} />
                     <Row style={{ flexWrap: 'wrap' }}>

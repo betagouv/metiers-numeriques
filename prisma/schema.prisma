@@ -383,6 +383,7 @@ model Profession {
 
   jobs         Job[]         @relation("JobProfession")
   archivedJobs ArchivedJob[] @relation("ArchivedJobProfession")
+  candidates   Candidate[]   @relation("CandidateProfessions")
 }
 
 model Recruiter {
@@ -458,12 +459,13 @@ model Candidate {
   region                 String
   contractTypes          JobContractType[]
   currentJob             String
-  yearsOfExperience      Int?              @default(0)
+  seniorityInYears       Int              @default(0)
   githubUrl              String?
   linkedInUrl            String?
   portfolioUrl           String?
 
   domains                Domain[]         @relation("CandidateDomains")
+  professions            Profession[]     @relation("CandidateProfessions")
   hiddenFromInstitutions Institution[]    @relation("CandidateHiddenFromInstitutions")
 
   jobApplications        JobApplication[] @relation("JobApplicationCandidate")
