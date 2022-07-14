@@ -13,6 +13,7 @@ import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidateP
 import { theme } from '@app/theme'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { Download } from 'react-feather'
 import styled from 'styled-components'
 
 const PageContainer = styled.div`
@@ -32,6 +33,13 @@ const ApplicationSubtitle = styled.div`
 
 const ApplicationLetter = styled.p`
   white-space: pre-wrap;
+`
+
+const ApplicationHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `
 
 export default function JobApplicationPool() {
@@ -81,11 +89,20 @@ export default function JobApplicationPool() {
               <Row style={{ height: '100%' }}>
                 <Col scroll size={50}>
                   <ApplicationContainer>
-                    <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
-                    <Spacer units={0.5} />
-                    <ApplicationSubtitle>
-                      {currentCandidate.currentJob} • {formatSeniority(currentCandidate.seniorityInYears)}
-                    </ApplicationSubtitle>
+                    <ApplicationHeaderContainer>
+                      <div>
+                        <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
+                        <Spacer units={0.5} />
+                        <ApplicationSubtitle>
+                          {currentCandidate.currentJob} • {formatSeniority(currentCandidate.seniorityInYears)}
+                        </ApplicationSubtitle>
+                      </div>
+                      <Download
+                        onClick={() => alert('Downloading application')}
+                        size={32}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </ApplicationHeaderContainer>
                     <Spacer units={1} />
                     <CandidateTouchPoints candidate={currentCandidate} />
                     <Spacer units={3} />
