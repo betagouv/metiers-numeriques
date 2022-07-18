@@ -75,7 +75,7 @@ type JobListPageProps = {
   initialJobs: JobWithRelation[]
   initialJobsLength: number
   initialProfessions: Pick<Profession, 'id' | 'name'>[]
-  initialQueryFilter?: string
+  initialQueryFilter: string | null
 }
 export default function JobListPage({
   initialDomains,
@@ -299,7 +299,7 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<JobListPageProps>> {
   const { query } = context.query
-  const initialQueryFilter = typeof query === 'string' ? query : undefined
+  const initialQueryFilter = typeof query === 'string' ? query : null
 
   const whereFilterBase: Prisma.JobWhereInput = {
     AND: {
