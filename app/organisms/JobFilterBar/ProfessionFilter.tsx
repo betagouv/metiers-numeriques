@@ -6,7 +6,7 @@ import type { SelectOption } from '@app/atoms/Select'
 import type { Profession } from '@prisma/client'
 
 type ProfessionFilterProps = {
-  onChange: (professionId: string | undefined) => void | Promise<void>
+  onChange: (professionIds: string[]) => void
   professions: Pick<Profession, 'id' | 'name'>[]
 }
 export function ProfessionFilter({ onChange, professions }: ProfessionFilterProps) {
@@ -22,14 +22,15 @@ export function ProfessionFilter({ onChange, professions }: ProfessionFilterProp
     }))
   }, [professions])
 
-  const handleChange = useCallback((professionAsOption: SelectOption | null) => {
-    onChange(professionAsOption ? professionAsOption.value : undefined)
+  const handleChange = useCallback((professionsAsOptions: SelectOption[]) => {
+    onChange(professionsAsOptions.map(R.prop('value')))
   }, [])
 
   return (
     <Select
       isClearable
-      label="Filtrer par domaine"
+      isMulti
+      label="Filtrer par compétence"
       name="profession"
       onChange={handleChange as any}
       options={options}

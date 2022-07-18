@@ -11,6 +11,7 @@ const Box = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 3rem 3rem 4rem;
+  margin-bottom: 4rem;
 `
 
 const Content = styled.div`

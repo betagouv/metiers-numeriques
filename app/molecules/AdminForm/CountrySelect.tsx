@@ -1,9 +1,8 @@
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
 import countriesAsOptions from '@common/data/countriesAsOptions.json'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useMemo } from 'react'
-
-import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
 
 type CountrySelectProps = {
   helper?: string

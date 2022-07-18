@@ -38,6 +38,7 @@ type JobFormData = Omit<Prisma.JobCreateInput, 'addressId' | 'expiredAt' | 'seni
   addressAsPrismaAddress: Prisma.AddressCreateInput
   applicationContactIds: string[]
   contractTypes: JobContractType[]
+  domainIds: string[]
   expiredAtAsString: string
   infoContactId: string
   professionId: string
@@ -73,13 +74,14 @@ export const JobFormSchema = Yup.object().shape(
           .required(`Le site de candidature est obligatoire si aucun contact "candidatures" n’est renseigné.`)
           .url(`Cette URL est mal formatée.`),
       }),
-    contractTypes: Yup.array(Yup.string().nullable())
-      .required(`Au moins un type de contrat est obligatoire.`)
-      .min(1, `Au moins un type de contrat est obligatoire.`),
+    contractTypes: Yup.string().required('Le type de contrat est obligatoire'),
+    domainIds: Yup.array(Yup.string().nullable())
+      .required(`Au moins un domaine est obligatoire.`)
+      .min(1, `Au moins un domaine est obligatoire.`),
     expiredAtAsString: Yup.string().nullable().required(`La date d’expiration est obligatoire.`),
     infoContactId: Yup.string().nullable().required(`Le contact unique pour les questions est obligatoire.`),
     missionDescription: Yup.string().nullable().trim().required(`Décrire la mission est obligatoire.`),
-    professionId: Yup.string().nullable().required(`Le secteur d’activité est obligatoire.`),
+    professionId: Yup.string().nullable().required(`La compétence est obligatoire.`),
     recruiterId: Yup.string().nullable().required(`Le service recruteur est obligatoire.`),
     remoteStatus: Yup.string().nullable().required(`Indiquer les possibilités de télétravail est obligatoire.`),
     salaryMax: Yup.number()
@@ -148,6 +150,7 @@ export default function AdminJobEditorPage() {
         'applicationWebsiteUrl',
         'contextDescription',
         'contractTypes',
+        'domainIds',
         'infoContactId',
         'missionDescription',
         'missionVideoUrl',
@@ -195,6 +198,10 @@ export default function AdminJobEditorPage() {
 
       input.expiredAt = dayjs(values.expiredAtAsString).startOf('day').toDate()
       input.seniorityInMonths = values.seniorityInYears * 12
+
+      // @ts-expect-error
+      // TODO: contract types refacto forced me the keep the array form. To refactor cleaner
+      input.contractTypes = input.contractTypes ? [input.contractTypes] : undefined
 
       if (input.missionDescription === undefined) {
         input.missionDescription = ''
@@ -284,6 +291,9 @@ export default function AdminJobEditorPage() {
 
     initialValues.seniorityInYears = Math.ceil(initialValues.seniorityInMonths / 12)
 
+    if (initialValues.domains) {
+      initialValues.domainIds = initialValues.domains.map(({ id }) => id)
+    }
     initialValues.applicationContactIds = initialValues.applicationContacts.map(({ id }) => id)
     if (initialValues.infoContact !== null) {
       initialValues.infoContactId = initialValues.infoContact.id
@@ -297,6 +307,12 @@ export default function AdminJobEditorPage() {
 
     if (initialValues.address !== null) {
       initialValues.addressAsPrismaAddress = R.omit(['__typename', 'id'])(initialValues.address)
+    }
+
+    // TODO: contract types refacto forced me the keep the array form. To refactor cleaner
+    if (initialValues.contractTypes?.length) {
+      // eslint-disable-next-line prefer-destructuring
+      initialValues.contractTypes = initialValues.contractTypes[0]
     }
 
     $state.current = initialValues.state
@@ -355,20 +371,23 @@ export default function AdminJobEditorPage() {
           <DoubleField>
             <AdminForm.ProfessionSelect
               isDisabled={isLoading}
-              label="Secteur d’activité *"
+              label="Compétence *"
               name="professionId"
               placeholder="…"
             />
 
             <AdminForm.Select
               isDisabled={isLoading}
-              isMulti
               label="Types de contrat *"
               name="contractTypes"
               options={JOB_CONTRACT_TYPES_AS_OPTIONS}
               placeholder="…"
             />
           </DoubleField>
+
+          <Field>
+            <AdminForm.DomainSelect isDisabled={isLoading} label="Domaines *" name="domainIds" />
+          </Field>
 
           <DoubleField>
             <AdminForm.TextInput
@@ -387,9 +406,7 @@ export default function AdminJobEditorPage() {
             />
           </DoubleField>
 
-          <Field>
-            <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
-          </Field>
+          <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
         </AdminCard>
 
         <AdminCard>

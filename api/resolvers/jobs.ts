@@ -1,5 +1,5 @@
 import { handleError } from '@common/helpers/handleError'
-import { JobState, UserRole } from '@prisma/client'
+import { Domain, JobState, UserRole } from '@prisma/client'
 import dayjs from 'dayjs'
 
 import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
@@ -24,6 +24,7 @@ import type {
 export type JobFromGetOne = Job & {
   address: Address
   applicationContacts: Contact[]
+  domains: Domain[]
   infoContact: Contact
   profession: Profession
   recruiter: Recruiter
@@ -47,18 +48,15 @@ export const mutation = {
   createJob: async (
     _parent: undefined,
     {
-      input: { applicationContactIds = [], ...input },
+      input: { applicationContactIds = [], domainIds = [], ...input },
     }: {
       input: Prisma.JobCreateInput & {
         applicationContactIds?: string[]
+        domainIds?: string[]
       }
     },
   ): Promise<Job | null> => {
     try {
-      const applicationContactsAsConnections = applicationContactIds.map(id => ({
-        id,
-      }))
-
       const updatedAt = input.updatedAt || dayjs().toDate()
       const controlledInput: Prisma.JobCreateInput = {
         ...input,
@@ -74,7 +72,12 @@ export const mutation = {
       await prisma.job.update({
         data: {
           applicationContacts: {
-            connect: applicationContactsAsConnections,
+            connect: applicationContactIds.map(id => ({
+              id,
+            })),
+          },
+          domains: {
+            connect: domainIds.map(id => ({ id })),
           },
         },
         where: {
@@ -112,11 +115,12 @@ export const mutation = {
     _parent: undefined,
     {
       id,
-      input: { applicationContactIds = [], ...input },
+      input: { applicationContactIds = [], domainIds = [], ...input },
     }: {
       id: string
       input: Prisma.JobUpdateInput & {
         applicationContactIds?: string[]
+        domainIds?: string[]
       }
     },
   ): Promise<Job | null> => {
@@ -124,6 +128,9 @@ export const mutation = {
       await prisma.job.update({
         data: {
           applicationContacts: {
+            set: [],
+          },
+          domains: {
             set: [],
           },
         },
@@ -136,6 +143,7 @@ export const mutation = {
         data: input,
         include: {
           applicationContacts: true,
+          domains: true,
         },
         where: {
           id,
@@ -149,22 +157,27 @@ export const mutation = {
           applicationContacts: {
             set: [],
           },
+          domains: { set: [] },
         },
         where: {
           id,
         },
       })
-      const applicationContactsAsConnections = applicationContactIds.map(id => ({
-        id,
-      }))
+
       await prisma.job.update({
         data: {
           applicationContacts: {
-            connect: applicationContactsAsConnections,
+            connect: applicationContactIds.map(id => ({
+              id,
+            })),
+          },
+          domains: {
+            connect: domainIds.map(id => ({ id })),
           },
         },
         include: {
           applicationContacts: true,
+          domains: true,
         },
         where: {
           id,
@@ -205,6 +218,7 @@ export const query = {
         include: {
           address: true,
           applicationContacts: true,
+          domains: true,
           infoContact: true,
           profession: true,
           recruiter: true,
@@ -277,6 +291,7 @@ export const query = {
         include: {
           address: true,
           applicationContacts: true,
+          domains: true,
           infoContact: true,
           profession: true,
           recruiter: true,
@@ -314,15 +329,25 @@ export const query = {
     obj,
     queryArgs: GetAllArgs & {
       contractTypes?: JobContractType[]
-      institutionIds?: string[]
-      professionId?: string
+      domainIds: string[]
+      professionIds: string[]
       region?: Region
       remoteStatuses?: JobRemoteStatus[]
+      seniorityInMonths?: number
     },
   ): Promise<GetAllResponse<JobFromGetPublicJobs>> => {
     try {
-      const { contractTypes, institutionIds, pageIndex, perPage, professionId, query, region, remoteStatuses } =
-        queryArgs
+      const {
+        contractTypes,
+        domainIds,
+        pageIndex,
+        perPage,
+        professionIds,
+        query,
+        region,
+        remoteStatuses,
+        seniorityInMonths,
+      } = queryArgs
 
       const throttledPerPage = perPage <= PUBLIC_PER_PAGE_THROTTLE ? perPage : 1
 
@@ -339,20 +364,19 @@ export const query = {
           hasSome: contractTypes,
         }
       }
-      if (institutionIds !== undefined && institutionIds.length > 0) {
-        andFilter.recruiter = {
-          institution: {
-            id: {
-              in: institutionIds,
-            },
-          },
-        }
+      if (professionIds?.length) {
+        andFilter.professionId = { in: professionIds }
       }
-      if (professionId !== undefined) {
-        andFilter.professionId = professionId
+      if (domainIds?.length) {
+        andFilter.domains = {
+          some: { id: { in: domainIds } },
+        }
       }
       if (region !== undefined) {
         andFilter.address = { region }
+      }
+      if (seniorityInMonths !== undefined) {
+        andFilter.seniorityInMonths = { equals: seniorityInMonths }
       }
       if (remoteStatuses !== undefined && remoteStatuses.length > 0) {
         andFilter.remoteStatus = {
@@ -365,6 +389,7 @@ export const query = {
         include: {
           address: true,
           applicationContacts: true,
+          domains: true,
           infoContact: true,
           profession: true,
           recruiter: {

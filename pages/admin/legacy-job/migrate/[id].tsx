@@ -468,7 +468,7 @@ export default function AdminLegacyJobMigratorPage() {
               <DoubleField>
                 <AdminForm.ProfessionSelect
                   isDisabled={isLoading}
-                  label="Secteur d’activité *"
+                  label="Compétence *"
                   name="professionId"
                   placeholder="…"
                 />

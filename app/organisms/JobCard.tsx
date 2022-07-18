@@ -3,23 +3,30 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { theme } from '@app/theme'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
-import { useCallback, useMemo } from 'react'
+import * as R from 'ramda'
+import { useCallback } from 'react'
 import styled from 'styled-components'
 
 import { Link } from '../atoms/Link'
 
-import type { Address, Contact, Job, Profession, Recruiter } from '@prisma/client'
+import type { Address, Contact, Job, Profession, Recruiter, Domain } from '@prisma/client'
 
 export type JobWithRelation = Job & {
   address: Address
   applicationContacts: Contact[]
+  domains: Domain[]
   infoContact: Contact
   profession: Profession
-  recruiter: Recruiter
+  recruiter: Recruiter & { institution: { name: string } }
 }
 
 const Box = styled.div`
   display: flex;
+`
+
+const Row = styled(Box)`
+  flex-direction: row;
+  gap: 1.5rem;
 `
 
 const Card = styled.div`
@@ -32,8 +39,8 @@ const Card = styled.div`
 `
 
 const Date = styled.p`
-  color: #666666;
-  font-size: 85%;
+  font-size: 0.8rem;
+  font-weight: 300;
 `
 
 const Title = styled.h3`
@@ -43,9 +50,9 @@ const Title = styled.h3`
   line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 150%;
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 2rem;
   margin: 0.5rem 0 0;
 `
 
@@ -63,11 +70,9 @@ const Excerpt = styled.p`
 
 const Info = styled.p`
   font-size: 90%;
-  font-weight: 600;
   margin-top: 0.5rem !important;
 
   > i {
-    color: ${theme.color.primary.azure};
     font-size: 120%;
     font-weight: 500;
     margin-right: 0.5rem;
@@ -78,9 +83,9 @@ const Info = styled.p`
 type JobCardProps = {
   job: JobWithRelation
 }
+
 export function JobCard({ job }: JobCardProps) {
   const location = job.address.country === 'FR' ? job.address.region : getCountryFromCode(job.address.country)
-  const seniorityInYears = useMemo(() => Math.ceil(job.seniorityInMonths / 12), [])
 
   const trackJobOpening = useCallback(() => {
     matomo.trackGoal(MatomoGoal.JOB_OPENING)
@@ -89,8 +94,7 @@ export function JobCard({ job }: JobCardProps) {
   return (
     <Box className="JobCard">
       <Card>
-        <Date>Publiée le {humanizeDate(job.updatedAt)}</Date>
-
+        <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
         <Title>
           <Link
             href={`/emploi/${job.slug}`}
@@ -102,59 +106,59 @@ export function JobCard({ job }: JobCardProps) {
             {job.title}
           </Link>
         </Title>
-
         <ul
           className="fr-tags-group"
           style={{
-            marginTop: '1.15rem',
+            marginTop: '0.5rem',
           }}
         >
-          {job.contractTypes.map(contractType => (
-            <li
-              key={`${job.id}-${contractType}`}
-              className="fr-tag fr-tag--sm"
-              style={{
-                backgroundColor: 'var(--background-flat-info)',
-                color: 'white',
-              }}
-            >
-              {JOB_CONTRACT_TYPE_LABEL[contractType]}
-            </li>
-          ))}
-
           <li
-            key={`${job.id}-${job.seniorityInMonths}`}
             className="fr-tag fr-tag--sm"
             style={{
-              backgroundColor: 'var(--background-flat-success)',
-              color: 'white',
+              backgroundColor: theme.color.neutral.silver,
             }}
           >
-            {/* eslint-disable-next-line no-nested-ternary */}
-            {seniorityInYears === 0
-              ? 'Ouvert aux débutant·es'
-              : seniorityInYears === 1
-              ? `Min. 1 an d’expérience`
-              : `Min. ${seniorityInYears} ans d’expérience`}
+            {job.profession.name}
           </li>
-        </ul>
 
+          {R.sortBy<Domain>(d => d.name, job?.domains || []).map(domain => (
+            <li
+              key={domain.id}
+              className="fr-tag fr-tag--sm"
+              style={{
+                backgroundColor: theme.color.primary.lightBlue,
+              }}
+            >
+              {domain.name}
+            </li>
+          ))}
+        </ul>
         <Excerpt>{job.missionDescription}</Excerpt>
 
-        <Info>
-          <i className="ri-map-pin-line" />
-          {location}
-        </Info>
+        {/* TODO: contract types refacto forced me to keep the array type. Must be refactored cleaner */}
+        {!!job.contractTypes?.length && (
+          <Info>
+            <i className="ri-user-3-line" style={{ color: theme.color.warning.lemon }} />
+            {JOB_CONTRACT_TYPE_LABEL[job.contractTypes[0]]}
+          </Info>
+        )}
 
-        <Info>
-          <i className="ri-suitcase-line" />
-          {job.recruiter.websiteUrl && (
-            <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-              {job.recruiter.displayName}
-            </a>
-          )}
-          {!job.recruiter.websiteUrl && job.recruiter.displayName}
-        </Info>
+        <Row>
+          <Info>
+            <i className="ri-map-pin-line" style={{ color: theme.color.danger.rubicund }} />
+            {location}
+          </Info>
+
+          <Info>
+            <i className="ri-suitcase-line" style={{ color: theme.color.primary.azure }} />
+            {job.recruiter.websiteUrl && (
+              <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
+                {job.recruiter.institution?.name}
+              </a>
+            )}
+            {!job.recruiter.websiteUrl && job.recruiter.institution?.name}
+          </Info>
+        </Row>
       </Card>
     </Box>
   )

@@ -28,23 +28,25 @@ export const GET_ALL = gql`
 export const GET_ALL_PUBLIC = gql`
   query GetPublicJobs(
     $contractTypes: [String]
-    $institutionIds: [String]
     $pageIndex: Int!
     $perPage: Int!
-    $professionId: String
+    $professionIds: [String]
+    $domainIds: [String]
     $query: String
     $region: String
     $remoteStatuses: [String]
+    $seniorityInMonths: Int
   ) {
     getPublicJobs(
       contractTypes: $contractTypes
-      institutionIds: $institutionIds
       pageIndex: $pageIndex
       perPage: $perPage
-      professionId: $professionId
+      professionIds: $professionIds
+      domainIds: $domainIds
       query: $query
       region: $region
       remoteStatuses: $remoteStatuses
+      seniorityInMonths: $seniorityInMonths
     ) {
       count
       data {
@@ -57,6 +59,10 @@ export const GET_ALL_PUBLIC = gql`
         title
         updatedAt
 
+        domains {
+          id
+          name
+        }
         address {
           id
 
@@ -73,6 +79,9 @@ export const GET_ALL_PUBLIC = gql`
 
           displayName
           websiteUrl
+          institution {
+            name
+          }
         }
       }
       index
@@ -121,6 +130,9 @@ export const GET_ONE = gql`
         street
       }
       applicationContacts {
+        id
+      }
+      domains {
         id
       }
       infoContact {

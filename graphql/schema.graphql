@@ -70,13 +70,14 @@ type Query {
   getAllJobs: [Job!]!
   getPublicJobs(
     contractTypes: [String]
-    institutionIds: [String]
     pageIndex: Int!
     perPage: Int!
-    professionId: String
+    professionIds: [String]
+    domainIds: [String]
     query: String
     region: String
     remoteStatuses: [String]
+    seniorityInMonths: Int
   ): PublicJobsResult!
 
   getLead(id: String!): Lead

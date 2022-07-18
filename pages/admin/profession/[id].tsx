@@ -89,7 +89,7 @@ export default function AdminProfessionEditorPage() {
   return (
     <>
       <AdminHeader>
-        <AdminTitle>{isNew ? 'Nouveau secteur d’activité' : 'Édition d’un secteur d’activité'}</AdminTitle>
+        <AdminTitle>{isNew ? 'Nouvelle compétence' : 'Édition d’une compétence'}</AdminTitle>
       </AdminHeader>
 
       <Card>

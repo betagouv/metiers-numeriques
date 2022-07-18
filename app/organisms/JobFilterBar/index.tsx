@@ -1,17 +1,19 @@
 import { Button } from '@app/atoms/Button'
 import { ButtonX } from '@app/atoms/ButtonX'
+import { Checkbox } from '@app/atoms/Checkbox'
 import { TextInput } from '@app/atoms/TextInput'
+import { DomainFilter } from '@app/organisms/JobFilterBar/DomainFilter'
 import { Region } from '@common/constants'
 import { define } from '@common/helpers/define'
+import { Domain, JobRemoteStatus } from '@prisma/client'
 import { FormEvent, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { ContractTypesFilter } from './ContractTypesFilter'
 import { ProfessionFilter } from './ProfessionFilter'
 import { RegionFilter } from './RegionFilter'
-import { RemoteStatusesFilter } from './RemoteStatusesFilter'
 
-import type { Institution, JobContractType, JobRemoteStatus, Profession } from '@prisma/client'
+import type { JobContractType, Profession } from '@prisma/client'
 
 const Box = styled.div<{
   isModalOpen: boolean
@@ -43,77 +45,58 @@ const DialogTitle = styled.h4`
   margin: 0;
 `
 
-const FilterList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-
-  > div:not(:first-child) {
-    margin: 1rem 0 0 0;
-  }
-
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-
-    > div {
-      flex-grow: 1;
-    }
-    > div:not(:first-child) {
-      margin: 0 0 0 1rem;
-    }
-  }
-`
-
 export type Filter = {
   contractTypes: JobContractType[]
-  institutionIds: string[]
-  professionId: string | undefined
-  query: string | undefined
-  region: Region | undefined
+  domainIds: string[]
+  professionIds: string[]
+  query?: string | null
+  region?: Region
   remoteStatuses: JobRemoteStatus[]
+  seniorityInMonths?: number
 }
 export const INITIAL_FILTER: Filter = {
   contractTypes: [],
-  institutionIds: [],
-  professionId: undefined,
-  query: undefined,
-  region: undefined,
+  domainIds: [],
+  professionIds: [],
   remoteStatuses: [],
 }
 
-export const INITIAL_ACCORDION_FILTER: string = 'professionIdFilter'
-
 type JobFilterBarProps = {
-  defaultQuery?: string
-  // eslint-disable-next-line react/no-unused-prop-types
-  institutions: Pick<Institution, 'id' | 'name'>[]
+  defaultQuery?: string | null
+  domains: Pick<Domain, 'id' | 'name'>[]
   isModalOpen: boolean
   onChange: (filter: Filter) => void | Promise<void>
   onModalClose: () => void | Promise<void>
   professions: Pick<Profession, 'id' | 'name'>[]
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose, professions }: JobFilterBarProps) {
+
+export function JobFilterBar({
+  defaultQuery,
+  domains,
+  isModalOpen,
+  onChange,
+  onModalClose,
+  professions,
+}: JobFilterBarProps) {
   const $filter = useRef<Filter>({
     ...INITIAL_FILTER,
     query: defaultQuery,
   })
 
-  const handleContractTypes = useCallback((contractTypes: JobContractType[]) => {
-    $filter.current.contractTypes = contractTypes
+  const handleContractTypes = useCallback((contractType?: JobContractType) => {
+    $filter.current.contractTypes = contractType ? [contractType] : []
 
     onChange($filter.current)
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleInstitutionIds = useCallback((institutionIds: string[]) => {
-    $filter.current.institutionIds = institutionIds
+  const handleProfessionIds = useCallback((professionIds: string[]) => {
+    $filter.current.professionIds = professionIds
 
     onChange($filter.current)
   }, [])
 
-  const handleProfessionId = useCallback((professionId: string) => {
-    $filter.current.professionId = professionId
+  const handleDomainIds = useCallback((domainIds: string[]) => {
+    $filter.current.domainIds = domainIds
 
     onChange($filter.current)
   }, [])
@@ -130,8 +113,14 @@ export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose
     onChange($filter.current)
   }, [])
 
-  const handleRemoteStatuses = useCallback((remoteStatuses: JobRemoteStatus[]) => {
-    $filter.current.remoteStatuses = remoteStatuses
+  const handleSeniority = useCallback((isJuniorAccepted: boolean) => {
+    $filter.current.seniorityInMonths = isJuniorAccepted ? 0 : undefined
+
+    onChange($filter.current)
+  }, [])
+
+  const handleRemoteStatuses = useCallback((isRemoteAllowed: boolean) => {
+    $filter.current.remoteStatuses = isRemoteAllowed ? [JobRemoteStatus.FULL, JobRemoteStatus.PARTIAL] : []
 
     onChange($filter.current)
   }, [])
@@ -154,20 +143,39 @@ export function JobFilterBar({ defaultQuery, isModalOpen, onChange, onModalClose
         </div>
       </DialogHeader>
 
-      <TextInput
-        aria-label="Mot-clé"
-        defaultValue={defaultQuery}
-        name="query"
-        onInput={handleQuery}
-        placeholder="Rechercher par mot-clé"
-      />
+      <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+        <div className="fr-col-4">
+          <TextInput
+            aria-label="Mot-clé"
+            // TODO: fix this weird null/undefined problem
+            defaultValue={defaultQuery || undefined}
+            name="query"
+            onInput={handleQuery}
+            placeholder="Rechercher par mot-clé"
+          />
+        </div>
+        <div className="fr-col-3 fr-col-offset-1">
+          <Checkbox label="Ouvert aux juniors" name="seniorityInMonths" onChange={handleSeniority} />
+        </div>
+        <div className="fr-col-3">
+          <Checkbox label="Télétravail possible" name="remoteStatus" onChange={handleRemoteStatuses} />
+        </div>
+      </div>
 
-      <FilterList>
-        <ProfessionFilter onChange={handleProfessionId as any} professions={professions} />
-        <RegionFilter onChange={handleRegion as any} />
-        <ContractTypesFilter onChange={handleContractTypes} />
-        <RemoteStatusesFilter onChange={handleRemoteStatuses} />
-      </FilterList>
+      <div className="fr-grid-row fr-grid-row--gutters">
+        <div className="fr-col-3">
+          <ProfessionFilter onChange={handleProfessionIds} professions={professions} />
+        </div>
+        <div className="fr-col-3">
+          <DomainFilter domains={domains} onChange={handleDomainIds} />
+        </div>
+        <div className="fr-col-3">
+          <RegionFilter onChange={handleRegion as any} />
+        </div>
+        <div className="fr-col-3">
+          <ContractTypesFilter onChange={handleContractTypes} />
+        </div>
+      </div>
 
       <div className="fr-mt-2w rf-text-right rf-hidden-md">
         <Button onClick={() => onModalClose()}>Appliquer</Button>

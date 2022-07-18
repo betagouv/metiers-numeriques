@@ -11,7 +11,7 @@ import { INITIAL_FILTER, JobFilterBar } from '@app/organisms/JobFilterBar'
 import { queries } from '@app/queries'
 import { theme } from '@app/theme'
 import { handleError } from '@common/helpers/handleError'
-import { JobState } from '@prisma/client'
+import { Domain, JobState } from '@prisma/client'
 import throttle from 'lodash.throttle'
 import Head from 'next/head'
 import { mergeDeepRight } from 'ramda'
@@ -20,7 +20,7 @@ import styled from 'styled-components'
 
 import type { GetAllResponse } from '@api/resolvers/types'
 import type { Filter } from '@app/organisms/JobFilterBar'
-import type { Institution, Profession, Prisma } from '@prisma/client'
+import type { Profession, Prisma } from '@prisma/client'
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 
 const INITIAL_VARIABLES = {
@@ -71,14 +71,14 @@ const List = styled.div`
 `
 
 type JobListPageProps = {
-  initialInstitutions: Pick<Institution, 'id' | 'name'>[]
+  initialDomains: Pick<Domain, 'id' | 'name'>[]
   initialJobs: JobWithRelation[]
   initialJobsLength: number
   initialProfessions: Pick<Profession, 'id' | 'name'>[]
-  initialQueryFilter?: string
+  initialQueryFilter: string | null
 }
 export default function JobListPage({
-  initialInstitutions,
+  initialDomains,
   initialJobs,
   initialJobsLength,
   initialProfessions,
@@ -262,7 +262,7 @@ export default function JobListPage({
       <JobFilterBar
         key={jobFilterBarKey}
         defaultQuery={initialQueryFilter}
-        institutions={initialInstitutions}
+        domains={initialDomains}
         isModalOpen={isFilterModalOpen}
         onChange={filter => query(0, filter)}
         onModalClose={closeFilterModal}
@@ -299,7 +299,7 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<JobListPageProps>> {
   const { query } = context.query
-  const initialQueryFilter = typeof query === 'string' ? query : undefined
+  const initialQueryFilter = typeof query === 'string' ? query : null
 
   const whereFilterBase: Prisma.JobWhereInput = {
     AND: {
@@ -324,23 +324,22 @@ export async function getServerSideProps(
     where: whereFilter,
   })
 
-  const initialInstitutions = await prisma.institution.findMany({
-    orderBy: {
-      name: 'asc',
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  })
-
   const initialJobs = await prisma.job.findMany({
     include: {
       address: true,
       applicationContacts: true,
+      domains: true,
       infoContact: true,
       profession: true,
-      recruiter: true,
+      recruiter: {
+        include: {
+          institution: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
     orderBy: {
       updatedAt: 'desc',
@@ -359,11 +358,21 @@ export async function getServerSideProps(
     },
   })
 
+  const initialDomains = await prisma.domain.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
+
   const normalizedIinitialJobs = initialJobs.map(stringifyDeepDates)
 
   return {
     props: {
-      initialInstitutions,
+      initialDomains,
       initialJobs: normalizedIinitialJobs,
       initialJobsLength,
       initialProfessions,

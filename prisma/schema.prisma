@@ -38,21 +38,24 @@ enum JobSource {
 }
 
 enum JobContractType {
+  // Fonctionnaire d'État ou contractuel
+  NATIONAL_CIVIL_SERVANT_OR_CONTRACT_WORKER
   // Contractuel de la fonction publique
-  CONTRACT_WORKER
+  CONTRACT_WORKER_ONLY
   // Freelance
   FREELANCER
+  // Apprentissage
+  APPRENTICESHIP
   // Stagiaire
   INTERN
   // VIA (VIE)
   INTERNATIONAL_VOLUNTEER
-  // Fonctionnaire d'État
+
+  // LEGACY !!DO NOT USE!!
+  CONTRACT_WORKER
   NATIONAL_CIVIL_SERVANT
-  // Temps partiel
   PART_TIME
-  // CDI
   PERMANENT
-  // CDD
   TEMPORARY
 }
 
@@ -240,6 +243,7 @@ model Job {
   infoContact         Contact?    @relation("JobInfoContact", fields: [infoContactId], references: [id])
   infoContactId       String?
   leads               Lead[]      @relation("LeadJobSource")
+  domains             Domain[]    @relation("JobDomains")
   profession          Profession? @relation("JobProfession", fields: [professionId], references: [id])
   professionId        String?
   recruiter           Recruiter?  @relation("JobRecruiter", fields: [recruiterId], references: [id])
@@ -349,6 +353,15 @@ model LegacyService {
   legacyJobs     LegacyJob[]
   legacyEntity   LegacyEntity? @relation(fields: [legacyEntityId], references: [id])
   legacyEntityId String?
+}
+
+model Domain {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobs      Job[]    @relation("JobDomains")
 }
 
 model Profession {
