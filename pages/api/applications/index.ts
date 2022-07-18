@@ -14,7 +14,7 @@ export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, re
 
 const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { contractTypes, domainIds, jobId, professionId, region } = req.query
+    const { contractTypes, domainIds, jobId, keyword, professionId, region, seniority } = req.query
 
     const data = await prisma.jobApplication.findMany({
       include: {
@@ -29,6 +29,9 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
       where: {
         candidate: {
           region,
+          seniorityInYears: {
+            gte: +(seniority || 0),
+          },
           ...(contractTypes
             ? {
                 contractTypes: { hasSome: decodeURIComponent(contractTypes as string).split(',') as JobContractType[] },
@@ -38,6 +41,30 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
             ? { domains: { some: { id: { in: decodeURIComponent(domainIds as string).split(',') } } } }
             : {}),
           ...(professionId ? { professions: { some: { id: professionId } } } : {}),
+          OR: [
+            {
+              currentJob: {
+                contains: keyword,
+                mode: 'insensitive',
+              },
+            },
+            {
+              user: {
+                firstName: {
+                  contains: keyword,
+                  mode: 'insensitive',
+                },
+              },
+            },
+            {
+              user: {
+                lastName: {
+                  contains: keyword,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          ],
         },
         jobId: jobId ? (jobId as string) : null,
       },
