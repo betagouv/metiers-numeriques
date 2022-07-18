@@ -49,7 +49,7 @@ export type Filter = {
   contractTypes: JobContractType[]
   domainIds: string[]
   professionIds: string[]
-  query?: string
+  query?: string | null
   region?: Region
   remoteStatuses: JobRemoteStatus[]
   seniorityInMonths?: number
@@ -62,13 +62,14 @@ export const INITIAL_FILTER: Filter = {
 }
 
 type JobFilterBarProps = {
-  defaultQuery?: string
+  defaultQuery?: string | null
   domains: Pick<Domain, 'id' | 'name'>[]
   isModalOpen: boolean
   onChange: (filter: Filter) => void | Promise<void>
   onModalClose: () => void | Promise<void>
   professions: Pick<Profession, 'id' | 'name'>[]
 }
+
 export function JobFilterBar({
   defaultQuery,
   domains,
@@ -146,7 +147,8 @@ export function JobFilterBar({
         <div className="fr-col-4">
           <TextInput
             aria-label="Mot-clé"
-            defaultValue={defaultQuery}
+            // TODO: fix this weird null/undefined problem
+            defaultValue={defaultQuery || undefined}
             name="query"
             onInput={handleQuery}
             placeholder="Rechercher par mot-clé"

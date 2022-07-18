@@ -30,7 +30,7 @@ const Row = styled.div`
 const Title = styled.h1`
   color: white;
   font-size: 4rem;
-  line-height: 3.7rem;
+  line-height: 4rem;
   margin-bottom: 0;
 
   @media screen and (min-width: 768px) {
@@ -47,7 +47,7 @@ const PageTitle = styled.div`
   color: white;
   font-size: 1.5rem;
   line-height: 2rem;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 
   @media screen and (max-width: 767px) {
     font-size: 1rem;
