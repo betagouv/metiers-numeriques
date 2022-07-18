@@ -18,6 +18,8 @@ import { VivierActions } from '@app/organisms/CandidatePool/VivierActions'
 import { theme } from '@app/theme'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, REGIONS_AS_OPTIONS, SENIORITY_AS_OPTIONS } from '@common/constants'
 import { JobContractType } from '@prisma/client'
+import { saveAs } from 'file-saver'
+import JSZip from 'jszip'
 import React, { useEffect, useRef, useState } from 'react'
 import { Download } from 'react-feather'
 import styled from 'styled-components'
@@ -128,6 +130,44 @@ type FilterProps = {
   seniority?: number
 }
 
+export const generateZipFromCloud = (application: JobApplicationWithRelation) => {
+  const filename = `Candidature ${getCandidateFullName(application.candidate)}`
+
+  const zip = new JSZip()
+  const folder = zip.folder(filename)
+
+  const { url } = application.cvFile
+  const blobPromise = fetch(url).then(response => {
+    if (response.status === 200 || response.status === 0) {
+      return Promise.resolve(response.blob())
+    }
+
+    return Promise.reject(new Error(response.statusText))
+  })
+
+  const cvFileName = url.substring(url.lastIndexOf('/'))
+  folder.file(cvFileName, blobPromise)
+
+  folder.file(
+    'candidature.txt',
+    [
+      `Nom: ${getCandidateFullName(application.candidate)}`,
+      `Email: ${application.candidate.user.email}`,
+      `Tel: ${application.candidate.phone}`,
+      `Localisation: ${application.candidate.region}`,
+      `Compétences: ${application.candidate.professions.map(p => p.name).join(', ')}`,
+      `Domaines d'intérêt: ${application.candidate.domains.map(d => d.name).join(', ')}`,
+      '',
+      application.applicationLetter,
+    ].join('\n'),
+  )
+
+  zip
+    .generateAsync({ type: 'blob' })
+    .then(blob => saveAs(blob, filename))
+    .catch(e => console.log(e)) // TODO: handle error
+}
+
 export default function Applications() {
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
@@ -179,7 +219,7 @@ export default function Applications() {
                         </ApplicationSubtitle>
                       </div>
                       <Download
-                        onClick={() => alert('Downloading application')}
+                        onClick={() => generateZipFromCloud(currentApplication)}
                         size={32}
                         style={{ cursor: 'pointer' }}
                       />
