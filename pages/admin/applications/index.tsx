@@ -2,7 +2,7 @@ import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DocumentViewer } from '@app/atoms/DocumentViewer'
 import { Spacer } from '@app/atoms/Spacer'
 import { AdminForm } from '@app/molecules/AdminForm'
-import { ActionButtons } from '@app/organisms/CandidatePool/ActionButtons'
+import { ApplicationActions } from '@app/organisms/CandidatePool/ApplicationActions'
 import { CandidateInfos } from '@app/organisms/CandidatePool/CandidateInfos'
 import { CandidatesList } from '@app/organisms/CandidatePool/CandidatesList'
 import { CandidateTouchPoints } from '@app/organisms/CandidatePool/CandidateTouchPoints'
@@ -11,6 +11,7 @@ import { Col, Row } from '@app/organisms/CandidatePool/Grid'
 import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
 import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidatePool/utils'
+import { VivierActions } from '@app/organisms/CandidatePool/VivierActions'
 import { theme } from '@app/theme'
 import { JOB_CONTRACT_TYPES_AS_OPTIONS, JOB_SOURCES_AS_OPTIONS, REGIONS_AS_OPTIONS } from '@common/constants'
 import { JobContractType } from '@prisma/client'
@@ -158,11 +159,7 @@ export default function Applications() {
                     <CandidateTouchPoints candidate={currentCandidate} />
                     <Spacer units={3} />
                     <Row centered>
-                      <ActionButtons
-                        application={currentApplication}
-                        onAccepted={handleAccepted}
-                        onRejected={handleRejected}
-                      />
+                      <VivierActions application={currentApplication} />
                     </Row>
                     <Spacer units={3} />
 

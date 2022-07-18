@@ -45,7 +45,7 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
 
     res.send(data)
   } catch (err) {
-    handleError(err, 'pages/api/job-applications/index.ts > query.getJobApplications()')
+    handleError(err, 'pages/api/job-applications/duplicate.ts > query.getJobApplications()')
 
     res.status(400).send([])
   }

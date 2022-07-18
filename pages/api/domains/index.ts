@@ -46,7 +46,7 @@ const getDomains = async (req: NextApiRequest, res: NextApiResponse) => {
       length,
     })
   } catch (err) {
-    handleError(err, 'pages/api/domains/index.ts > query.getDomains()')
+    handleError(err, 'pages/api/domains/duplicate.ts > query.getDomains()')
 
     res.status(400).send({
       count: 1,
@@ -62,7 +62,7 @@ const createDomain = async (req: NextApiRequest, res: NextApiResponse) => {
     const createResponse = await prisma.domain.create({ data: JSON.parse(req.body) })
     res.status(201).send(createResponse)
   } catch (err) {
-    handleError(err, 'pages/api/domains/index.ts > query.createDomain()')
+    handleError(err, 'pages/api/domains/duplicate.ts > query.createDomain()')
     res.status(400).end()
   }
 }

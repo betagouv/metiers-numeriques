@@ -82,32 +82,34 @@ export const CandidatesList = ({
       <div style={{ padding: '1.5rem' }}>
         <div>{applications.length} candidatures</div>
         {showFilters && (
-          <Row gap={1}>
+          <>
             <Spacer units={0.5} />
-            <span>Filtres:</span>
-            <Tag
-              color="success"
-              isSelected={statusFilter === JobApplicationStatus.ACCEPTED}
-              onClick={() =>
-                setStatusFilter(currentFilter =>
-                  currentFilter === JobApplicationStatus.ACCEPTED ? undefined : JobApplicationStatus.ACCEPTED,
-                )
-              }
-            >
-              Vivier ({applicationStatusCounts[JobApplicationStatus.ACCEPTED] || 0})
-            </Tag>
-            <Tag
-              color="danger"
-              isSelected={statusFilter === JobApplicationStatus.REJECTED}
-              onClick={() =>
-                setStatusFilter(currentFilter =>
-                  currentFilter === JobApplicationStatus.REJECTED ? undefined : JobApplicationStatus.REJECTED,
-                )
-              }
-            >
-              Refusés ({applicationStatusCounts[JobApplicationStatus.REJECTED] || 0})
-            </Tag>
-          </Row>
+            <Row gap={1}>
+              <span>Filtres:</span>
+              <Tag
+                color="success"
+                isSelected={statusFilter === JobApplicationStatus.ACCEPTED}
+                onClick={() =>
+                  setStatusFilter(currentFilter =>
+                    currentFilter === JobApplicationStatus.ACCEPTED ? undefined : JobApplicationStatus.ACCEPTED,
+                  )
+                }
+              >
+                Favoris ({applicationStatusCounts[JobApplicationStatus.ACCEPTED] || 0})
+              </Tag>
+              <Tag
+                color="danger"
+                isSelected={statusFilter === JobApplicationStatus.REJECTED}
+                onClick={() =>
+                  setStatusFilter(currentFilter =>
+                    currentFilter === JobApplicationStatus.REJECTED ? undefined : JobApplicationStatus.REJECTED,
+                  )
+                }
+              >
+                Refusés ({applicationStatusCounts[JobApplicationStatus.REJECTED] || 0})
+              </Tag>
+            </Row>
+          </>
         )}
       </div>
       {applications
@@ -122,7 +124,7 @@ export const CandidatesList = ({
               <CandidateInfo>{application.candidate.currentJob}</CandidateInfo>
               <CandidateInfo>{formatSeniority(application.candidate.seniorityInYears)}</CandidateInfo>
               <Spacer units={0.5} />
-              {application.status === JobApplicationStatus.ACCEPTED && <Tag color="success">Dans mon vivier</Tag>}
+              {application.status === JobApplicationStatus.ACCEPTED && <Tag color="success">Favori</Tag>}
               {application.status === JobApplicationStatus.REJECTED && <Tag color="danger">Refusé</Tag>}
             </CandidateMenuInfos>
             {/* {application.candidate.id === currentCandidate?.id && <Dot />} */}

@@ -1,7 +1,7 @@
 import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DocumentViewer } from '@app/atoms/DocumentViewer'
 import { Spacer } from '@app/atoms/Spacer'
-import { ActionButtons } from '@app/organisms/CandidatePool/ActionButtons'
+import { ApplicationActions } from '@app/organisms/CandidatePool/ApplicationActions'
 import { CandidateInfos } from '@app/organisms/CandidatePool/CandidateInfos'
 import { CandidatesList } from '@app/organisms/CandidatePool/CandidatesList'
 import { CandidateTouchPoints } from '@app/organisms/CandidatePool/CandidateTouchPoints'
@@ -109,7 +109,7 @@ export default function JobApplicationPool() {
                     <Spacer units={3} />
 
                     <Row centered>
-                      <ActionButtons
+                      <ApplicationActions
                         application={currentApplication}
                         onAccepted={handleAccepted}
                         onRejected={handleRejected}
