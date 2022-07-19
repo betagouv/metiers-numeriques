@@ -32,7 +32,7 @@ const ApplicationLetter = styled.p`
 export default function Applications() {
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
-  const { applications, fetchApplications, isError, isLoading } = useCandidatePoolQueries()
+  const { applications, fetchApplications, isError } = useCandidatePoolQueries()
 
   useEffect(() => {
     fetchApplications({}).then(applications => {
@@ -40,9 +40,10 @@ export default function Applications() {
     })
   }, [])
 
-  if (isLoading && !applications.length) {
-    return <div>Loading</div>
-  }
+  // TODO: handle loading
+  // if (isLoading && !applications.length) {
+  //   return <div>Loading</div>
+  // }
   if (isError) {
     return <div>Error</div>
   }

@@ -37,7 +37,7 @@ export const CandidateFilters = ({ onFilter }) => {
     onFilter(filters.current)
   }
 
-  const handleChangeSeniority = (seniority?: number) => {
+  const handleChangeSeniority = (seniority?: string) => {
     filters.current.seniority = seniority
     onFilter(filters.current)
   }

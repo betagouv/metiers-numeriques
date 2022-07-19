@@ -13,6 +13,7 @@ export const useCandidatePoolQueries = (jobId?: string) => {
 
   const fetchApplications = async (filters: FilterProps = {}) => {
     const search = R.reject(R.isNil, { ...filters, jobId })
+    // @ts-expect-error
     const params = new URLSearchParams(search)
 
     try {

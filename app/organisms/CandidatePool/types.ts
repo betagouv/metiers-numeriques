@@ -13,5 +13,5 @@ export type FilterProps = {
   keyword?: string
   professionId?: string
   region?: string
-  seniority?: number
+  seniority?: string
 }
