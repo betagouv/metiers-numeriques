@@ -1,11 +1,13 @@
 import { useMutation } from '@apollo/client'
 import { Loader } from '@app/molecules/Loader'
 import { queries } from '@app/queries'
+import { handleError } from '@common/helpers/handleError'
 import { FileType } from '@prisma/client'
 import { Button as SUIButton } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useS3Upload } from 'next-s3-upload'
 import { useRef, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
 type FileUploadProps = {
@@ -102,7 +104,9 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
 
       setIsUploading(false)
     } catch (e) {
+      handleError(e, 'app/molecules/AdminForm/FileUpload.tsx > handleFileChange()')
       setFieldError(name, `Une erreur est survenue lors du chargement: ${e}`)
+      toast.error("Une erreur est survenue lors du chargement de l'image")
     }
   }
 
@@ -114,7 +118,7 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
         {!isUploading && uploadUrl && <Thumbnail alt="uploaded file" src={uploadUrl} />}
         <input
           ref={inputRef}
-          // accept="image/*"
+          accept="image/*"
           name={name}
           onChange={handleFileChange}
           style={{ display: 'none' }}

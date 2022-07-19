@@ -199,23 +199,23 @@ export const REGIONS_AS_OPTIONS: Common.App.SelectOption<keyof typeof Region>[] 
 export const SENIORITY_AS_OPTIONS = [
   {
     label: 'Tous profils',
-    value: 0,
+    value: '0',
   },
   {
     label: 'Minimum 3 ans',
-    value: 3,
+    value: '3',
   },
   {
     label: 'Minimum 5 ans',
-    value: 5,
+    value: '5',
   },
   {
     label: 'Minimum 10 ans',
-    value: 10,
+    value: '10',
   },
   {
     label: 'Minimum 20 ans',
-    value: 20,
+    value: '20',
   },
 ]
 

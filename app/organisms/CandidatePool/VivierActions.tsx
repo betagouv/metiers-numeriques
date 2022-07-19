@@ -1,4 +1,5 @@
 import { SelectOption } from '@app/atoms/Select'
+import { handleError } from '@common/helpers/handleError'
 import { Button as SUIButton, Modal, Select } from '@singularity/core'
 import React, { useEffect, useState } from 'react'
 import { LogIn } from 'react-feather'
@@ -37,6 +38,7 @@ export const VivierActions = ({ application }: VivierActionsProps) => {
       toast.success("La candidature est positionnée sur l'offre demandée")
       setShowModal(false)
     } catch (e) {
+      handleError(e, 'app/organisms/CandidatePool/VivierActions.tsx > handleDuplicateForJob()')
       toast.error('Une erreur est survenue')
     }
   }

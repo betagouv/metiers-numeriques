@@ -2,6 +2,8 @@ import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DocumentViewer } from '@app/atoms/DocumentViewer'
 import { Spacer } from '@app/atoms/Spacer'
 import { ApplicationActions } from '@app/organisms/CandidatePool/ApplicationActions'
+import { ApplicationHeader } from '@app/organisms/CandidatePool/ApplicationHeader'
+import { ApplicationSubtitle } from '@app/organisms/CandidatePool/ApplicationSubtitle'
 import { CandidateInfos } from '@app/organisms/CandidatePool/CandidateInfos'
 import { CandidatesList } from '@app/organisms/CandidatePool/CandidatesList'
 import { CandidateTouchPoints } from '@app/organisms/CandidatePool/CandidateTouchPoints'
@@ -9,11 +11,8 @@ import { FullHeightCard } from '@app/organisms/CandidatePool/FullHeightCard'
 import { Col, Row } from '@app/organisms/CandidatePool/Grid'
 import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
 import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
-import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidatePool/utils'
-import { theme } from '@app/theme'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { Download } from 'react-feather'
 import styled from 'styled-components'
 
 const PageContainer = styled.div`
@@ -25,21 +24,8 @@ const ApplicationContainer = styled.div`
   padding: 1.5rem;
 `
 
-const ApplicationSubtitle = styled.div`
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-  color: ${theme.color.neutral.grey};
-`
-
 const ApplicationLetter = styled.p`
   white-space: pre-wrap;
-`
-
-const ApplicationHeaderContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 `
 
 export default function JobApplicationPool() {
@@ -90,20 +76,7 @@ export default function JobApplicationPool() {
               <Row style={{ height: '100%' }}>
                 <Col scroll size={50}>
                   <ApplicationContainer>
-                    <ApplicationHeaderContainer>
-                      <div>
-                        <AdminTitle>{getCandidateFullName(currentCandidate)}</AdminTitle>
-                        <Spacer units={0.5} />
-                        <ApplicationSubtitle>
-                          {currentCandidate.currentJob} • {formatSeniority(currentCandidate.seniorityInYears)}
-                        </ApplicationSubtitle>
-                      </div>
-                      <Download
-                        onClick={() => alert('Downloading application')}
-                        size={32}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    </ApplicationHeaderContainer>
+                    <ApplicationHeader application={currentApplication} />
                     <Spacer units={1} />
                     <CandidateTouchPoints candidate={currentCandidate} />
                     <Spacer units={3} />
