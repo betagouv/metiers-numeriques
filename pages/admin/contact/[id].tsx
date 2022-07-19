@@ -96,7 +96,7 @@ export default function AdminContactEditorPage() {
       <Card>
         <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList} validationSchema={FormSchema}>
           <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Nom *" name="name" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Nom complet *" name="name" placeholder="Prénom Nom" />
           </Field>
 
           <Field>

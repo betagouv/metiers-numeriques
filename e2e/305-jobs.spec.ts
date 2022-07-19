@@ -2,8 +2,7 @@ import { test, expect } from '@playwright/test'
 
 import { TEST_JOBS, TEST_JOB_DRAFTS } from './constants.js'
 
-// TODO: fix this test
-test.describe.skip('Admin > Jobs', () => {
+test.describe('Admin > Jobs', () => {
   test.slow()
   test.use({
     storageState: './e2e/states/administrator.json',

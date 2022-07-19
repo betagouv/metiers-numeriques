@@ -12,7 +12,6 @@ import { CandidateTouchPoints } from '@app/organisms/CandidatePool/CandidateTouc
 import { FullHeightCard } from '@app/organisms/CandidatePool/FullHeightCard'
 import { Col, Row } from '@app/organisms/CandidatePool/Grid'
 import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
-import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidatePool/utils'
 import { VivierActions } from '@app/organisms/CandidatePool/VivierActions'
 import { theme } from '@app/theme'
@@ -23,6 +22,8 @@ import JSZip from 'jszip'
 import React, { useEffect, useRef, useState } from 'react'
 import { Download } from 'react-feather'
 import styled from 'styled-components'
+
+import type { FilterProps, JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 
 const PageContainer = styled.div`
   height: 100vh;
@@ -119,15 +120,6 @@ const Filters = ({ onFilter }) => {
       </Row>
     </AdminForm>
   )
-}
-
-type FilterProps = {
-  contractTypes?: JobContractType[]
-  domainIds?: string[]
-  keyword?: string
-  professionId?: string
-  region?: string
-  seniority?: number
 }
 
 export const generateZipFromCloud = (application: JobApplicationWithRelation) => {

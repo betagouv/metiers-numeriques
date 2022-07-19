@@ -1,17 +1,9 @@
 import { handleError } from '@common/helpers/handleError'
-import { JobContractType } from '@prisma/client'
 import * as R from 'ramda'
 import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 
-import { JobApplicationWithRelation } from './types'
-
-// TODO dupe
-type FilterProps = {
-  contractTypes?: JobContractType[]
-  domainIds?: string[]
-  professionId?: string
-  region?: string
-}
+import type { FilterProps, JobApplicationWithRelation } from './types'
 
 export const useCandidatePoolQueries = (jobId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -20,7 +12,6 @@ export const useCandidatePoolQueries = (jobId?: string) => {
   const [applications, setApplications] = useState<JobApplicationWithRelation[]>([])
 
   const fetchApplications = async (filters: FilterProps = {}) => {
-    console.log('fff', filters)
     const search = R.reject(R.isNil, { ...filters, jobId })
     const params = new URLSearchParams(search)
 
@@ -50,12 +41,14 @@ export const useCandidatePoolQueries = (jobId?: string) => {
         method: isAlreadyAccepted ? 'DELETE' : 'PUT',
       })
       if (response.status === 200) {
-        // TODO: add flash message
+        toast.success('La candidature est placée dans vos favoris')
         await fetchApplications()
       } else {
+        toast.error('Une erreur est survenue pendant la mise en favoris')
         setIsError(true)
       }
     } catch (err) {
+      toast.error('Une erreur est survenue pendant la mise en favoris')
       setIsError(true)
     } finally {
       setIsLoading(false)
@@ -68,12 +61,15 @@ export const useCandidatePoolQueries = (jobId?: string) => {
       setIsLoading(true)
       const response = await fetch(`/api/applications/${applicationId}/reject`, { body, method: 'PUT' })
       if (response.status === 200) {
-        // TODO: add flash message
+        // TODO: handle email rejection
+        toast.success('La candidature a été rejetée')
         await fetchApplications()
       } else {
+        toast.error('Une erreur est survenue')
         setIsError(true)
       }
     } catch (err) {
+      toast.error('Une erreur est survenue')
       setIsError(true)
     } finally {
       setIsLoading(false)

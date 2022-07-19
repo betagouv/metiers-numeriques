@@ -2,6 +2,7 @@ import { SelectOption } from '@app/atoms/Select'
 import { Button as SUIButton, Modal, Select } from '@singularity/core'
 import React, { useEffect, useState } from 'react'
 import { LogIn } from 'react-feather'
+import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
 import { JobApplicationWithRelation } from './types'
@@ -28,12 +29,16 @@ export const VivierActions = ({ application }: VivierActionsProps) => {
   }, [])
 
   const handleDuplicateForJob = async () => {
-    // TODO: handle flash message
-    await fetch(`/api/applications/${application.id}/duplicate`, {
-      body: JSON.stringify({ jobId: selectedJobId }),
-      method: 'POST',
-    })
-    setShowModal(false)
+    try {
+      await fetch(`/api/applications/${application.id}/duplicate`, {
+        body: JSON.stringify({ jobId: selectedJobId }),
+        method: 'POST',
+      })
+      toast.success("La candidature est positionnée sur l'offre demandée")
+      setShowModal(false)
+    } catch (e) {
+      toast.error('Une erreur est survenue')
+    }
   }
 
   return (

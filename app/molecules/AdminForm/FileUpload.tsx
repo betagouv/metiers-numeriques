@@ -42,6 +42,7 @@ const Thumbnail = styled.img`
   height: 70px;
   border-radius: 8px;
   margin-right: 24px;
+  object-fit: cover;
 `
 
 const Error = styled.span`
@@ -51,7 +52,7 @@ const Error = styled.span`
 `
 
 // TODO: export in SUI
-// TODO: handle similar pictures posted
+// TODO: handle identical pictures posted so we don't upload them twice
 /**
  * File Uploader for Formik & Prisma
  * @param isDisabled
