@@ -164,7 +164,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               <Title as="h2" id="equipe">
                 Équipe
               </Title>
-              {renderMarkdown(job.missionDescription)}
+              {renderMarkdown(job.teamDescription)}
             </>
           )}
 
