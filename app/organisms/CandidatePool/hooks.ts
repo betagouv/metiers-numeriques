@@ -10,8 +10,9 @@ export const useCandidatePoolQueries = (jobId?: string) => {
   const [isError, setIsError] = useState(false)
 
   const [applications, setApplications] = useState<JobApplicationWithRelation[]>([])
+  const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
-  const fetchApplications = async (filters: FilterProps = {}) => {
+  const fetchApplications = async (filters: FilterProps = {}): Promise<JobApplicationWithRelation[] | undefined> => {
     const search = R.reject(R.isNil, { ...filters, jobId })
     // @ts-expect-error
     const params = new URLSearchParams(search)
@@ -24,7 +25,11 @@ export const useCandidatePoolQueries = (jobId?: string) => {
       }
 
       const data = await response.json()
+
       setApplications(data)
+      if (!currentApplication) {
+        setCurrentApplication(data[0])
+      }
 
       return data
     } catch (err) {
@@ -35,15 +40,24 @@ export const useCandidatePoolQueries = (jobId?: string) => {
     }
   }
 
-  const handleAccepted = async (applicationId: string, isAlreadyAccepted: boolean) => {
+  const handleAccepted = async (applicationId: string, isAlreadyAccepted: boolean): Promise<void> => {
     try {
       setIsLoading(true)
       const response = await fetch(`/api/applications/${applicationId}/accept`, {
         method: isAlreadyAccepted ? 'DELETE' : 'PUT',
       })
+
       if (response.status === 200) {
-        toast.success('La candidature est placée dans vos favoris')
-        await fetchApplications()
+        toast.success(
+          isAlreadyAccepted
+            ? 'La candidature a été retirée de vos favoris'
+            : 'La candidature est placée dans vos favoris',
+        )
+
+        const applications = await fetchApplications()
+        if (applications) {
+          setCurrentApplication(applications.find(application => application.id === applicationId))
+        }
       } else {
         toast.error('Une erreur est survenue pendant la mise en favoris')
         setIsError(true)
@@ -56,7 +70,7 @@ export const useCandidatePoolQueries = (jobId?: string) => {
     }
   }
 
-  const handleRejected = async (applicationId: string, rejectionReason: string) => {
+  const handleRejected = async (applicationId: string, rejectionReason: string): Promise<void> => {
     const body = JSON.stringify({ rejectionReason })
     try {
       setIsLoading(true)
@@ -64,7 +78,11 @@ export const useCandidatePoolQueries = (jobId?: string) => {
       if (response.status === 200) {
         // TODO: handle email rejection
         toast.success('La candidature a été rejetée')
-        await fetchApplications()
+
+        const applications = await fetchApplications()
+        if (applications) {
+          setCurrentApplication(applications.find(application => application.id === applicationId))
+        }
       } else {
         toast.error('Une erreur est survenue')
         setIsError(true)
@@ -77,5 +95,14 @@ export const useCandidatePoolQueries = (jobId?: string) => {
     }
   }
 
-  return { applications, fetchApplications, handleAccepted, handleRejected, isError, isLoading }
+  return {
+    applications,
+    currentApplication,
+    fetchApplications,
+    handleAccepted,
+    handleRejected,
+    isError,
+    isLoading,
+    setCurrentApplication,
+  }
 }

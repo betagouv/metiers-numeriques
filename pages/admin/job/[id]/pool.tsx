@@ -18,7 +18,6 @@ import {
 } from '@app/organisms/CandidatePool/components'
 import { Col, Row } from '@app/organisms/CandidatePool/Grid'
 import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
-import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
@@ -33,10 +32,17 @@ export default function JobApplicationPool() {
   const { id } = router.query
 
   const [jobTitle, setJobTitle] = useState<string>('')
-  const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
-  const { applications, fetchApplications, handleAccepted, handleRejected, isError, isLoading } =
-    useCandidatePoolQueries(id as string)
+  const {
+    applications,
+    currentApplication,
+    fetchApplications,
+    handleAccepted,
+    handleRejected,
+    isError,
+    isLoading,
+    setCurrentApplication,
+  } = useCandidatePoolQueries(id as string)
 
   useEffect(() => {
     // Fetch job
@@ -44,15 +50,8 @@ export default function JobApplicationPool() {
       .then(res => res.json())
       .then(job => setJobTitle(job.title))
 
-    fetchApplications().then(applications => setCurrentApplication(applications[0]))
+    fetchApplications()
   }, [])
-
-  if (isLoading && !applications.length) {
-    return <div>Loading</div>
-  }
-  if (isError) {
-    return <div>Error</div>
-  }
 
   const currentCandidate = currentApplication?.candidate
 

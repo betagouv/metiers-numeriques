@@ -4,24 +4,22 @@ import { DocumentViewer } from '@app/atoms/DocumentViewer'
 import { Spacer } from '@app/atoms/Spacer'
 import { Spinner } from '@app/molecules/AdminLoader/Spinner'
 import {
-  PageContainer,
-  VivierActions,
   ApplicationContainer,
+  ApplicationHeader,
   ApplicationLetter,
   ApplicationSubtitle,
-  ApplicationHeader,
-  CandidatesList,
-  CandidateInfos,
   CandidateFilters,
+  CandidateInfos,
+  CandidatesList,
   CandidateTouchPoints,
   FullHeightCard,
   LoadingContainer,
+  PageContainer,
+  VivierActions,
 } from '@app/organisms/CandidatePool/components'
 import { Col, Row } from '@app/organisms/CandidatePool/Grid'
 import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
-import React, { useEffect, useState } from 'react'
-
-import type { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
+import React, { useEffect } from 'react'
 
 // So we can have a nice layout with scrolling cards:
 // - 36px: Title height
@@ -30,14 +28,11 @@ import type { JobApplicationWithRelation } from '@app/organisms/CandidatePool/ty
 const BODY_HEIGHT = 'calc(100% - 36px - 64px - 65px)'
 
 export default function Applications() {
-  const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
-
-  const { applications, fetchApplications, isError, isLoading } = useCandidatePoolQueries()
+  const { applications, currentApplication, fetchApplications, isError, isLoading, setCurrentApplication } =
+    useCandidatePoolQueries()
 
   useEffect(() => {
-    fetchApplications({}).then(applications => {
-      setCurrentApplication(applications[0])
-    })
+    fetchApplications()
   }, [])
 
   const currentCandidate = currentApplication?.candidate
