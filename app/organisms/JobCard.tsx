@@ -93,7 +93,7 @@ export function JobCard({ job }: JobCardProps) {
 
   return (
     <Box className="JobCard">
-      <Card>
+      <Card style={{ width: '100%' }}>
         <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
         <Title>
           <Link
