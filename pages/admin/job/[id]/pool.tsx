@@ -22,6 +22,12 @@ import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
+// So we can have a nice layout with scrolling cards:
+// - 36px: Title height
+// - 16px: Space between title & body
+// - 32px: Page padding
+const BODY_HEIGHT = 'calc(100% - 36px - 16px - 32px)'
+
 export default function JobApplicationPool() {
   const router = useRouter()
   const { id } = router.query
@@ -54,8 +60,7 @@ export default function JobApplicationPool() {
     <PageContainer>
       <AdminTitle>Candidature: {jobTitle}</AdminTitle>
       <Spacer units={1} />
-      {/* TODO: fix the weird height */}
-      <Row style={{ height: '92%' }}>
+      <Row style={{ height: BODY_HEIGHT }}>
         <Col size={20}>
           <CandidatesList
             applications={applications}

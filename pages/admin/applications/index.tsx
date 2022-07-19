@@ -23,6 +23,12 @@ import React, { useEffect, useState } from 'react'
 
 import type { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
 
+// So we can have a nice layout with scrolling cards:
+// - 36px: Title height
+// - 64px: Page padding + spaces between title & filters
+// - 65px: Filters height
+const BODY_HEIGHT = 'calc(100% - 36px - 64px - 65px)'
+
 export default function Applications() {
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
@@ -42,8 +48,7 @@ export default function Applications() {
       <Spacer units={1} />
       <CandidateFilters onFilter={fetchApplications} />
       <Spacer units={1} />
-      {/* TODO: fix the weird height */}
-      <Row style={{ height: '82%' }}>
+      <Row style={{ height: BODY_HEIGHT }}>
         <Col size={20}>
           <CandidatesList
             applications={applications}
