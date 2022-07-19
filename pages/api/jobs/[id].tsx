@@ -1,6 +1,5 @@
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
-import { JobState } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function ApiJobsEndpoint(req: NextApiRequest, res: NextApiResponse) {

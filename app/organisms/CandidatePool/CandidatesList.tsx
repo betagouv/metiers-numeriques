@@ -1,5 +1,6 @@
 import { Spacer } from '@app/atoms/Spacer'
 import { Tag } from '@app/atoms/Tag'
+import { Row } from '@app/organisms/CandidatePool/Grid'
 import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidatePool/utils'
 import { theme } from '@app/theme'
 import { JobApplicationStatus } from '@prisma/client'
@@ -8,7 +9,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { FullHeightCard } from './FullHeightCard'
-import { Row } from './Grid'
 import { JobApplicationWithRelation } from './types'
 
 const CandidatesListContainer = styled(FullHeightCard)`

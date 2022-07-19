@@ -1,52 +1,38 @@
+import { ADMIN_ERROR, AdminErrorCard } from '@app/atoms/AdminErrorCard'
 import { AdminTitle } from '@app/atoms/AdminTitle'
 import { DocumentViewer } from '@app/atoms/DocumentViewer'
 import { Spacer } from '@app/atoms/Spacer'
-import { ApplicationHeader } from '@app/organisms/CandidatePool/ApplicationHeader'
-import { ApplicationSubtitle } from '@app/organisms/CandidatePool/ApplicationSubtitle'
-import { CandidateFilters } from '@app/organisms/CandidatePool/CandidateFilters'
-import { CandidateInfos } from '@app/organisms/CandidatePool/CandidateInfos'
-import { CandidatesList } from '@app/organisms/CandidatePool/CandidatesList'
-import { CandidateTouchPoints } from '@app/organisms/CandidatePool/CandidateTouchPoints'
-import { FullHeightCard } from '@app/organisms/CandidatePool/FullHeightCard'
+import { Spinner } from '@app/molecules/AdminLoader/Spinner'
+import {
+  PageContainer,
+  VivierActions,
+  ApplicationContainer,
+  ApplicationLetter,
+  ApplicationSubtitle,
+  ApplicationHeader,
+  CandidatesList,
+  CandidateInfos,
+  CandidateFilters,
+  CandidateTouchPoints,
+  FullHeightCard,
+  LoadingContainer,
+} from '@app/organisms/CandidatePool/components'
 import { Col, Row } from '@app/organisms/CandidatePool/Grid'
 import { useCandidatePoolQueries } from '@app/organisms/CandidatePool/hooks'
-import { VivierActions } from '@app/organisms/CandidatePool/VivierActions'
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 
 import type { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
-
-const PageContainer = styled.div`
-  height: 100vh;
-  overflow: hidden;
-`
-
-const ApplicationContainer = styled.div`
-  padding: 1.5rem;
-`
-
-const ApplicationLetter = styled.p`
-  white-space: pre-wrap;
-`
 
 export default function Applications() {
   const [currentApplication, setCurrentApplication] = useState<JobApplicationWithRelation>()
 
-  const { applications, fetchApplications, isError } = useCandidatePoolQueries()
+  const { applications, fetchApplications, isError, isLoading } = useCandidatePoolQueries()
 
   useEffect(() => {
     fetchApplications({}).then(applications => {
       setCurrentApplication(applications[0])
     })
   }, [])
-
-  // TODO: handle loading
-  // if (isLoading && !applications.length) {
-  //   return <div>Loading</div>
-  // }
-  if (isError) {
-    return <div>Error</div>
-  }
 
   const currentCandidate = currentApplication?.candidate
 
@@ -67,7 +53,17 @@ export default function Applications() {
         </Col>
         <Col size={80}>
           <FullHeightCard>
-            {currentCandidate ? (
+            {isError && (
+              <LoadingContainer>
+                <AdminErrorCard error={ADMIN_ERROR.NEXT_REQUEST} />
+              </LoadingContainer>
+            )}
+            {isLoading && (
+              <LoadingContainer>
+                <Spinner />
+              </LoadingContainer>
+            )}
+            {!isLoading && !isError && currentCandidate && (
               <Row style={{ height: '100%' }}>
                 <Col scroll size={50}>
                   <ApplicationContainer>
@@ -97,8 +93,6 @@ export default function Applications() {
                   {currentApplication?.cvFile && <DocumentViewer url={currentApplication.cvFile.url} />}
                 </Col>
               </Row>
-            ) : (
-              <div>Choose a candidate to see the full application</div>
             )}
           </FullHeightCard>
         </Col>
