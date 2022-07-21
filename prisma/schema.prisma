@@ -85,6 +85,13 @@ enum LegacyInstitutionSection {
 enum UserRole {
   ADMINISTRATOR
   RECRUITER
+  CANDIDATE
+}
+
+enum JobApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 // =========================================================
@@ -156,6 +163,7 @@ model File {
   relatedThumbnailFileLegacyInstitutions LegacyInstitution[]         @relation("legacyInstitutionThumbnailFile")
   relatedLogoInstitution                 Institution[]               @relation("InstitutionLogoFile")
   relatedAvatarTestimony                 Testimony[]                 @relation("TestimonyAvatarFile")
+  fileOnJobApplication                   JobApplication[]            @relation("JobApplicationCVFile")
   recruiter                              Recruiter?                  @relation("RecruiterLogoFile")
 }
 
@@ -171,27 +179,28 @@ model FilesOnLegacyInstitutions {
 }
 
 model Institution {
-  id               String           @id @default(cuid())
-  name             String           @unique
-  slug             String           @unique
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  id                              String           @id @default(cuid())
+  name                            String           @unique
+  slug                            String           @unique
+  createdAt                       DateTime         @default(now())
+  updatedAt                       DateTime         @updatedAt
 
-  url              String?
-  logoFile         File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
-  logoFileId       String?          @unique
+  url                             String?
+  logoFile                        File?            @relation("InstitutionLogoFile", fields: [logoFileId], references: [id])
+  logoFileId                      String?          @unique
 
-  pageTitle        String?
-  testimonyTitle   String?
-  description      String?
-  challenges       String?
-  mission          String?
-  structure        String?
-  organisation     String?
+  pageTitle                       String?
+  testimonyTitle                  String?
+  description                     String?
+  challenges                      String?
+  mission                         String?
+  structure                       String?
+  organisation                    String?
 
-  testimonies      Testimony[]      @relation("TestimonyInstituion")
-  recruiters       Recruiter[]      @relation("RecruiterInstitution")
-  users            User[]           @relation("UserInstitution")
+  testimonies                     Testimony[]      @relation("TestimonyInstituion")
+  recruiters                      Recruiter[]      @relation("RecruiterInstitution")
+  candidatesHiddenFromInstitution Candidate[]      @relation("CandidateHiddenFromInstitutions")
+  users                           User[]           @relation("UserInstitution")
 }
 
 model Testimony {
@@ -237,17 +246,18 @@ model Job {
   expiredAt                  DateTime
   updatedAt                  DateTime
 
-  address             Address?    @relation("JobAddress", fields: [addressId], references: [id])
-  addressId           String?
-  applicationContacts Contact[]   @relation("JobApplicationContacts")
-  infoContact         Contact?    @relation("JobInfoContact", fields: [infoContactId], references: [id])
-  infoContactId       String?
-  leads               Lead[]      @relation("LeadJobSource")
-  domains             Domain[]    @relation("JobDomains")
-  profession          Profession? @relation("JobProfession", fields: [professionId], references: [id])
-  professionId        String?
-  recruiter           Recruiter?  @relation("JobRecruiter", fields: [recruiterId], references: [id])
-  recruiterId         String?
+  address                    Address?          @relation("JobAddress", fields: [addressId], references: [id])
+  addressId                  String?
+  applicationContacts        Contact[]         @relation("JobApplicationContacts")
+  infoContact                Contact?          @relation("JobInfoContact", fields: [infoContactId], references: [id])
+  infoContactId              String?
+  leads                      Lead[]            @relation("LeadJobSource")
+  domains                    Domain[]          @relation("JobDomains")
+  profession                 Profession?       @relation("JobProfession", fields: [professionId], references: [id])
+  professionId               String?
+  recruiter                  Recruiter?        @relation("JobRecruiter", fields: [recruiterId], references: [id])
+  recruiterId                String?
+  applications               JobApplication[] @relation("JobApplicationJob")
 }
 
 model Lead {
@@ -356,12 +366,13 @@ model LegacyService {
 }
 
 model Domain {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String      @id @default(cuid())
+  name       String      @unique
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
-  jobs      Job[]    @relation("JobDomains")
+  jobs       Job[]       @relation("JobDomains")
+  candidates Candidate[] @relation("CandidateDomains")
 }
 
 model Profession {
@@ -372,6 +383,7 @@ model Profession {
 
   jobs         Job[]         @relation("JobProfession")
   archivedJobs ArchivedJob[] @relation("ArchivedJobProfession")
+  candidates   Candidate[]   @relation("CandidateProfessions")
 }
 
 model Recruiter {
@@ -412,15 +424,18 @@ model RefreshToken {
 // https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model User {
   id        String   @id @default(cuid())
-  email     String   @unique
-  extra     Json     @default("{}")
-  firstName String
-  isActive  Boolean  @default(false)
-  lastName  String
-  password  String
-  role      UserRole @default(RECRUITER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  password  String
+  role      UserRole @default(RECRUITER)
+  isActive  Boolean  @default(false)
+
+  firstName String
+  lastName  String
+  email     String   @unique
+
+  extra     Json     @default("{}")
 
   institution   Institution?   @relation("UserInstitution", fields: [institutionId], references: [id])
   institutionId String?
@@ -428,5 +443,49 @@ model User {
   // https://github.com/prisma/prisma/issues/9553
   recruiter     Recruiter?     @relation("UserRecruiter", fields: [recruiterId], references: [id])
   recruiterId   String?
+  candidate     Candidate?     @relation("CandidateUser")
   refreshTokens RefreshToken[] @relation("UserRefreshToken")
+}
+
+model Candidate {
+	id                     String           @id @default(cuid())
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+	user                   User             @relation("CandidateUser", fields: [userId], references: [id])
+	userId                 String
+
+  phone                  String
+  region                 String
+  contractTypes          JobContractType[]
+  currentJob             String
+  seniorityInYears       Int              @default(0)
+  githubUrl              String?
+  linkedInUrl            String?
+  portfolioUrl           String?
+
+  domains                Domain[]         @relation("CandidateDomains")
+  professions            Profession[]     @relation("CandidateProfessions")
+  hiddenFromInstitutions Institution[]    @relation("CandidateHiddenFromInstitutions")
+
+  jobApplications        JobApplication[] @relation("JobApplicationCandidate")
+}
+
+model JobApplication {
+	id                String               @id @default(cuid())
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  candidate         Candidate            @relation("JobApplicationCandidate", fields: [candidateId], references: [id])
+  candidateId       String
+
+  job               Job?                 @relation("JobApplicationJob", fields: [jobId], references: [id])
+  jobId             String?
+
+  applicationLetter String
+  status            JobApplicationStatus @default(PENDING)
+  rejectionReason   String?
+
+  cvFile            File                 @relation("JobApplicationCVFile", fields: [cvFileId], references: [id])
+  cvFileId          String
 }

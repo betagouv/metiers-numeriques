@@ -18,6 +18,10 @@ export const GET_ALL = gql`
 
           displayName
         }
+
+        _count {
+          applications
+        }
       }
       index
       length

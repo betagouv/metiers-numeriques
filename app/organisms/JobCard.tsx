@@ -144,7 +144,7 @@ export function JobCard({ job }: JobCardProps) {
         )}
 
         <Row>
-          <Info>
+          <Info style={{ minWidth: '30%' }}>
             <i className="ri-map-pin-line" style={{ color: theme.color.danger.rubicund }} />
             {location}
           </Info>

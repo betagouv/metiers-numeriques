@@ -49,7 +49,7 @@ const getTestimonies = async (req: NextApiRequest, res: NextApiResponse) => {
       length,
     })
   } catch (err) {
-    handleError(err, 'pages/api/testimonies/index.ts > query.getTestimonies()')
+    handleError(err, 'pages/api/testimonies/duplicate.ts > query.getTestimonies()')
 
     res.status(400).send({
       count: 1,
@@ -65,7 +65,7 @@ const createTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
     const createResponse = await prisma.testimony.create({ data: JSON.parse(req.body) })
     res.status(201).send(createResponse)
   } catch (err) {
-    handleError(err, 'pages/api/testimonies/index.ts > query.createTestimony()')
+    handleError(err, 'pages/api/testimonies/duplicate.ts > query.createTestimony()')
     res.status(400).end()
   }
 }

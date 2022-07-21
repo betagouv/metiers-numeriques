@@ -45,13 +45,7 @@ const Logo = styled.img`
 
 export const InstitutionCard = ({ institution }) => (
   <Card className="InstitutionCard">
-    <Link
-      href={`/institutions/${institution.slug}`}
-      noUnderline
-      // TODO: tracking
-      // onAuxClick={trackJobOpening}
-      // onClick={trackJobOpening}
-    >
+    <Link href={`/institutions/${institution.slug}`} noUnderline>
       {/* TODO: use next/image for external images as well */}
       {institution.logoFile && <Logo src={institution.logoFile?.url} />}
       <Title>{institution.name}</Title>

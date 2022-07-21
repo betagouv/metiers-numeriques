@@ -11,7 +11,7 @@ async function seed() {
   try {
     await initializeProfessions(prisma)
   } catch (err) {
-    B.error('[prisma/seeds/index.ts > seed()]', String(err))
+    B.error('[prisma/seeds/duplicate.ts > seed()]', String(err))
     console.error(err)
   } finally {
     await prisma.$disconnect()

@@ -18,7 +18,7 @@ test.describe('Admin > Contacts', () => {
 
       await expect(page.locator('h1')).toHaveText('Nouveau contact')
 
-      await page.fill('"Nom *"', testContact.name)
+      await page.fill('"Nom complet *"', testContact.name)
       await page.fill('"Email *"', testContact.email)
       await page.fill('"Téléphone"', testContact.phone as string)
       await page.fill('"Poste"', testContact.position as string)

@@ -10,6 +10,7 @@ type SelectProps = {
   isMulti?: boolean
   label: string
   name: string
+  onChange?: (valueOrValues?: string | string[]) => void
   options?: Common.App.SelectOption[]
   placeholder?: string
 }
@@ -21,6 +22,7 @@ export function Select({
   label,
   name,
   options = [],
+  onChange,
   placeholder,
 }: SelectProps) {
   const { errors, initialValues, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
@@ -49,12 +51,14 @@ export function Select({
       const values = optionOrOptions.map(({ value }) => value)
 
       setFieldValue(name, values)
+      onChange?.(values)
 
       return
     }
 
     if (optionOrOptions === null) {
       setFieldValue(name, null)
+      onChange?.(undefined)
 
       return
     }
@@ -62,6 +66,7 @@ export function Select({
     const { value } = optionOrOptions
 
     setFieldValue(name, value)
+    onChange?.(value)
   }
 
   return (

@@ -40,6 +40,12 @@ type Job {
   applicationContacts: [Contact]
   profession: Profession
   recruiter: Recruiter
+
+  _count: JobCounters
+}
+
+type JobCounters {
+  applications: Int
 }
 
 input JobInput {

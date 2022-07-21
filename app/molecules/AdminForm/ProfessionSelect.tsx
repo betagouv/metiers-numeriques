@@ -15,10 +15,18 @@ type ProfessionSelectProps = {
   isDisabled?: boolean
   label: string
   name: string
+  onChange?: (professionId?: string) => void
   placeholder?: string
 }
 
-export function ProfessionSelect({ helper, isDisabled = false, label, name, placeholder }: ProfessionSelectProps) {
+export function ProfessionSelect({
+  helper,
+  isDisabled = false,
+  label,
+  name,
+  onChange,
+  placeholder,
+}: ProfessionSelectProps) {
   const $newProfessionId = useRef<string>()
   const [options, setOptions] = useState<Common.App.SelectOption[]>([])
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
@@ -51,15 +59,12 @@ export function ProfessionSelect({ helper, isDisabled = false, label, name, plac
       return
     }
 
-    if (optionOrOptions === null) {
-      setFieldValue(name, null)
-
-      return
-    }
-
-    const { value } = optionOrOptions
+    const value = optionOrOptions?.value
 
     setFieldValue(name, value)
+    if (onChange) {
+      onChange(value)
+    }
   }
 
   useEffect(() => {

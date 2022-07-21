@@ -1,11 +1,13 @@
 import { useMutation } from '@apollo/client'
 import { Loader } from '@app/molecules/Loader'
 import { queries } from '@app/queries'
+import { handleError } from '@common/helpers/handleError'
 import { FileType } from '@prisma/client'
 import { Button as SUIButton } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import { useS3Upload } from 'next-s3-upload'
 import { useRef, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
 type FileUploadProps = {
@@ -42,6 +44,7 @@ const Thumbnail = styled.img`
   height: 70px;
   border-radius: 8px;
   margin-right: 24px;
+  object-fit: cover;
 `
 
 const Error = styled.span`
@@ -51,7 +54,7 @@ const Error = styled.span`
 `
 
 // TODO: export in SUI
-// TODO: handle similar pictures posted
+// TODO: handle identical pictures posted so we don't upload them twice
 /**
  * File Uploader for Formik & Prisma
  * @param isDisabled
@@ -101,7 +104,9 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
 
       setIsUploading(false)
     } catch (e) {
+      handleError(e, 'app/molecules/AdminForm/FileUpload.tsx > handleFileChange()')
       setFieldError(name, `Une erreur est survenue lors du chargement: ${e}`)
+      toast.error("Une erreur est survenue lors du chargement de l'image")
     }
   }
 

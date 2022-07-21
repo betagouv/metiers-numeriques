@@ -8,10 +8,11 @@ type DomainSelectProps = {
   isDisabled?: boolean
   label: string
   name: string
+  onChange?: (domainIds?: string[]) => void
   placeholder?: string
 }
 
-export function DomainSelect({ helper, isDisabled = false, label, name, placeholder }: DomainSelectProps) {
+export function DomainSelect({ helper, isDisabled = false, label, name, onChange, placeholder }: DomainSelectProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
   const [domains, setDomains] = useState<Common.App.SelectOption[]>([])
@@ -44,15 +45,13 @@ export function DomainSelect({ helper, isDisabled = false, label, name, placehol
   }, [values[name], domains])
 
   const updateFormikValues = (options: Common.App.SelectOption[] | null) => {
-    if (options === null) {
-      setFieldValue(name, null)
-
-      return
-    }
-
-    const values = options.map(({ value }) => value)
+    const values = options?.map(({ value }) => value)
 
     setFieldValue(name, values)
+
+    if (onChange) {
+      onChange(values)
+    }
   }
 
   return (
