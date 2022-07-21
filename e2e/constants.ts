@@ -64,6 +64,15 @@ export const TEST_PROFESSIONS = [
   },
 ]
 
+export const TEST_DOMAINS = [
+  {
+    name: '$$ Domain 1 Name',
+  },
+  {
+    name: '$$ Domain 2 Name',
+  },
+]
+
 export const TEST_RECRUITERS = [
   {
     displayName: '$$ Recruiter A1 Name',
@@ -99,22 +108,22 @@ export const TEST_JOB_DRAFTS = [
   {
     missionDescription: 'Job A1b Mission',
     recruiter: TEST_RECRUITERS[0],
-    title: '$$ Job A1b Title',
+    title: `$$ Job A1b Title${new Date()}`,
   },
   {
     missionDescription: 'Job A2b Mission',
     recruiter: TEST_RECRUITERS[1],
-    title: '$$ Job A2b Title',
+    title: `$$ Job A2b Title${new Date()}`,
   },
   {
     missionDescription: 'Job B1b Mission',
     recruiter: TEST_RECRUITERS[2],
-    title: '$$ Job B1b Title',
+    title: `$$ Job B1b Title${new Date()}`,
   },
   {
     missionDescription: 'Job B2b Mission',
     recruiter: TEST_RECRUITERS[3],
-    title: '$$ Job B2b Title',
+    title: `$$ Job B2b Title${new Date()}`,
   },
 ]
 
@@ -126,13 +135,14 @@ export const TEST_JOBS = [
     },
     applicationContacts: [TEST_CONTACTS[0], TEST_CONTACTS[1]],
     contractTypes: [JOB_CONTRACT_TYPE_LABEL.CONTRACT_WORKER_ONLY, JOB_CONTRACT_TYPE_LABEL.FREELANCER],
+    domains: [TEST_DOMAINS[0]],
     infoContact: TEST_CONTACTS[2],
     missionDescription: 'Job A1a Mission',
     profession: TEST_PROFESSIONS[0],
     recruiter: TEST_RECRUITERS[0],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.NONE,
     seniorityInYears: '0',
-    title: '$$ Job A1a Title',
+    title: `$$ Job A1a Title${new Date()}`,
   },
   {
     address: {
@@ -141,31 +151,14 @@ export const TEST_JOBS = [
     },
     applicationContacts: [TEST_CONTACTS[0], TEST_CONTACTS[1]],
     contractTypes: [JOB_CONTRACT_TYPE_LABEL.INTERN, JOB_CONTRACT_TYPE_LABEL.INTERNATIONAL_VOLUNTEER],
+    domains: [TEST_DOMAINS[0]],
     infoContact: TEST_CONTACTS[3],
     missionDescription: 'Job A2a Mission',
     profession: TEST_PROFESSIONS[1],
     recruiter: TEST_RECRUITERS[1],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.PARTIAL,
     seniorityInYears: '2',
-    title: '$$ Job A2a Title',
-  },
-  {
-    address: {
-      input: '20 avenue de Ségur',
-      label: '20 Avenue de Ségur 75007 Paris, France',
-    },
-    applicationContacts: [TEST_CONTACTS[0], TEST_CONTACTS[1]],
-    contractTypes: [
-      JOB_CONTRACT_TYPE_LABEL.NATIONAL_CIVIL_SERVANT_OR_CONTRACT_WORKER,
-      JOB_CONTRACT_TYPE_LABEL.PART_TIME,
-    ],
-    infoContact: TEST_CONTACTS[2],
-    missionDescription: 'Job B1a Mission',
-    profession: TEST_PROFESSIONS[0],
-    recruiter: TEST_RECRUITERS[2],
-    remoteStatus: JOB_REMOTE_STATUS_LABEL.FULL,
-    seniorityInYears: '0',
-    title: '$$ Job B1a Title',
+    title: `$$ Job A2a Title${new Date()}`,
   },
   {
     address: {
@@ -174,13 +167,30 @@ export const TEST_JOBS = [
     },
     applicationContacts: [TEST_CONTACTS[0], TEST_CONTACTS[1]],
     contractTypes: [JOB_CONTRACT_TYPE_LABEL.NATIONAL_CIVIL_SERVANT_OR_CONTRACT_WORKER],
+    domains: [TEST_DOMAINS[1]],
+    infoContact: TEST_CONTACTS[2],
+    missionDescription: 'Job B1a Mission',
+    profession: TEST_PROFESSIONS[0],
+    recruiter: TEST_RECRUITERS[2],
+    remoteStatus: JOB_REMOTE_STATUS_LABEL.FULL,
+    seniorityInYears: '0',
+    title: `$$ Job B1a Title${new Date()}`,
+  },
+  {
+    address: {
+      input: '20 avenue de Ségur',
+      label: '20 Avenue de Ségur 75007 Paris, France',
+    },
+    applicationContacts: [TEST_CONTACTS[0], TEST_CONTACTS[1]],
+    contractTypes: [JOB_CONTRACT_TYPE_LABEL.NATIONAL_CIVIL_SERVANT_OR_CONTRACT_WORKER],
+    domains: [TEST_DOMAINS[1]],
     infoContact: TEST_CONTACTS[3],
     missionDescription: 'Job B2a Mission',
     profession: TEST_PROFESSIONS[1],
     recruiter: TEST_RECRUITERS[3],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.NONE,
     seniorityInYears: '2',
-    title: '$$ Job B2a Title',
+    title: `$$ Job B2a Title${new Date()}`,
   },
 ]
 

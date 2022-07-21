@@ -81,7 +81,7 @@ export default function AdminJobListPage() {
     any
   >(queries.job.GET_ALL, {
     nextFetchPolicy: 'no-cache',
-    pollInterval: 500,
+    pollInterval: 5000,
     variables: {
       pageIndex: 0,
       perPage: PER_PAGE,
@@ -122,7 +122,7 @@ export default function AdminJobListPage() {
     const title = 'Nouvelle offre d’emploi'
     const slug = slugify(title, id)
 
-    const contractTypes = [JobContractType.NATIONAL_CIVIL_SERVANT, JobContractType.CONTRACT_WORKER]
+    const contractTypes = [JobContractType.NATIONAL_CIVIL_SERVANT_OR_CONTRACT_WORKER]
     const expiredAt = dayjs().add(2, 'months').toDate()
     const missionDescription = ''
     const recruiterId = !isAdmin ? auth.user?.recruiterId : null

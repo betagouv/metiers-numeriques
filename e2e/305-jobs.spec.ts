@@ -21,8 +21,10 @@ test.describe('Admin > Jobs', () => {
         await expect(page.locator('h1')).toHaveText('Édition d’une offre d’emploi')
 
         await page.fill('"Intitulé *"', testJobDraft.title)
+
         await page.fill('"Service recruteur *"', testJobDraft.recruiter.displayName)
         await page.click(`"${testJobDraft.recruiter.displayName}"`)
+
         await page.fill('div[contenteditable="true"]:below(:text("Mission *"))', testJobDraft.missionDescription)
 
         await page.click('"Offres d’emploi"')
@@ -57,6 +59,12 @@ test.describe('Admin > Jobs', () => {
         for (const contractType of testJob.contractTypes) {
           await page.fill('"Types de contrat *"', contractType)
           await page.click(`"${contractType}"`)
+        }
+
+        await page.click('.Select__clear-indicator:below(:text("Domaines *"))')
+        for (const domain of testJob.domains) {
+          await page.fill('"Domaines *"', domain.name)
+          await page.click(`"${domain.name}"`)
         }
 
         await page.fill('"Années d’expérience requises (0 si ouvert aux débutant·es) *"', testJob.seniorityInYears)

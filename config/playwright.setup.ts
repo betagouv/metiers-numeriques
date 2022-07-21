@@ -78,6 +78,14 @@ export default async function globalSetup(config: FullConfig) {
     },
   })
 
+  await prisma.domain.deleteMany({
+    where: {
+      name: {
+        startsWith: '$$',
+      },
+    },
+  })
+
   await prisma.recruiter.deleteMany({
     where: {
       displayName: {
