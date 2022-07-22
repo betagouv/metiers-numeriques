@@ -8,13 +8,14 @@ const InputContainer = styled.div`
 `
 
 const StyledInput = styled.input`
+  margin-top: 0.5rem;
   background-color: ${theme.color.neutral.silver};
   border: solid 1px ${theme.color.neutral.black};
   border-radius: 0.25rem;
   color: ${theme.color.neutral.black};
   font-size: 112.5%;
   line-height: 1;
-  padding: 0.55rem 1.25rem 0.9rem;
+  padding: 0.55rem 1.25rem 0.8rem;
   width: 100%;
 
   ::placeholder {

@@ -8,6 +8,7 @@ import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { Loader } from '@app/molecules/Loader'
 import { JobCard, JobWithRelation } from '@app/organisms/JobCard'
 import { INITIAL_FILTER, JobFilterBar } from '@app/organisms/JobFilterBar'
+import { NewsletterBar } from '@app/organisms/NewsletterBar'
 import { queries } from '@app/queries'
 import { theme } from '@app/theme'
 import { handleError } from '@common/helpers/handleError'
@@ -291,6 +292,10 @@ export default function JobListPage({
         {!$isLoading.current && $jobs.current.map(job => <JobCard key={job.id} job={job} />)}
         {$isLoadingMore.current && <Loader />}
       </List>
+
+      <div className="fr-container">
+        <NewsletterBar />
+      </div>
     </div>
   )
 }

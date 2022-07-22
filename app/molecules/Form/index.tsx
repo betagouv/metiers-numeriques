@@ -1,3 +1,4 @@
+import { Select } from '@app/atoms/Select'
 import { Formik, Form as FormikForm } from 'formik'
 
 import { Cancel } from './Cancel'
@@ -39,6 +40,7 @@ FormComponent.displayName = 'Form'
 export const Form = Object.assign(FormComponent, {
   Cancel,
   Checkbox,
+  Select,
   Submit,
   TextInput,
 })
