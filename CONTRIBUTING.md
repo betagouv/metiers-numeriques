@@ -33,11 +33,13 @@ Then run:
 git clone https://github.com/betagouv/metiers-numeriques.git
 cd metiers-numeriques
 yarn
-yarn setup
+yarn dev:setup
 yarn dev:docker
 yarn db:migrate
-npx nexauth init
 ```
+
+If you have the production `API_KEY` secret env, you can seed the production data locally by copy/pasting its value into
+the `.env` file `PROD_API_SECRET` key and running `yarn dev:seed`.
 
 > 📋 **Note**  
 > The `yarn` command install the dependencies but also run the `scripts/dev/setup.js` scripts. This script does the
