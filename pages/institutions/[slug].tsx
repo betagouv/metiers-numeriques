@@ -71,17 +71,31 @@ const TestimonyAuthor = styled.div`
 
 type InstitutionTabFields = keyof Pick<
   Institution,
-  'description' | 'challenges' | 'mission' | 'structure' | 'organisation'
+  | 'description'
+  | 'values'
+  | 'challenges'
+  | 'mission'
+  | 'projects'
+  | 'organisation'
+  | 'figures'
+  | 'wantedSkills'
+  | 'recruitmentProcess'
+  | 'workingWithUs'
 >
 
 type Tab = { key: InstitutionTabFields; label: string }
 
 const TABS: Tab[] = [
-  { key: 'description', label: 'Description' },
-  { key: 'challenges', label: 'Enjeux' },
-  { key: 'mission', label: 'Mission' },
-  { key: 'structure', label: 'Structure' },
-  { key: 'organisation', label: 'Organisation' },
+  { key: 'description', label: "Notre raison d'être" },
+  { key: 'values', label: 'Nos valeurs' },
+  { key: 'challenges', label: 'Nos enjeux' },
+  { key: 'mission', label: 'Nos missions' },
+  { key: 'projects', label: 'Nos projets' },
+  { key: 'organisation', label: 'Notre organisation' },
+  { key: 'figures', label: 'Nos chiffres clés' },
+  { key: 'wantedSkills', label: 'Les profils recherchés' },
+  { key: 'recruitmentProcess', label: 'Nos process de recrutement' },
+  { key: 'workingWithUs', label: 'Nous rejoindre' },
 ]
 
 type InstitutionPageProps = {

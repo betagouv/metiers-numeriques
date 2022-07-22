@@ -35,11 +35,17 @@ export const GET_ONE = gql`
       url
       pageTitle
       testimonyTitle
+
       description
+      values
       challenges
       mission
-      structure
+      projects
       organisation
+      figures
+      wantedSkills
+      recruitmentProcess
+      workingWithUs
 
       logoFile {
         id

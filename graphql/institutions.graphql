@@ -15,11 +15,17 @@ type Institution {
 
   pageTitle: String
   testimonyTitle: String
+
   description: String
+  values: String
   challenges: String
   mission: String
-  structure: String
+  projects: String
   organisation: String
+  figures: String
+  wantedSkills: String
+  recruitmentProcess: String
+  workingWithUs: String
 
   recruiters: [Recruiter!]!
 }
@@ -44,11 +50,17 @@ input InstitutionInput {
 
   pageTitle: String
   testimonyTitle: String
+
   description: String
+  values: String
   challenges: String
   mission: String
-  structure: String
+  projects: String
   organisation: String
+  figures: String
+  wantedSkills: String
+  recruitmentProcess: String
+  workingWithUs: String
 }
 
 type InstitutionsResult {
