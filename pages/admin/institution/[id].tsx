@@ -110,10 +110,15 @@ export default function AdminInstitutionEditorPage() {
         'pageTitle',
         'testimonyTitle',
         'description',
+        'values',
         'challenges',
         'mission',
-        'structure',
+        'projects',
         'organisation',
+        'figures',
+        'wantedSkills',
+        'recruitmentProcess',
+        'workingWithUs',
       ])(values)
 
       const inputId = isNew ? cuid() : (id as string)
@@ -248,7 +253,7 @@ export default function AdminInstitutionEditorPage() {
           <Field>
             <AdminForm.Editor
               isDisabled={isLoading}
-              label="Onglet Description"
+              label="Notre raison d'être"
               name="description"
               placeholder="Présentez l'institution en quelques mots"
             />
@@ -257,7 +262,16 @@ export default function AdminInstitutionEditorPage() {
           <Field>
             <AdminForm.Editor
               isDisabled={isLoading}
-              label="Onglet Enjeux"
+              label="Nos valeurs"
+              name="values"
+              placeholder="Présentez les valeurs d l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Nos enjeux"
               name="challenges"
               placeholder="Présentez les enjeux de l'institution en quelques mots"
             />
@@ -266,7 +280,7 @@ export default function AdminInstitutionEditorPage() {
           <Field>
             <AdminForm.Editor
               isDisabled={isLoading}
-              label="Onglet Mission"
+              label="Nos missions"
               name="mission"
               placeholder="Présentez la mission de l'institution en quelques mots"
             />
@@ -275,18 +289,54 @@ export default function AdminInstitutionEditorPage() {
           <Field>
             <AdminForm.Editor
               isDisabled={isLoading}
-              label="Onglet Structure"
-              name="structure"
-              placeholder="Présentez la structure de l'institution en quelques mots"
+              label="Nos projets"
+              name="projects"
+              placeholder="Présentez les projets de l'institution en quelques mots"
             />
           </Field>
 
           <Field>
             <AdminForm.Editor
               isDisabled={isLoading}
-              label="Onglet Organisation"
+              label="Notre organisation"
               name="organisation"
               placeholder="Présentez l'organisation de l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Nos chiffres clés"
+              name="figures"
+              placeholder="Présentez les chiffres clés de l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Les profils recherchés"
+              name="wantedSkills"
+              placeholder="Présentez le type de profils recherchés en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Nos process de recrutement"
+              name="recruitmentProcess"
+              placeholder="Présentez le process de recrutement de l'institution en quelques mots"
+            />
+          </Field>
+
+          <Field>
+            <AdminForm.Editor
+              isDisabled={isLoading}
+              label="Nous rejoindre"
+              name="workingWithUs"
+              placeholder="Expliquez pour rejoindre l'institution en quelques mots"
             />
           </Field>
 

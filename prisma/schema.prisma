@@ -192,10 +192,15 @@ model Institution {
   pageTitle                       String?
   testimonyTitle                  String?
   description                     String?
+  values                          String?
   challenges                      String?
   mission                         String?
-  structure                       String?
+  projects                        String?
   organisation                    String?
+  figures                         String?
+  wantedSkills                    String?
+  recruitmentProcess              String?
+  workingWithUs                   String?
 
   testimonies                     Testimony[]      @relation("TestimonyInstituion")
   recruiters                      Recruiter[]      @relation("RecruiterInstitution")

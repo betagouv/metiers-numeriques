@@ -21,7 +21,7 @@ test.describe('Admin > Institutions', () => {
       await page.fill('"Nom *"', testInstitution.name)
       await page.fill('"Site (URL)"', testInstitution.url)
       await page.fill('"Titre"', testInstitution.pageTitle)
-      await page.fill('div[contenteditable="true"]:below(:text("Onglet Description"))', testInstitution.description)
+      await page.fill('div[contenteditable="true"]:below(:text("Notre raison d\'être"))', testInstitution.description)
 
       await page.click('"Créer"')
 

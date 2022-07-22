@@ -22,6 +22,7 @@ const Tab = styled.div<{ selected?: boolean }>`
   font-size: 1.125rem;
   line-height: 1.5rem;
   cursor: pointer;
+  white-space: pre;
 `
 
 type TabProps = {
