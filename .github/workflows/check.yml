@@ -115,7 +115,7 @@ jobs:
           npx playwright install-deps chromium
           npx playwright install chromium
       - name: Setup build
-        run: yarn setup
+        run: yarn dev:setup
       - name: Build
         run: yarn build --no-lint
       - name: Serve
