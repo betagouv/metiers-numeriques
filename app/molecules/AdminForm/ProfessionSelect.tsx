@@ -15,6 +15,7 @@ type ProfessionSelectProps = {
   isDisabled?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
   onChange?: (professionId?: string) => void
   placeholder?: string
 }
@@ -24,6 +25,7 @@ export function ProfessionSelect({
   isDisabled = false,
   label,
   name,
+  onBlur,
   onChange,
   placeholder,
 }: ProfessionSelectProps) {
@@ -107,6 +109,7 @@ export function ProfessionSelect({
       isDisabled={isControlledDisabled}
       label={label}
       name={name}
+      onBlur={onBlur}
       onChange={updateFormikValues as any}
       options={options}
       placeholder={placeholder}

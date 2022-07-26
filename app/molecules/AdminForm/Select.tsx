@@ -10,6 +10,7 @@ type SelectProps = {
   isMulti?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
   onChange?: (valueOrValues?: string | string[]) => void
   options?: Common.App.SelectOption[]
   placeholder?: string
@@ -23,6 +24,7 @@ export function Select({
   name,
   options = [],
   onChange,
+  onBlur,
   placeholder,
 }: SelectProps) {
   const { errors, initialValues, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
@@ -81,6 +83,7 @@ export function Select({
       isMulti={isMulti}
       label={label}
       name={name}
+      onBlur={() => onBlur?.(values)}
       onChange={updateFormikValues as any}
       options={!isAsync ? options : undefined}
       placeholder={placeholder}

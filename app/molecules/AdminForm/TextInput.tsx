@@ -4,9 +4,10 @@ import { ChangeEvent, ChangeEventHandler, useMemo } from 'react'
 
 import type { TextInputProps } from '@singularity/core'
 
-type CustomTextInputProps = TextInputProps & {
+type CustomTextInputProps = Omit<TextInputProps, 'onBlur'> & {
   isDisabled?: boolean
   name: string
+  onBlur?: (values) => Promise<void>
   onChange?: ChangeEventHandler<HTMLInputElement>
   type?: string
 }
@@ -14,6 +15,7 @@ export function TextInput({
   autoComplete = 'off',
   isDisabled = false,
   name,
+  onBlur,
   onChange,
   type = 'text',
   ...props
@@ -39,6 +41,7 @@ export function TextInput({
       disabled={isDisabled || isSubmitting}
       error={maybeError}
       name={name}
+      onBlur={() => onBlur?.(values)}
       onChange={checkChange}
       type={type}
       {...props}

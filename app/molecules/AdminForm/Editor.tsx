@@ -8,9 +8,10 @@ type EditorProps = {
   isDisabled?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
   placeholder: string
 }
-export function Editor({ helper, isDisabled = false, label, name, placeholder }: EditorProps) {
+export function Editor({ helper, isDisabled = false, label, name, onBlur, placeholder }: EditorProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
@@ -33,6 +34,7 @@ export function Editor({ helper, isDisabled = false, label, name, placeholder }:
       isDisabled={isDisabled || isSubmitting}
       label={label}
       name={name}
+      onBlur={() => onBlur?.(values)}
       onChange={updateFormikValues}
       placeholder={placeholder}
     />

@@ -18,6 +18,7 @@ type ContactSelectProps = {
   isMulti?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
   placeholder?: string
 }
 
@@ -27,6 +28,7 @@ export function ContactSelect({
   isMulti = false,
   label,
   name,
+  onBlur,
   placeholder,
 }: ContactSelectProps) {
   const $newContactId = useRef<string>()
@@ -148,6 +150,7 @@ export function ContactSelect({
         isMulti={isMulti}
         label={label}
         name={name}
+        onBlur={onBlur}
         onChange={updateFormikValues as any}
         options={options}
         placeholder={placeholder}
