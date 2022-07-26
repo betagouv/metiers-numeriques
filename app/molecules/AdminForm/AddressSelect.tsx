@@ -18,8 +18,9 @@ type AddressSelectProps = {
   isDisabled?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
 }
-export function AddressSelect({ helper, isDisabled = false, label, name }: AddressSelectProps) {
+export function AddressSelect({ helper, isDisabled = false, label, name, onBlur }: AddressSelectProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
   const [getAddresses] = useLazyQuery(queries.address.GET_ALL, {
@@ -118,6 +119,7 @@ export function AddressSelect({ helper, isDisabled = false, label, name }: Addre
       label={label}
       loadOptions={queryAddress as any}
       name={name}
+      onBlur={onBlur}
       onChange={updateFormikValues as any}
       placeholder={placeholder}
     />

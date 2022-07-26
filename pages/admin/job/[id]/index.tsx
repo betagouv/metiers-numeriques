@@ -11,6 +11,7 @@ import { Subtitle } from '@app/atoms/Subtitle'
 import { normalizeDateForDateInput } from '@app/helpers/normalizeDateForDateInput'
 import { showApolloError } from '@app/helpers/showApolloError'
 import { AdminForm } from '@app/molecules/AdminForm'
+import { AutoSaveBox } from '@app/molecules/AdminForm/AutoSave'
 import { Spinner } from '@app/molecules/AdminLoader/Spinner'
 import { StepBar } from '@app/molecules/StepBar'
 import { queries } from '@app/queries'
@@ -106,6 +107,7 @@ export default function AdminJobEditorPage() {
 
   const $state = useRef<JobState | undefined>()
   const $slug = useRef<string | undefined>()
+  const [isSaving, setIsSaving] = useState(false)
   const [initialValues, setInitialValues] = useState<Partial<JobFormData>>()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -145,6 +147,8 @@ export default function AdminJobEditorPage() {
 
   const save = useCallback(async (values: JobFormData) => {
     try {
+      setIsSaving(true)
+
       const input: Partial<Job> = R.pick([
         'applicationContactIds',
         'applicationWebsiteUrl',
@@ -229,6 +233,8 @@ export default function AdminJobEditorPage() {
     } catch (err) {
       handleError(err, 'pages/admin/job/[id].tsx > save()')
       toast.error(String(err))
+    } finally {
+      setIsSaving(false)
     }
   }, [])
 
@@ -349,11 +355,11 @@ export default function AdminJobEditorPage() {
       {isError && <AdminErrorCard error={ADMIN_ERROR.GRAPHQL_REQUEST} />}
 
       <AdminForm initialValues={initialValues || {}} onSubmit={saveAndGoToList as any} validationSchema={JobFormSchema}>
-        <AdminForm.AutoSave onChange={save as any} />
+        <AutoSaveBox isSaving={isSaving} />
 
         <AdminCard isFirst>
           <Field>
-            <AdminForm.TextInput isDisabled={isLoading} label="Intitulé *" name="title" />
+            <AdminForm.TextInput isDisabled={isLoading} label="Intitulé *" name="title" onBlur={save} />
           </Field>
 
           <DoubleField>
@@ -364,10 +370,17 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Service recruteur *"
               name="recruiterId"
+              onBlur={save}
               placeholder="…"
             />
 
-            <AdminForm.TextInput isDisabled={isLoading} label="Expire le *" name="expiredAtAsString" type="date" />
+            <AdminForm.TextInput
+              isDisabled={isLoading}
+              label="Expire le *"
+              name="expiredAtAsString"
+              onBlur={save}
+              type="date"
+            />
           </DoubleField>
 
           <DoubleField>
@@ -375,6 +388,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Compétence *"
               name="professionId"
+              onBlur={save}
               placeholder="…"
             />
 
@@ -382,13 +396,14 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Types de contrat *"
               name="contractTypes"
+              onBlur={save}
               options={JOB_CONTRACT_TYPES_AS_OPTIONS}
               placeholder="…"
             />
           </DoubleField>
 
           <Field>
-            <AdminForm.DomainSelect isDisabled={isLoading} label="Domaines *" name="domainIds" />
+            <AdminForm.DomainSelect isDisabled={isLoading} label="Domaines *" name="domainIds" onBlur={save} />
           </Field>
 
           <DoubleField>
@@ -396,6 +411,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Années d’expérience requises (0 si ouvert aux débutant·es) *"
               name="seniorityInYears"
+              onBlur={save}
               type="number"
             />
 
@@ -403,12 +419,18 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Télétravail possible *"
               name="remoteStatus"
+              onBlur={save}
               options={JOB_REMOTE_STATUSES_AS_OPTIONS}
               placeholder="…"
             />
           </DoubleField>
 
-          <AdminForm.AddressSelect isDisabled={isLoading} label="Adresse *" name="addressAsPrismaAddress" />
+          <AdminForm.AddressSelect
+            isDisabled={isLoading}
+            label="Adresse *"
+            name="addressAsPrismaAddress"
+            onBlur={save}
+          />
         </AdminCard>
 
         <AdminCard>
@@ -417,6 +439,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Contexte"
               name="contextDescription"
+              onBlur={save}
               placeholder="Contexte de la mission."
             />
           </Field>
@@ -426,6 +449,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Mission *"
               name="missionDescription"
+              onBlur={save}
               placeholder="Décrivez la mission de la manière la plus succinte possible."
             />
           </Field>
@@ -435,6 +459,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="L'équipe"
               name="teamDescription"
+              onBlur={save}
               placeholder="Brève description des rôles et objectifs de l’équipe."
             />
           </Field>
@@ -444,6 +469,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Conditions particulières"
               name="particularitiesDescription"
+              onBlur={save}
               placeholder="Conditions particulières du poste : formations, habilitations, etc."
             />
           </Field>
@@ -453,6 +479,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Avantages"
               name="perksDescription"
+              onBlur={save}
               placeholder="Liste des avantages du poste : opportunités de formation, horaires aménagées, etc."
             />
           </Field>
@@ -464,6 +491,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Tâches"
               name="tasksDescription"
+              onBlur={save}
               placeholder="Liste des tâches principales impliquées par le poste."
             />
           </Field>
@@ -473,6 +501,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Profil idéal de candidat·e"
               name="profileDescription"
+              onBlur={save}
               placeholder="Liste des expériences, qualités et éventuelles qualifications attendues."
             />
           </Field>
@@ -483,6 +512,7 @@ export default function AdminJobEditorPage() {
                 isDisabled={isLoading}
                 label="Rémunération anuelle brut minimum"
                 name="salaryMin"
+                onBlur={save}
                 type="number"
               />
               <span>K€</span>
@@ -493,6 +523,7 @@ export default function AdminJobEditorPage() {
                 isDisabled={isLoading}
                 label="Rémunération anuelle brut maximum"
                 name="salaryMax"
+                onBlur={save}
                 type="number"
               />
               <span>K€</span>
@@ -506,6 +537,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Processus de recrutement"
               name="processDescription"
+              onBlur={save}
               placeholder="Exemple : le processus se déroulera sur 1 mois avec 4 entretiens."
             />
           </Field>
@@ -516,6 +548,7 @@ export default function AdminJobEditorPage() {
               isMulti
               label="Contacts pour l’envoi des candidatures **"
               name="applicationContactIds"
+              onBlur={save}
               placeholder="…"
             />
           </Field>
@@ -525,6 +558,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="site officiel de candidature (URL) **"
               name="applicationWebsiteUrl"
+              onBlur={save}
               type="url"
             />
           </Field>
@@ -534,6 +568,7 @@ export default function AdminJobEditorPage() {
               isDisabled={isLoading}
               label="Contact unique pour les questions *"
               name="infoContactId"
+              onBlur={save}
               placeholder="…"
             />
           </Field>
@@ -544,10 +579,10 @@ export default function AdminJobEditorPage() {
             <Subtitle>Références internes</Subtitle>
 
             <Field>
-              <AdminForm.TextInput isDisabled label="Source" name="source" />
+              <AdminForm.TextInput isDisabled label="Source" name="source" onBlur={save} />
             </Field>
             <FieldGroup>
-              <AdminForm.TextInput isDisabled label="Source (URL)" name="sourceUrl" />
+              <AdminForm.TextInput isDisabled label="Source (URL)" name="sourceUrl" onBlur={save} />
               <button onClick={goToSource} type="button">
                 🔗
               </button>

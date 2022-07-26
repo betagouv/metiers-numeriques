@@ -21,6 +21,7 @@ type RecruiterSelectProps = {
   isMulti?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
   placeholder?: string
 }
 
@@ -33,6 +34,7 @@ export function RecruiterSelect({
   isMulti = false,
   label,
   name,
+  onBlur,
   placeholder,
 }: RecruiterSelectProps) {
   const $newRecruiterId = useRef<string>()
@@ -155,6 +157,7 @@ export function RecruiterSelect({
         isMulti={isMulti}
         label={label}
         name={name}
+        onBlur={onBlur}
         onChange={updateFormikValues as any}
         options={options}
         placeholder={placeholder}
@@ -174,6 +177,7 @@ export function RecruiterSelect({
         isMulti={isMulti}
         label={label}
         name={name}
+        onBlur={onBlur}
         onChange={updateFormikValues as any}
         options={options}
         placeholder={placeholder}

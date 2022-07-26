@@ -8,11 +8,20 @@ type DomainSelectProps = {
   isDisabled?: boolean
   label: string
   name: string
+  onBlur?: (values) => void
   onChange?: (domainIds?: string[]) => void
   placeholder?: string
 }
 
-export function DomainSelect({ helper, isDisabled = false, label, name, onChange, placeholder }: DomainSelectProps) {
+export function DomainSelect({
+  helper,
+  isDisabled = false,
+  label,
+  name,
+  onBlur,
+  onChange,
+  placeholder,
+}: DomainSelectProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
   const [domains, setDomains] = useState<Common.App.SelectOption[]>([])
@@ -65,6 +74,7 @@ export function DomainSelect({ helper, isDisabled = false, label, name, onChange
       isMulti
       label={label}
       name={name}
+      onBlur={onBlur}
       onChange={updateFormikValues as any}
       options={domains}
       placeholder={placeholder}

@@ -49,6 +49,23 @@ const Spinner = styled.div`
   }
 `
 
+type AutoSaveBoxProps = {
+  isSaving: boolean
+}
+
+export const AutoSaveBox = ({ isSaving }: AutoSaveBoxProps) => {
+  if (!isSaving) {
+    return null
+  }
+
+  return (
+    <Box>
+      <Spinner />
+      <span>Sauvegarde…</span>
+    </Box>
+  )
+}
+
 type AutoSaveProps = {
   onChange: (values: Record<string, any>) => Promise<void>
 }
