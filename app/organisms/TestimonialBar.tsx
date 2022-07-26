@@ -90,7 +90,7 @@ export function TestimonialBar() {
           </ListItem>
         </List>
 
-        <LinkLikeButton accent="tertiary" href="#">
+        <LinkLikeButton accent="tertiary" href="https://www.dailymotion.com/playlist/x74h65" isExternal>
           Découvrir les témoignages
         </LinkLikeButton>
       </Content>
