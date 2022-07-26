@@ -38,15 +38,13 @@ export default function SubscriptionPage() {
   const handleNextStep = values => {
     subscriptionValues.current = { ...subscriptionValues.current, ...values }
     if (step === 'profile') {
-      console.log(values, subscriptionValues.current)
       setStep('preferences')
     }
     if (step === 'preferences') {
-      console.log(values, subscriptionValues.current)
       setStep('credentials')
     }
     if (step === 'credentials') {
-      console.log(values, subscriptionValues.current)
+      // submit
     }
   }
 

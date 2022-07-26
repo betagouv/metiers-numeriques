@@ -69,13 +69,16 @@ export type SelectOption<Value = string> = {
   label: string
   value: Value
 }
-type SelectProps<Option> = StateManagerProps<Option, boolean, GroupBase<Option>> & {
+
+export type SelectProps<Option> = Omit<StateManagerProps<Option, boolean, GroupBase<Option>>, 'options'> & {
   error?: string
   helper?: string
   label: string
   name: string
+  options: Option[]
 }
-export function Select<Option = SelectOption>({ error, helper, ...nativeProps }: SelectProps<Option>) {
+
+export function Select<Option = Common.App.SelectOption>({ error, helper, ...nativeProps }: SelectProps<Option>) {
   const { name } = nativeProps
   // eslint-disable-next-line no-nested-ternary
   const ariaDescribedBy = error ? `${name}-error` : helper ? `${name}-helper` : undefined

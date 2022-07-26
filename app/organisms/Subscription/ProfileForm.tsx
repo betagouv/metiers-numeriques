@@ -1,5 +1,4 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { Button } from '@app/atoms/Button'
 import { Spacer } from '@app/atoms/Spacer'
 import { Title } from '@app/atoms/Title'
 import { Form } from '@app/molecules/Form'

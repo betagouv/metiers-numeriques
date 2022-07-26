@@ -47,7 +47,7 @@ export const PreferencesForm = ({ initialValues, onNext, onPrevious }: Props) =>
 
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-12">
-        <Form.Select
+        <Form.DomainSelect
           aria-label="Domaines"
           isMulti
           label="Domaines qui m'intéressent"
@@ -59,7 +59,7 @@ export const PreferencesForm = ({ initialValues, onNext, onPrevious }: Props) =>
 
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-6v">
       <div className="fr-col-12">
-        <Form.Select
+        <Form.InstitutionSelect
           aria-label="Hidden Institutions"
           isMulti
           label="Cacher ma candidature à ces institutions"
