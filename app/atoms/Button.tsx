@@ -159,6 +159,10 @@ export const StyledButton = styled.button<{
     margin-left: 1rem;
     margin-top: 3px;
   }
+
+  ::after {
+    margin-top: 3px;
+  }
 `
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
