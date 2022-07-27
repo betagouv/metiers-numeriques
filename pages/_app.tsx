@@ -3,7 +3,8 @@ import { Footer } from '@app/organisms/Footer'
 import { Header } from '@app/organisms/Header'
 import { CrispScript } from '@app/scripts/CrispScript'
 import { MatomoScript } from '@app/scripts/MatomoScript'
-import dynamic from 'next/dynamic'
+import { SessionProvider, useSession } from 'next-auth/react'
+// import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -13,9 +14,15 @@ import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/700.css'
 import 'remixicon/fonts/remixicon.css'
 
-const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper) as any, {
-  ssr: false,
-}) as any
+// const DynamicAdminWrapper = dynamic(() => import('@app/hocs/AdminWrapper').then(module => module.AdminWrapper) as any, {
+//   ssr: false,
+// }) as any
+
+const AdminWrapper = ({ children }) => {
+  const { data } = useSession({ required: true })
+
+  return children
+}
 
 export default function MetiersNumeriquesApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
@@ -24,9 +31,11 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
 
   if (isAdministrationSpace) {
     return (
-      <DynamicAdminWrapper>
-        <Component {...pageProps} />
-      </DynamicAdminWrapper>
+      <SessionProvider session={session}>
+        <AdminWrapper>
+          <Component {...pageProps} />
+        </AdminWrapper>
+      </SessionProvider>
     )
   }
 
@@ -52,19 +61,21 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <meta content="/images/main-illu.png" property="og:image" />
       </Head>
 
-      <WithGraphql>
-        <Header />
-        <main>
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-        <div id="modal" />
+      <SessionProvider session={session}>
+        <WithGraphql>
+          <Header />
+          <main>
+            <Component {...pageProps} />
+          </main>
+          <Footer />
+          <div id="modal" />
 
-        <>
-          <MatomoScript />
-          <CrispScript />
-        </>
-      </WithGraphql>
+          <>
+            <MatomoScript />
+            <CrispScript />
+          </>
+        </WithGraphql>
+      </SessionProvider>
     </>
   )
 }

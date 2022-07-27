@@ -35,7 +35,7 @@ export default function SubscriptionPage() {
     }
   }
 
-  const handleNextStep = values => {
+  const handleNextStep = async values => {
     subscriptionValues.current = { ...subscriptionValues.current, ...values }
     if (step === 'profile') {
       setStep('preferences')
@@ -44,7 +44,7 @@ export default function SubscriptionPage() {
       setStep('credentials')
     }
     if (step === 'credentials') {
-      // submit
+      fetch('/api/auth/signup', { body: JSON.stringify(values), method: 'POST' })
     }
   }
 

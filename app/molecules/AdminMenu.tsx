@@ -2,6 +2,7 @@ import { ButtonAsLink } from '@app/atoms/ButtonAsLink'
 import { UserRole } from '@prisma/client'
 import { VerticalMenu } from '@singularity/core'
 import { useAuth } from 'nexauth/client'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -36,7 +37,7 @@ const MenuTitle = styled.p`
 
 export function AdminMenu() {
   const router = useRouter()
-  const auth = useAuth<Common.Auth.User>()
+  const { data } = useSession()
 
   const isAdmin = auth.user?.role === UserRole.ADMINISTRATOR
   const isRecruiter = auth.user?.role === UserRole.RECRUITER

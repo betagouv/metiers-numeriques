@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
@@ -24,6 +25,10 @@ const HeaderMenu = styled.div`
 `
 
 export function Header() {
+  const { data: session, status } = useSession()
+
+  console.log('sss', session, status)
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
 
