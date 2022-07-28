@@ -2,7 +2,7 @@
 import { Spacer } from '@app/atoms/Spacer'
 import { Title } from '@app/atoms/Title'
 import { Form } from '@app/molecules/Form'
-import { ActionBar } from '@app/organisms/Subscription/ActionBar'
+import { ActionBar } from '@app/organisms/Profile/ActionBar'
 import { FormikValues } from 'formik'
 import React from 'react'
 import * as Yup from 'yup'

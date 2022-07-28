@@ -5,6 +5,7 @@ import { Title } from '@app/atoms/Title'
 import { theme } from '@app/theme'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
@@ -16,6 +17,14 @@ const SideMenu = styled.div`
   justify-content: center;
   background-color: ${theme.color.primary.darkBlue};
   padding: 2rem;
+`
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `
 
 const AlternativeLogin = styled.div`
@@ -69,6 +78,19 @@ const Stroke = styled.div`
   background-color: ${theme.color.primary.darkBlue};
 `
 
+const SubscribeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  gap: 1rem;
+
+  > button {
+    width: 100%;
+  }
+`
+
 export default function LoginPage({ baseUrl }) {
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
@@ -96,39 +118,59 @@ export default function LoginPage({ baseUrl }) {
           </SideMenu>
         </div>
         <div className="fr-col-md-5 fr-col-12 fr-p-4v">
-          <Title as="h1">Se connecter</Title>
-          <Spacer units={4} />
-          <TextInput label="Email" name="email" onChange={e => setEmail(e.target.value)} type="email" />
-          <Spacer units={1} />
-          <TextInput label="Mot de passe" name="password" onChange={e => setPassword(e.target.value)} type="password" />
-          <Spacer units={2} />
+          <Container>
+            <Title as="h1">Se connecter</Title>
+            <Spacer units={4} />
+            <div style={{ width: '100%' }}>
+              <TextInput label="Email" name="email" onChange={e => setEmail(e.target.value)} type="email" />
+              <Spacer units={1} />
+              <TextInput
+                label="Mot de passe"
+                name="password"
+                onChange={e => setPassword(e.target.value)}
+                style={{ width: '100%' }}
+                type="password"
+              />
+            </div>
+            <Spacer units={2} />
 
-          <LoginButtonContainer>
-            <Button onClick={handleCredentialsSignIn}>Se connecter</Button>
-            <OrContainer>
-              <Stroke />
-              <span>Ou</span>
-            </OrContainer>
-            <AlternativeLogin>
-              <Button
-                accent="secondary"
-                iconClassName="ri-google-fill"
-                onClick={() => signIn('google', { callbackUrl })}
-                size="medium"
-              >
-                Google
-              </Button>
-              <Button
-                accent="secondary"
-                iconClassName="ri-linkedin-fill"
-                onClick={() => signIn('linkedin', { callbackUrl })}
-                size="medium"
-              >
-                LinkedIn
-              </Button>
-            </AlternativeLogin>
-          </LoginButtonContainer>
-          <Spacer units={4} />
+            <LoginButtonContainer>
+              <Button onClick={handleCredentialsSignIn}>Se connecter</Button>
+              <OrContainer>
+                <Stroke />
+                <span>Ou</span>
+              </OrContainer>
+              <AlternativeLogin>
+                <Button
+                  accent="secondary"
+                  iconClassName="ri-google-fill"
+                  onClick={() => signIn('google', { callbackUrl })}
+                  size="medium"
+                >
+                  Google
+                </Button>
+                <Button
+                  accent="secondary"
+                  iconClassName="ri-linkedin-fill"
+                  onClick={() => signIn('linkedin', { callbackUrl })}
+                  size="medium"
+                >
+                  LinkedIn
+                </Button>
+              </AlternativeLogin>
+            </LoginButtonContainer>
+            <Spacer units={3} />
+
+            <SubscribeContainer>
+              <div>Vous n'avez pas encore de compte ?</div>
+              <Link href="/inscription">
+                <Button accent="secondary" size="medium">
+                  S'inscrire
+                </Button>
+              </Link>
+            </SubscribeContainer>
+            <Spacer units={2} />
+          </Container>
         </div>
       </div>
     </div>

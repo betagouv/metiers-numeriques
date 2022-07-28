@@ -1,5 +1,6 @@
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
+import { UserRole } from '@prisma/client'
 import bcryptjs from 'bcryptjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -21,14 +22,18 @@ async function encryptPassword(password: string) {
 }
 
 const createAccount = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, firstName, lastName, password } = JSON.parse(req.body)
+  const { email, firstName, isRecruiter, lastName, password } = JSON.parse(req.body)
   const encryptedPassword = await encryptPassword(password)
-
-  console.log('signup', req.body)
 
   try {
     const updateResponse = await prisma.user.create({
-      data: { email, firstName, lastName, password: encryptedPassword },
+      data: {
+        email,
+        firstName,
+        lastName,
+        password: encryptedPassword,
+        role: isRecruiter ? UserRole.RECRUITER : UserRole.CANDIDATE,
+      },
     })
     res.status(200).send(updateResponse)
   } catch (err) {
