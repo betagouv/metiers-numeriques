@@ -1,8 +1,7 @@
 import { ButtonAsLink } from '@app/atoms/ButtonAsLink'
 import { UserRole } from '@prisma/client'
 import { VerticalMenu } from '@singularity/core'
-import { useAuth } from 'nexauth/client'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -37,7 +36,7 @@ const MenuTitle = styled.p`
 
 export function AdminMenu() {
   const router = useRouter()
-  const { data } = useSession()
+  const { data: auth } = useSession({ required: true })
 
   const isAdmin = auth.user?.role === UserRole.ADMINISTRATOR
   const isRecruiter = auth.user?.role === UserRole.RECRUITER
@@ -151,7 +150,7 @@ export function AdminMenu() {
             </Link>
           )}
 
-          <ButtonAsLink onClick={auth.logOut}>
+          <ButtonAsLink onClick={signOut}>
             <VerticalMenu.Item isDark>Déconnexion</VerticalMenu.Item>
           </ButtonAsLink>
         </VerticalMenu>

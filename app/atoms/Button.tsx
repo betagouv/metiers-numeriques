@@ -114,7 +114,8 @@ export const StyledButton = styled.button<{
   size: 'medium' | 'normal' | 'small'
 }>`
   --blend: none;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   background-color: ${p => ACCENT_TABLE[p.accent].backgroundColor.default};
   border: ${p => ACCENT_TABLE[p.accent].border.default};
   border-radius: 0.25rem;
@@ -157,7 +158,7 @@ export const StyledButton = styled.button<{
   /* Right icons */
   > i {
     margin-left: 1rem;
-    margin-top: 3px;
+    margin-top: 2px;
   }
 
   ::after {
@@ -165,14 +166,22 @@ export const StyledButton = styled.button<{
   }
 `
 
+const Icon = styled.span`
+  margin-top: 2px;
+  margin-right: 0.5rem;
+  margin-left: -0.5rem;
+`
+
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   accent?: 'primary' | 'secondary' | 'tertiary'
+  iconClassName?: string
   isLoading?: boolean
   size?: 'medium' | 'normal' | 'small'
 }
 export function Button({
   accent = 'primary',
   children,
+  iconClassName,
   isLoading = false,
   size = 'normal',
   type = 'button',
@@ -193,6 +202,7 @@ export function Button({
       type={type}
       {...nativeProps}
     >
+      {iconClassName && <Icon className={iconClassName} />}
       {children}
       {isLoading ? <MoonLoader color={spinnerColor} size={spinnerSize} /> : undefined}
     </StyledButton>

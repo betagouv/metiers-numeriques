@@ -6,7 +6,7 @@ import { humanizeDate } from '@app/helpers/humanizeDate'
 import { AdminFigure } from '@app/molecules/AdminFigure'
 import { UserRole } from '@prisma/client'
 import { createWorkerFactory, terminate, useWorker } from '@shopify/react-web-worker'
-import { useAuth } from 'nexauth/client'
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Briefcase, Send, Users } from 'react-feather'
 import { Flex } from 'reflexbox'
@@ -32,7 +32,7 @@ export default function AdminDashboardPage() {
   const [lastInstitutionlessRecruitersLength, setLastInstitutionlessRecruitersLength] = useState<number>(0)
   const [lastInactiveUsers, setLastInactiveUsers] = useState<User[]>([])
   const [lastInactiveUsersLength, setLastInactiveUsersLength] = useState<number>(0)
-  const auth = useAuth<Common.Auth.User>()
+  const { data: auth } = useSession()
   const alertWorker = useWorker(createAlertWorker)
   const statisticsWorker = useWorker(createStatisticsWorker)
 
@@ -45,30 +45,32 @@ export default function AdminDashboardPage() {
   }, [])
 
   const updateStatistics = useCallback(async () => {
-    if (auth.user === undefined) {
+    const token = ''
+
+    if (!auth?.user) {
       return
     }
 
-    const newStatistics = await statisticsWorker.getGlobal(auth.state.accessToken)
+    const newStatistics = await statisticsWorker.getGlobal(token)
 
     setGlobalStatistics({ ...newStatistics })
 
     if (auth.user.role === UserRole.RECRUITER) {
-      const newLocalStatistics = await statisticsWorker.getLocal(auth.state.accessToken, auth.user.institutionId)
+      const newLocalStatistics = await statisticsWorker.getLocal(token, auth.user.institutionId)
 
       setLocalStatistics({ ...newLocalStatistics })
     }
 
     if (auth.user.role === UserRole.ADMINISTRATOR) {
-      const lastInactiveUsersResult = await alertWorker.getLastInactiveUsers(auth.state.accessToken)
-      const lastInstitutionlessRecruitersResult = await alertWorker.getInstitutionlessRecruiters(auth.state.accessToken)
+      const lastInactiveUsersResult = await alertWorker.getLastInactiveUsers(token)
+      const lastInstitutionlessRecruitersResult = await alertWorker.getInstitutionlessRecruiters(token)
 
       setLastInactiveUsers(lastInactiveUsersResult.data)
       setLastInactiveUsersLength(lastInactiveUsersResult.length)
       setLastInstitutionlessRecruiters(lastInstitutionlessRecruitersResult.data)
       setLastInstitutionlessRecruitersLength(lastInstitutionlessRecruitersResult.length)
     }
-  }, [auth.state.accessToken])
+  }, [auth])
 
   useEffect(() => {
     if ($timerId.current !== undefined) {
@@ -85,7 +87,7 @@ export default function AdminDashboardPage() {
     }
   }, [updateStatistics])
 
-  if (auth.user === undefined) {
+  if (auth?.user === undefined) {
     return null
   }
 

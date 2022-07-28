@@ -44,9 +44,9 @@ export async function getGlobal(accessToken?: string): Promise<GlobalStatistics>
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${accessToken}`,
+    // },
     uri: '/api/graphql',
   })
 
@@ -82,9 +82,9 @@ export async function getLocal(accessToken?: string, institutionId?: string): Pr
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${accessToken}`,
+    // },
     uri: '/api/graphql',
   })
 

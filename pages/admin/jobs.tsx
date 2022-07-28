@@ -13,7 +13,7 @@ import { Button, Card, Select, Table, TextInput } from '@singularity/core'
 import cuid from 'cuid'
 import dayjs from 'dayjs'
 import debounce from 'lodash.debounce'
-import { useAuth } from 'nexauth/client'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -67,7 +67,7 @@ export default function AdminJobListPage() {
   const [hasDeletionModal, setHasDeletionModal] = useState(false)
   const [selectedId, setSelectedId] = useState('')
   const [selectedEntity, setSelectedEntity] = useState('')
-  const auth = useAuth<Common.Auth.User>()
+  const { data: auth } = useSession()
   const [deleteJob] = useMutation(queries.job.DELETE_ONE)
   const [createJob] = useMutation(queries.job.CREATE_ONE)
   const router = useRouter()

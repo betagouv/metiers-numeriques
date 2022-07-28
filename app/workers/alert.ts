@@ -49,9 +49,9 @@ export async function getInstitutionlessRecruiters(accessToken?: string): Promis
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${accessToken}`,
+    // },
     uri: '/api/graphql',
   })
 
@@ -76,9 +76,9 @@ export async function getLastInactiveUsers(accessToken?: string): Promise<GetAll
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${accessToken}`,
+    // },
     uri: '/api/graphql',
   })
 

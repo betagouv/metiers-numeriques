@@ -8,7 +8,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { ApolloServer } from 'apollo-server-micro'
 import { applyMiddleware } from 'graphql-middleware'
 import { shield, or } from 'graphql-shield'
-import { getUser } from 'nexauth'
+import { getToken } from 'next-auth/jwt'
 import path from 'path'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -160,7 +160,7 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
       GRAPHQL_SERVER.apolloServer = new ApolloServer({
         context: async ({ req }: { req: NextApiRequest }) => {
           const apiSecret = getApiSecretFromNextRequest(req)
-          const user = await getUser(req)
+          const { user } = await getToken({ req })
 
           return {
             apiSecret,

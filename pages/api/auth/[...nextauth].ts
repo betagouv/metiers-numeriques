@@ -17,7 +17,7 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       profile(profile) {
         return {
-          id: cuid(),
+          id: profile.sub,
           firstName: profile.given_name,
           lastName: profile.family_name,
           email: profile.email,
@@ -36,7 +36,7 @@ export default NextAuth({
         const emailData = await emailResponse.json()
 
         return {
-          id: cuid(),
+          id: profile.id,
           firstName: profile.localizedFirstName,
           lastName: profile.localizedLastName,
           email: emailData?.elements?.[0]?.['handle~']?.emailAddress,
@@ -90,5 +90,9 @@ export default NextAuth({
 
       return session
     },
+  },
+  debug: true,
+  pages: {
+    signIn: '/connexion',
   },
 })

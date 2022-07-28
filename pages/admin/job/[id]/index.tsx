@@ -21,7 +21,7 @@ import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobSource, JobState, UserRole } from '@prisma/client'
 import { Button, Field } from '@singularity/core'
 import dayjs from 'dayjs'
-import { useAuth } from 'nexauth/client'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -112,7 +112,7 @@ export default function AdminJobEditorPage() {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
-  const auth = useAuth<Common.Auth.User>()
+  const { data: auth } = useSession()
 
   const isAdmin = useMemo(() => auth.user?.role === UserRole.ADMINISTRATOR, [auth.user])
 
