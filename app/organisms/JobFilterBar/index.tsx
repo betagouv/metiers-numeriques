@@ -143,8 +143,8 @@ export function JobFilterBar({
         </div>
       </DialogHeader>
 
-      <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
-        <div className="fr-col-4">
+      <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle fr-mb-md-0 fr-mb-4v">
+        <div className="fr-col-md-4 fr-col-12">
           <TextInput
             aria-label="Mot-clé"
             // TODO: fix this weird null/undefined problem
@@ -154,25 +154,25 @@ export function JobFilterBar({
             placeholder="Rechercher par mot-clé"
           />
         </div>
-        <div className="fr-col-3 fr-col-offset-1">
+        <div className="fr-col-md-3 fr-col-offset-md-1 fr-col-6">
           <Checkbox label="Ouvert aux juniors" name="seniorityInMonths" onChange={handleSeniority} />
         </div>
-        <div className="fr-col-3">
+        <div className="fr-col-md-3 fr-col-6">
           <Checkbox label="Télétravail possible" name="remoteStatus" onChange={handleRemoteStatuses} />
         </div>
       </div>
 
       <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-3">
+        <div className="fr-col-md-3 fr-col-12">
           <ProfessionFilter onChange={handleProfessionIds} professions={professions} />
         </div>
-        <div className="fr-col-3">
+        <div className="fr-col-md-3 fr-col-12">
           <DomainFilter domains={domains} onChange={handleDomainIds} />
         </div>
-        <div className="fr-col-3">
+        <div className="fr-col-md-3 fr-col-12">
           <RegionFilter onChange={handleRegion as any} />
         </div>
-        <div className="fr-col-3">
+        <div className="fr-col-md-3 fr-col-12">
           <ContractTypesFilter onChange={handleContractTypes} />
         </div>
       </div>

@@ -58,7 +58,7 @@ const PageTitle = styled.div`
 const InstitutionLogo = styled.img`
   width: 100px;
   height: 90px;
-  object-fit: cover;
+  object-fit: contain;
   margin-right: 2rem;
 `
 
