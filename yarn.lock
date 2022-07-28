@@ -2533,10 +2533,10 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.23.5.tgz#93f7b9f4e3285a7a9ade7557d9a8d36809cbc47d"
   integrity sha512-AFBVi/iT4g20DHoujvMH1aEDn8fGJh4xsRGCP6d8RpLPMqsNPvW01Jcn0QysXTsg++/xj25NmJsGyH9xug/wKg==
 
-"@singularity/core@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.2.1.tgz#fad45b7cf913f30902f6373c5fa8c312f49ac6c9"
-  integrity sha512-ExpNFArruD76234zLK2WUfuo/rq1UDeQYbHQmMgS773PQgmCFSizmJUkNwzZKXUx5UmWn1t5RHMFU2pglpk+oA==
+"@singularity/core@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-4.2.2.tgz#b54f81be7b38f229d066ed65b6096d51cd14f6ba"
+  integrity sha512-KHbhpfuWsnfD2V/37oE2ULydBjiHUjTQVmsatTXcUvG6ZdLHB0Gy4hMQ/w2AvIkH0+avaeE9IAAcFs3qtThVRg==
   dependencies:
     better-prop-types "1.1.1"
     ramda "0.28.0"
