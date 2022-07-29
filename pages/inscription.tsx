@@ -125,12 +125,12 @@ const FormSchema = Yup.object().shape({
   password: Yup.string().required('Merci de renseigner votre mot de passe'),
 })
 
-// Redirects to the profile page after signup
-const callbackUrl = 'profil'
-
 export default function SubscriptionPage() {
   const [isRecruiter, setIsRecruiter] = useState(false)
   const [isEmailSignUp, setIsEmailSignUp] = useState(false)
+
+  // Redirects to the profile page after signup
+  const callbackUrl = isRecruiter ? '/demande-de-compte' : '/profil'
 
   const handleEmailSignUp = async (values: FormikValues) => {
     const signUpValues = { ...values, isRecruiter }

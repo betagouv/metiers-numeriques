@@ -76,7 +76,7 @@ export const GET_LIST = gql`
   query GetRecruitersList($institutionId: String) {
     getRecruitersList(institutionId: $institutionId) {
       id
-
+      name
       displayName
     }
   }

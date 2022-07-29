@@ -2,6 +2,7 @@ import { UserRole } from '@prisma/client'
 import { GlobalStyle, ThemeProvider } from '@singularity/core'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 
 import { AdminBody } from '../atoms/AdminBody'
@@ -47,10 +48,12 @@ type AdminWrapperProps = {
   children: any
 }
 export function AdminWrapper({ children }: AdminWrapperProps) {
+  const router = useRouter()
   const { data: auth } = useSession({ required: true })
 
-  if (auth?.user?.role === UserRole.CANDIDATE) {
-    return null
+  // TODO: handle it server side
+  if (auth?.user?.role === UserRole.CANDIDATE || !auth?.user?.isActive) {
+    router.push('/404')
   }
 
   return (

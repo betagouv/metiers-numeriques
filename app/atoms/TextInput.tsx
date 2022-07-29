@@ -8,7 +8,6 @@ const InputContainer = styled.div`
 `
 
 const StyledInput = styled.input`
-  margin-top: 0.5rem;
   background-color: ${theme.color.neutral.silver};
   border: solid 1px ${theme.color.neutral.black};
   border-radius: 0.25rem;
@@ -83,6 +82,7 @@ export function TextInput({
         autoComplete={autoComplete}
         id={name}
         name={name}
+        style={label ? { marginTop: '0.5rem' } : {}}
         type={type}
         {...props}
       />
