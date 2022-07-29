@@ -1,7 +1,6 @@
 import { Button } from '@app/atoms/Button'
 import { Radio } from '@app/atoms/Radio'
 import { Spacer } from '@app/atoms/Spacer'
-import { TextInput } from '@app/atoms/TextInput'
 import { Title } from '@app/atoms/Title'
 import { Form } from '@app/molecules/Form'
 import { theme } from '@app/theme'
@@ -220,7 +219,7 @@ export default function SubscriptionPage() {
                     </Button>
                   </AlternativeLogin>
                 </LoginButtonContainer>
-                <Spacer npm units={3} />
+                <Spacer units={3} />
                 <SubscribeContainer>
                   <div>Vous avez déjà un compte ?</div>
                   <Link href="/connexion">

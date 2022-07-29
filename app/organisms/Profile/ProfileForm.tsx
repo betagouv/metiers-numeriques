@@ -11,9 +11,11 @@ const FormSchema = Yup.object().shape({
   firstName: Yup.string().required('Ce champ est obligatoire'),
   lastName: Yup.string().required('Ce champ est obligatoire'),
   currentJob: Yup.string().required('Ce champ est obligatoire'),
-  yearsOfExperience: Yup.number().required('Ce champ est obligatoire'),
-  githubUrl: Yup.string().url('Cette URL est mal formatée.'),
-  portfolioUrl: Yup.string().url('Cette URL est mal formatée.'),
+  phone: Yup.string().nullable(),
+  linkedInUrl: Yup.string().required('Ce champ est obligatoire'),
+  seniorityInYears: Yup.number().required('Ce champ est obligatoire'),
+  githubUrl: Yup.string().url('Cette URL est mal formatée.').nullable(),
+  portfolioUrl: Yup.string().url('Cette URL est mal formatée.').nullable(),
 })
 
 type Props = {
@@ -36,13 +38,23 @@ export const ProfileForm = ({ initialValues, onNext }: Props) => (
 
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-md-6 fr-col-12">
+        <div>Te contacter</div>
+        <Form.TextInput aria-label="Téléphone" name="phone" placeholder="Numéro de téléphone" />
+      </div>
+      <div className="fr-col-md-6 fr-col-12 fr-mt-md-5v">
+        <Form.TextInput aria-label="Profil LinkedIn" name="linkedInUrl" placeholder="Profil LinkedIn" />
+      </div>
+    </div>
+
+    <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
+      <div className="fr-col-md-6 fr-col-12">
         <div>Ce que tu fais</div>
         <Form.TextInput aria-label="Métier" name="currentJob" placeholder="Métier" />
       </div>
       <div className="fr-col-md-6 fr-col-12 fr-mt-md-5v">
         <Form.TextInput
           aria-label="Années d'expérience"
-          name="yearsOfExperience"
+          name="seniorityInYears"
           placeholder="Années d'expérience"
           type="number"
         />
