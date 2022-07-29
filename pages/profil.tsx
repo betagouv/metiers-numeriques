@@ -109,9 +109,9 @@ export async function getServerSideProps({ req }) {
     include: {
       candidate: {
         include: {
-          domains: true,
-          hiddenFromInstitutions: true,
-          professions: true,
+          domains: { select: { id: true } },
+          hiddenFromInstitutions: { select: { id: true } },
+          professions: { select: { id: true } },
         },
       },
     },

@@ -16,6 +16,9 @@ const FormSchema = Yup.object().shape({
   seniorityInYears: Yup.number().required('Ce champ est obligatoire'),
   githubUrl: Yup.string().url('Cette URL est mal formatée.').nullable(),
   portfolioUrl: Yup.string().url('Cette URL est mal formatée.').nullable(),
+  professionIds: Yup.array(Yup.string().nullable())
+    .required(`Au moins une compétence est obligatoire.`)
+    .min(1, `Au moins une compétence est obligatoire.`),
 })
 
 type Props = {
@@ -57,6 +60,17 @@ export const ProfileForm = ({ initialValues, onNext }: Props) => (
           name="seniorityInYears"
           placeholder="Années d'expérience"
           type="number"
+        />
+      </div>
+    </div>
+
+    <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
+      <div className="fr-col-12">
+        <Form.ProfessionSelect
+          isMulti
+          label="Mes compétences"
+          name="professionIds"
+          placeholder="Sécurité, Architecture"
         />
       </div>
     </div>

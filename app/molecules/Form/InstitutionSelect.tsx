@@ -17,5 +17,13 @@ export function InstitutionSelect({ isDisabled, ...props }: InstitutionSelectPro
   const options =
     data?.getInstitutionsList?.map(institution => ({ label: institution.name, value: institution.id })) || []
 
-  return <Select {...props} isDisabled={isDisabled || loading} options={options} />
+  return (
+    <Select
+      {...props}
+      // This key helps rerender the component once domains are fetched while keeping the form value displayed
+      key={`institutions_${loading ? 'loading' : 'ready'}`}
+      isDisabled={isDisabled || loading}
+      options={options}
+    />
+  )
 }

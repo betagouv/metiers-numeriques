@@ -30,11 +30,14 @@ export const PreferencesForm = ({ initialValues, onNext, onPrevious }: Props) =>
   <Form initialValues={initialValues} onSubmit={onNext} validationSchema={FormSchema}>
     <Title as="h1">Ton Profil 2/2</Title>
     <Spacer units={2} />
-    <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
-      <div className="fr-col-md-6 fr-col-12">
+    <div className="fr-grid-row fr-mb-md-6v fr-mb-3v">
+      <div className="fr-col-12">
         <Form.Select label="Localisation" name="region" options={REGIONS_AS_OPTIONS} placeholder="Normandie" />
       </div>
-      <div className="fr-col-md-6 fr-col-12">
+    </div>
+
+    <div className="fr-grid-row fr-mb-md-6v fr-mb-3v">
+      <div className="fr-col-12">
         <Form.Select
           isMulti
           label="Type de contrat recherché"
@@ -45,7 +48,7 @@ export const PreferencesForm = ({ initialValues, onNext, onPrevious }: Props) =>
       </div>
     </div>
 
-    <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
+    <div className="fr-grid-row fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-12">
         <Form.DomainSelect
           aria-label="Domaines"
@@ -57,7 +60,7 @@ export const PreferencesForm = ({ initialValues, onNext, onPrevious }: Props) =>
       </div>
     </div>
 
-    <div className="fr-grid-row fr-grid-row--gutters fr-mb-6v">
+    <div className="fr-grid-row fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-12">
         <Form.InstitutionSelect
           aria-label="Hidden Institutions"

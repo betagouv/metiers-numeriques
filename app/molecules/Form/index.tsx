@@ -4,6 +4,7 @@ import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { DomainSelect } from './DomainSelect'
 import { InstitutionSelect } from './InstitutionSelect'
+import { ProfessionSelect } from './ProfessionSelect'
 import { Select } from './Select'
 import { Submit } from './Submit'
 import { TextInput } from './TextInput'
@@ -44,6 +45,7 @@ export const Form = Object.assign(FormComponent, {
   Checkbox,
   DomainSelect,
   InstitutionSelect,
+  ProfessionSelect,
   Select,
   Submit,
   TextInput,
