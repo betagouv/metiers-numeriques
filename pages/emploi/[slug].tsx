@@ -86,10 +86,9 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
   }, [])
 
   const job = data as JobWithRelation
-  const location =
-    job.address !== null
-      ? `${job.address.street}, ${job.address.city}, ${job.address.region}, ${getCountryFromCode(job.address.country)}`
-      : undefined
+  const location = job.address
+    ? `${job.address.street}, ${job.address.city}, ${job.address.region}, ${getCountryFromCode(job.address.country)}`
+    : undefined
   const pageDescription = job.missionDescription
   const structuredData = !isPreview ? generateJobStructuredData(job) : ''
 
