@@ -29,7 +29,7 @@ export function Editor({ helper, isDisabled = false, label, name, onBlur, placeh
 
   return (
     <MarkdownEditor
-      key={parentKey}
+      key={String(defaultValue)}
       defaultValue={defaultValue}
       error={maybeError}
       helper={helper}
@@ -38,7 +38,7 @@ export function Editor({ helper, isDisabled = false, label, name, onBlur, placeh
       name={name}
       onBlur={() => onBlur?.(values)}
       onChange={updateFormikValues}
-      parentKey={parentKey}
+      parentKey={String(defaultValue)}
       placeholder={placeholder}
     />
   )
