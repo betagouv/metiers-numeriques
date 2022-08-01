@@ -1,8 +1,13 @@
-import { MarkdownEditor } from '@singularity/core'
-import cuid from 'cuid'
-import { useFormikContext } from 'formik'
-import debounce from 'lodash.debounce'
-import { useCallback, useMemo } from 'react'
+import { useField, useFormikContext } from 'formik'
+import React, { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
+
+const Label = styled.label`
+  font-size: 80%;
+  font-weight: 500;
+  padding: 0 0 0.25rem 0;
+  text-transform: uppercase;
+`
 
 type EditorProps = {
   helper?: string
@@ -12,34 +17,60 @@ type EditorProps = {
   onBlur?: (values) => void
   placeholder: string
 }
+
 export function Editor({ helper, isDisabled = false, label, name, onBlur, placeholder }: EditorProps) {
-  const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
+  const [field, meta, helpers] = useField<string>(name)
+  const { values } = useFormikContext<any>() // TODO: avoid using the full context on each field
 
-  const parentKey = useMemo(() => cuid(), [])
-  const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
-  const maybeError = hasError ? String(errors[name]) : undefined
-  const defaultValue = values[name]
+  const editorRef = useRef<Record<string, unknown>>({})
+  const [editorLoaded, setEditorLoaded] = useState(false)
+  const { CKEditor, ClassicEditor } = editorRef.current || {}
 
-  const updateFormikValues = useCallback(
-    debounce((markdownSource: string) => {
-      setFieldValue(name, markdownSource)
-    }, 500),
-    [],
-  )
+  useEffect(() => {
+    editorRef.current = {
+      // eslint-disable-next-line global-require
+      CKEditor: require('@ckeditor/ckeditor5-react').CKEditor, // v3+
+      // eslint-disable-next-line global-require
+      ClassicEditor: require('@ckeditor/ckeditor5-build-classic'),
+    }
+    setEditorLoaded(true)
+  }, [])
 
   return (
-    <MarkdownEditor
-      key={parentKey}
-      defaultValue={defaultValue}
-      error={maybeError}
-      helper={helper}
-      isDisabled={isDisabled || isSubmitting}
-      label={label}
-      name={name}
-      onBlur={() => onBlur?.(values)}
-      onChange={updateFormikValues}
-      parentKey={parentKey}
-      placeholder={placeholder}
-    />
+    <div>
+      {label && <Label htmlFor={name}>{label}</Label>}
+      {editorLoaded ? (
+        // @ts-expect-error
+        <CKEditor
+          config={{
+            toolbar: ['undo', 'redo', '|', 'heading', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+          }}
+          data={field.value || ''}
+          disabled={isDisabled}
+          editor={ClassicEditor}
+          name={name}
+          onBlur={() => onBlur?.(values)}
+          onChange={(event, editor) => {
+            const data = editor.getData()
+            helpers.setValue(data)
+          }}
+          placeholder={placeholder} // TODO: placeholder doesn't work
+        />
+      ) : (
+        <textarea disabled placeholder="Chargement..." />
+      )}
+
+      {meta.touched && meta.error && (
+        <p className="fr-error-text" id={`${name}-error`}>
+          {meta.error}
+        </p>
+      )}
+
+      {helper && (
+        <p className="fr-hint-text" id={`${name}-helper`}>
+          {helper}
+        </p>
+      )}
+    </div>
   )
 }

@@ -1,11 +1,10 @@
 import { prisma } from '@api/libs/prisma'
-import { renderMarkdown } from '@app/helpers/renderMarkdown'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { TabMenu } from '@app/molecules/TabMenu'
 import { InstitutionHeader, InstitutionWithRelation } from '@app/organisms/InstitutionHeader'
 import { JobCard, JobWithRelation } from '@app/organisms/JobCard'
 import { theme } from '@app/theme'
-import { Institution } from '@prisma/client'
+import { Institution, JobState } from '@prisma/client'
 import Head from 'next/head'
 import * as R from 'ramda'
 import { useState } from 'react'
@@ -66,6 +65,12 @@ const TestimonyAuthor = styled.div`
   @media screen and (max-width: 767px) {
     font-size: 1.25rem;
     line-height: 1.5rem;
+  }
+`
+
+const HTMLBody = styled.div`
+  p {
+    font-size: 1rem;
   }
 `
 
@@ -133,7 +138,9 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
 
         {bodyMarkdown && (
           <section className="fr-grid-row fr-grid-row--gutters fr-mt-12v fr-mb-24v">
-            <div className="fr-col-12 fr-col-md-9">{renderMarkdown(bodyMarkdown)}</div>
+            <div className="fr-col-12 fr-col-md-9">
+              <HTMLBody className="content" dangerouslySetInnerHTML={{ __html: bodyMarkdown }} />
+            </div>
           </section>
         )}
 
@@ -235,6 +242,7 @@ export async function getStaticProps({ params: { slug } }) {
       recruiter: {
         institutionId: institution.id,
       },
+      state: JobState.PUBLISHED,
     },
   })
 
