@@ -5,7 +5,7 @@ import { TabMenu } from '@app/molecules/TabMenu'
 import { InstitutionHeader, InstitutionWithRelation } from '@app/organisms/InstitutionHeader'
 import { JobCard, JobWithRelation } from '@app/organisms/JobCard'
 import { theme } from '@app/theme'
-import { Institution, JobState } from '@prisma/client'
+import { Institution } from '@prisma/client'
 import Head from 'next/head'
 import * as R from 'ramda'
 import { useState } from 'react'
@@ -235,7 +235,6 @@ export async function getStaticProps({ params: { slug } }) {
       recruiter: {
         institutionId: institution.id,
       },
-      state: JobState.PUBLISHED,
     },
   })
 

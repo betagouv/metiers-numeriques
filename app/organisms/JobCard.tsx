@@ -85,12 +85,7 @@ type JobCardProps = {
 }
 
 export function JobCard({ job }: JobCardProps) {
-  // eslint-disable-next-line no-nested-ternary
-  const location = job.address
-    ? job.address.country === 'FR'
-      ? job.address.region
-      : getCountryFromCode(job.address.country)
-    : 'Non renseigné'
+  const location = job.address.country === 'FR' ? job.address.region : getCountryFromCode(job.address.country)
 
   const trackJobOpening = useCallback(() => {
     matomo.trackGoal(MatomoGoal.JOB_OPENING)
