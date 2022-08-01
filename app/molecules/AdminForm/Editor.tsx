@@ -40,6 +40,7 @@ export function Editor({ helper, isDisabled = false, label, name, onBlur, placeh
     <div>
       {label && <Label htmlFor={name}>{label}</Label>}
       {editorLoaded ? (
+        // @ts-expect-error
         <CKEditor
           config={{
             toolbar: ['undo', 'redo', '|', 'heading', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
