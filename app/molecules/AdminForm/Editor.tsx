@@ -1,8 +1,7 @@
 import { MarkdownEditor } from '@singularity/core'
-import cuid from 'cuid'
 import { useFormikContext } from 'formik'
 import debounce from 'lodash.debounce'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
 type EditorProps = {
   helper?: string
@@ -15,7 +14,6 @@ type EditorProps = {
 export function Editor({ helper, isDisabled = false, label, name, onBlur, placeholder }: EditorProps) {
   const { errors, isSubmitting, setFieldValue, submitCount, touched, values } = useFormikContext<any>()
 
-  const parentKey = useMemo(() => cuid(), [])
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
   const defaultValue = values[name]
