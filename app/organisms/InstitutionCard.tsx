@@ -1,31 +1,15 @@
 import { Link } from '@app/atoms/Link'
 import { theme } from '@app/theme'
+import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 
 const Title = styled.h3`
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   display: -webkit-box;
-  line-clamp: 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 500;
-  line-height: 2rem;
+  line-height: 1.75rem;
   margin: 0.5rem 0 0;
-`
-
-const Excerpt = styled.p`
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  display: -webkit-box;
-  font-size: 110%;
-  line-clamp: 3;
-  line-height: 1.5;
-  margin-bottom: 1rem !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `
 
 const Card = styled.div`
@@ -47,9 +31,14 @@ export const InstitutionCard = ({ institution }) => (
   <Card className="InstitutionCard">
     <Link href={`/institutions/${institution.slug}`} noUnderline>
       {/* TODO: use next/image for external images as well */}
-      {institution.logoFile && <Logo src={institution.logoFile?.url} />}
-      <Title>{institution.name}</Title>
-      <Excerpt>{institution.description}</Excerpt>
+      {institution.logoFile ? (
+        <Logo src={institution.logoFile?.url} />
+      ) : (
+        <Image height={90} src="/images/logo-republique.svg" width={100} />
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Title>{institution.name}</Title>
+      </div>
     </Link>
   </Card>
 )
