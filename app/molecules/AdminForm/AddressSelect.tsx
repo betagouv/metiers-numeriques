@@ -31,13 +31,12 @@ export function AddressSelect({ helper, isDisabled = false, label, name, onBlur 
   const maybeError = hasError ? String(errors[name]) : undefined
   const placeholder = 'Ex.: 20 avenue de Ségur'
   const rawValue: any = values[name] ?? null
-  const defaultValue: Common.App.SelectOption<Prisma.AddressCreateInput> | null =
-    rawValue !== null
-      ? {
-          label: `${rawValue.street}, ${rawValue.postalCode} ${rawValue.city}, ${getCountryFromCode(rawValue.country)}`,
-          value: rawValue,
-        }
-      : rawValue
+  const defaultValue: Common.App.SelectOption<Prisma.AddressCreateInput> | null = rawValue
+    ? {
+        label: `${rawValue.street}, ${rawValue.postalCode} ${rawValue.city}, ${getCountryFromCode(rawValue.country)}`,
+        value: rawValue,
+      }
+    : rawValue
 
   const queryAddress = async (query: string): Promise<Common.App.SelectOption<Prisma.AddressCreateInput>[]> => {
     const searchParams = {
