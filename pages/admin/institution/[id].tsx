@@ -10,8 +10,10 @@ import { queries } from '@app/queries'
 import { USER_ROLE_LABEL } from '@common/constants'
 import { handleError } from '@common/helpers/handleError'
 import { slugify } from '@common/helpers/slugify'
+import { UserRole } from '@prisma/client'
 import { Field, Table } from '@singularity/core'
 import cuid from 'cuid'
+import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -64,6 +66,7 @@ export const InstitutionFormSchema = Yup.object().shape({
 })
 
 export default function AdminInstitutionEditorPage() {
+  const auth = useAuth<Common.Auth.User>()
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'
@@ -94,9 +97,11 @@ export default function AdminInstitutionEditorPage() {
     return R.pipe(R.map(R.prop('users')), R.unnest)(getInstitutionResult.data.getInstitution.recruiters)
   }, [getInstitutionResult.data])
 
-  const goToList = useCallback(() => {
-    router.push('/admin/institutions')
-  }, [])
+  const goToList = () => {
+    if (auth?.user?.role === UserRole.ADMINISTRATOR) {
+      router.push('/admin/institutions')
+    }
+  }
 
   const saveAndGoToList = useCallback(async (values: Prisma.InstitutionUncheckedCreateInput) => {
     try {
@@ -155,9 +160,12 @@ export default function AdminInstitutionEditorPage() {
         await getInstitutionResult.refetch()
       }
 
+      toast.success('Institution sauvegardée!')
       goToList()
     } catch (err) {
       handleError(err, 'pages/admin/institution/[id].tsx > saveAndGoToList()')
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
@@ -223,9 +231,11 @@ export default function AdminInstitutionEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
-              Annuler
-            </AdminForm.Cancel>
+            {auth?.user?.role === UserRole.ADMINISTRATOR && (
+              <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
+                Annuler
+              </AdminForm.Cancel>
+            )}
             <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
         </AdminCard>
@@ -341,9 +351,11 @@ export default function AdminInstitutionEditorPage() {
           </Field>
 
           <Field>
-            <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
-              Annuler
-            </AdminForm.Cancel>
+            {auth?.user?.role === UserRole.ADMINISTRATOR && (
+              <AdminForm.Cancel isDisabled={isLoading} onClick={goToList}>
+                Annuler
+              </AdminForm.Cancel>
+            )}
             <AdminForm.Submit isDisabled={isLoading}>{isNew ? 'Créer' : 'Mettre à jour'}</AdminForm.Submit>
           </Field>
         </AdminCard>
