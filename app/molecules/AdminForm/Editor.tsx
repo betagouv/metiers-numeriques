@@ -38,7 +38,7 @@ export function Editor({ helper, isDisabled = false, label, name, onBlur, placeh
       name={name}
       onBlur={() => onBlur?.(values)}
       onChange={updateFormikValues}
-      parentKey={parentKey}
+      parentKey={String(defaultValue)}
       placeholder={placeholder}
     />
   )
