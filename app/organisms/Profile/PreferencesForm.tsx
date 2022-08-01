@@ -29,7 +29,7 @@ type Props = {
 export const PreferencesForm = ({ initialValues, onNext, onPrevious }: Props) => (
   <Form initialValues={initialValues} onSubmit={onNext} validationSchema={FormSchema}>
     <Title as="h1">Ton Profil 2/2</Title>
-    <Spacer units={2} />
+    <Spacer units={3} />
     <div className="fr-grid-row fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-12">
         <Form.Select label="Localisation" name="region" options={REGIONS_AS_OPTIONS} placeholder="Normandie" />

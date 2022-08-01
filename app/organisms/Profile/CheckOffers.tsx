@@ -16,7 +16,7 @@ const Container = styled.div`
 export const CheckOffers = () => (
   <Container>
     <Title as="h1">C'est tout bon !</Title>
-    <Spacer units={2} />
+    <Spacer units={4} />
     <Link href="/offres-emploi">
       <Button>Consulter les offres</Button>
     </Link>

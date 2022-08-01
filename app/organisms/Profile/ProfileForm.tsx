@@ -29,7 +29,7 @@ type Props = {
 export const ProfileForm = ({ initialValues, onNext }: Props) => (
   <Form initialValues={initialValues} onSubmit={onNext} validationSchema={FormSchema}>
     <Title as="h1">Ton Profil 1/2</Title>
-    <Spacer units={2} />
+    <Spacer units={3} />
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-md-6 fr-col-12">
         <Form.TextInput aria-label="Prénom" name="firstName" placeholder="Prénom" />
@@ -41,20 +41,20 @@ export const ProfileForm = ({ initialValues, onNext }: Props) => (
 
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-md-6 fr-col-12">
-        <div>Te contacter</div>
+        <div className="fr-mb-2v">Te contacter</div>
         <Form.TextInput aria-label="Téléphone" name="phone" placeholder="Numéro de téléphone" />
       </div>
-      <div className="fr-col-md-6 fr-col-12 fr-mt-md-5v">
+      <div className="fr-col-md-6 fr-col-12 fr-mt-md-7v">
         <Form.TextInput aria-label="Profil LinkedIn" name="linkedInUrl" placeholder="Profil LinkedIn" />
       </div>
     </div>
 
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-md-6v fr-mb-3v">
       <div className="fr-col-md-6 fr-col-12">
-        <div>Ce que tu fais</div>
+        <div className="fr-mb-2v">Ce que tu fais</div>
         <Form.TextInput aria-label="Métier" name="currentJob" placeholder="Métier" />
       </div>
-      <div className="fr-col-md-6 fr-col-12 fr-mt-md-5v">
+      <div className="fr-col-md-6 fr-col-12 fr-mt-md-7v">
         <Form.TextInput
           aria-label="Années d'expérience"
           name="seniorityInYears"
@@ -85,7 +85,7 @@ export const ProfileForm = ({ initialValues, onNext }: Props) => (
           placeholder="Profil GitHub"
         />
       </div>
-      <div className="fr-col-md-6 fr-col-12 fr-mt-md-5v">
+      <div className="fr-col-md-6 fr-col-12 fr-mt-md-7v">
         <Form.TextInput aria-label="Portfolio" iconClassName="ri-link-m" name="portfolioUrl" placeholder="Portfolio" />
       </div>
     </div>
