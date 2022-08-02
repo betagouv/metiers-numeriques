@@ -3,6 +3,10 @@ import styled from 'styled-components'
 
 import type { InputHTMLAttributes } from 'react'
 
+const InputContainer = styled.div`
+  position: relative;
+`
+
 const StyledInput = styled.input`
   background-color: ${theme.color.neutral.silver};
   border: solid 1px ${theme.color.neutral.black};
@@ -36,9 +40,17 @@ const StyledInput = styled.input`
   }
 `
 
+const Icon = styled.i`
+  font-size: 1.5rem;
+  position: absolute;
+  bottom: 0.625rem;
+  right: 0.75rem;
+`
+
 type TextInputPropsBase = InputHTMLAttributes<HTMLInputElement> & {
   error?: string
   helper?: string
+  iconClassName?: string
   name: string
 }
 type TextInputPropsWithLabel = Omit<TextInputPropsBase, 'aria-label'> & {
@@ -52,6 +64,7 @@ export function TextInput({
   autoComplete = 'off',
   error,
   helper,
+  iconClassName,
   name,
   type = 'text',
   ...props
@@ -61,7 +74,7 @@ export function TextInput({
   const label = 'label' in props ? props.label : undefined
 
   return (
-    <div className="TextInput">
+    <InputContainer className="TextInput">
       {label && <label htmlFor={name}>{label}</label>}
 
       <StyledInput
@@ -72,6 +85,8 @@ export function TextInput({
         type={type}
         {...props}
       />
+
+      {iconClassName && <Icon className={iconClassName} />}
 
       {error && (
         <p className="fr-error-text" id={`${name}-error`}>
@@ -84,6 +99,6 @@ export function TextInput({
           {helper}
         </p>
       )}
-    </div>
+    </InputContainer>
   )
 }
