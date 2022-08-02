@@ -44,33 +44,31 @@ export default function AdminDashboardPage() {
     window.open(`/admin/user/${userId}`, '_blank')
   }, [])
 
-  const updateStatistics = useCallback(async () => {
-    const token = ''
-
+  const updateStatistics = async () => {
     if (!auth?.user) {
       return
     }
 
-    const newStatistics = await statisticsWorker.getGlobal(token)
+    const newStatistics = await statisticsWorker.getGlobal()
 
     setGlobalStatistics({ ...newStatistics })
 
     if (auth.user.role === UserRole.RECRUITER) {
-      const newLocalStatistics = await statisticsWorker.getLocal(token, auth.user.institutionId)
+      const newLocalStatistics = await statisticsWorker.getLocal(auth.user.institutionId)
 
       setLocalStatistics({ ...newLocalStatistics })
     }
 
     if (auth.user.role === UserRole.ADMINISTRATOR) {
-      const lastInactiveUsersResult = await alertWorker.getLastInactiveUsers(token)
-      const lastInstitutionlessRecruitersResult = await alertWorker.getInstitutionlessRecruiters(token)
+      const lastInactiveUsersResult = await alertWorker.getLastInactiveUsers()
+      const lastInstitutionlessRecruitersResult = await alertWorker.getInstitutionlessRecruiters()
 
       setLastInactiveUsers(lastInactiveUsersResult.data)
       setLastInactiveUsersLength(lastInactiveUsersResult.length)
       setLastInstitutionlessRecruiters(lastInstitutionlessRecruitersResult.data)
       setLastInstitutionlessRecruitersLength(lastInstitutionlessRecruitersResult.length)
     }
-  }, [auth])
+  }
 
   useEffect(() => {
     if ($timerId.current !== undefined) {

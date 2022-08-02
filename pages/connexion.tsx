@@ -208,5 +208,5 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
 }
 
 export async function getServerSideProps({ query }) {
-  return { props: { baseUrl: process.env.DOMAIN_URL, error: query.error } }
+  return { props: { baseUrl: process.env.DOMAIN_URL, error: query?.error || null } }
 }

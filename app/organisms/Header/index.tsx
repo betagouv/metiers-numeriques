@@ -1,10 +1,9 @@
+import { NavLink } from '@app/atoms/NavLink'
 import classnames from 'classnames'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
-import { NavLink } from '../../atoms/NavLink'
 import { Brand } from './Brand'
 import { Toolbar } from './Toolbar'
 
@@ -25,10 +24,6 @@ const HeaderMenu = styled.div`
 `
 
 export function Header() {
-  const { data: session, status } = useSession()
-
-  console.log('sss', session, status)
-
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
 

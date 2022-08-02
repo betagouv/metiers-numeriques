@@ -9,9 +9,6 @@ export function WithGraphql({ children }: WithGraphqlProps) {
     () =>
       new ApolloClient({
         cache: new InMemoryCache(),
-        // headers: {
-        //   Authorization: `Bearer ${auth.state.accessToken}`,
-        // },
         uri: '/api/graphql',
       }),
     [],
