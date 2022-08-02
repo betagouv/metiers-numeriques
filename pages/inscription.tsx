@@ -11,6 +11,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import * as Yup from 'yup'
+import YupPassword from 'yup-password'
 
 const SideMenu = styled.div`
   display: flex;
@@ -112,6 +113,10 @@ const SubscribeContainer = styled.div`
   }
 `
 
+YupPassword(Yup) // extend yup for password handling
+const PASSWORD_RULES =
+  'Le mot de passe doit contenir au moins 8 caractères, 1 lettre majuscule, 1 lettre miniscule et 1 caractère spécial.'
+
 const FormSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf(
     [Yup.ref('password'), null],
@@ -122,7 +127,12 @@ const FormSchema = Yup.object().shape({
     .email(`Hmm… il y a comme un soucis avec le format 🤔.`),
   firstName: Yup.string().required('Votre prénom doit être renseigné'),
   lastName: Yup.string().required('Votre nom doit être renseigné'),
-  password: Yup.string().required('Merci de renseigner votre mot de passe'),
+  password: Yup.string()
+    .required('Merci de renseigner votre mot de passe')
+    .min(8, PASSWORD_RULES)
+    .minLowercase(1, PASSWORD_RULES)
+    .minUppercase(1, PASSWORD_RULES)
+    .minSymbols(1, PASSWORD_RULES),
 })
 
 export default function SubscriptionPage() {

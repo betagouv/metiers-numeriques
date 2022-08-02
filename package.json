@@ -104,7 +104,8 @@
     "slugify": "1.6.5",
     "styled-components": "5.3.3",
     "unified": "10.1.2",
-    "yup": "0.32.11"
+    "yup": "0.32.11",
+    "yup-password": "^0.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "16.1.0",
