@@ -1,6 +1,7 @@
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getToken } from 'next-auth/jwt'
 import * as R from 'ramda'
 
 export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, res: NextApiResponse) {
@@ -14,6 +15,8 @@ export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, re
 
 const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const token = await getToken({ req })
+
     const { contractTypes, domainIds, jobId, keyword, professionId, region, seniority } = req.query
 
     const candidateFilterProps: Record<string, Common.Pojo> = {}
@@ -63,6 +66,11 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
           },
         },
       ]
+    }
+    if (token?.user?.institutionId) {
+      candidateFilterProps.hiddenFromInstitutions = {
+        none: { id: token?.user?.institutionId },
+      }
     }
 
     const filterProps: Record<string, Common.Pojo> = {

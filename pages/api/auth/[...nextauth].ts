@@ -78,7 +78,16 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = R.pick(['id', 'role', 'firstName', 'lastName', 'email', 'isActive'])(user)
+        token.user = R.pick([
+          'id',
+          'role',
+          'firstName',
+          'lastName',
+          'email',
+          'isActive',
+          'institutionId',
+          'recruiterId',
+        ])(user)
       }
 
       return token
