@@ -91,7 +91,35 @@ const SubscribeContainer = styled.div`
   }
 `
 
-export default function LoginPage({ baseUrl }) {
+const ErrorMessage = styled.div`
+  width: 100%;
+  padding: 1rem 2rem;
+  color: ${theme.color.danger.scarlet};
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-align: center;
+`
+
+const DEFAULT_SIGN_IN_ERROR_MESSAGE = 'Une erreur est survenue. Merci de réessayer ou de contacter le support.'
+const SIGN_IN_ERRORS = {
+  Callback: DEFAULT_SIGN_IN_ERROR_MESSAGE,
+  CredentialsSignin: 'Identifiants incorrects.',
+  Default: DEFAULT_SIGN_IN_ERROR_MESSAGE,
+  EmailCreateAccount: 'Un compte existe déjà avec cette adresse email.',
+  EmailSignin: DEFAULT_SIGN_IN_ERROR_MESSAGE,
+  OAuthAccountNotLinked: 'Ce compte est déjà lié avec une autre adresse email.',
+  OAuthCallback: DEFAULT_SIGN_IN_ERROR_MESSAGE,
+  OAuthCreateAccount: DEFAULT_SIGN_IN_ERROR_MESSAGE,
+  OAuthSignin: DEFAULT_SIGN_IN_ERROR_MESSAGE,
+  SessionRequired: 'Vous devez vous connecter pour visiter cette page.',
+}
+
+type LoginPageProps = {
+  baseUrl: string
+  error?: keyof typeof SIGN_IN_ERRORS
+}
+
+export default function LoginPage({ baseUrl, error }: LoginPageProps) {
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
 
@@ -120,7 +148,9 @@ export default function LoginPage({ baseUrl }) {
         <div className="fr-col-md-5 fr-col-12 fr-p-4v">
           <Container>
             <Title as="h1">Se connecter</Title>
-            <Spacer units={4} />
+            <Spacer units={2} />
+            {error && <ErrorMessage>{SIGN_IN_ERRORS[error]}</ErrorMessage>}
+            <Spacer units={2} />
             <div style={{ width: '100%' }}>
               <TextInput label="Email" name="email" onChange={e => setEmail(e.target.value)} type="email" />
               <Spacer units={1} />
@@ -177,6 +207,6 @@ export default function LoginPage({ baseUrl }) {
   )
 }
 
-export async function getStaticProps() {
-  return { props: { baseUrl: process.env.DOMAIN_URL } }
+export async function getServerSideProps({ query }) {
+  return { props: { baseUrl: process.env.DOMAIN_URL, error: query.error } }
 }
