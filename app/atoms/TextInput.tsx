@@ -66,6 +66,7 @@ export function TextInput({
   helper,
   iconClassName,
   name,
+  style,
   type = 'text',
   ...props
 }: TextInputPropsWithLabel | TextInputPropsWithAriaLabel) {
@@ -82,7 +83,7 @@ export function TextInput({
         autoComplete={autoComplete}
         id={name}
         name={name}
-        style={label ? { marginTop: '0.5rem' } : {}}
+        style={label ? { marginTop: '0.5rem', ...style } : style}
         type={type}
         {...props}
       />

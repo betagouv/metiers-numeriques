@@ -38,8 +38,8 @@ export function AdminMenu() {
   const router = useRouter()
   const { data: auth } = useSession({ required: true })
 
-  const isAdmin = auth.user?.role === UserRole.ADMINISTRATOR
-  const isRecruiter = auth.user?.role === UserRole.RECRUITER
+  const isAdmin = auth?.user?.role === UserRole.ADMINISTRATOR
+  const isRecruiter = auth?.user?.role === UserRole.RECRUITER
 
   return (
     <Box>

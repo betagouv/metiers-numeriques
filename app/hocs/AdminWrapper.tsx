@@ -42,18 +42,19 @@ const GlobalStyleCustom = createGlobalStyle`
   }
 `
 
-const PRIVATE_PATHS = [/^\/admin($|\/)/]
-
 type AdminWrapperProps = {
   children: any
 }
+
 export function AdminWrapper({ children }: AdminWrapperProps) {
   const router = useRouter()
   const { data: auth } = useSession({ required: true })
 
-  // TODO: handle it server side
+  // TODO: handle it server side? Seems to be impossible right now due to the way middleware works: https://next-auth.js.org/configuration/nextjs#caveats
   if (auth?.user?.role === UserRole.CANDIDATE || !auth?.user?.isActive) {
     router.push('/404')
+
+    return null
   }
 
   return (
