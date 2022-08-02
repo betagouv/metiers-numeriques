@@ -98,9 +98,7 @@ export default function AdminInstitutionEditorPage() {
   }, [getInstitutionResult.data])
 
   const goToList = () => {
-    if (auth?.user?.role === UserRole.ADMINISTRATOR) {
-      router.push('/admin/institutions')
-    }
+    router.push('/admin/institutions')
   }
 
   const saveAndGoToList = useCallback(async (values: Prisma.InstitutionUncheckedCreateInput) => {

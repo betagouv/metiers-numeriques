@@ -73,7 +73,7 @@ const TOAST_OPTIONS = {
 export function AdminToaster() {
   return (
     <Box>
-      <Toaster position="top-right" toastOptions={TOAST_OPTIONS}>
+      <Toaster position="top-center" toastOptions={TOAST_OPTIONS}>
         {thisToast => (
           <ToastBar toast={thisToast}>
             {({ icon, message }) => (
