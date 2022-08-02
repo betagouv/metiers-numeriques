@@ -3,7 +3,6 @@ import { UserRole } from '@prisma/client'
 import { VerticalMenu } from '@singularity/core'
 import { useAuth } from 'nexauth/client'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
 import styled from 'styled-components'
 
 import { Link } from '../atoms/Link'
@@ -39,7 +38,8 @@ export function AdminMenu() {
   const router = useRouter()
   const auth = useAuth<Common.Auth.User>()
 
-  const isAdmin = useMemo(() => auth.user?.role === UserRole.ADMINISTRATOR, [auth.user])
+  const isAdmin = auth.user?.role === UserRole.ADMINISTRATOR
+  const isRecruiter = auth.user?.role === UserRole.RECRUITER
 
   return (
     <Box>
@@ -82,6 +82,19 @@ export function AdminMenu() {
                 isDark
               >
                 Témoignages
+              </VerticalMenu.Item>
+            </Link>
+          )}
+
+          {isRecruiter && (
+            <Link href={`/admin/institution/${auth?.user?.institutionId}`}>
+              <VerticalMenu.Item
+                isActive={
+                  router.pathname === '/admin/institutions' || router.pathname.startsWith('/admin/institution/')
+                }
+                isDark
+              >
+                Mon institution
               </VerticalMenu.Item>
             </Link>
           )}
