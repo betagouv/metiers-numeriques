@@ -50,7 +50,7 @@ export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
           </Title>
           <InstitutionsList institutions={topInstitutions} />
           <LinkLikeButton accent="secondary" href="/institutions">
-            Toutes les institutions
+            Tous les employeurs
           </LinkLikeButton>
         </InstitutionsContainer>
       )}
