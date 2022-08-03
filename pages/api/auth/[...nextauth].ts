@@ -46,13 +46,17 @@ export default NextAuth({
     }),
     CredentialsProvider({
       async authorize(credentials) {
-        const user = await prisma.user.findUnique({ where: { email: credentials?.email } })
+        if (!credentials?.password || !credentials?.email) {
+          return null
+        }
+
+        const user = await prisma.user.findUnique({ where: { email: credentials.email } })
 
         if (!user) {
           return null
         }
 
-        const matchPassword = await bcryptjs.compare(credentials?.password, user.password)
+        const matchPassword = await bcryptjs.compare(credentials.password, user.password)
         if (!matchPassword) {
           return null
         }
@@ -65,7 +69,7 @@ export default NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        email: { label: 'Email', placeholder: 'john@doe.com', type: 'email' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -76,31 +80,22 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
+    // @ts-expect-error TODO: Don't know why extending the token makes an error here (see next-auth.d.ts)
     async jwt({ token, user }) {
-      if (user) {
-        token.user = R.pick([
-          'id',
-          'role',
-          'firstName',
-          'lastName',
-          'email',
-          'isActive',
-          'institutionId',
-          'recruiterId',
-        ])(user)
-      }
-
-      return token
+      return user
+        ? {
+            ...token,
+            user: R.pick(['id', 'role', 'firstName', 'lastName', 'email', 'isActive', 'institutionId', 'recruiterId'])(
+              user,
+            ),
+          }
+        : token
     },
     async session({ session, token }) {
-      if (token) {
-        session.user = token.user
-      }
-
-      return session
+      return token ? { ...session, user: token.user } : session
     },
   },
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   pages: {
     signIn: '/connexion',
   },

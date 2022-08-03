@@ -1,7 +1,7 @@
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getToken } from 'next-auth/jwt'
+import { getSession } from 'next-auth/react'
 
 export default async function ApiProfileEndpoint(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -13,9 +13,9 @@ export default async function ApiProfileEndpoint(req: NextApiRequest, res: NextA
 }
 
 const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
-  const auth = await getToken({ req })
+  const session = await getSession({ req })
 
-  if (!auth) {
+  if (!session) {
     res.status(401).end()
 
     return
@@ -44,7 +44,7 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
         lastName,
       },
       where: {
-        id: auth.sub,
+        id: session.user.id,
       },
     })
 
@@ -103,7 +103,7 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
       where: {
-        userId: auth.sub,
+        userId: session.user.id,
       },
     })
 

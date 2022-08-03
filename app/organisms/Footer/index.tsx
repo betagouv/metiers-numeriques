@@ -1,7 +1,6 @@
 import { Link } from '@app/atoms/Link'
 import styled from 'styled-components'
 
-import { NewsletterBar } from '../NewsletterBar'
 import { BackToTopButton } from './BackToTopButton'
 
 const Brand = styled.div`

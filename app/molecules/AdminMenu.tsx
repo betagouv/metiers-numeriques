@@ -150,7 +150,7 @@ export function AdminMenu() {
             </Link>
           )}
 
-          <ButtonAsLink onClick={signOut}>
+          <ButtonAsLink onClick={() => signOut()}>
             <VerticalMenu.Item isDark>Déconnexion</VerticalMenu.Item>
           </ButtonAsLink>
         </VerticalMenu>

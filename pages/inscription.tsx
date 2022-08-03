@@ -165,7 +165,7 @@ export default function SubscriptionPage() {
         </div>
         <div className="fr-col-md-5 fr-col-12 fr-p-4v">
           <Container>
-            <Title as="h1">S'inscrire</Title>
+            <Title as="h1">S&apos;inscrire</Title>
             <Spacer units={2} />
 
             <RadioGroup>
@@ -193,7 +193,7 @@ export default function SubscriptionPage() {
                 <Spacer units={2} />
                 <div className="fr-grid-row fr-grid-row--gutters">
                   <div className="fr-col-8">
-                    <Form.Submit style={{ width: '100%' }}>S'inscrire</Form.Submit>
+                    <Form.Submit style={{ width: '100%' }}>S&apos;inscrire</Form.Submit>
                   </div>
                   <div className="fr-col-4">
                     <Button accent="secondary" onClick={() => setIsEmailSignUp(false)}>
@@ -205,7 +205,7 @@ export default function SubscriptionPage() {
             ) : (
               <>
                 <LoginButtonContainer>
-                  <Button onClick={() => setIsEmailSignUp(true)}>S'inscrire par email</Button>
+                  <Button onClick={() => setIsEmailSignUp(true)}>S&apos;inscrire par email</Button>
                   <OrContainer>
                     <Stroke />
                     <span>Ou</span>

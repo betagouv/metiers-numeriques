@@ -4,7 +4,7 @@ import { PreferencesForm } from '@app/organisms/Profile/PreferencesForm'
 import { ProfileForm } from '@app/organisms/Profile/ProfileForm'
 import { theme } from '@app/theme'
 import { JobContractType } from '@prisma/client'
-import { getToken } from 'next-auth/jwt'
+import { getSession } from 'next-auth/react'
 import Image from 'next/image'
 import * as R from 'ramda'
 import React, { useRef, useState } from 'react'
@@ -94,7 +94,7 @@ export default function ProfilePage({ profile }: ProfilePageProps) {
 }
 
 export async function getServerSideProps({ req }) {
-  const auth = await getToken({ req })
+  const auth = await getSession({ req })
 
   if (!auth) {
     return {
@@ -115,7 +115,7 @@ export async function getServerSideProps({ req }) {
         },
       },
     },
-    where: { id: auth.sub },
+    where: { id: auth.user.id },
   })
 
   if (!user) {

@@ -47,8 +47,9 @@ export default function ProfilePage() {
             <Title as="h1">Demande de compte recruteur</Title>
             <Spacer units={2} />
             <div>
-              Vous souhaitez accéder à l'espace recruteur du site ?<br /> Renseignez l'institution et le service
-              recruteur que vous souhaitez rejoindre, un administrateur vous donnera l'accès dans les plus brefs délais.
+              Vous souhaitez accéder à l&apos;espace recruteur du site ?<br /> Renseignez l&apos;institution et le
+              service recruteur que vous souhaitez rejoindre, un administrateur vous donnera l&apos;accès dans les plus
+              brefs délais.
             </div>
             <Spacer units={2} />
             <div className="fr-grid-row fr-mb-md-6v fr-mb-3v">

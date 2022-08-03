@@ -16,8 +16,6 @@ export function ProfessionSelect({ isDisabled, ...props }: ProfessionSelectProps
 
   const options = data?.getProfessionsList?.map(profession => ({ label: profession.name, value: profession.id })) || []
 
-  console.log('data', data)
-
   return (
     <Select
       {...props}

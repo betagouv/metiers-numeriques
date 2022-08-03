@@ -142,7 +142,7 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
         <div className="fr-col-md-7 fr-displayed-md fr-p-4v">
           <SideMenu>
             <Image height={340} src="/images/hi-bot.svg" width={340} />
-            <WelcomeMessage>Ah, c'est vous !</WelcomeMessage>
+            <WelcomeMessage>Ah, c&apos;est vous !</WelcomeMessage>
           </SideMenu>
         </div>
         <div className="fr-col-md-5 fr-col-12 fr-p-4v">
@@ -192,10 +192,10 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
             <Spacer units={3} />
 
             <SubscribeContainer>
-              <div>Vous n'avez pas encore de compte ?</div>
+              <div>Vous n&apos;avez pas encore de compte ?</div>
               <Link href="/inscription">
                 <Button accent="secondary" size="medium">
-                  S'inscrire
+                  S&apos;inscrire
                 </Button>
               </Link>
             </SubscribeContainer>

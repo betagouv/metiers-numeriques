@@ -2,7 +2,7 @@ import { ApiError } from '@api/libs/ApiError'
 import { handleError } from '@common/helpers/handleError'
 import { UserRole } from '@prisma/client'
 import ky from 'ky-universal'
-import { getToken } from 'next-auth/jwt'
+import { getSession } from 'next-auth/react'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -23,11 +23,11 @@ export default async function ApiPepCheckEndpoint(req: NextApiRequest, res: Next
     return handleError(new ApiError('Forbidden.', 403, true), ERROR_PATH, res)
   }
 
-  const { user } = await getToken({ req })
-  if (user === undefined) {
+  const session = await getSession({ req })
+  if (!session) {
     return handleError(new ApiError('Unauthorized.', 401, true), ERROR_PATH, res)
   }
-  if (user.role !== UserRole.ADMINISTRATOR) {
+  if (session.user.role !== UserRole.ADMINISTRATOR) {
     return handleError(new ApiError('Forbidden.', 403, true), ERROR_PATH, res)
   }
 
