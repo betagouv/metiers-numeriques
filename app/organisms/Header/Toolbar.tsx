@@ -11,7 +11,7 @@ export function Toolbar() {
               isExternal
               size="medium"
             >
-              Déposez une candidature spontanée
+              Déposer une candidature spontanée
             </LinkLikeButton>
           </li>
         </ul>

@@ -53,7 +53,7 @@ export default function InstitutionsListPage({ institutions }: InstitutionPagePr
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const institutions = await prisma.institution.findMany({
     include: {
       logoFile: true,
@@ -78,6 +78,5 @@ export async function getStaticProps() {
 
   return {
     props: { institutions: institutionsWithHumanDates },
-    revalidate: 300,
   }
 }
