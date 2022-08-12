@@ -1,7 +1,7 @@
 import { prisma } from '@api/libs/prisma'
 import { Title } from '@app/atoms/Title'
 import { humanizeDate } from '@app/helpers/humanizeDate'
-import { renderMarkdown } from '@app/helpers/renderMarkdown'
+import { renderMarkdownOrHtml } from '@app/helpers/renderMarkdownOrHtml'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { JobMenu } from '@app/organisms/JobMenu'
 import Head from 'next/head'
@@ -54,14 +54,14 @@ export default function JobPage({ data: archivedJob }: ArchivedJobPageProps) {
           <Title as="h2" id="mission" isFirst>
             Mission
           </Title>
-          {renderMarkdown(archivedJob.missionDescription)}
+          {renderMarkdownOrHtml(archivedJob.missionDescription)}
 
           {archivedJob.profileDescription && (
             <>
               <Title as="h2" id="profil-recherche">
                 Profil recherché
               </Title>
-              {renderMarkdown(archivedJob.profileDescription)}
+              {renderMarkdownOrHtml(archivedJob.profileDescription)}
             </>
           )}
 
