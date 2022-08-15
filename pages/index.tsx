@@ -49,8 +49,8 @@ export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
             Les employeurs de la semaine
           </Title>
           <InstitutionsList institutions={topInstitutions} />
-          <LinkLikeButton accent="secondary" href="/institutions">
-            Toutes les institutions
+          <LinkLikeButton accent="secondary" href="/employeurs">
+            Tous les employeurs
           </LinkLikeButton>
         </InstitutionsContainer>
       )}

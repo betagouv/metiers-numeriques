@@ -31,11 +31,11 @@ export default function InstitutionsListPage({ institutions }: InstitutionPagePr
   return (
     <>
       <Head>
-        <title>Institutions | Métiers du Numérique</title>
+        <title>Employeurs | Métiers du Numérique</title>
       </Head>
 
       <div className="fr-container fr-mb-12v fr-mt-16v">
-        <Title as="h1">Institutions</Title>
+        <Title as="h1">Les employeurs</Title>
         <Spacer units={1} />
         <div className="fr-col-8">
           <TextInput
@@ -53,7 +53,7 @@ export default function InstitutionsListPage({ institutions }: InstitutionPagePr
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const institutions = await prisma.institution.findMany({
     include: {
       logoFile: true,
@@ -78,6 +78,5 @@ export async function getStaticProps() {
 
   return {
     props: { institutions: institutionsWithHumanDates },
-    revalidate: 300,
   }
 }
