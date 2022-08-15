@@ -10,24 +10,27 @@ test.describe('Admin > Authentication', () => {
     const prisma = new PrismaClient()
     const testAdministrationUser = TEST_USERS[0]
 
-    await page.goto('http://localhost:3000/admin')
+    await page.goto('http://localhost:3000/inscription')
 
-    await expect(page.locator('h4')).toHaveText('Connexion')
+    await expect(page.locator('h1')).toHaveText("S'inscrire")
 
-    await page.click('"demander un compte"')
+    await page.click('"Employeur public"')
+    await page.click('"S\'inscrire par email"')
 
-    await expect(page.locator('h4')).toHaveText('Demande de création d’un compte')
-
-    await page.fill('"Email"', testAdministrationUser.email)
-    await page.fill('"Mot de passe"', testAdministrationUser.password)
-    await page.fill('"Mot de passe (répêter)"', testAdministrationUser.password)
     await page.fill('"Prénom"', testAdministrationUser.firstName)
     await page.fill('"Nom"', testAdministrationUser.lastName)
-    await page.fill('"Nom de votre institution"', testAdministrationUser.requestedInstitution)
-    await page.fill('"Nom de votre service"', testAdministrationUser.requestedService)
-    await page.click('"Envoyer ma demande"')
+    await page.fill('"Email"', testAdministrationUser.email)
+    await page.fill('"Mot de passe"', testAdministrationUser.password)
+    await page.fill('"Confirmer le mot de passe"', testAdministrationUser.password)
+    await page.click('button[type=submit]')
 
-    await expect(page.locator('h4')).toHaveText('Connexion')
+    await expect(page.locator('h1')).toHaveText('Demande de compte recruteur')
+
+    await page.fill('"Mon Institution"', testAdministrationUser.requestedInstitution)
+    await page.fill('"Mon service recruteur"', testAdministrationUser.requestedService)
+    await page.click('button[type=submit]')
+
+    await expect(page.locator('h1')).toHaveText("C'est tout bon !")
 
     const userCount = await prisma.user.count()
 
@@ -47,23 +50,26 @@ test.describe('Admin > Authentication', () => {
   test('Second User (Recruiter) Signup', async ({ page }) => {
     const testRecruitingUser = TEST_USERS[1]
 
-    await page.goto('http://localhost:3000/admin')
+    await page.goto('http://localhost:3000/inscription')
 
-    await expect(page.locator('h4')).toHaveText('Connexion')
+    await expect(page.locator('h1')).toHaveText("S'inscrire")
 
-    await page.click('"demander un compte"')
+    await page.click('"Employeur public"')
+    await page.click('"S\'inscrire par email"')
 
-    await expect(page.locator('h4')).toHaveText('Demande de création d’un compte')
-
-    await page.fill('"Email"', testRecruitingUser.email)
-    await page.fill('"Mot de passe"', testRecruitingUser.password)
-    await page.fill('"Mot de passe (répêter)"', testRecruitingUser.password)
     await page.fill('"Prénom"', testRecruitingUser.firstName)
     await page.fill('"Nom"', testRecruitingUser.lastName)
-    await page.fill('"Nom de votre institution"', testRecruitingUser.requestedInstitution)
-    await page.fill('"Nom de votre service"', testRecruitingUser.requestedService)
-    await page.click('"Envoyer ma demande"')
+    await page.fill('"Email"', testRecruitingUser.email)
+    await page.fill('"Mot de passe"', testRecruitingUser.password)
+    await page.fill('"Confirmer le mot de passe"', testRecruitingUser.password)
+    await page.click('button[type=submit]')
 
-    await expect(page.locator('h4')).toHaveText('Connexion')
+    await expect(page.locator('h1')).toHaveText('Demande de compte recruteur')
+
+    await page.fill('"Mon Institution"', testRecruitingUser.requestedInstitution)
+    await page.fill('"Mon service recruteur"', testRecruitingUser.requestedService)
+    await page.click('button[type=submit]')
+
+    await expect(page.locator('h1')).toHaveText("C'est tout bon !")
   })
 })

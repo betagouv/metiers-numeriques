@@ -165,7 +165,9 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
             <Spacer units={2} />
 
             <LoginButtonContainer>
-              <Button onClick={handleCredentialsSignIn}>Se connecter</Button>
+              <Button onClick={handleCredentialsSignIn} type="submit">
+                Se connecter
+              </Button>
               <OrContainer>
                 <Stroke />
                 <span>Ou</span>

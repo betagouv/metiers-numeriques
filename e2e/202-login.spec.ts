@@ -8,13 +8,13 @@ test.describe('Admin > Authentication', () => {
 
     await page.goto('http://localhost:3000/admin')
 
-    await expect(page.locator('h4')).toHaveText('Connexion')
+    await expect(page.locator('h1')).toHaveText('Se connecter')
 
     await page.fill('"Email"', testRecruitingUser.email)
     await page.fill('"Mot de passe"', testRecruitingUser.password)
-    await page.click('"Se connecter"')
+    await page.click('button[type=submit]')
 
-    await expect(page.locator('.Error')).toHaveText('Votre compte n’a pas encore été activé.')
+    await expect(page.locator('h1')).toHaveText('Page introuvable…')
   })
 
   test('Administration User Login', async ({ context, page }) => {
@@ -22,11 +22,11 @@ test.describe('Admin > Authentication', () => {
 
     await page.goto('http://localhost:3000/admin')
 
-    await expect(page.locator('h4')).toHaveText('Connexion')
+    await expect(page.locator('h1')).toHaveText('Se connecter')
 
     await page.fill('"Email"', testAdministrationUser.email)
     await page.fill('"Mot de passe"', testAdministrationUser.password)
-    await page.click('"Se connecter"')
+    await page.click('button[type=submit]')
 
     await expect(page.locator('h1')).toHaveText('Tableau de bord')
 
