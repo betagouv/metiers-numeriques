@@ -118,6 +118,8 @@ jobs:
         run: yarn dev:setup
       - name: Build
         run: yarn build --no-lint
+      - name: Copy example env vars
+        run: cp .env.example .env
       - name: Serve
         run: yarn start &
       - name: Run end-to-end tests
