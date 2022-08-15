@@ -29,7 +29,7 @@ const Logo = styled.img`
 
 export const InstitutionCard = ({ institution }) => (
   <Card className="InstitutionCard">
-    <Link href={`/institutions/${institution.slug}`} noUnderline>
+    <Link href={`/employeurs/${institution.slug}`} noUnderline>
       {/* TODO: use next/image for external images as well */}
       {institution.logoFile ? (
         <Logo src={institution.logoFile?.url} />
