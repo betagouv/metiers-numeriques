@@ -92,14 +92,24 @@ export function Header() {
               {status === 'authenticated' && !!data?.user ? (
                 <>
                   {data.user.role === UserRole.CANDIDATE && (
-                    <NavLink
-                      aria-current={router.pathname === '/profil' ? 'page' : undefined}
-                      className="fr-nav__link"
-                      href="/profil"
-                      onClick={closeMenu}
-                    >
-                      Mon profil
-                    </NavLink>
+                    <>
+                      <NavLink
+                        aria-current={router.pathname === '/profil' ? 'page' : undefined}
+                        className="fr-nav__link"
+                        href="/profil"
+                        onClick={closeMenu}
+                      >
+                        Mon profil
+                      </NavLink>
+                      <NavLink
+                        aria-current={router.pathname === '/candidature' ? 'page' : undefined}
+                        className="fr-nav__link"
+                        href="/candidature"
+                        onClick={closeMenu}
+                      >
+                        Déposer une candidature spontanée
+                      </NavLink>
+                    </>
                   )}
                   <NavLink className="fr-nav__link" href="/" onClick={() => signOut()}>
                     Se déconnecter
