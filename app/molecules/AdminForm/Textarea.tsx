@@ -22,12 +22,12 @@ export function Textarea({
 
   const hasError = (touched[name] !== undefined || submitCount > 0) && Boolean(errors[name])
   const maybeError = hasError ? String(errors[name]) : undefined
-  const defaultVaLue = useMemo(() => values[name], [values[name]])
+  const defaultValue = useMemo(() => values[name], [values[name]])
 
   return (
     <SuiTextarea
       autoComplete="off"
-      defaultValue={defaultVaLue}
+      defaultValue={defaultValue}
       disabled={isDisabled || isSubmitting}
       error={maybeError}
       helper={helper}

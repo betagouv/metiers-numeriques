@@ -77,6 +77,7 @@ const UserMenu = () => {
               <Link href="/profil">Mon profil</Link>
             </LinkItem>
           )}
+          {/* @ts-ignore TODO: dunno why TS yells here */}
           {[UserRole.RECRUITER, UserRole.ADMINISTRATOR].includes(user.role) && user.isActive && (
             <LinkItem>
               <Link href="/admin">Espace administrateur</Link>
