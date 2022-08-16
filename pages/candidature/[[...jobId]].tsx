@@ -24,11 +24,11 @@ const SectionTitle = styled.h2`
   font-weight: 600;
 `
 
-const Error = styled.div`
+const Message = styled.div<{ status: 'success' | 'danger' }>`
   padding: 1.5rem;
-  color: ${theme.color.danger.scarlet};
+  color: ${p => (p.status === 'danger' ? theme.color.danger.scarlet : theme.color.success.herbal)};
   font-weight: 500;
-  border: 1px solid ${theme.color.danger.scarlet};
+  border: 1px solid ${p => (p.status === 'danger' ? theme.color.danger.scarlet : theme.color.success.herbal)};
   border-radius: 0.5rem;
 `
 
@@ -75,7 +75,7 @@ export default function JobApplicationPage({ initialValues, job }: JobApplicatio
   return (
     <div className="fr-container">
       <Container>
-        <Title as="h1">Ta candidature</Title>
+        <Title as="h1">{job ? 'Ta candidature' : 'Déposer une candidature spontanée'}</Title>
         <Spacer units={1} />
         {job && (
           <Link href={`/emploi/${job.slug}`} target="_blank">
@@ -83,7 +83,12 @@ export default function JobApplicationPage({ initialValues, job }: JobApplicatio
           </Link>
         )}
         <Spacer units={1} />
-        {error && <Error>Une erreur est survenue, merci de réessayer plus tard.</Error>}
+        {error && <Message status="danger">Une erreur est survenue, merci de réessayer plus tard.</Message>}
+        {initialValues?.application?.id && (
+          <Message status="success">
+            Ta candidature a déjà été envoyée, mais tu peux la modifier ici à tout moment !
+          </Message>
+        )}
         <Spacer units={2} />
         <Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={FormSchema}>
           <SectionTitle>Tes motivations</SectionTitle>

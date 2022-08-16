@@ -2,6 +2,8 @@ import { prisma } from '@api/libs/prisma'
 import { Button } from '@app/atoms/Button'
 import { ExternalLink } from '@app/atoms/ExternalLink'
 import { Link } from '@app/atoms/Link'
+import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
+import { Spacer } from '@app/atoms/Spacer'
 import { Title } from '@app/atoms/Title'
 import { generateJobStructuredData } from '@app/helpers/generateJobStructuredData'
 import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
@@ -59,7 +61,6 @@ export const JobContent = styled.div`
 
 export const JobButton = styled(Button)`
   font-size: 150%;
-  margin-top: 4rem;
   padding: 1rem 2rem 1.25rem;
 `
 
@@ -163,12 +164,10 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               </p>
             </div>
           )}
-
           <Title as="h2" id="mission" isFirst>
             Mission
           </Title>
           {renderMarkdownOrHtml(job.missionDescription)}
-
           {job.teamDescription && (
             <>
               <Title as="h2" id="equipe">
@@ -177,7 +176,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               {renderMarkdownOrHtml(job.teamDescription)}
             </>
           )}
-
           {job.contextDescription && (
             <>
               <Title as="h2" id="contexte">
@@ -186,7 +184,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               {renderMarkdownOrHtml(job.contextDescription)}
             </>
           )}
-
           {job.perksDescription && (
             <>
               <Title as="h2" id="avantages">
@@ -195,7 +192,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               {renderMarkdownOrHtml(job.perksDescription)}
             </>
           )}
-
           {job.tasksDescription && (
             <>
               <Title as="h2" id="role">
@@ -204,7 +200,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               {renderMarkdownOrHtml(job.tasksDescription)}
             </>
           )}
-
           {job.profileDescription && (
             <>
               <Title as="h2" id="profil-recherche">
@@ -213,7 +208,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               {renderMarkdownOrHtml(job.profileDescription)}
             </>
           )}
-
           {job.particularitiesDescription && (
             <>
               <Title as="h2" id="conditions-particulieres">
@@ -222,7 +216,6 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               {renderMarkdownOrHtml(job.particularitiesDescription)}
             </>
           )}
-
           <Title as="h2" id="pour-candidater">
             Pour candidater
           </Title>
@@ -253,13 +246,19 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
           <p>
             Référence interne : <code>{job.id.toUpperCase()}</code>
           </p>
-
           {!isFilledOrExpired && (
-            <JobButton onClick={handleSendApplication} size="normal">
-              Je candidate
-              <i className="ri-arrow-right-line" />
-            </JobButton>
+            <>
+              <Spacer units={4} />
+              <JobButton onClick={handleSendApplication} size="normal">
+                Je candidate
+              </JobButton>
+            </>
           )}
+
+          <Spacer units={1} />
+          <LinkLikeButton accent="secondary" href="/candidature" size="medium">
+            Tu n&apos;as pas trouvé ton bonheur ? Dépose une candidature spontanée
+          </LinkLikeButton>
         </JobContent>
       </Body>
 
