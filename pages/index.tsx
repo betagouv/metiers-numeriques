@@ -4,6 +4,7 @@ import { Title } from '@app/atoms/Title'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { InstitutionsList } from '@app/organisms/InstitutionsList'
 import { JobSearchBar } from '@app/organisms/JobSearchBar'
+import { NewsletterBar } from '@app/organisms/NewsletterBar'
 import { TestimonialBar } from '@app/organisms/TestimonialBar'
 import { TopJobsBar } from '@app/organisms/TopJobsBar'
 import { JobState } from '@prisma/client'
@@ -54,6 +55,10 @@ export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
           </LinkLikeButton>
         </InstitutionsContainer>
       )}
+
+      <div className="fr-container">
+        <NewsletterBar />
+      </div>
     </div>
   )
 }

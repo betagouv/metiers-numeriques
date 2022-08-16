@@ -37,21 +37,9 @@ const GET_LAST_INACTIVE_USERS = gql`
   }
 `
 
-export async function getInstitutionlessRecruiters(accessToken?: string): Promise<GetAllResponse<Recruiter>> {
-  if (accessToken === undefined) {
-    return {
-      count: 0,
-      data: [],
-      index: 0,
-      length: 0,
-    }
-  }
-
+export async function getInstitutionlessRecruiters(): Promise<GetAllResponse<Recruiter>> {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     uri: '/api/graphql',
   })
 
@@ -64,21 +52,9 @@ export async function getInstitutionlessRecruiters(accessToken?: string): Promis
   return result
 }
 
-export async function getLastInactiveUsers(accessToken?: string): Promise<GetAllResponse<User>> {
-  if (accessToken === undefined) {
-    return {
-      count: 0,
-      data: [],
-      index: 0,
-      length: 0,
-    }
-  }
-
+export async function getLastInactiveUsers(): Promise<GetAllResponse<User>> {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     uri: '/api/graphql',
   })
 

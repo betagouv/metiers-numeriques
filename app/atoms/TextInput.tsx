@@ -14,7 +14,7 @@ const StyledInput = styled.input`
   color: ${theme.color.neutral.black};
   font-size: 112.5%;
   line-height: 1;
-  padding: 0.55rem 1.25rem 0.9rem;
+  padding: 0.55rem 1.25rem 0.8rem;
   width: 100%;
 
   ::placeholder {
@@ -66,6 +66,7 @@ export function TextInput({
   helper,
   iconClassName,
   name,
+  style,
   type = 'text',
   ...props
 }: TextInputPropsWithLabel | TextInputPropsWithAriaLabel) {
@@ -82,6 +83,7 @@ export function TextInput({
         autoComplete={autoComplete}
         id={name}
         name={name}
+        style={label ? { marginTop: '0.5rem', ...style } : style}
         type={type}
         {...props}
       />

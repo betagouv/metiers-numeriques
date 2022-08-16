@@ -1,7 +1,6 @@
 import { Link } from '@app/atoms/Link'
 import styled from 'styled-components'
 
-import { NewsletterBar } from '../NewsletterBar'
 import { BackToTopButton } from './BackToTopButton'
 
 const Brand = styled.div`
@@ -11,10 +10,6 @@ const Brand = styled.div`
 export function Footer() {
   return (
     <>
-      <div className="fr-container">
-        <NewsletterBar />
-      </div>
-
       <footer className="fr-footer" role="contentinfo">
         <div className="fr-container">
           <div className="fr-footer__body fr-footer__body--operator">

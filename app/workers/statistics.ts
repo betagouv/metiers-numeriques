@@ -33,20 +33,9 @@ export type GlobalStatistics = {
   newVisitsCount: number | undefined
 }
 
-export async function getGlobal(accessToken?: string): Promise<GlobalStatistics> {
-  if (accessToken === undefined) {
-    return {
-      activeJobsCount: undefined,
-      newApplicationsCount: undefined,
-      newVisitsCount: undefined,
-    }
-  }
-
+export async function getGlobal(): Promise<GlobalStatistics> {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     uri: '/api/graphql',
   })
 
@@ -72,8 +61,8 @@ export type LocalStatistics = {
   institution: Institution | undefined
 }
 
-export async function getLocal(accessToken?: string, institutionId?: string): Promise<LocalStatistics> {
-  if (accessToken === undefined || institutionId === undefined) {
+export async function getLocal(institutionId?: string): Promise<LocalStatistics> {
+  if (institutionId === undefined) {
     return {
       activeJobsCount: undefined,
       institution: undefined,
@@ -82,9 +71,6 @@ export async function getLocal(accessToken?: string, institutionId?: string): Pr
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     uri: '/api/graphql',
   })
 

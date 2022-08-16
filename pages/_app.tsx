@@ -3,6 +3,7 @@ import { Footer } from '@app/organisms/Footer'
 import { Header } from '@app/organisms/Header'
 import { CrispScript } from '@app/scripts/CrispScript'
 import { MatomoScript } from '@app/scripts/MatomoScript'
+import { SessionProvider } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -24,9 +25,11 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
 
   if (isAdministrationSpace) {
     return (
-      <DynamicAdminWrapper>
-        <Component {...pageProps} />
-      </DynamicAdminWrapper>
+      <SessionProvider session={session}>
+        <DynamicAdminWrapper>
+          <Component {...pageProps} />
+        </DynamicAdminWrapper>
+      </SessionProvider>
     )
   }
 
@@ -52,19 +55,21 @@ export default function MetiersNumeriquesApp({ Component, pageProps: { session, 
         <meta content="/images/main-illu.png" property="og:image" />
       </Head>
 
-      <WithGraphql>
-        <Header />
-        <main>
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-        <div id="modal" />
+      <SessionProvider session={session}>
+        <WithGraphql>
+          <Header />
+          <main>
+            <Component {...pageProps} />
+          </main>
+          <Footer />
+          <div id="modal" />
 
-        <>
-          <MatomoScript />
-          <CrispScript />
-        </>
-      </WithGraphql>
+          <>
+            <MatomoScript />
+            <CrispScript />
+          </>
+        </WithGraphql>
+      </SessionProvider>
     </>
   )
 }

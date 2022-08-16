@@ -121,7 +121,7 @@ export const query = {
     },
   ): Promise<GetAllResponse<UserFromGetAll>> => {
     try {
-      const orderByFilter = buildPrismaOrderByFilter<User>(['lastName', 'asc'], orderBy)
+      const orderByFilter = buildPrismaOrderByFilter<User>(['updatedAt', 'desc'], orderBy)
 
       const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
 

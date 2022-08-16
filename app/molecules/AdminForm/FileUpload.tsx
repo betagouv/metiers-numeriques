@@ -44,7 +44,7 @@ const Thumbnail = styled.img`
   height: 70px;
   border-radius: 8px;
   margin-right: 24px;
-  object-fit: cover;
+  object-fit: contain;
 `
 
 const Error = styled.span`

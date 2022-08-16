@@ -1,12 +1,11 @@
 import { useQuery } from '@apollo/client'
+import { generateKeyFromValues } from '@app/helpers/generateKeyFromValues'
+import { showApolloError } from '@app/helpers/showApolloError'
+import { queries } from '@app/queries'
 import { Select } from '@singularity/core'
 import { useFormikContext } from 'formik'
 import * as R from 'ramda'
 import { useEffect, useMemo, useRef, useState } from 'react'
-
-import { generateKeyFromValues } from '../../helpers/generateKeyFromValues'
-import { showApolloError } from '../../helpers/showApolloError'
-import { queries } from '../../queries'
 
 import type { Profession } from '@prisma/client'
 

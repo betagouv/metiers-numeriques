@@ -8,7 +8,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { ApolloServer } from 'apollo-server-micro'
 import { applyMiddleware } from 'graphql-middleware'
 import { shield, or } from 'graphql-shield'
-import { getUser } from 'nexauth'
+import { getSession } from 'next-auth/react'
 import path from 'path'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -85,7 +85,7 @@ const permissions = shield({
 
     getInstitution: permission.isAdministratorOrManager,
     getInstitutions: permission.isAdministrator,
-    getInstitutionsList: permission.isAdministrator,
+    getInstitutionsList: permission.isPublic,
     getAllInstitutions: permission.isAdministrator,
     getPublicInstitutions: permission.isPublic,
 
@@ -115,7 +115,7 @@ const permissions = shield({
 
     getProfession: permission.isAdministrator,
     getProfessions: permission.isAdministrator,
-    getProfessionsList: permission.isAdministratorOrManager,
+    getProfessionsList: permission.isPublic,
 
     getRecruiter: permission.isAdministratorOrManager,
     getRecruiters: permission.isAdministrator,
@@ -160,11 +160,11 @@ export default async function ApiGraphqlEndpoint(req: NextApiRequest, res: NextA
       GRAPHQL_SERVER.apolloServer = new ApolloServer({
         context: async ({ req }: { req: NextApiRequest }) => {
           const apiSecret = getApiSecretFromNextRequest(req)
-          const user = await getUser(req)
+          const session = await getSession({ req })
 
           return {
             apiSecret,
-            user,
+            user: session?.user,
           }
         },
         schema: schemaWithPermissions,

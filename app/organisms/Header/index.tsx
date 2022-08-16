@@ -1,9 +1,9 @@
+import { NavLink } from '@app/atoms/NavLink'
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
-import { NavLink } from '../../atoms/NavLink'
 import { Brand } from './Brand'
 import { Toolbar } from './Toolbar'
 

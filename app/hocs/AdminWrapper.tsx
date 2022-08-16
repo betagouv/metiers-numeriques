@@ -1,14 +1,11 @@
 import { GlobalStyle, ThemeProvider } from '@singularity/core'
-import { AuthProvider } from 'nexauth/client'
 import Head from 'next/head'
 import { createGlobalStyle } from 'styled-components'
 
 import { AdminBody } from '../atoms/AdminBody'
 import { AdminMain } from '../atoms/AdminMain'
-import { AdminLoader } from '../molecules/AdminLoader'
 import { AdminMenu } from '../molecules/AdminMenu'
 import { AdminToaster } from '../molecules/AdminToaster'
-import { SignInDialog } from '../organisms/SignInDialog'
 import { WithGraphql } from './WithGraphql'
 
 const GlobalStyleCustom = createGlobalStyle`
@@ -42,11 +39,10 @@ const GlobalStyleCustom = createGlobalStyle`
   }
 `
 
-const PRIVATE_PATHS = [/^\/admin($|\/)/]
-
 type AdminWrapperProps = {
   children: any
 }
+
 export function AdminWrapper({ children }: AdminWrapperProps) {
   return (
     <>
@@ -74,19 +70,17 @@ export function AdminWrapper({ children }: AdminWrapperProps) {
         <GlobalStyle />
         <GlobalStyleCustom />
 
-        <AuthProvider Loader={AdminLoader} privatePaths={PRIVATE_PATHS} SignInDialog={SignInDialog}>
-          <WithGraphql>
-            <AdminBody>
-              <AdminMenu />
+        <WithGraphql>
+          <AdminBody>
+            <AdminMenu />
 
-              <AdminMain>
-                {children}
+            <AdminMain>
+              {children}
 
-                <AdminToaster />
-              </AdminMain>
-            </AdminBody>
-          </WithGraphql>
-        </AuthProvider>
+              <AdminToaster />
+            </AdminMain>
+          </AdminBody>
+        </WithGraphql>
       </ThemeProvider>
     </>
   )

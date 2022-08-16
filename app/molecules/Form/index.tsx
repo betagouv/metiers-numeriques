@@ -2,6 +2,10 @@ import { Formik, Form as FormikForm } from 'formik'
 
 import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
+import { DomainSelect } from './DomainSelect'
+import { InstitutionSelect } from './InstitutionSelect'
+import { ProfessionSelect } from './ProfessionSelect'
+import { Select } from './Select'
 import { Submit } from './Submit'
 import { TextInput } from './TextInput'
 
@@ -39,6 +43,10 @@ FormComponent.displayName = 'Form'
 export const Form = Object.assign(FormComponent, {
   Cancel,
   Checkbox,
+  DomainSelect,
+  InstitutionSelect,
+  ProfessionSelect,
+  Select,
   Submit,
   TextInput,
 })

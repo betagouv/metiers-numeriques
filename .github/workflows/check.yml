@@ -114,6 +114,8 @@ jobs:
         run: |
           npx playwright install-deps chromium
           npx playwright install chromium
+      - name: Copy example env vars
+        run: cp .env.example .env
       - name: Setup build
         run: yarn dev:setup
       - name: Build

@@ -21,10 +21,10 @@ import { slugify } from '@common/helpers/slugify'
 import { JobContractType, JobSource, JobState, UserRole } from '@prisma/client'
 import { Button, Field } from '@singularity/core'
 import dayjs from 'dayjs'
-import { useAuth } from 'nexauth/client'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Briefcase, Globe, PenTool } from 'react-feather'
 import toast from 'react-hot-toast'
 import { Flex } from 'reflexbox'
@@ -112,9 +112,9 @@ export default function AdminJobEditorPage() {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isNotFound, setIsNotFound] = useState(false)
-  const auth = useAuth<Common.Auth.User>()
+  const { data: auth } = useSession()
 
-  const isAdmin = useMemo(() => auth.user?.role === UserRole.ADMINISTRATOR, [auth.user])
+  const isAdmin = auth?.user?.role === UserRole.ADMINISTRATOR
 
   const getJobResult = useQuery<
     {
@@ -365,7 +365,7 @@ export default function AdminJobEditorPage() {
           <DoubleField>
             <AdminForm.RecruiterSelect
               canCreate={isAdmin}
-              institutionId={auth.user?.institutionId}
+              institutionId={auth?.user?.institutionId}
               isClearable={isAdmin}
               isDisabled={isLoading}
               label="Service recruteur *"
