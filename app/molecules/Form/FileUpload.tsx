@@ -118,7 +118,7 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
           </Button>
         )}
       </Row>
-      {meta.error && <Error>{meta.error}</Error>}
+      {meta.touched && meta.error && <Error>{meta.error}</Error>}
     </Container>
   )
 }

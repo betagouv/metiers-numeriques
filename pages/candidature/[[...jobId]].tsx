@@ -1,4 +1,5 @@
 import { prisma } from '@api/libs/prisma'
+import { Link } from '@app/atoms/Link'
 import { Spacer } from '@app/atoms/Spacer'
 import { Title } from '@app/atoms/Title'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
@@ -7,7 +8,6 @@ import { ActionBar } from '@app/organisms/Profile/ActionBar'
 import { theme } from '@app/theme'
 import { File, Job } from '@prisma/client'
 import { getSession } from 'next-auth/react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import React, { useState } from 'react'
@@ -43,6 +43,7 @@ type JobApplicationFormData = {
     id: string
     portfolioUrl?: string
   }
+  jobId?: string
 }
 
 const FormSchema = Yup.object().shape({
@@ -76,7 +77,11 @@ export default function JobApplicationPage({ initialValues, job }: JobApplicatio
       <Container>
         <Title as="h1">Ta candidature</Title>
         <Spacer units={1} />
-        {job && <Link href={`/emploi/${job.id}`}>{job.title}</Link>}
+        {job && (
+          <Link href={`/emploi/${job.slug}`} target="_blank">
+            {job.title}
+          </Link>
+        )}
         <Spacer units={1} />
         {error && <Error>Une erreur est survenue, merci de réessayer plus tard.</Error>}
         <Spacer units={2} />
@@ -108,7 +113,7 @@ export default function JobApplicationPage({ initialValues, job }: JobApplicatio
               <Form.TextInput
                 iconClassName="ri-link-m"
                 label="Ton portfoilio"
-                name="portfolioUrl"
+                name="candidate.portfolioUrl"
                 placeholder="Portfoilio URL"
               />
             </div>
@@ -147,13 +152,12 @@ export async function getServerSideProps({ params, req }) {
     }
   }
 
-  const job = params?.jobId
-    ? await prisma.job.findUnique({ select: { id: true, title: true }, where: { id: params?.jobId } })
-    : null
+  const jobId = params?.jobId?.[0] || null
+  const job = jobId ? await prisma.job.findUnique({ select: { slug: true, title: true }, where: { id: jobId } }) : null
 
   const jobApplication = await prisma.jobApplication.findFirst({
     include: { cvFile: true, job: { select: { title: true } } },
-    where: { candidateId: candidate.id, jobId: params?.jobId || null },
+    where: { candidateId: candidate.id, jobId: jobId || null },
   })
   const applicationValues = jobApplication
     ? R.pick(['id', 'applicationLetter', 'cvFile', 'cvFileId'], jobApplication)
@@ -168,6 +172,7 @@ export async function getServerSideProps({ params, req }) {
           id: candidate.id,
           portfolioUrl: candidate.portfolioUrl,
         },
+        jobId,
       },
       job,
     },

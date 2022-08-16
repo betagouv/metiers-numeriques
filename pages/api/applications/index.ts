@@ -110,6 +110,7 @@ const createOrUpdateJobApplication = async (req: NextApiRequest, res: NextApiRes
       applicationLetter: body.application.applicationLetter,
       candidateId: body.candidate.id,
       cvFileId: body.application.cvFileId,
+      jobId: body.jobId,
     }
 
     const createApplicationResponse = await prisma.jobApplication.upsert({

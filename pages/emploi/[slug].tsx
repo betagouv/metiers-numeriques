@@ -16,6 +16,7 @@ import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants'
 import { JobState } from '@prisma/client'
 import dayjs from 'dayjs'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -49,7 +50,7 @@ export const InfoBar = styled.div`
 export const Body = styled.div`
   align-items: flex-start;
   display: flex;
-  margin-top: 4rem;
+  margin: 4rem 0;
 `
 
 export const JobContent = styled.div`
@@ -71,6 +72,7 @@ type JobPageProps = {
   isPreview: boolean
 }
 export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageProps) {
+  const router = useRouter()
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
 
   const pageTitle = useMemo(() => `${data.title} | Métiers du Numérique`, [])
@@ -86,6 +88,15 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
   }, [])
 
   const job = data as JobWithRelation
+
+  const handleSendApplication = () => {
+    if (job.applicationContacts.length > 0) {
+      router.push(`/candidature/${job.id}`)
+    } else {
+      openApplicationModal()
+    }
+  }
+
   const location = job.address
     ? `${job.address.street}, ${job.address.city}, ${job.address.region}, ${getCountryFromCode(job.address.country)}`
     : undefined
@@ -244,7 +255,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
           </p>
 
           {!isFilledOrExpired && (
-            <JobButton onClick={openApplicationModal} size="normal">
+            <JobButton onClick={handleSendApplication} size="normal">
               Je candidate
               <i className="ri-arrow-right-line" />
             </JobButton>
