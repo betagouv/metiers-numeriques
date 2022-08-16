@@ -3,6 +3,7 @@ import { Formik, Form as FormikForm } from 'formik'
 import { Cancel } from './Cancel'
 import { Checkbox } from './Checkbox'
 import { DomainSelect } from './DomainSelect'
+import { FileUpload } from './FileUpload'
 import { InstitutionSelect } from './InstitutionSelect'
 import { ProfessionSelect } from './ProfessionSelect'
 import { Select } from './Select'
@@ -44,6 +45,7 @@ export const Form = Object.assign(FormComponent, {
   Cancel,
   Checkbox,
   DomainSelect,
+  FileUpload,
   InstitutionSelect,
   ProfessionSelect,
   Select,

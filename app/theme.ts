@@ -13,7 +13,7 @@ export const theme = {
       darkGrey: '#4d4d4d',
       grey: '#717171',
       greyBlue: '#abbed1',
-      lightGrey: '#89939e',
+      lightGrey: '#e5e5e5',
       silver: '#f5f7fa',
       white: '#ffffff',
     },

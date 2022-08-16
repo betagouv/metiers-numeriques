@@ -60,6 +60,7 @@ type TextInputPropsWithAriaLabel = Omit<TextInputPropsBase, 'label'> & {
   'aria-label': string
 }
 export type TextInputProps = TextInputPropsWithLabel | TextInputPropsWithAriaLabel
+
 export function TextInput({
   autoComplete = 'off',
   error,

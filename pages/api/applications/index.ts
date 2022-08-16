@@ -8,6 +8,8 @@ export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, re
   switch (req.method) {
     case 'GET':
       return getJobApplications(req, res)
+    case 'POST':
+      return createOrUpdateJobApplication(req, res)
     default:
       return defaultResponse(req, res)
   }
@@ -98,6 +100,40 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
     handleError(err, 'pages/api/job-applications/duplicate.ts > query.getJobApplications()')
 
     res.status(400).send([])
+  }
+}
+
+const createOrUpdateJobApplication = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const body = JSON.parse(req.body)
+    const applicationBody = {
+      applicationLetter: body.application.applicationLetter,
+      candidateId: body.candidate.id,
+      cvFileId: body.application.cvFileId,
+      jobId: body.jobId,
+    }
+
+    const createApplicationResponse = await prisma.jobApplication.upsert({
+      create: applicationBody,
+      update: applicationBody,
+      // https://github.com/prisma/prisma/issues/5233
+      where: { id: body.application.id || '0' },
+    })
+
+    if (body.candidate.githubUrl || body.candidate.portfolioUrl) {
+      await prisma.candidate.update({
+        data: {
+          githubUrl: body.candidate.githubUrl,
+          portfolioUrl: body.candidate.portfolioUrl,
+        },
+        where: { id: body.candidate.id },
+      })
+    }
+
+    res.status(200).send(createApplicationResponse)
+  } catch (err) {
+    handleError(err, 'pages/api/applications/index.ts > query.createJobApplication()')
+    res.status(400).end()
   }
 }
 

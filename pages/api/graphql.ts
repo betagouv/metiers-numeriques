@@ -31,7 +31,7 @@ const permissions = shield({
     deleteContact: permission.isAdministrator,
     updateContact: permission.isAdministrator,
 
-    createFile: permission.isAdministrator,
+    createFile: permission.isPublic,
     deleteFile: permission.isAdministrator,
     updateFile: permission.isAdministrator,
 

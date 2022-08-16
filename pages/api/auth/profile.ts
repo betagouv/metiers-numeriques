@@ -59,7 +59,7 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
       portfolioUrl,
 
       region,
-      seniorityInYears,
+      seniorityInYears: +seniorityInYears,
     }
 
     const updatedCandidate = await prisma.candidate.upsert({
