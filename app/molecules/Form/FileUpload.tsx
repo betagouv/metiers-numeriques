@@ -111,7 +111,14 @@ export function FileUpload({ isDisabled = false, label, name }: FileUploadProps)
       {isUploading && <Loader />}
       <Row>
         {!isUploading && filename && <Filename>{filename}</Filename>}
-        <input ref={inputRef} name={name} onChange={handleFileChange} style={{ display: 'none' }} type="file" />
+        <input
+          ref={inputRef}
+          accept="application/pdf"
+          name={name}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+          type="file"
+        />
         {!isUploading && (
           <Button accent="primary" disabled={isDisabled || isSubmitting} onClick={() => inputRef.current?.click?.()}>
             {filename ? 'Editer' : 'Choisis un fichier'}
