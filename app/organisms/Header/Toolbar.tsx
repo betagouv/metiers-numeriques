@@ -102,7 +102,7 @@ export function Toolbar() {
             <Link href="/offres-emploi">Les offres</Link>
           </LinkItem>
           <LinkItem>
-            <Link href="/institutions">Les employeurs</Link>
+            <Link href="/employeurs">Les employeurs</Link>
           </LinkItem>
           <LinkItem className="fr-mr-12v">
             <Link href="mailto:contact@metiers.numerique.gouv.fr" rel="noopener noreferrer" target="_blank">
