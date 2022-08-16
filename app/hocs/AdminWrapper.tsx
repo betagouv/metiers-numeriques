@@ -1,8 +1,5 @@
-import { UserRole } from '@prisma/client'
 import { GlobalStyle, ThemeProvider } from '@singularity/core'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 
 import { AdminBody } from '../atoms/AdminBody'
@@ -47,16 +44,6 @@ type AdminWrapperProps = {
 }
 
 export function AdminWrapper({ children }: AdminWrapperProps) {
-  const router = useRouter()
-  const { data: auth } = useSession({ required: true })
-
-  // TODO: handle it server side? Seems to be impossible right now due to the way middleware works: https://next-auth.js.org/configuration/nextjs#caveats
-  if (auth?.user?.role === UserRole.CANDIDATE || !auth?.user?.isActive) {
-    router.push('/404')
-
-    return null
-  }
-
   return (
     <>
       <Head>

@@ -108,22 +108,22 @@ export const TEST_JOB_DRAFTS = [
   {
     missionDescription: 'Job A1b Mission',
     recruiter: TEST_RECRUITERS[0],
-    title: `$$ Job A1b Title${new Date()}`,
+    title: `$$ Job A1b Title`,
   },
   {
     missionDescription: 'Job A2b Mission',
     recruiter: TEST_RECRUITERS[1],
-    title: `$$ Job A2b Title${new Date()}`,
+    title: `$$ Job A2b Title`,
   },
   {
     missionDescription: 'Job B1b Mission',
     recruiter: TEST_RECRUITERS[2],
-    title: `$$ Job B1b Title${new Date()}`,
+    title: `$$ Job B1b Title`,
   },
   {
     missionDescription: 'Job B2b Mission',
     recruiter: TEST_RECRUITERS[3],
-    title: `$$ Job B2b Title${new Date()}`,
+    title: `$$ Job B2b Title`,
   },
 ]
 
@@ -142,7 +142,7 @@ export const TEST_JOBS = [
     recruiter: TEST_RECRUITERS[0],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.NONE,
     seniorityInYears: '0',
-    title: `$$ Job A1a Title${new Date()}`,
+    title: `$$ Job A1a Title`,
   },
   {
     address: {
@@ -158,7 +158,7 @@ export const TEST_JOBS = [
     recruiter: TEST_RECRUITERS[1],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.PARTIAL,
     seniorityInYears: '2',
-    title: `$$ Job A2a Title${new Date()}`,
+    title: `$$ Job A2a Title`,
   },
   {
     address: {
@@ -174,7 +174,7 @@ export const TEST_JOBS = [
     recruiter: TEST_RECRUITERS[2],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.FULL,
     seniorityInYears: '0',
-    title: `$$ Job B1a Title${new Date()}`,
+    title: `$$ Job B1a Title`,
   },
   {
     address: {
@@ -190,7 +190,7 @@ export const TEST_JOBS = [
     recruiter: TEST_RECRUITERS[3],
     remoteStatus: JOB_REMOTE_STATUS_LABEL.NONE,
     seniorityInYears: '2',
-    title: `$$ Job B2a Title${new Date()}`,
+    title: `$$ Job B2a Title`,
   },
 ]
 
