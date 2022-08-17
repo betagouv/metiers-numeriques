@@ -76,8 +76,7 @@ export const UserMenu = () => {
             </LinkItem>
           )}
           <LinkItem onClick={() => signOut()}>
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a>Se déconnecter</a>
+            <span>Se déconnecter</span>
           </LinkItem>
         </Menu>
       )}
