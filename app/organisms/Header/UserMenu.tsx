@@ -41,12 +41,11 @@ const Menu = styled.ul`
 `
 
 export const UserMenu = () => {
-  const { data } = useSession()
+  const { data, status } = useSession()
   const [isOpen, setIsOpen] = useState(false)
 
   const user = data?.user
-
-  if (!user) {
+  if (status === 'loading' || !user) {
     return null
   }
 
@@ -77,7 +76,8 @@ export const UserMenu = () => {
             </LinkItem>
           )}
           <LinkItem onClick={() => signOut()}>
-            <a href="/">Se déconnecter</a>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a>Se déconnecter</a>
           </LinkItem>
         </Menu>
       )}
