@@ -15,8 +15,10 @@ apiKey.apiKey = process.env.SEND_IN_BLUE_API_KEY
 const sendInBlueTransacClient = new SendInBlue.TransactionalEmailsApi()
 
 type Receiver = { email: string; name?: string }
+type Attachment = { name: string; url: string }
 
 type TransacEmailProps = {
+  attachment?: Attachment[]
   params: Record<string, string | string[]>
   subject: string
   templateId: number
@@ -28,22 +30,25 @@ const DEFAULT_SENDER: Receiver = {
   name: 'Métiers Numériques',
 }
 
-const sendTransacEmail = async ({ params, subject, templateId, to }: TransacEmailProps) => {
+const sendTransacEmail = async ({ attachment, params, subject, templateId, to }: TransacEmailProps) => {
   if (process.env.CI) {
     return
   }
   try {
     const environment = process.env.SENTRY_ENVIRONMENT
     // Helps distinguish production emails from others
-    const taggedSubject = environment === 'production' ? environment : `[${environment}] ${subject}`
+    const taggedSubject = environment === 'production' ? subject : `[${environment?.toUpperCase()}] ${subject}`
 
-    return sendInBlueTransacClient.sendTransacEmail({
+    await sendInBlueTransacClient.sendTransacEmail({
       to,
       sender: DEFAULT_SENDER,
       subject: taggedSubject,
       templateId,
+      attachment,
       params,
     })
+
+    console.log('wahouuuuuuuuuuu')
   } catch (err) {
     handleError(err, 'api/libs/sendInBlue.ts > query.sendTransacEmail()')
   }
@@ -56,6 +61,50 @@ export const sendAccountRequestEmail = async (fullname: string, userId: string) 
     templateId: 6,
     params: { fullname, verifyUrl: `${process.env.DOMAIN_URL}/admin/user/${userId}` },
   })
+
+export const sendApplicationEmail = async (applicationId: string, fullname: string) => {
+  const application = await prisma.jobApplication.findUnique({
+    where: { id: applicationId },
+    include: { cvFile: true },
+  })
+
+  if (!application) {
+    return // TODO: handle error
+  }
+
+  // Candidate applied to a specific offer
+  if (application.jobId) {
+    const job = await prisma.job.findUnique({
+      where: { id: application.jobId },
+      include: { applicationContacts: true },
+    })
+
+    if (job) {
+      return sendTransacEmail({
+        templateId: 7,
+        subject: `Nouvelle candidature pour le poste: ${job.title}`,
+        to: [...job.applicationContacts.map(contact => ({ email: contact.email, name: contact.name })), DEFAULT_SENDER],
+        params: {
+          introSentence: `${fullname} vient de postuler pour le poste: ${job.title}.`,
+          checkUrl: `${process.env.DOMAIN_URL}/admin/job/${job.id}/pool`,
+        },
+        attachment: [{ name: application.cvFile.title, url: application.cvFile.url }],
+      })
+    }
+  }
+
+  // Candidate sent an adhoc application
+  return sendTransacEmail({
+    subject: 'Nouvelle candidature spontanée',
+    to: [DEFAULT_SENDER],
+    templateId: 7,
+    params: {
+      introSentence: `${fullname} vient déposer une candidature spontanée.`,
+      checkUrl: `${process.env.DOMAIN_URL}/admin/applications`,
+    },
+    attachment: [{ name: application.cvFile.title, url: application.cvFile.url }],
+  })
+}
 
 export const sendJobApplicationRejectedEmail = async (applicationId: string) => {
   const application = await prisma.jobApplication.findUnique({
