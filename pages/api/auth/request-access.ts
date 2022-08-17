@@ -1,4 +1,5 @@
 import { prisma } from '@api/libs/prisma'
+import { sendAccountRequestEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -32,6 +33,8 @@ const requestRecruiterAccess = async (req: NextApiRequest, res: NextApiResponse)
         id: auth.user.id,
       },
     })
+
+    await sendAccountRequestEmail(`${auth.user.firstName} ${auth.user.lastName}`, auth.user.id)
 
     res.status(200).send(updatedUser)
   } catch (err) {
