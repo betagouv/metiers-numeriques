@@ -99,9 +99,11 @@ const ApplicationCard = ({ application }: ApplicationCardProps) => {
             )}
           </JobTitle>
         </TitleContainer>
-        <LinkLikeButton accent="secondary" href={`/candidature/${isAdHoc ? '' : application.job.id}`} size="small">
-          Editer ma candidature
-        </LinkLikeButton>
+        {status === 'success' && (
+          <LinkLikeButton accent="secondary" href={`/candidature/${isAdHoc ? '' : application.job.id}`} size="small">
+            Editer ma candidature
+          </LinkLikeButton>
+        )}
       </InfoContainer>
       {!isAdHoc && application.job.state === JobState.DRAFT && (
         <RejectionReason>L&apos;offre a été dépubliée</RejectionReason>
@@ -109,7 +111,9 @@ const ApplicationCard = ({ application }: ApplicationCardProps) => {
       {!isAdHoc && application.job.state === JobState.FILLED && (
         <RejectionReason>L&apos;offre a été pourvue</RejectionReason>
       )}
-      {application.rejectionReason && <RejectionReason>{application.rejectionReason}</RejectionReason>}
+      {application.status === JobApplicationStatus.REJECTED && application.rejectionReason && (
+        <RejectionReason>Candidature refusée: {application.rejectionReason}</RejectionReason>
+      )}
     </CardContainer>
   )
 }
