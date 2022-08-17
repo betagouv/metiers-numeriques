@@ -2,27 +2,11 @@ import { prisma } from '@api/libs/prisma'
 import { CheckOffers } from '@app/organisms/Profile/CheckOffers'
 import { PreferencesForm } from '@app/organisms/Profile/PreferencesForm'
 import { ProfileForm } from '@app/organisms/Profile/ProfileForm'
-import { theme } from '@app/theme'
+import { ProfileLayout } from '@app/organisms/Profile/ProfileLayout'
 import { JobContractType } from '@prisma/client'
 import { getSession } from 'next-auth/react'
-import Image from 'next/image'
 import * as R from 'ramda'
 import React, { useRef, useState } from 'react'
-import styled from 'styled-components'
-
-const PageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
-
-const SideBar = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  background-color: ${theme.color.primary.darkBlue};
-  width: 300px;
-`
 
 type ProfileStep = 'profile' | 'preferences' | 'check-offers'
 
@@ -70,26 +54,19 @@ export default function ProfilePage({ profile }: ProfilePageProps) {
   }
 
   return (
-    <div className="fr-container fr-pt-4w fr-pb-8w fr-grid-row">
-      <SideBar className="fr-col-md-3 fr-displayed-md fr-p-4v">
-        <Image height="200" layout="intrinsic" src="/images/rocket.svg" width="200" />
-      </SideBar>
-      <div className="fr-col-md-9 fr-col-12 fr-px-md-24v fr-py-md-6v">
-        <PageContent>
-          {step === 'profile' && <ProfileForm initialValues={subscriptionValues.current} onNext={handleNextStep} />}
+    <ProfileLayout>
+      {step === 'profile' && <ProfileForm initialValues={subscriptionValues.current} onNext={handleNextStep} />}
 
-          {step === 'preferences' && (
-            <PreferencesForm
-              initialValues={subscriptionValues.current}
-              onNext={handleNextStep}
-              onPrevious={handlePreviousStep}
-            />
-          )}
+      {step === 'preferences' && (
+        <PreferencesForm
+          initialValues={subscriptionValues.current}
+          onNext={handleNextStep}
+          onPrevious={handlePreviousStep}
+        />
+      )}
 
-          {step === 'check-offers' && <CheckOffers />}
-        </PageContent>
-      </div>
-    </div>
+      {step === 'check-offers' && <CheckOffers />}
+    </ProfileLayout>
   )
 }
 

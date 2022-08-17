@@ -1,11 +1,11 @@
 import { prisma } from '@api/libs/prisma'
 import { Link } from '@app/atoms/Link'
+import { Message } from '@app/atoms/Message'
 import { Spacer } from '@app/atoms/Spacer'
 import { Title } from '@app/atoms/Title'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { Form } from '@app/molecules/Form'
 import { ActionBar } from '@app/organisms/Profile/ActionBar'
-import { theme } from '@app/theme'
 import { File, Job } from '@prisma/client'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -22,14 +22,6 @@ const SectionTitle = styled.h2`
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: 600;
-`
-
-const Message = styled.div<{ status: 'success' | 'danger' }>`
-  padding: 1.5rem;
-  color: ${p => (p.status === 'danger' ? theme.color.danger.scarlet : theme.color.success.herbal)};
-  font-weight: 500;
-  border: 1px solid ${p => (p.status === 'danger' ? theme.color.danger.scarlet : theme.color.success.herbal)};
-  border-radius: 0.5rem;
 `
 
 type JobApplicationFormData = {

@@ -15,7 +15,7 @@ const Button = styled(SUIButton)`
 
 const REJECTION_REASONS = [
   'Manque d’expérience globale sur le poste',
-  'Manque de compétences précises sur le poste (précisez aux candidats)',
+  'Manque de compétences précises sur le poste',
   'Manque de lien global entre la candidature et le poste',
   'Le poste est déjà pourvu',
   'Le process est avancé avec d’autres candidats',
