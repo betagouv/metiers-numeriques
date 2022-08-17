@@ -22,5 +22,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: ['/admin', '/profil', '/espace-candidat', '/candidature'],
+  matcher: ['/admin', '/profil', '/espace-candidat', '/candidature', '/demande-de-compte'],
 }
