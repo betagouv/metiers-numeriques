@@ -66,6 +66,10 @@ export const JobApplicationCard = ({ application }: ApplicationCardProps) => {
       ? 'success'
       : 'danger'
 
+  const isUnpublished = !isAdHoc && application.job.state === JobState.DRAFT
+  const isFilled = !isAdHoc && application.job.state === JobState.FILLED
+  const isRejected = application.status === JobApplicationStatus.REJECTED && application.rejectionReason
+
   return (
     <CardContainer>
       <InfoContainer>
@@ -87,15 +91,9 @@ export const JobApplicationCard = ({ application }: ApplicationCardProps) => {
           </LinkLikeButton>
         )}
       </InfoContainer>
-      {!isAdHoc && application.job.state === JobState.DRAFT && (
-        <RejectionReason>L&apos;offre a été dépubliée</RejectionReason>
-      )}
-      {!isAdHoc && application.job.state === JobState.FILLED && (
-        <RejectionReason>L&apos;offre a été pourvue</RejectionReason>
-      )}
-      {application.status === JobApplicationStatus.REJECTED && application.rejectionReason && (
-        <RejectionReason>Candidature refusée: {application.rejectionReason}</RejectionReason>
-      )}
+      {isUnpublished && <RejectionReason>L&apos;offre a été dépubliée</RejectionReason>}
+      {isFilled && <RejectionReason>L&apos;offre a été pourvue</RejectionReason>}
+      {!isFilled && isRejected && <RejectionReason>Candidature refusée: {application.rejectionReason}</RejectionReason>}
     </CardContainer>
   )
 }
