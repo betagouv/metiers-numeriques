@@ -100,6 +100,7 @@
     "remark-rehype": "10.1.0",
     "remixicon": "2.5.0",
     "sha1": "1.1.1",
+    "sib-api-v3-sdk": "^8.4.2",
     "slugify": "1.6.5",
     "styled-components": "5.3.3",
     "unified": "10.1.2",
