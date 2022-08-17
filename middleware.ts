@@ -4,10 +4,12 @@ import { withAuth } from 'next-auth/middleware'
 export default withAuth({
   // @ts-expect-error FIXME: TS complains about next-auth typing.
   callbacks: {
-    authorized({ token }) {
+    authorized({ req, token }) {
       if (token) {
-        if (token.user.role === 'CANDIDATE' || !token.user.isActive) {
-          return false
+        if (req.nextUrl.pathname.startsWith('/admin')) {
+          if (token.user.role === 'CANDIDATE' || !token.user.isActive) {
+            return false
+          }
         }
 
         return true
@@ -20,5 +22,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: ['/admin'],
+  matcher: ['/admin', '/profil', '/espace-candidat', '/candidature'],
 }

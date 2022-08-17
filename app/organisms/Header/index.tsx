@@ -94,6 +94,14 @@ export function Header() {
                   {data.user.role === UserRole.CANDIDATE && (
                     <>
                       <NavLink
+                        aria-current={router.pathname === '/espace-candidat' ? 'page' : undefined}
+                        className="fr-nav__link"
+                        href="/espace-candidat"
+                        onClick={closeMenu}
+                      >
+                        Mon espace candidat
+                      </NavLink>
+                      <NavLink
                         aria-current={router.pathname === '/profil' ? 'page' : undefined}
                         className="fr-nav__link"
                         href="/profil"

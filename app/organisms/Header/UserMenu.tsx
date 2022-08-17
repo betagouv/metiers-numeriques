@@ -60,6 +60,9 @@ export const UserMenu = () => {
           {user.role === UserRole.CANDIDATE && (
             <>
               <LinkItem>
+                <Link href="/espace-candidat">Mon espace candidat</Link>
+              </LinkItem>
+              <LinkItem>
                 <Link href="/profil">Mon profil</Link>
               </LinkItem>
               <LinkItem>
