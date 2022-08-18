@@ -26,7 +26,9 @@ export const Checkbox = ({ label, name, onChange }: CheckboxProps) => {
   return (
     <CheckboxContainer onClick={handleChange}>
       <Image height={24} src={`/images/checkbox-${checked ? 'checked' : 'empty'}.svg`} width={24} />
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={name} style={{ flex: 1 }}>
+        {label}
+      </label>
     </CheckboxContainer>
   )
 }

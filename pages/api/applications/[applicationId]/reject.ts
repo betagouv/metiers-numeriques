@@ -15,10 +15,10 @@ export default async function ApiRejectJobApplicationEndpoint(req: NextApiReques
 const rejectJobApplication = async (req: NextApiRequest, res: NextApiResponse) => {
   const { applicationId } = req.query
 
-  const { rejectionReason } = JSON.parse(req.body)
+  const { rejectionReasons } = JSON.parse(req.body)
   try {
     const updateResponse = await prisma.jobApplication.update({
-      data: { rejectionReason, status: JobApplicationStatus.REJECTED },
+      data: { rejectionReasons, status: JobApplicationStatus.REJECTED },
       where: { id: applicationId as string },
     })
     res.status(200).send(updateResponse)

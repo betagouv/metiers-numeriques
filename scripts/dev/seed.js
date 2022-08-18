@@ -228,7 +228,7 @@ async function seed() {
       recruiterId: rawJob.recruiter.id,
     })),
     R.map(omitTypenameProp),
-    R.map(R.omit(['address', 'applicationContacts', 'infoContact', 'profession', 'recruiter'])),
+    R.map(R.omit(['address', 'applicationContacts', 'infoContact', 'profession', 'domains', 'recruiter'])),
   )(rawJobs)
 
   B.info('[scripts/dev/seed.ts] Creating test account (admin@beta.gouv.fr / test)…')

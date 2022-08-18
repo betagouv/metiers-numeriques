@@ -70,8 +70,8 @@ export const useCandidatePoolQueries = (jobId?: string) => {
     }
   }
 
-  const handleRejected = async (applicationId: string, rejectionReason: string): Promise<void> => {
-    const body = JSON.stringify({ rejectionReason })
+  const handleRejected = async (applicationId: string, rejectionReasons: string[]): Promise<void> => {
+    const body = JSON.stringify({ rejectionReasons })
     try {
       setIsLoading(true)
       const response = await fetch(`/api/applications/${applicationId}/reject`, { body, method: 'PUT' })

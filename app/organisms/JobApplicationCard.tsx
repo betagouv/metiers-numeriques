@@ -68,7 +68,7 @@ export const JobApplicationCard = ({ application }: ApplicationCardProps) => {
 
   const isUnpublished = !isAdHoc && application.job.state === JobState.DRAFT
   const isFilled = !isAdHoc && application.job.state === JobState.FILLED
-  const isRejected = application.status === JobApplicationStatus.REJECTED && application.rejectionReason
+  const isRejected = application.status === JobApplicationStatus.REJECTED && application.rejectionReasons.length
 
   return (
     <CardContainer>
@@ -93,7 +93,9 @@ export const JobApplicationCard = ({ application }: ApplicationCardProps) => {
       </InfoContainer>
       {isUnpublished && <RejectionReason>L&apos;offre a été dépubliée</RejectionReason>}
       {isFilled && <RejectionReason>L&apos;offre a été pourvue</RejectionReason>}
-      {!isFilled && isRejected && <RejectionReason>Candidature refusée: {application.rejectionReason}</RejectionReason>}
+      {!isFilled && isRejected && (
+        <RejectionReason>Candidature refusée: {application.rejectionReasons.join(', ')}</RejectionReason>
+      )}
     </CardContainer>
   )
 }
