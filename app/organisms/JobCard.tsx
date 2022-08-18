@@ -97,14 +97,14 @@ export function JobCard({ job }: JobCardProps) {
   }, [])
 
   return (
-    <Link
-      href={`/emploi/${job.slug}`}
-      noUnderline
-      onAuxClick={trackJobOpening}
-      onClick={trackJobOpening}
-      target="_blank"
-    >
-      <Box className="JobCard">
+    <Box className="JobCard">
+      <Link
+        href={`/emploi/${job.slug}`}
+        noUnderline
+        onAuxClick={trackJobOpening}
+        onClick={trackJobOpening}
+        target="_blank"
+      >
         <Card style={{ width: '100%' }}>
           <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
           <Title>{job.title}</Title>
@@ -162,7 +162,7 @@ export function JobCard({ job }: JobCardProps) {
             </Info>
           </Row>
         </Card>
-      </Box>
-    </Link>
+      </Link>
+    </Box>
   )
 }
