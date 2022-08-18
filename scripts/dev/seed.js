@@ -50,6 +50,12 @@ async function seed() {
   B.info('[scripts/dev/seed.ts] Deleting all refresh tokens…')
   await prisma.refreshToken.deleteMany()
 
+  B.info('[scripts/dev/seed.ts] Deleting all job applications…')
+  await prisma.jobApplication.deleteMany()
+
+  B.info('[scripts/dev/seed.ts] Deleting all candidates…')
+  await prisma.candidate.deleteMany()
+
   B.info('[scripts/dev/seed.ts] Deleting all users…')
   await prisma.user.deleteMany()
 
