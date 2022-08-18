@@ -97,74 +97,72 @@ export function JobCard({ job }: JobCardProps) {
   }, [])
 
   return (
-    <Box className="JobCard">
-      <Card style={{ width: '100%' }}>
-        <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
-        <Title>
-          <Link
-            href={`/emploi/${job.slug}`}
-            noUnderline
-            onAuxClick={trackJobOpening}
-            onClick={trackJobOpening}
-            target="_blank"
-          >
-            {job.title}
-          </Link>
-        </Title>
-        <ul
-          className="fr-tags-group"
-          style={{
-            marginTop: '0.5rem',
-          }}
-        >
-          <li
-            className="fr-tag fr-tag--sm"
+    <Link
+      href={`/emploi/${job.slug}`}
+      noUnderline
+      onAuxClick={trackJobOpening}
+      onClick={trackJobOpening}
+      target="_blank"
+    >
+      <Box className="JobCard">
+        <Card style={{ width: '100%' }}>
+          <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
+          <Title>{job.title}</Title>
+          <ul
+            className="fr-tags-group"
             style={{
-              backgroundColor: theme.color.neutral.silver,
+              marginTop: '0.5rem',
             }}
           >
-            {job.profession.name}
-          </li>
-
-          {R.sortBy<Domain>(d => d.name, job?.domains || []).map(domain => (
             <li
-              key={domain.id}
               className="fr-tag fr-tag--sm"
               style={{
-                backgroundColor: theme.color.primary.lightBlue,
+                backgroundColor: theme.color.neutral.silver,
               }}
             >
-              {domain.name}
+              {job.profession.name}
             </li>
-          ))}
-        </ul>
-        <Excerpt>{job.missionDescription}</Excerpt>
 
-        {/* TODO: contract types refacto forced me to keep the array type. Must be refactored cleaner */}
-        {!!job.contractTypes?.length && (
-          <Info>
-            <i className="ri-user-3-line" style={{ color: theme.color.warning.lemon }} />
-            {JOB_CONTRACT_TYPE_LABEL[job.contractTypes[0]]}
-          </Info>
-        )}
+            {R.sortBy<Domain>(d => d.name, job?.domains || []).map(domain => (
+              <li
+                key={domain.id}
+                className="fr-tag fr-tag--sm"
+                style={{
+                  backgroundColor: theme.color.primary.lightBlue,
+                }}
+              >
+                {domain.name}
+              </li>
+            ))}
+          </ul>
+          <Excerpt>{job.missionDescription}</Excerpt>
 
-        <Row>
-          <Info style={{ minWidth: '30%' }}>
-            <i className="ri-map-pin-line" style={{ color: theme.color.danger.rubicund }} />
-            {location}
-          </Info>
+          {/* TODO: contract types refacto forced me to keep the array type. Must be refactored cleaner */}
+          {!!job.contractTypes?.length && (
+            <Info>
+              <i className="ri-user-3-line" style={{ color: theme.color.warning.lemon }} />
+              {JOB_CONTRACT_TYPE_LABEL[job.contractTypes[0]]}
+            </Info>
+          )}
 
-          <Info>
-            <i className="ri-suitcase-line" style={{ color: theme.color.primary.azure }} />
-            {job.recruiter.websiteUrl && (
-              <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
-                {job.recruiter.institution?.name}
-              </a>
-            )}
-            {!job.recruiter.websiteUrl && job.recruiter.institution?.name}
-          </Info>
-        </Row>
-      </Card>
-    </Box>
+          <Row>
+            <Info style={{ minWidth: '30%' }}>
+              <i className="ri-map-pin-line" style={{ color: theme.color.danger.rubicund }} />
+              {location}
+            </Info>
+
+            <Info>
+              <i className="ri-suitcase-line" style={{ color: theme.color.primary.azure }} />
+              {job.recruiter.websiteUrl && (
+                <a href={job.recruiter.websiteUrl} rel="noopener noreferrer" target="_blank">
+                  {job.recruiter.institution?.name}
+                </a>
+              )}
+              {!job.recruiter.websiteUrl && job.recruiter.institution?.name}
+            </Info>
+          </Row>
+        </Card>
+      </Box>
+    </Link>
   )
 }

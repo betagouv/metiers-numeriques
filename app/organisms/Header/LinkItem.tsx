@@ -8,7 +8,8 @@ export const LinkItem = styled.li`
   cursor: pointer;
   white-space: nowrap;
 
-  a {
+  a,
+  span {
     line-height: 2.5rem;
 
     &:hover {
