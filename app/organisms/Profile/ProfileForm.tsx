@@ -12,7 +12,10 @@ const FormSchema = Yup.object().shape({
   lastName: Yup.string().required('Ce champ est obligatoire'),
   currentJob: Yup.string().required('Ce champ est obligatoire'),
   phone: Yup.string().nullable(),
-  linkedInUrl: Yup.string().required('Ce champ est obligatoire'),
+  linkedInUrl: Yup.string()
+    .url('Cette URL est mal formatée.')
+    .matches(/linkedin.com\/\w+/, 'Le lien doit pointer vers ton profil LinkedIn')
+    .required('Ce champ est obligatoire'),
   seniorityInYears: Yup.number().required('Ce champ est obligatoire'),
   githubUrl: Yup.string().url('Cette URL est mal formatée.').nullable(),
   portfolioUrl: Yup.string().url('Cette URL est mal formatée.').nullable(),
