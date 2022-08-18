@@ -9,7 +9,7 @@
     "extraFileExtensions": [".cjs"],
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["/.next/", "/.yarn/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts"],
+  "ignorePatterns": ["/.next/", "/.yarn/", "/public/js/", "/public/index.bundle.js", "next-env.d.ts", "/scripts"],
   "rules": {
     "class-methods-use-this": "off",
     "consistent-return": "off",
