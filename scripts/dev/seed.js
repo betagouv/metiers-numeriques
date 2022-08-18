@@ -144,6 +144,13 @@ async function seed() {
                 position
                 updatedAt
               }
+              domains {
+                  id
+
+                  createdAt
+                  name
+                  updatedAt
+              }
               profession {
                 id
 
@@ -188,6 +195,7 @@ async function seed() {
   const rawJobs = await getJobs()
 
   const addresses = R.pipe(R.map(R.prop('address')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
+  const domains = R.pipe(R.map(R.prop('domain')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
   const professions = R.pipe(R.map(R.prop('profession')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
   const recruiters = R.pipe(
     R.map(R.prop('recruiter')),
@@ -272,6 +280,11 @@ async function seed() {
   B.info('[scripts/dev/seed.ts] Seeding local database with production contacts…')
   await prisma.contact.createMany({
     data: contacts,
+  })
+
+  B.info('[scripts/dev/seed.ts] Seeding local database with production domains…')
+  await prisma.domain.createMany({
+    data: domains,
   })
 
   B.info('[scripts/dev/seed.ts] Seeding local database with production professions…')

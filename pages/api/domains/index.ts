@@ -20,7 +20,7 @@ export default async function ApiDomainsEndpoint(req: NextApiRequest, res: NextA
 const getDomains = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const pageIndex = +(req.query?.pageIndex || 0)
-    const perPage = +(req.query?.perPage || 10) // TODO: default value here
+    const perPage = +(req.query?.perPage || 0)
     const query = req.query?.query as string
 
     const paginationFilter = buildPrismaPaginationFilter(perPage, pageIndex)
