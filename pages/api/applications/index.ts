@@ -106,8 +106,6 @@ const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => 
 
 const createOrUpdateJobApplication = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await getSession({ req })
-
     const body = JSON.parse(req.body)
     const applicationBody = {
       applicationLetter: body.application.applicationLetter,
@@ -133,8 +131,10 @@ const createOrUpdateJobApplication = async (req: NextApiRequest, res: NextApiRes
       })
     }
 
-    const { user } = session // TODO: do not send if updated
-    await sendApplicationEmail(createApplicationResponse.id, `${user.firstName} ${user.lastName}`)
+    // Send application email only on creation
+    if (!body.application.id) {
+      await sendApplicationEmail(createApplicationResponse.id)
+    }
 
     res.status(200).send(createApplicationResponse)
   } catch (err) {

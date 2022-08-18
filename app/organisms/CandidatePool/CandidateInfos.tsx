@@ -1,9 +1,8 @@
 import { Tag } from '@app/atoms/Tag'
+import { CandidateWithRelation } from '@app/libs/candidate'
 import { JOB_CONTRACT_TYPE_LABEL } from '@common/constants.shared'
 import React from 'react'
 import styled from 'styled-components'
-
-import { CandidateWithRelation } from './types'
 
 type CandidateInfosProps = {
   candidate: CandidateWithRelation

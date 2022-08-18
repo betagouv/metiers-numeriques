@@ -1,12 +1,11 @@
 import { Checkbox } from '@app/atoms/Checkbox'
 import { Spacer } from '@app/atoms/Spacer'
+import { JobApplicationWithRelation } from '@app/libs/candidate'
 import { JobApplicationStatus } from '@prisma/client'
 import { Button as SUIButton, Modal } from '@singularity/core'
 import React, { useState } from 'react'
 import { Star, X } from 'react-feather'
 import styled from 'styled-components'
-
-import { JobApplicationWithRelation } from './types'
 
 const Button = styled(SUIButton)`
   display: flex;

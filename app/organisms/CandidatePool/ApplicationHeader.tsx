@@ -1,8 +1,12 @@
 import { AdminTitle } from '@app/atoms/AdminTitle'
 import { Spacer } from '@app/atoms/Spacer'
+import {
+  formatCandidateApplicationFile,
+  formatSeniority,
+  getCandidateFullName,
+  JobApplicationWithRelation,
+} from '@app/libs/candidate'
 import { ApplicationSubtitle } from '@app/organisms/CandidatePool/ApplicationSubtitle'
-import { JobApplicationWithRelation } from '@app/organisms/CandidatePool/types'
-import { formatSeniority, getCandidateFullName } from '@app/organisms/CandidatePool/utils'
 import { handleError } from '@common/helpers/handleError'
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
@@ -40,19 +44,7 @@ const downloadApplicationZip = (application: JobApplicationWithRelation) => {
   const cvFileName = url.substring(url.lastIndexOf('/'))
   folder?.file(cvFileName, blobPromise)
 
-  folder?.file(
-    'candidature.txt',
-    [
-      `Nom: ${getCandidateFullName(application.candidate)}`,
-      `Email: ${application.candidate.user.email}`,
-      `Tel: ${application.candidate.phone}`,
-      `Localisation: ${application.candidate.region}`,
-      `Compétences: ${application.candidate.professions.map(p => p.name).join(', ')}`,
-      `Domaines d'intérêt: ${application.candidate.domains.map(d => d.name).join(', ')}`,
-      '',
-      application.applicationLetter,
-    ].join('\n'),
-  )
+  folder?.file('candidature.txt', formatCandidateApplicationFile(application))
 
   zip
     .generateAsync({ type: 'blob' })

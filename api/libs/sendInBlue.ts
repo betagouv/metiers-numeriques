@@ -1,5 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { prisma } from '@api/libs/prisma'
+import { formatCandidateApplicationFile, getCandidateFullName } from '@app/libs/candidate'
 import { handleError } from '@common/helpers/handleError'
 import { User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
@@ -15,7 +16,7 @@ apiKey.apiKey = process.env.SEND_IN_BLUE_API_KEY
 const sendInBlueTransacClient = new SendInBlue.TransactionalEmailsApi()
 
 type Receiver = { email: string; name?: string }
-type Attachment = { name: string; url: string }
+type Attachment = { name: string; url: string } | { content: string; name: string }
 
 type TransacEmailProps = {
   attachment?: Attachment[]
@@ -39,7 +40,7 @@ const sendTransacEmail = async ({ attachment, params, subject, templateId, to }:
     // Helps distinguish production emails from others
     const taggedSubject = environment === 'production' ? subject : `[${environment?.toUpperCase()}] ${subject}`
 
-    await sendInBlueTransacClient.sendTransacEmail({
+    return sendInBlueTransacClient.sendTransacEmail({
       to,
       sender: DEFAULT_SENDER,
       subject: taggedSubject,
@@ -47,8 +48,6 @@ const sendTransacEmail = async ({ attachment, params, subject, templateId, to }:
       attachment,
       params,
     })
-
-    console.log('wahouuuuuuuuuuu')
   } catch (err) {
     handleError(err, 'api/libs/sendInBlue.ts > query.sendTransacEmail()')
   }
@@ -62,15 +61,33 @@ export const sendAccountRequestEmail = async (fullname: string, userId: string) 
     params: { fullname, verifyUrl: `${process.env.DOMAIN_URL}/admin/user/${userId}` },
   })
 
-export const sendApplicationEmail = async (applicationId: string, fullname: string) => {
+export const sendApplicationEmail = async (applicationId: string) => {
   const application = await prisma.jobApplication.findUnique({
     where: { id: applicationId },
-    include: { cvFile: true },
+    include: {
+      cvFile: true,
+      candidate: {
+        include: {
+          user: true,
+          domains: true,
+          professions: true,
+        },
+      },
+    },
   })
 
   if (!application) {
     return // TODO: handle error
   }
+
+  const candidateName = getCandidateFullName(application.candidate)
+
+  const applicationSummary = Buffer.from(formatCandidateApplicationFile(application))
+  const applicationSummaryBase64 = applicationSummary.toString('base64')
+  const attachment = [
+    { name: application.cvFile.title, url: application.cvFile.url },
+    { name: `Candidature - ${candidateName}.txt`, content: applicationSummaryBase64 },
+  ]
 
   // Candidate applied to a specific offer
   if (application.jobId) {
@@ -85,10 +102,10 @@ export const sendApplicationEmail = async (applicationId: string, fullname: stri
         subject: `Nouvelle candidature pour le poste: ${job.title}`,
         to: [...job.applicationContacts.map(contact => ({ email: contact.email, name: contact.name })), DEFAULT_SENDER],
         params: {
-          introSentence: `${fullname} vient de postuler pour le poste: ${job.title}.`,
+          introSentence: `${candidateName} vient de postuler pour le poste: ${job.title}.`,
           checkUrl: `${process.env.DOMAIN_URL}/admin/job/${job.id}/pool`,
         },
-        attachment: [{ name: application.cvFile.title, url: application.cvFile.url }],
+        attachment,
       })
     }
   }
@@ -99,10 +116,10 @@ export const sendApplicationEmail = async (applicationId: string, fullname: stri
     to: [DEFAULT_SENDER],
     templateId: 7,
     params: {
-      introSentence: `${fullname} vient déposer une candidature spontanée.`,
+      introSentence: `${candidateName} vient déposer une candidature spontanée.`,
       checkUrl: `${process.env.DOMAIN_URL}/admin/applications`,
     },
-    attachment: [{ name: application.cvFile.title, url: application.cvFile.url }],
+    attachment,
   })
 }
 

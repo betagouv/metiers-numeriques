@@ -1,6 +1,6 @@
 import { Link } from '@app/atoms/Link'
+import { CandidateWithRelation } from '@app/libs/candidate'
 import { Row } from '@app/organisms/CandidatePool/Grid'
-import { CandidateWithRelation } from '@app/organisms/CandidatePool/types'
 import React from 'react'
 import { GitHub, Link as LinkIcon, Linkedin, Mail, Phone } from 'react-feather'
 
