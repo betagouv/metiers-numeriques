@@ -18,6 +18,12 @@ async function generatePassword() {
 const strData = fs.readFileSync('./data.json')
 const data = JSON.parse(strData)
 
+/**
+ * Following the execution of `extract-demarches-simplifiees-data.js`, we use the generated `data.json`
+ * to hydrate our Db with new candidate data.
+ *
+ * Everything is based on unique keys, so there can't be any duplicates. Script can be executed as much as needed.
+ */
 data.forEach(async candidateData => {
   try {
     const user = await prisma.user.upsert({
