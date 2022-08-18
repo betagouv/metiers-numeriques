@@ -68,7 +68,7 @@ export const JobApplicationCard = ({ application }: ApplicationCardProps) => {
 
   const isUnpublished = !isAdHoc && application.job.state === JobState.DRAFT
   const isFilled = !isAdHoc && application.job.state === JobState.FILLED
-  const isRejected = application.status === JobApplicationStatus.REJECTED && application.rejectionReasons.length
+  const isRejected = application.status === JobApplicationStatus.REJECTED && !!application.rejectionReasons.length
 
   return (
     <CardContainer>

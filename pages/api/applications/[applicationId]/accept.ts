@@ -20,7 +20,7 @@ const changeJobApplicationStatus =
 
     try {
       const updateResponse = await prisma.jobApplication.update({
-        data: { status },
+        data: { rejectionReasons: [], status },
         where: { id: applicationId as string },
       })
       res.status(200).send(updateResponse)
