@@ -71,10 +71,7 @@ describe('api/helpers/buildPrismaPaginationFilter()', () => {
 
     const result = buildPrismaPaginationFilter(perPage, pageIndex)
 
-    expect(result).toStrictEqual({
-      skip: 0,
-      take: 1,
-    })
+    expect(result).toStrictEqual({})
   })
 
   test(`with a wrong <perPage> type`, () => {
