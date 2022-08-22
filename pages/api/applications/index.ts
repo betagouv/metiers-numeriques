@@ -1,4 +1,5 @@
 import { prisma } from '@api/libs/prisma'
+import { sendApplicationEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -128,6 +129,11 @@ const createOrUpdateJobApplication = async (req: NextApiRequest, res: NextApiRes
         },
         where: { id: body.candidate.id },
       })
+    }
+
+    // Send application email only on creation
+    if (!body.application.id) {
+      await sendApplicationEmail(createApplicationResponse.id)
     }
 
     res.status(200).send(createApplicationResponse)

@@ -1,12 +1,11 @@
 import { SelectOption } from '@app/atoms/Select'
+import { JobApplicationWithRelation } from '@app/libs/candidate'
 import { handleError } from '@common/helpers/handleError'
 import { Button as SUIButton, Modal, Select } from '@singularity/core'
 import React, { useEffect, useState } from 'react'
 import { LogIn } from 'react-feather'
 import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
-
-import { JobApplicationWithRelation } from './types'
 
 const Button = styled(SUIButton)`
   display: flex;

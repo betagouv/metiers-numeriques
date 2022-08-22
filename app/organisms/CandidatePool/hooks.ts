@@ -1,9 +1,10 @@
+import { JobApplicationWithRelation } from '@app/libs/candidate'
 import { handleError } from '@common/helpers/handleError'
 import * as R from 'ramda'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 
-import type { FilterProps, JobApplicationWithRelation } from './types'
+import type { FilterProps } from './types'
 
 export const useCandidatePoolQueries = (jobId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
