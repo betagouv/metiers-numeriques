@@ -413,20 +413,6 @@ model Recruiter {
   users         User[]       @relation("UserRecruiter")
 }
 
-// https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
-model RefreshToken {
-  id        String   @id @default(cuid())
-  familyId  String
-  ip        String
-  value     String   @unique
-  createdAt DateTime @default(now())
-  expiredAt DateTime
-
-  user   User   @relation("UserRefreshToken", fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-}
-
-// https://github.com/betagouv/nexauth/blob/main/e2e/with-prisma/prisma/schema.prisma
 model User {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -450,9 +436,7 @@ model User {
   recruiter     Recruiter?     @relation("UserRecruiter", fields: [recruiterId], references: [id])
   recruiterId   String?
   candidate     Candidate?     @relation("CandidateUser")
-  refreshTokens RefreshToken[] @relation("UserRefreshToken")
   accounts      Account[]
-  sessions      Session[]
 }
 
 model Candidate {
@@ -517,20 +501,4 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }

@@ -13,7 +13,7 @@ import { slugify } from '@common/helpers/slugify'
 import { UserRole } from '@prisma/client'
 import { Field, Table } from '@singularity/core'
 import cuid from 'cuid'
-import { useAuth } from 'nexauth/client'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -66,7 +66,7 @@ export const InstitutionFormSchema = Yup.object().shape({
 })
 
 export default function AdminInstitutionEditorPage() {
-  const auth = useAuth<Common.Auth.User>()
+  const { data: auth } = useSession()
   const router = useRouter()
   const { id } = router.query
   const isNew = id === 'new'

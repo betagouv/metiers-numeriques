@@ -8,6 +8,3 @@ if [ ! -f "./.env" ]; then
 fi
 
 npx playwright install
-
-# https://betagouv.github.io/nexauth/#/initialize?id=development
-yarn nexauth init
