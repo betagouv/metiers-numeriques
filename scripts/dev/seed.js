@@ -47,9 +47,6 @@ async function seed() {
     }),
   })
 
-  B.info('[scripts/dev/seed.ts] Deleting all refresh tokens…')
-  await prisma.refreshToken.deleteMany()
-
   B.info('[scripts/dev/seed.ts] Deleting all job applications…')
   await prisma.jobApplication.deleteMany()
 
@@ -195,7 +192,7 @@ async function seed() {
   const rawJobs = await getJobs()
 
   const addresses = R.pipe(R.map(R.prop('address')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
-  const domains = R.pipe(R.map(R.prop('domain')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
+  const domains = R.pipe(R.map(R.prop('domains')), R.flatten, deduplicateById, R.map(omitTypenameProp))(rawJobs)
   const professions = R.pipe(R.map(R.prop('profession')), deduplicateById, R.map(omitTypenameProp))(rawJobs)
   const recruiters = R.pipe(
     R.map(R.prop('recruiter')),

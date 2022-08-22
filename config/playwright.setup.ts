@@ -102,12 +102,6 @@ export default async function globalSetup(config: FullConfig) {
     })
 
     if (user !== null) {
-      await prisma.refreshToken.deleteMany({
-        where: {
-          userId: user.id,
-        },
-      })
-
       await prisma.user.delete({
         where: {
           email: testUser.email,
