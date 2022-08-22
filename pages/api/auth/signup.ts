@@ -15,7 +15,7 @@ export default async function ApiSignUpEndpoint(req: NextApiRequest, res: NextAp
   }
 }
 
-async function encryptPassword(password: string) {
+export async function encryptPassword(password: string) {
   const salt = await bcryptjs.genSalt(BCRYPT_SALT_ROUNDS)
 
   return bcryptjs.hash(password, salt)
