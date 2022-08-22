@@ -1,11 +1,12 @@
 import { Button } from '@app/atoms/Button'
+import { Link } from '@app/atoms/Link'
+import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
 import { Spacer } from '@app/atoms/Spacer'
 import { TextInput } from '@app/atoms/TextInput'
 import { Title } from '@app/atoms/Title'
 import { theme } from '@app/theme'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
-import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
@@ -100,6 +101,17 @@ const ErrorMessage = styled.div`
   text-align: center;
 `
 
+const ForgotPasswordLink = styled(Link)`
+  font-size: 0.75rem;
+  color: ${theme.color.primary.darkBlue};
+  float: right;
+  margin-top: 0.5rem;
+
+  &:after {
+    content: none;
+  }
+`
+
 const DEFAULT_SIGN_IN_ERROR_MESSAGE = 'Une erreur est survenue. Merci de réessayer ou de contacter le support.'
 const SIGN_IN_ERRORS = {
   Callback: DEFAULT_SIGN_IN_ERROR_MESSAGE,
@@ -161,6 +173,7 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
                 style={{ width: '100%' }}
                 type="password"
               />
+              <ForgotPasswordLink href="/mot-de-passe">Mot de passe oublié ?</ForgotPasswordLink>
             </div>
             <Spacer units={2} />
 
@@ -195,11 +208,9 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
 
             <SubscribeContainer>
               <div>Vous n&apos;avez pas encore de compte ?</div>
-              <Link href="/inscription">
-                <Button accent="secondary" size="medium">
-                  S&apos;inscrire
-                </Button>
-              </Link>
+              <LinkLikeButton accent="secondary" href="/inscription" size="medium">
+                S&apos;inscrire
+              </LinkLikeButton>
             </SubscribeContainer>
             <Spacer units={2} />
           </Container>
