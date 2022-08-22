@@ -79,7 +79,6 @@
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",
     "micro": "9.3.4",
-    "nexauth": "2.1.1",
     "next": "12.2.0",
     "next-auth": "^4.10.2",
     "next-s3-upload": "^0.2.2",
