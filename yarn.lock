@@ -8557,10 +8557,10 @@ next-auth@^4.10.3:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
-next-s3-upload@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/next-s3-upload/-/next-s3-upload-0.2.2.tgz#c7845255b7cf59ae0dc3890e148a929c9b34bf96"
-  integrity sha512-z7O5ySuUqG76ZtkiuuijUJx7K0i7woUCcfTqwsJpoFJhHiLQc8la6SOH/VgNt1wd5ED96YLD9iZ+bg6DsZjWXw==
+next-s3-upload@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/next-s3-upload/-/next-s3-upload-0.2.3.tgz#fcad823387d9bd272223babeaba0fe28af37eb7e"
+  integrity sha512-5wNVX5ZyRAWqEpSJp9S4WQZJTZyGsOTMWswdRdNuvZLe7mko9CAMPxlXlNcS8FOSshnDVpUC551xTwGW8DyxvQ==
   dependencies:
     "@aws-sdk/client-s3" ">=3.88.0"
     "@aws-sdk/client-sts" "^3.53.0"

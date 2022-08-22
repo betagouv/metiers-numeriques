@@ -82,7 +82,7 @@
     "micro": "9.3.4",
     "next": "12.2.0",
     "next-auth": "^4.10.3",
-    "next-s3-upload": "^0.2.2",
+    "next-s3-upload": "^0.2.3",
     "numeral": "2.0.6",
     "prisma": "3.14.0",
     "ramda": "0.28.0",
