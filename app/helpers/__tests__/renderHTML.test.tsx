@@ -1,8 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-
-import { renderMarkdownOrHtml } from '../renderMarkdownOrHtml'
+import { renderHTML } from '../renderHTML'
 
 describe.only('app/helpers/renderMarkdownOrHtml()', () => {
   test(`with an HTML source`, () => {
@@ -21,27 +20,7 @@ describe.only('app/helpers/renderMarkdownOrHtml()', () => {
       '</ol>',
     ].join('\n')
 
-    const result = renderMarkdownOrHtml(markdownSource)
-
-    expect(result).toMatchSnapshot()
-  })
-
-  test(`with a Markdown source`, () => {
-    const markdownSource = [
-      'A paragraph.',
-      '',
-      'A **bold** and _italic_ text with a [link](https://example.org).',
-      '',
-      '- A',
-      '- bullet,',
-      '- list.',
-      '',
-      '1. An',
-      '2. ordered,',
-      '3. list.',
-    ].join('\n')
-
-    const result = renderMarkdownOrHtml(markdownSource)
+    const result = renderHTML(markdownSource)
 
     expect(result).toMatchSnapshot()
   })
