@@ -492,7 +492,7 @@ model JobApplication {
 
   applicationLetter String
   status            JobApplicationStatus @default(PENDING)
-  rejectionReason   String?
+  rejectionReasons  String[]
 
   cvFile            File                 @relation("JobApplicationCVFile", fields: [cvFileId], references: [id])
   cvFileId          String

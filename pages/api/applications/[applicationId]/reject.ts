@@ -1,4 +1,5 @@
 import { prisma } from '@api/libs/prisma'
+import { sendJobApplicationRejectedEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
 import { JobApplicationStatus } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -15,12 +16,15 @@ export default async function ApiRejectJobApplicationEndpoint(req: NextApiReques
 const rejectJobApplication = async (req: NextApiRequest, res: NextApiResponse) => {
   const { applicationId } = req.query
 
-  const { rejectionReason } = JSON.parse(req.body)
+  const { rejectionReasons } = JSON.parse(req.body)
   try {
     const updateResponse = await prisma.jobApplication.update({
-      data: { rejectionReason, status: JobApplicationStatus.REJECTED },
+      data: { rejectionReasons, status: JobApplicationStatus.REJECTED },
       where: { id: applicationId as string },
     })
+
+    await sendJobApplicationRejectedEmail(updateResponse.id)
+
     res.status(200).send(updateResponse)
   } catch (err) {
     handleError(err, 'pages/api/domains/[domainId].ts > query.updateDomain()')

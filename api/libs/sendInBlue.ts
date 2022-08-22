@@ -1,4 +1,5 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
+import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import SendInBlue from 'sib-api-v3-sdk'
 
@@ -14,7 +15,7 @@ const sendInBlueTransacClient = new SendInBlue.TransactionalEmailsApi()
 type Receiver = { email: string; name?: string }
 
 type TransacEmailProps = {
-  params: Record<string, string>
+  params: Record<string, string | string[]>
   subject: string
   templateId: number
   to: Receiver[]
@@ -53,3 +54,26 @@ export const sendAccountRequestEmail = async (fullname: string, userId: string) 
     templateId: 6,
     params: { fullname, verifyUrl: `${process.env.DOMAIN_URL}/admin/user/${userId}` },
   })
+
+export const sendJobApplicationRejectedEmail = async (applicationId: string) => {
+  const application = await prisma.jobApplication.findUnique({
+    where: { id: applicationId },
+    include: { job: true, candidate: { include: { user: true } } },
+  })
+
+  if (!application) {
+    return // TODO: handle error
+  }
+
+  await sendTransacEmail({
+    subject: "Nouvelle demande d'accès à l'espace recruteur",
+    to: [DEFAULT_SENDER],
+    templateId: 8,
+    params: {
+      firstName: application.candidate.user.firstName,
+      jobTitle: application?.job?.title || 'Candidature spontanée',
+      rejectionReasons: application.rejectionReasons,
+      jobsUrl: `${process.env.DOMAIN_URL}/offres-emploi`,
+    },
+  })
+}

@@ -10,9 +10,13 @@ export function buildPrismaPaginationFilter(
   pageIndex: number,
 ): {
   skip?: number
-  take: number
+  take?: number
 } {
   try {
+    if (!perPage) {
+      return {}
+    }
+
     const safePerPage = Number.isInteger(perPage) && perPage >= 1 && perPage <= MAX_PER_PAGE ? perPage : 1
     const safePageIndex = Number.isInteger(pageIndex) && pageIndex >= 0 && Number.isFinite(pageIndex) ? pageIndex : 0
     const skip = safePageIndex * safePerPage

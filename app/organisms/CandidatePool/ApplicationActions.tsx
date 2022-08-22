@@ -1,6 +1,7 @@
-import { SelectOption } from '@app/atoms/Select'
+import { Checkbox } from '@app/atoms/Checkbox'
+import { Spacer } from '@app/atoms/Spacer'
 import { JobApplicationStatus } from '@prisma/client'
-import { Button as SUIButton, Modal, Select } from '@singularity/core'
+import { Button as SUIButton, Modal } from '@singularity/core'
 import React, { useState } from 'react'
 import { Star, X } from 'react-feather'
 import styled from 'styled-components'
@@ -30,15 +31,25 @@ const REJECTION_REASONS = [
 type ApplicationActionsProps = {
   application: JobApplicationWithRelation
   onAccepted: (applicationId: string, isAlreadyAccepted: boolean) => void
-  onRejected: (applicationId: string, rejectionReason: string) => void
+  onRejected: (applicationId: string, rejectionReasons: string[]) => void
 }
 
 export const ApplicationActions = ({ application, onAccepted, onRejected }: ApplicationActionsProps) => {
   const [showModal, setShowModal] = useState(false)
-  const [reason, setReason] = useState<string>('')
+  const [reasons, setReasons] = useState<string[]>([])
 
   const isAccepted = application.status === JobApplicationStatus.ACCEPTED
   const isRejected = application.status === JobApplicationStatus.REJECTED
+
+  const handleCheckReason = (reason: string) => (checked: boolean) => {
+    setReasons(currentReasons => {
+      if (checked) {
+        return [reason, ...currentReasons]
+      }
+
+      return currentReasons.filter(currentReason => currentReason !== reason)
+    })
+  }
 
   return (
     <>
@@ -55,19 +66,19 @@ export const ApplicationActions = ({ application, onAccepted, onRejected }: Appl
 
             <p>Un email sera envoyé au candidat lui expliquant la raison de votre choix</p>
             <br />
-            <Select
-              label="Raison du refus"
-              // @ts-ignore
-              onChange={(option: SelectOption | null) => setReason(option?.value)}
-              options={REJECTION_REASONS.map(reason => ({ label: reason, value: reason }))}
-            />
+            {REJECTION_REASONS.map(reason => (
+              <>
+                <Checkbox label={reason} name={reason} onChange={handleCheckReason(reason)} />
+                <Spacer units={0.5} />
+              </>
+            ))}
           </Modal.Body>
 
           <Modal.Action>
             <Button accent="secondary" onClick={() => setShowModal(false)}>
               Annuler
             </Button>
-            <Button accent="danger" disabled={!reason} onClick={() => onRejected(application.id, reason)}>
+            <Button accent="danger" disabled={!reasons} onClick={() => onRejected(application.id, reasons)}>
               Confirmer
             </Button>
           </Modal.Action>
