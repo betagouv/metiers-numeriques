@@ -58,7 +58,7 @@ const APPLICATION: JobApplicationWithRelation = {
   cvFileId: 'cv1',
   id: 'cv1',
   jobId: null,
-  rejectionReason: null,
+  rejectionReasons: [],
   status: JobApplicationStatus.PENDING,
   updatedAt: new Date(),
 }
