@@ -111,7 +111,7 @@ type InstitutionPageProps = {
 export default function InstitutionPage({ institution, jobs }: InstitutionPageProps) {
   const [currentBodyKey, setCurrentBodyKey] = useState<InstitutionTabFields>('description')
 
-  const bodyMarkdown = institution[currentBodyKey]
+  const content = institution[currentBodyKey]
 
   const tabs = TABS.filter(tab => !!institution[tab.key]).map(tab => ({
     ...tab,
@@ -136,10 +136,10 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
       <div className="fr-container fr-mb-12v fr-mt-16v">
         <TabMenu tabs={tabs} />
 
-        {bodyMarkdown && (
+        {content && (
           <section className="fr-grid-row fr-grid-row--gutters fr-mt-12v fr-mb-24v">
             <div className="fr-col-12 fr-col-md-9">
-              <HTMLBody className="content" dangerouslySetInnerHTML={{ __html: bodyMarkdown }} />
+              <HTMLBody className="content" dangerouslySetInnerHTML={{ __html: content }} />
             </div>
           </section>
         )}
