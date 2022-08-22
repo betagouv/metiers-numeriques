@@ -38,7 +38,7 @@ const StyledForm = styled(Form)`
 
 export const FormSchema = Yup.object().shape({
   email: Yup.string()
-    .required(`Sans addresse e-mail, ça va être compliqué !`)
+    .required(`sans adresse e-mail, ça va être compliqué !`)
     .email(`Hmm… il y a comme un soucis avec le format 🤔.`),
 })
 
