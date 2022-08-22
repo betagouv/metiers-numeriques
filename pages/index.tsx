@@ -27,7 +27,7 @@ type HomePageProps = {
 }
 
 export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
-  const pageTitle = 'Métiers du Numérique | Découvrez les offres d’emploi du numérique au sein de l’État.'
+  const pageTitle = 'Métiers du Numérique | Découvre les offres d’emploi du numérique au sein de l’État.'
   const pageDescription =
     'Découvrez l’ensemble des offres d’emploi du numérique au sein de l’État et des administrations territoriales.'
 

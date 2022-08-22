@@ -123,7 +123,7 @@ const FormSchema = Yup.object().shape({
     'La confirmation du mot de passe doit être identique',
   ),
   email: Yup.string()
-    .required(`Sans addresse e-mail, ça va être compliqué !`)
+    .required(`sans adresse e-mail, ça va être compliqué !`)
     .email(`Hmm… il y a comme un soucis avec le format 🤔.`),
   firstName: Yup.string().required('Votre prénom doit être renseigné'),
   lastName: Yup.string().required('Votre nom doit être renseigné'),
@@ -159,7 +159,7 @@ export default function SubscriptionPage() {
             <WelcomeMessage>
               <h2>Bienvenue chez nous !</h2>
               <br />
-              Inscris-toi pour candidater à nos offres et suit ta candidature dans ton espace.
+              Inscris-toi pour candidater à nos offres et suis ta candidature dans ton espace.
             </WelcomeMessage>
           </SideMenu>
         </div>

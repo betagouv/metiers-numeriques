@@ -13,7 +13,7 @@ import type { FormikHelpers, FormikValues } from 'formik'
 const FormSchema = Yup.object().shape({
   email: Yup.string()
     .trim()
-    .required(`Sans addresse e-mail, ça va être compliqué 😅.`)
+    .required(`sans adresse e-mail, ça va être compliqué 😅.`)
     .email(`Hmm… il y a comme un soucis avec le format 🤔.`),
 })
 
@@ -106,8 +106,8 @@ export function NewsletterBar() {
               On reste en contact ?
             </Title>
             <Text>
-              Laisse-nous ton adresse mail ci-dessous et reçois des informations sur les métiers du numériques au sein
-              de l’État. Promis on ne te spammera pas !
+              Laisse-nous ton adresse mail ci-dessous et reçois des informations sur les métiers du numérique au sein de
+              l’État. Promis on ne te spammera pas !
             </Text>
             <StyledForm initialValues={{}} onSubmit={createLead} validationSchema={FormSchema}>
               <Form.TextInput aria-label="Adresse email" name="email" placeholder="tim.berners-lee@w3c.org" />
