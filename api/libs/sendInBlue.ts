@@ -2,7 +2,6 @@
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { User } from '@prisma/client'
-import dayjs from 'dayjs'
 import jwt from 'jsonwebtoken'
 import SendInBlue from 'sib-api-v3-sdk'
 
@@ -85,7 +84,7 @@ export const sendResetPasswordEmail = async (user: User) => {
   const resetPasswordToken = await jwt.sign({ userId: user.id }, process.env.NEXTAUTH_SECRET, { expiresIn: '48h' })
 
   await sendTransacEmail({
-    subject: 'Réinitialisation de votre mot de passe sur Métiers Numériques',
+    subject: 'Réinitialisation de votre mot de passe sur Métiers du Numérique',
     to: [{ name: `${user.firstName} ${user.lastName}`, email: user.email }],
     templateId: 9,
     params: {
