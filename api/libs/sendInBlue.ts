@@ -66,7 +66,7 @@ export const sendJobApplicationRejectedEmail = async (applicationId: string) => 
   }
 
   await sendTransacEmail({
-    subject: "Nouvelle demande d'accès à l'espace recruteur",
+    subject: 'Votre candidature au poste de: {{ params.jobTitle }}',
     to: [DEFAULT_SENDER],
     templateId: 8,
     params: {
