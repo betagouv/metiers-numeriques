@@ -1,4 +1,5 @@
 import { prisma } from '@api/libs/prisma'
+import { renderHTML } from '@app/helpers/renderHTML'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { TabMenu } from '@app/molecules/TabMenu'
 import { InstitutionHeader, InstitutionWithRelation } from '@app/organisms/InstitutionHeader'
@@ -139,7 +140,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
         {content && (
           <section className="fr-grid-row fr-grid-row--gutters fr-mt-12v fr-mb-24v">
             <div className="fr-col-12 fr-col-md-9">
-              <HTMLBody className="content" dangerouslySetInnerHTML={{ __html: content }} />
+              <HTMLBody className="content">{renderHTML(content)}</HTMLBody>
             </div>
           </section>
         )}

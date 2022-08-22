@@ -8,7 +8,7 @@ import { Title } from '@app/atoms/Title'
 import { generateJobStructuredData } from '@app/helpers/generateJobStructuredData'
 import { getCountryFromCode } from '@app/helpers/getCountryFromCode'
 import { humanizeDate } from '@app/helpers/humanizeDate'
-import { renderMarkdownOrHtml } from '@app/helpers/renderMarkdownOrHtml'
+import { renderHTML } from '@app/helpers/renderHTML'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { matomo, MatomoGoal } from '@app/libs/matomo'
 import { JobApplicationModal } from '@app/organisms/JobApplicationModal'
@@ -167,13 +167,13 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
           <Title as="h2" id="mission" isFirst>
             Mission
           </Title>
-          {renderMarkdownOrHtml(job.missionDescription)}
+          {renderHTML(job.missionDescription)}
           {job.teamDescription && (
             <>
               <Title as="h2" id="equipe">
                 Équipe
               </Title>
-              {renderMarkdownOrHtml(job.teamDescription)}
+              {renderHTML(job.teamDescription)}
             </>
           )}
           {job.contextDescription && (
@@ -181,7 +181,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               <Title as="h2" id="contexte">
                 Contexte
               </Title>
-              {renderMarkdownOrHtml(job.contextDescription)}
+              {renderHTML(job.contextDescription)}
             </>
           )}
           {job.perksDescription && (
@@ -189,7 +189,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               <Title as="h2" id="avantages">
                 Avantages
               </Title>
-              {renderMarkdownOrHtml(job.perksDescription)}
+              {renderHTML(job.perksDescription)}
             </>
           )}
           {job.tasksDescription && (
@@ -197,7 +197,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               <Title as="h2" id="role">
                 Rôle
               </Title>
-              {renderMarkdownOrHtml(job.tasksDescription)}
+              {renderHTML(job.tasksDescription)}
             </>
           )}
           {job.profileDescription && (
@@ -205,7 +205,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               <Title as="h2" id="profil-recherche">
                 Profil recherché
               </Title>
-              {renderMarkdownOrHtml(job.profileDescription)}
+              {renderHTML(job.profileDescription)}
             </>
           )}
           {job.particularitiesDescription && (
@@ -213,7 +213,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
               <Title as="h2" id="conditions-particulieres">
                 Conditions particulières
               </Title>
-              {renderMarkdownOrHtml(job.particularitiesDescription)}
+              {renderHTML(job.particularitiesDescription)}
             </>
           )}
           <Title as="h2" id="pour-candidater">
@@ -240,7 +240,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
           {!isFilledOrExpired && job.processDescription && (
             <>
               <p>Processus de recrutement :</p>
-              {renderMarkdownOrHtml(job.processDescription)}
+              {renderHTML(job.processDescription)}
             </>
           )}
           <p>
