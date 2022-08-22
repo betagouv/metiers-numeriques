@@ -126,7 +126,12 @@ export const sendApplicationEmail = async (applicationId: string) => {
 export const sendJobApplicationRejectedEmail = async (applicationId: string) => {
   const application = await prisma.jobApplication.findUnique({
     where: { id: applicationId },
-    include: { job: true, candidate: { include: { user: true } } },
+    include: {
+      job: true,
+      candidate: {
+        include: { domains: true, professions: true, user: true },
+      },
+    },
   })
 
   if (!application) {
@@ -135,7 +140,7 @@ export const sendJobApplicationRejectedEmail = async (applicationId: string) => 
 
   await sendTransacEmail({
     subject: 'Votre candidature au poste de: {{ params.jobTitle }}',
-    to: [DEFAULT_SENDER],
+    to: [{ name: getCandidateFullName(application.candidate), email: application.candidate.user.email }],
     templateId: 8,
     params: {
       firstName: application.candidate.user.firstName,
