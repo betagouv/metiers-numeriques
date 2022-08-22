@@ -36,6 +36,8 @@ const Card = styled.div`
   flex-direction: column;
   flex-grow: 1;
   padding: 1.5rem;
+  width: 100%;
+  height: 100%;
 `
 
 const Date = styled.p`
@@ -56,16 +58,21 @@ const Title = styled.h3`
   margin: 0.5rem 0 0;
 `
 
-const Excerpt = styled.p`
+const Excerpt = styled.div`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   display: -webkit-box;
-  font-size: 110%;
+  font-size: 1rem;
   line-clamp: 3;
   line-height: 1.5;
   margin-bottom: 1rem !important;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
 `
 
 const Info = styled.p`
@@ -96,6 +103,8 @@ export function JobCard({ job }: JobCardProps) {
     matomo.trackGoal(MatomoGoal.JOB_OPENING)
   }, [])
 
+  const strippedMissionDescription = job.missionDescription.replace(/(<([^>]+)>)/gi, '')
+
   return (
     <Box className="JobCard">
       <Link
@@ -103,9 +112,10 @@ export function JobCard({ job }: JobCardProps) {
         noUnderline
         onAuxClick={trackJobOpening}
         onClick={trackJobOpening}
+        style={{ width: '100%' }}
         target="_blank"
       >
-        <Card style={{ width: '100%' }}>
+        <Card>
           <Date>publiée le {humanizeDate(job.updatedAt)}</Date>
           <Title>{job.title}</Title>
           <ul
@@ -135,7 +145,7 @@ export function JobCard({ job }: JobCardProps) {
               </li>
             ))}
           </ul>
-          <Excerpt>{job.missionDescription}</Excerpt>
+          <Excerpt className="content" dangerouslySetInnerHTML={{ __html: strippedMissionDescription }} />
 
           {/* TODO: contract types refacto forced me to keep the array type. Must be refactored cleaner */}
           {!!job.contractTypes?.length && (
