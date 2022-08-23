@@ -57,6 +57,11 @@ export const Body = styled.div`
 
 export const JobContent = styled.div`
   flex-grow: 1;
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 `
 
 export const JobButton = styled(Button)`
@@ -119,6 +124,7 @@ export default function JobPage({ data, isFilledOrExpired, isPreview }: JobPageP
         )}
       </Head>
 
+      <Spacer units={1} />
       <Title as="h1" isFirst>
         {job.title}
       </Title>
