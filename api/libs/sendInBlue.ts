@@ -63,7 +63,7 @@ export const sendAccountRequestEmail = async (fullname: string, userId: string) 
 
 export const sendRecruiterAccountActivated = async (user: User) =>
   sendTransacEmail({
-    subject: 'Votre compte sur Métiers du Numérique',
+    subject: 'Activation de votre compte recruteur',
     to: [{ name: `${user.firstName} ${user.lastName}`, email: user.email }],
     templateId: 11,
     params: { firstName: user.firstName, adminUrl: `${process.env.DOMAIN_URL}/admin` },
