@@ -1,5 +1,7 @@
 import { buildPrismaOrderByFilter } from '@api/helpers/buildPrismaOrderByFilter'
+import { sendRecruiterAccountActivated } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
+import { UserRole } from '@prisma/client'
 import * as R from 'ramda'
 
 import { buildPrismaPaginationFilter } from '../helpers/buildPrismaPaginationFilter'
@@ -76,6 +78,10 @@ export const mutation = {
       }
 
       const data = omitPasswordIn(await prisma.user.update(args)) as unknown as User
+
+      if (data.isActive && data.role !== UserRole.CANDIDATE) {
+        await sendRecruiterAccountActivated(data)
+      }
 
       return data
     } catch (err) {

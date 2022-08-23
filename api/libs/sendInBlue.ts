@@ -61,6 +61,14 @@ export const sendAccountRequestEmail = async (fullname: string, userId: string) 
     params: { fullname, verifyUrl: `${process.env.DOMAIN_URL}/admin/user/${userId}` },
   })
 
+export const sendRecruiterAccountActivated = async (user: User) =>
+  sendTransacEmail({
+    subject: 'Votre compte sur Métiers du Numérique',
+    to: [{ name: `${user.firstName} ${user.lastName}`, email: user.email }],
+    templateId: 11,
+    params: { firstName: user.firstName, adminUrl: `${process.env.DOMAIN_URL}/admin` },
+  })
+
 export const sendApplicationEmail = async (applicationId: string) => {
   const application = await prisma.jobApplication.findUnique({
     where: { id: applicationId },
