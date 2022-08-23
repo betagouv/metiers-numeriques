@@ -16,6 +16,7 @@ export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, re
   }
 }
 
+// TODO: should be paginated at some point
 const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getSession({ req })
