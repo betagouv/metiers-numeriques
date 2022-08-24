@@ -1,13 +1,7 @@
+import { ApiError } from '@api/libs/ApiError'
 import * as Sentry from '@sentry/nextjs'
 import { B } from 'bhala'
 import { NextApiResponse } from 'next'
-
-import { ApiError } from '../../api/libs/ApiError'
-
-/* istanbul ignore next */
-Sentry.init({
-  tracesSampler: () => 0,
-})
 
 const getErrorConstructorName = (error: any) => {
   if (error === undefined || error.constructor === undefined) {
