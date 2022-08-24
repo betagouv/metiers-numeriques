@@ -1,15 +1,7 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function ApiJobsEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'GET':
-      return getJob(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const getJob = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query
@@ -20,10 +12,13 @@ const getJob = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.send(data)
   } catch (err) {
-    handleError(err, 'pages/api/jobs/duplicate.ts > query.getPublishedJobs()')
-
+    handleError(err, 'pages/api/jobs/[id].ts > query.getJob()')
     res.status(400).send([])
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  GET: {
+    handler: getJob,
+  },
+})

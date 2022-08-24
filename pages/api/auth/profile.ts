@@ -1,16 +1,8 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-
-export default async function ApiProfileEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'PUT':
-      return updateProfile(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
@@ -114,4 +106,9 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  PUT: {
+    handler: updateProfile,
+    permission: 'ME',
+  },
+})

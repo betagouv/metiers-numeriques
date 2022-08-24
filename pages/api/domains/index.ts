@@ -1,21 +1,11 @@
 import { buildPrismaPaginationFilter } from '@api/helpers/buildPrismaPaginationFilter'
 import { buildPrismaWhereFilter } from '@api/helpers/buildPrismaWhereFilter'
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import type { Prisma, Domain } from '@prisma/client'
-
-export default async function ApiDomainsEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'GET':
-      return getDomains(req, res)
-    case 'POST':
-      return createDomain(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const getDomains = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -67,4 +57,13 @@ const createDomain = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  GET: {
+    handler: getDomains,
+    permission: 'ADMINISTRATOR',
+  },
+  POST: {
+    handler: createDomain,
+    permission: 'ADMINISTRATOR',
+  },
+})

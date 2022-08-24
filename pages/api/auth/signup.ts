@@ -1,3 +1,4 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { UserRole } from '@prisma/client'
@@ -5,15 +6,6 @@ import bcryptjs from 'bcryptjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const BCRYPT_SALT_ROUNDS = 10
-
-export default async function ApiSignUpEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      return createAccount(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 export async function encryptPassword(password: string) {
   const salt = await bcryptjs.genSalt(BCRYPT_SALT_ROUNDS)
@@ -42,4 +34,8 @@ const createAccount = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  POST: {
+    handler: createAccount,
+  },
+})

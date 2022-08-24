@@ -1,21 +1,11 @@
 import { buildPrismaPaginationFilter } from '@api/helpers/buildPrismaPaginationFilter'
 import { buildPrismaWhereFilter } from '@api/helpers/buildPrismaWhereFilter'
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import type { Prisma, Testimony } from '@prisma/client'
-
-export default async function ApiTestimoniesEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'GET':
-      return getTestimonies(req, res)
-    case 'POST':
-      return createTestimony(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const getTestimonies = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -70,4 +60,13 @@ const createTestimony = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  GET: {
+    handler: getTestimonies,
+    permission: 'ADMINISTRATOR',
+  },
+  POST: {
+    handler: createTestimony,
+    permission: 'ADMINISTRATOR',
+  },
+})

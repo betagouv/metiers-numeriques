@@ -1,17 +1,9 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { encryptPassword } from 'pages/api/auth/signup'
-
-export default async function ApiSignUpEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      return resetPassword(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const resetPassword = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -44,4 +36,8 @@ const resetPassword = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  POST: {
+    handler: resetPassword,
+  },
+})

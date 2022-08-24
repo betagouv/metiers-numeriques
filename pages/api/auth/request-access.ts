@@ -1,17 +1,9 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { sendAccountRequestEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-
-export default async function ApiProfileEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      return requestRecruiterAccess(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const requestRecruiterAccess = async (req: NextApiRequest, res: NextApiResponse) => {
   const auth = await getSession({ req })
@@ -43,4 +35,9 @@ const requestRecruiterAccess = async (req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  POST: {
+    handler: requestRecruiterAccess,
+    permission: 'RECRUITER',
+  },
+})
