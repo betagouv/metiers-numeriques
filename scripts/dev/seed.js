@@ -62,6 +62,9 @@ async function seed() {
   B.info('[scripts/dev/seed.ts] Deleting all addresses…')
   await prisma.address.deleteMany()
 
+  B.info('[scripts/dev/seed.ts] Deleting all domains…')
+  await prisma.domain.deleteMany()
+
   B.info('[scripts/dev/seed.ts] Deleting all contacts…')
   await prisma.contact.deleteMany()
 
@@ -278,7 +281,7 @@ async function seed() {
   await prisma.contact.createMany({
     data: contacts,
   })
-
+  
   B.info('[scripts/dev/seed.ts] Seeding local database with production domains…')
   await prisma.domain.createMany({
     data: domains,
