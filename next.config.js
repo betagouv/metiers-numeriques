@@ -1,5 +1,7 @@
 import { withSentryConfig } from '@sentry/nextjs'
 
+const { CI } = process.env
+
 const config = {
   compiler: {
     styledComponents: true,
@@ -30,4 +32,4 @@ const config = {
 }
 
 // eslint-disable-next-line import/no-default-export
-export default withSentryConfig(config, { silent: true })
+export default CI ? config : withSentryConfig(config, { silent: true })
