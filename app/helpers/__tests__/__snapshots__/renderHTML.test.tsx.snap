@@ -1,75 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`app/helpers/renderMarkdownOrHtml() with an HTML source 1`] = `
-<div>
-  <html>
-    <head />
-    <body>
-      <p>
-        A paragraph.
-      </p>
-      
-
-      <p>
-        A 
-        <strong>
-          bold
-        </strong>
-         and 
-        <em>
-          italic
-        </em>
-         text with a 
-        <a
-          href="https://example.org"
-        >
-          link
-        </a>
-        .
-      </p>
-      
-
-      <ul>
-        
-  
-        <li>
-          A
-        </li>
-        
-  
-        <li>
-          bullet,
-        </li>
-        
-  
-        <li>
-          list.
-        </li>
+<styled.div
+  className="HTMLContent"
+>
+  <div>
+    <html>
+      <head />
+      <body>
+        <p>
+          A paragraph.
+        </p>
         
 
-      </ul>
-      
-
-      <ol>
-        
-  
-        <li>
-          An
-        </li>
-        
-  
-        <li>
-          ordered,
-        </li>
-        
-  
-        <li>
-          list.
-        </li>
+        <p>
+          A 
+          <strong>
+            bold
+          </strong>
+           and 
+          <em>
+            italic
+          </em>
+           text with a 
+          <a
+            href="https://example.org"
+          >
+            link
+          </a>
+          .
+        </p>
         
 
-      </ol>
-    </body>
-  </html>
-</div>
+        <ul>
+          
+  
+          <li>
+            A
+          </li>
+          
+  
+          <li>
+            bullet,
+          </li>
+          
+  
+          <li>
+            list.
+          </li>
+          
+
+        </ul>
+        
+
+        <ol>
+          
+  
+          <li>
+            An
+          </li>
+          
+  
+          <li>
+            ordered,
+          </li>
+          
+  
+          <li>
+            list.
+          </li>
+          
+
+        </ol>
+      </body>
+    </html>
+  </div>
+</styled.div>
 `;

@@ -69,12 +69,6 @@ const TestimonyAuthor = styled.div`
   }
 `
 
-const HTMLBody = styled.div`
-  p {
-    font-size: 1rem;
-  }
-`
-
 type InstitutionTabFields = keyof Pick<
   Institution,
   | 'description'
@@ -139,9 +133,7 @@ export default function InstitutionPage({ institution, jobs }: InstitutionPagePr
 
         {content && (
           <section className="fr-grid-row fr-grid-row--gutters fr-mt-12v fr-mb-24v">
-            <div className="fr-col-12 fr-col-md-9">
-              <HTMLBody className="content">{renderHTML(content)}</HTMLBody>
-            </div>
+            <div className="fr-col-12 fr-col-md-9">{renderHTML(content)}</div>
           </section>
         )}
 
