@@ -1,4 +1,5 @@
 import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
+import { Spacer } from '@app/atoms/Spacer'
 import { Title } from '@app/atoms/Title'
 import { theme } from '@app/theme'
 import Image from 'next/image'
@@ -92,6 +93,10 @@ export function TestimonialBar() {
 
         <LinkLikeButton accent="tertiary" href="https://www.dailymotion.com/playlist/x74h65" isExternal>
           Découvrir les témoignages
+        </LinkLikeButton>
+        <Spacer units={1} />
+        <LinkLikeButton accent="tertiary" href="/candidature">
+          Devenir un talent du numérique de l&apos;État
         </LinkLikeButton>
       </Content>
     </Box>
