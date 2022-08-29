@@ -28,7 +28,7 @@ type TransacEmailProps = {
 
 const DEFAULT_SENDER: Receiver = {
   email: 'contact@metiers.numerique.gouv.fr',
-  name: 'Métiers Numériques',
+  name: 'Métiers du Numérique',
 }
 
 const sendTransacEmail = async ({ attachment, params, subject, templateId, to }: TransacEmailProps) => {
