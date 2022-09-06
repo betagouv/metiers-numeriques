@@ -1,6 +1,7 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { prisma } from '@api/libs/prisma'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import * as Sentry from '@sentry/nextjs'
 import bcryptjs from 'bcryptjs'
 import cuid from 'cuid'
 import NextAuth from 'next-auth'
@@ -92,6 +93,10 @@ export default NextAuth({
         : token
     },
     async session({ session, token }) {
+      if (token.user) {
+        Sentry.setUser({ email: token.user.email, id: token.user.id })
+      }
+
       return token ? { ...session, user: token.user } : session
     },
   },
