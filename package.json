@@ -113,7 +113,7 @@
     "@ivangabriele/prettier-config": "3.1.0",
     "@ivangabriele/tsconfig-next": "1.2.2",
     "@jest/globals": "28.1.0",
-    "@playwright/test": "1.22.2",
+    "@playwright/test": "1.23.4",
     "@swc/core": "1.2.198",
     "@swc/jest": "0.2.21",
     "@testing-library/react-hooks": "8.0.0",
