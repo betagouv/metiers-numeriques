@@ -38,7 +38,7 @@ export function Header() {
   }, [isMenuOpen])
 
   return (
-    <StyledHeader className="fr-header" role="banner">
+    <StyledHeader className="fr-header" role="banner" style={{ overflow: 'hidden' }}>
       <div className="fr-header__body">
         <div className="fr-container">
           <div className="fr-header__body-row">

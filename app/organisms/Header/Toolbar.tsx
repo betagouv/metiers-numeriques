@@ -1,4 +1,5 @@
 import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
+import { BetaBanner } from '@app/molecules/BetaBanner'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
@@ -9,7 +10,8 @@ export function Toolbar() {
   const { status } = useSession()
 
   return (
-    <div className="fr-header__tools">
+    <div className="fr-header__tools" style={{ position: 'relative' }}>
+      <BetaBanner />
       <div className="fr-header__tools-links">
         <ul className="fr-links-group fr-pr-2w">
           <LinkItem>
