@@ -8,25 +8,6 @@ body {
   line-height: 1.25;
 }
 
-@media screen and (min-width: 992px) {
-  body:after {
-    background: rgb(210, 210, 210);
-    color: white;
-    content: 'beta';
-    font-family: sans-serif;
-    font-weight: bold;
-    height: 2rem;
-    line-height: 2rem;
-    position: fixed;
-    right: -4.25rem;
-    text-align: center;
-    text-transform: uppercase;
-    top: 0.75rem;
-    transform: rotate(45deg);
-    width: 12rem;
-  }
-}
-
 /* Elements */
 
 main code {

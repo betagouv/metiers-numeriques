@@ -10,10 +10,10 @@ const Banner = styled.div`
   position: absolute;
   top: 5px;
   right: -120px;
-  padding: 0.25rem 50px;
+  padding: 0.25rem 53px;
   transform: rotate(45deg);
   overflow: hidden;
-  z-index: 1000;
+  clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 100% 0%, 84% 100%, 0% 100%, 0% 100%, 0% 0%);
 
   p {
     font-size: 0.8rem;
