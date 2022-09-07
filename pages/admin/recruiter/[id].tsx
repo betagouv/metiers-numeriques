@@ -168,7 +168,7 @@ export default function AdminRecruiterEditorPage() {
       ...getRecruiterResult.data.getRecruiter,
     }
 
-    if (initialValues.institution !== null) {
+    if (initialValues.institution) {
       initialValues.institutionId = initialValues.institution.id
     }
 

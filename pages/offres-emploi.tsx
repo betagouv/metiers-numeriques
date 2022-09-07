@@ -174,7 +174,7 @@ export default function JobListPage({
         return
       }
 
-      if (newOrAdditionalJobsResult.data === undefined) {
+      if (newOrAdditionalJobsResult.data == null) {
         if (isNewQuery) {
           setIsLoading(false)
         } else {
