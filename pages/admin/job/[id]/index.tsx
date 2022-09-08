@@ -302,7 +302,7 @@ export default function AdminJobEditorPage() {
     if (initialValues.domains) {
       initialValues.domainIds = initialValues.domains.map(({ id }) => id)
     }
-    initialValues.applicationContactIds = initialValues.applicationContacts.map(({ id }) => id)
+    initialValues.applicationContactIds = initialValues.applicationContacts?.map(({ id }) => id)
     if (initialValues.infoContact !== null) {
       initialValues.infoContactId = initialValues.infoContact.id
     }
