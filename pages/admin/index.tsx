@@ -63,7 +63,7 @@ export default function AdminDashboardPage() {
       const lastInactiveUsersResult = await alertWorker.getLastInactiveUsers()
       const lastInstitutionlessRecruitersResult = await alertWorker.getInstitutionlessRecruiters()
 
-      setLastInactiveUsers(lastInactiveUsersResult.data)
+      setLastInactiveUsers(lastInactiveUsersResult.data.filter(user => user.role !== UserRole.CANDIDATE))
       setLastInactiveUsersLength(lastInactiveUsersResult.length)
       setLastInstitutionlessRecruiters(lastInstitutionlessRecruitersResult.data)
       setLastInstitutionlessRecruitersLength(lastInstitutionlessRecruitersResult.length)
