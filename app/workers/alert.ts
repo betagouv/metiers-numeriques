@@ -23,6 +23,7 @@ const GET_LAST_INACTIVE_USERS = gql`
     getUsers(isActive: false, orderBy: ["createdAt", "desc"], pageIndex: 0, perPage: 10) {
       data {
         id
+        role
 
         createdAt
         extra {
