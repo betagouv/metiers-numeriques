@@ -3,15 +3,16 @@ import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
 import { Title } from '@app/atoms/Title'
 import { stringifyDeepDates } from '@app/helpers/stringifyDeepDates'
 import { InstitutionsList } from '@app/organisms/InstitutionsList'
-import { JobSearchBar } from '@app/organisms/JobSearchBar'
+// import { JobSearchBar } from '@app/organisms/JobSearchBar'
 import { NewsletterBar } from '@app/organisms/NewsletterBar'
+import { RedirectionDisclaimer } from '@app/organisms/RedirectionDisclaimer'
 import { TestimonialBar } from '@app/organisms/TestimonialBar'
-import { TopJobsBar } from '@app/organisms/TopJobsBar'
-import { JobState } from '@prisma/client'
+// import { TopJobsBar } from '@app/organisms/TopJobsBar'
+// import { JobState } from '@prisma/client'
 import Head from 'next/head'
 import styled from 'styled-components'
 
-import type { JobWithRelation } from '@app/organisms/JobCard'
+// import type { JobWithRelation } from '@app/organisms/JobCard'
 import type { Institution } from '@prisma/client'
 
 const InstitutionsContainer = styled.div`
@@ -23,10 +24,10 @@ const InstitutionsContainer = styled.div`
 
 type HomePageProps = {
   topInstitutions: Institution[]
-  topJobs: JobWithRelation[]
+  // topJobs: JobWithRelation[]
 }
 
-export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
+export default function HomePage({ topInstitutions }: HomePageProps) {
   const pageTitle = 'Métiers du Numérique | Découvre les offres d’emploi du numérique au sein de l’État.'
   const pageDescription =
     'Découvrez l’ensemble des offres d’emploi du numérique au sein de l’État et des administrations territoriales.'
@@ -41,8 +42,9 @@ export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
         <meta content={pageDescription} property="og:description" />
       </Head>
 
-      <JobSearchBar />
-      <TopJobsBar jobs={topJobs} />
+      <RedirectionDisclaimer />
+      {/* <JobSearchBar /> */}
+      {/* <TopJobsBar jobs={topJobs} /> */}
       <TestimonialBar />
       {!!topInstitutions?.length && (
         <InstitutionsContainer>
@@ -64,35 +66,35 @@ export default function HomePage({ topInstitutions, topJobs }: HomePageProps) {
 }
 
 export async function getStaticProps() {
-  const topJobs = await prisma.job.findMany({
-    include: {
-      address: true,
-      applicationContacts: true,
-      infoContact: true,
-      profession: true,
-      recruiter: {
-        include: {
-          institution: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-    },
-    orderBy: {
-      updatedAt: 'desc',
-    },
-    take: 3,
-    where: {
-      AND: {
-        expiredAt: {
-          gt: new Date(),
-        },
-        state: JobState.PUBLISHED,
-      },
-    },
-  })
+  // const topJobs = await prisma.job.findMany({
+  //   include: {
+  //     address: true,
+  //     applicationContacts: true,
+  //     infoContact: true,
+  //     profession: true,
+  //     recruiter: {
+  //       include: {
+  //         institution: {
+  //           select: {
+  //             name: true,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  //   orderBy: {
+  //     updatedAt: 'desc',
+  //   },
+  //   take: 3,
+  //   where: {
+  //     AND: {
+  //       expiredAt: {
+  //         gt: new Date(),
+  //       },
+  //       state: JobState.PUBLISHED,
+  //     },
+  //   },
+  // })
 
   const topInstitutions = await prisma.institution.findMany({
     include: {
@@ -107,13 +109,13 @@ export async function getStaticProps() {
     },
   })
 
-  const normalizedTopJobs = topJobs.map(stringifyDeepDates)
+  // const normalizedTopJobs = topJobs.map(stringifyDeepDates)
   const normalizedTopInstitutions = topInstitutions.map(stringifyDeepDates)
 
   return {
     props: {
       topInstitutions: normalizedTopInstitutions,
-      topJobs: normalizedTopJobs,
+      // topJobs: normalizedTopJobs,
     },
     revalidate: 300,
   }

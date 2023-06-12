@@ -1,6 +1,6 @@
 import { Button } from '@app/atoms/Button'
 import { Link } from '@app/atoms/Link'
-import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
+// import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
 import { Spacer } from '@app/atoms/Spacer'
 import { TextInput } from '@app/atoms/TextInput'
 import { Title } from '@app/atoms/Title'
@@ -79,18 +79,18 @@ const Stroke = styled.div`
   background-color: ${theme.color.primary.darkBlue};
 `
 
-const SubscribeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 2rem;
-  gap: 1rem;
-
-  > button {
-    width: 100%;
-  }
-`
+// const SubscribeContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 0 2rem;
+//   gap: 1rem;
+//
+//   > button {
+//     width: 100%;
+//   }
+// `
 
 const ErrorMessage = styled.div`
   width: 100%;
@@ -206,12 +206,12 @@ export default function LoginPage({ baseUrl, error }: LoginPageProps) {
             </LoginButtonContainer>
             <Spacer units={3} />
 
-            <SubscribeContainer>
-              <div>Vous n&apos;avez pas encore de compte ?</div>
-              <LinkLikeButton accent="secondary" href="/inscription" size="medium">
-                S&apos;inscrire
-              </LinkLikeButton>
-            </SubscribeContainer>
+            {/* <SubscribeContainer> */}
+            {/*  <div>Vous n&apos;avez pas encore de compte ?</div> */}
+            {/*  <LinkLikeButton accent="secondary" href="/inscription" size="medium"> */}
+            {/*    S&apos;inscrire */}
+            {/*  </LinkLikeButton> */}
+            {/* </SubscribeContainer> */}
             <Spacer units={2} />
           </Container>
         </div>
