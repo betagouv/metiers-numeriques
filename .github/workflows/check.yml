@@ -62,33 +62,72 @@ jobs:
   test_e2e:
     name: E2E Test
     runs-on: ubuntu-latest
-#    env:
-#      API_SECRET: test
-#      DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
-#      DOMAIN_URL: http://localhost:3000
-#      NODE_ENV: production
-#      REDIS_URL: redis://localhost:6379
-#    services:
-#      cache:
-#        image: redis:6
-#        ports:
-#          - 6379:6379
-#        options: >-
-#          --entrypoint redis-server
-#      db:
-#        image: postgres:14
-#        env:
-#          POSTGRES_DB: metiers_numeriques
-#          POSTGRES_USER: test_db_user
-#          POSTGRES_PASSWORD: test_db_password
-#        ports:
-#          - 5432:5432
-#        # Set health checks to wait until postgres has started
-#        options: >-
-#          --health-cmd pg_isready
-#          --health-interval 10s
-#          --health-timeout 5s
-#          --health-retries 5
+    env:
+      API_SECRET: test
+      DATABASE_URL: postgresql://test_db_user:test_db_password@localhost:5432/metiers_numeriques?schema=public
+      DOMAIN_URL: http://localhost:3000
+      NODE_ENV: production
+      REDIS_URL: redis://localhost:6379
+    services:
+      cache:
+        image: redis:6
+        ports:
+          - 6379:6379
+        options: >-
+          --entrypoint redis-server
+      db:
+        image: postgres:14
+        env:
+          POSTGRES_DB: metiers_numeriques
+          POSTGRES_USER: test_db_user
+          POSTGRES_PASSWORD: test_db_password
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
-      - name: Pass
-        run: echo "yeah!"
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache
+        if: ${{ always() }}
+        id: cache
+        uses: actions/cache@v3
+        # https://playwright.dev/docs/ci#directories-to-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            **/.next/cache
+          key: ${{ hashFiles('**/yarn.lock') }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile --production=false
+      - name: Install Playwright browsers
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: |
+          npx playwright install-deps chromium
+          npx playwright install chromium
+      - name: Copy example env vars
+        run: cp .env.example .env
+      - name: Setup build
+        run: yarn dev:setup
+      - name: Build
+        run: yarn build --no-lint
+      - name: Serve
+        run: yarn start &
+      - name: Run end-to-end tests
+        run: yarn test:e2e
+      - name: Archive failed tests trace
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: |
+            ./test-results

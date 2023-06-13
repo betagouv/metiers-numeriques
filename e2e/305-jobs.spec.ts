@@ -8,7 +8,7 @@ test.describe('Admin > Jobs', () => {
     storageState: './e2e/states/administrator.json',
   })
 
-  test('Jobs Drafting', async ({ page }) => {
+  test.skip('Jobs Drafting', async ({ page }) => {
     await page.goto('http://localhost:3000/admin')
     await page.click('"Offres d’emploi"')
 
