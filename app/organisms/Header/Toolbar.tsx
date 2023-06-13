@@ -1,5 +1,5 @@
 import { LinkLikeButton } from '@app/atoms/LinkLikeButton'
-import { BetaBanner } from '@app/molecules/BetaBanner'
+// import { BetaBanner } from '@app/molecules/BetaBanner'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
@@ -11,12 +11,12 @@ export function Toolbar() {
 
   return (
     <div className="fr-header__tools" style={{ position: 'relative' }}>
-      <BetaBanner />
+      {/* <BetaBanner /> */}
       <div className="fr-header__tools-links">
         <ul className="fr-links-group fr-pr-2w">
-          <LinkItem>
-            <Link href="/offres-emploi">Les offres</Link>
-          </LinkItem>
+          {/* <LinkItem> */}
+          {/*  <Link href="/offres-emploi">Les offres</Link> */}
+          {/* </LinkItem> */}
           <LinkItem>
             <Link href="/employeurs">Les employeurs</Link>
           </LinkItem>
@@ -28,11 +28,11 @@ export function Toolbar() {
           {status === 'authenticated' && <UserMenu />}
           {status === 'unauthenticated' && (
             <>
-              <li className="fr-mr-4v">
-                <LinkLikeButton accent="tertiary" href="/inscription" size="medium">
-                  S&apos;inscrire
-                </LinkLikeButton>
-              </li>
+              {/* <li className="fr-mr-4v"> */}
+              {/*  <LinkLikeButton accent="tertiary" href="/inscription" size="medium"> */}
+              {/*    S&apos;inscrire */}
+              {/*  </LinkLikeButton> */}
+              {/* </li> */}
               <li>
                 <LinkLikeButton href="/connexion" size="medium">
                   Se connecter
