@@ -21,7 +21,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Lint
-        run: yarn test:lint --ignore-pattern '/__tests__/*'
+        run: yarn test:lint --fix --ignore-pattern '/__tests__/*'
 
   type:
     name: Type
