@@ -29,7 +29,7 @@ export const RedirectionDisclaimer = () => (
       </Title>
       <p>
         Retrouvez toutes nos offres dans le domaine du numérique sur{' '}
-        <a href="https://choisirleservicepublic.gouv.fr/">choisirleservicepublic.gouv.fr</a>, qui recense plus de 4000
+        <a href="https://choisirleservicepublic.gouv.fr/nos-offres/filtres/domaine/3522/">choisirleservicepublic.gouv.fr</a>, qui recense plus de 4000
         offres à date.
       </p>
     </Content>
