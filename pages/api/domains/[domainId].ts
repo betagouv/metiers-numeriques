@@ -1,17 +1,7 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function ApiDomainEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'GET':
-      return getDomain(req, res)
-    case 'PUT':
-      return updateDomain(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const getDomain = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -44,4 +34,13 @@ const updateDomain = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  GET: {
+    handler: getDomain,
+    permission: 'ADMINISTRATOR',
+  },
+  PUT: {
+    handler: updateDomain,
+    permission: 'ADMINISTRATOR',
+  },
+})

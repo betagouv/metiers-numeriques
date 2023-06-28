@@ -1,3 +1,4 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { sendApplicationEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
@@ -5,18 +6,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import * as R from 'ramda'
 
-export default async function ApiJobApplicationsEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'GET':
-      return getJobApplications(req, res)
-    case 'POST':
-      return createOrUpdateJobApplication(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
-
-// TODO: should be paginated at some point
 const getJobApplications = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getSession({ req })
@@ -144,4 +133,13 @@ const createOrUpdateJobApplication = async (req: NextApiRequest, res: NextApiRes
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  GET: {
+    handler: getJobApplications,
+    permission: 'RECRUITER',
+  },
+  POST: {
+    handler: createOrUpdateJobApplication,
+    permission: 'CANDIDATE',
+  },
+})

@@ -1,16 +1,8 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
 import * as R from 'ramda'
-
-export default async function ApiDuplicateJobApplicationEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      return duplicateJobApplication(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const duplicateJobApplication = async (req: NextApiRequest, res: NextApiResponse) => {
   const { applicationId } = req.query
@@ -28,4 +20,9 @@ const duplicateJobApplication = async (req: NextApiRequest, res: NextApiResponse
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  POST: {
+    handler: duplicateJobApplication,
+    permission: 'RECRUITER',
+  },
+})

@@ -1,18 +1,8 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { handleError } from '@common/helpers/handleError'
 import { JobApplicationStatus } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function ApiAcceptJobApplicationEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'PUT':
-      return changeJobApplicationStatus(JobApplicationStatus.ACCEPTED)(req, res)
-    case 'DELETE':
-      return changeJobApplicationStatus(JobApplicationStatus.PENDING)(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const changeJobApplicationStatus =
   (status: JobApplicationStatus) => async (req: NextApiRequest, res: NextApiResponse) => {
@@ -30,4 +20,13 @@ const changeJobApplicationStatus =
     }
   }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  DELETE: {
+    handler: changeJobApplicationStatus(JobApplicationStatus.PENDING),
+    permission: 'RECRUITER',
+  },
+  PUT: {
+    handler: changeJobApplicationStatus(JobApplicationStatus.ACCEPTED),
+    permission: 'RECRUITER',
+  },
+})

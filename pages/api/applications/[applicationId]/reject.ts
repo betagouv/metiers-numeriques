@@ -1,17 +1,9 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { sendJobApplicationRejectedEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
 import { JobApplicationStatus } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function ApiRejectJobApplicationEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'PUT':
-      return rejectJobApplication(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const rejectJobApplication = async (req: NextApiRequest, res: NextApiResponse) => {
   const { applicationId } = req.query
@@ -32,4 +24,9 @@ const rejectJobApplication = async (req: NextApiRequest, res: NextApiResponse) =
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  PUT: {
+    handler: rejectJobApplication,
+    permission: 'RECRUITER',
+  },
+})

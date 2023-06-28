@@ -1,16 +1,8 @@
+import { ApiEndpoint } from '@api/libs/endpoint'
 import { prisma } from '@api/libs/prisma'
 import { sendResetPasswordEmail } from '@api/libs/sendInBlue'
 import { handleError } from '@common/helpers/handleError'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function ApiSignUpEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      return handleForgotPassword(req, res)
-    default:
-      return defaultResponse(req, res)
-  }
-}
 
 const handleForgotPassword = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -29,4 +21,8 @@ const handleForgotPassword = async (req: NextApiRequest, res: NextApiResponse) =
   }
 }
 
-const defaultResponse = (req: NextApiRequest, res: NextApiResponse) => res.status(404)
+export default ApiEndpoint({
+  POST: {
+    handler: handleForgotPassword,
+  },
+})
